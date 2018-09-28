@@ -13,6 +13,7 @@
       div.column{display: inline-block; vertical-align: top; width: 50%;}
   </style>
   <link rel="stylesheet" href="style.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
   <!--[if lt IE 9]>
     <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
   <![endif]-->
@@ -23,7 +24,7 @@
 <p class="author">SternGerlach</p>
 </header>
 <!--
- pandoc -s -f markdown -t html5 -css style.css index.md > index.html
+ pandoc -s --filter pandoc-crossref -M "crossrefYaml=./crossref_config.yaml" -f markdown -t html5 --mathjax --css style.css index.md > index.html
 -->
 <h1 id="ようこそ">ようこそ</h1>
 <p>sterngerlachのGitHubページにようこそ。</p>
@@ -31,5 +32,7 @@
 <p>調べたことを適当に書いてこちらに置いていきます。</p>
 <h2 id="日記">日記</h2>
 <p>日記を適当に書いてこちらに置いていきます。</p>
+<h2 id="練習用ページ">練習用ページ</h2>
+<p><a href="./sandbox.html">練習用ページ</a></p>
 </body>
 </html>
