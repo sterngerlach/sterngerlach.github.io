@@ -11,7 +11,9 @@ body {
     font-style:             normal;
     font-weight:            normal;
     background-color:       #F0F0F0;
-    margin:                 10px;
+    margin:                 auto;
+    max-width:              54em;
+    padding:                2em;
 }
 
 header {
