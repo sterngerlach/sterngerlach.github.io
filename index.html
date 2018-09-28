@@ -12,6 +12,7 @@
       span.underline{text-decoration: underline;}
       div.column{display: inline-block; vertical-align: top; width: 50%;}
   </style>
+  <link rel="stylesheet" href="style.css" />
   <!--[if lt IE 9]>
     <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
   <![endif]-->
@@ -21,13 +22,14 @@
 <h1 class="title">SternGerlachのページ</h1>
 <p class="author">SternGerlach</p>
 </header>
+<!--
+ pandoc -s -f markdown -t html5 -css style.css index.md > index.html
+-->
 <h1 id="ようこそ">ようこそ</h1>
 <p>sterngerlachのGitHubページにようこそ。</p>
 <h2 id="雑記">雑記</h2>
-<hr />
 <p>調べたことを適当に書いてこちらに置いていきます。</p>
 <h2 id="日記">日記</h2>
-<hr />
 <p>日記を適当に書いてこちらに置いていきます。</p>
 </body>
 </html>
