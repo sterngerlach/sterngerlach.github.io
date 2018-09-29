@@ -18,6 +18,7 @@ sterngerlachのGitHubページにようこそ。
 
 - [今所持しているCD](./cds.html)
 - [ロボットに関するメモ書き](./robot-memo.html)
+- [C言語の関数をPythonから呼び出す方法](./calling-c-from-python.html)
 
 ## 日記
 
