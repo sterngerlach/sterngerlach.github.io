@@ -1,5 +1,5 @@
 
 # .gitignore
 
-*.md
+# *.md
 crossref_config.yaml

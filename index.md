@@ -1,0 +1,28 @@
+
+---
+title:  SternGerlachのページ
+author: SternGerlach
+---
+
+<!--
+ pandoc -s --filter pandoc-crossref -M "crossrefYaml=./crossref_config.yaml" -f markdown -t html5 --mathjax --css style.css index.md > index.html
+-->
+
+# ようこそ
+
+sterngerlachのGitHubページにようこそ。
+
+## 雑記
+
+調べたことを適当に書いてこちらに置いていきます。
+
+- [今所持しているCD](./cds.html)
+- [ロボットに関するメモ書き](./robot-memo.html)
+
+## 日記
+
+日記を適当に書いてこちらに置いていきます。
+
+## 練習用ページ
+
+[練習用ページ](./sandbox.html)
