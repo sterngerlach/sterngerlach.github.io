@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="SternGerlach" />
+  <title>ロボットに関するメモ書き</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">ロボットに関するメモ書き</h1>
+<p class="author">SternGerlach</p>
+</header>
+<!--
+ pandoc -s --filter pandoc-crossref -M "crossrefYaml=./crossref_config.yaml" -f markdown -t html5 --mathjax --css style.css robot-memo.md > robot-memo.html
+-->
+<h1 id="このページについて">このページについて</h1>
+<p>情報工学実験第2のテーマ「知的ロボットインタフェースの製作」についてのメモが書かれています。</p>
+<h1 id="ステッピングモータ">ステッピングモータ</h1>
+<ul>
+<li><p>ステッピングモータは、パルス状の電力によって動作する。モータの回転速度はパルスの周波数に比例し、入力パルス数に比例した角度だけ回転する。従って、フィードバック制御ではなく、フィードフォワード制御(オープンループ制御)によって位置決めの制御を行うことができる(他のモータでは必ずフィードバック制御が必要になる)。</p></li>
+<li><p>ステッピングモータは、低速回転時には減衰運動による振動が大きくなり、安定走行させられないことがある。高速回転時には滑らかに回転するため振動は少ない。</p></li>
+<li><p>ステッピングモータに加えるパルス数は、ロボットが移動したい距離から決定できる(ロボットの移動距離を1パルスで進む距離で割る)。パルス周波数(<span class="math inline">\(\mathrm{pps}\)</span>)の最適値は、ロボットの大きさと重さによって変わるので、実際に走行実験を行ってみて決定する。</p></li>
+<li><p>モータのオンとオフの時間の割合を変えることによってモータの速度を制御できる。</p></li>
+<li><p>モータをロボットの左右に配置し、各モータに車輪を取り付ける機構を採用することで、左右2輪速度差方式により制御できるようになる。左右2輪速度差方式を用いれば、左右車輪の回転速度を変えるだけで様々な運動を実現できる。直進(両輪の回転速度を等しくする)、左旋回(右輪の回転速度を左輪よりも大きくする)、右旋回(左輪の回転速度を右輪よりも大きくする)、信地旋回(片輪を停止させる)、極地旋回(左輪と右輪を逆方向に回転させる)などの運動である。</p></li>
+</ul>
+<h2 id="ステッピングモータの加速方法">ステッピングモータの加速方法</h2>
+<p>ステッピングモータを加減速させるためのパルス周波数は等加速近似曲線により決定できる。加速度を<span class="math inline">\(\alpha\)</span>(<span class="math inline">\(\mathrm{pps/s}\)</span>)(<span class="math inline">\(\mathrm{pps}\)</span>はPulses Per Secondの略)、初速度を<span class="math inline">\(f_0\)</span>(<span class="math inline">\(\mathrm{pps}\)</span>)、<span class="math inline">\(t\)</span>秒後の速度を<span class="math inline">\(f\)</span>(<span class="math inline">\(\mathrm{pps}\)</span>)とすると、等加速近似曲線は次のように表される。</p>
+<p><span class="math display">\[f(t) = \alpha t + f_0 \qquad (\mathrm{pps})\]</span></p>
+<p>これを時間積分すると、進んだ距離がパルス数<span class="math inline">\(N\)</span>で得られる。</p>
+<p><span class="math display">\[N = \int_{0}^{t} f(t) dt = \cfrac{1}{2} \alpha t^2 + f_0 t\]</span></p>
+<p>上の2式から<span class="math inline">\(t\)</span>を消去すると次のようになる。</p>
+<p><span class="math display">\[f^2 - f_0^2 = 2 \alpha N\]</span></p>
+<p>従って、<span class="math inline">\(N\)</span>パルスで初速度<span class="math inline">\(f_0\)</span>から最終速度<span class="math inline">\(f_N\)</span>まで加速したときの加速度<span class="math inline">\(\alpha\)</span>は、次のように求められる。</p>
+<p><span class="math display">\[\alpha = \cfrac{f_N^2 - f_0^2}{2N} \qquad (\mathrm{pps/s})\]</span></p>
+<p><span class="math inline">\(N = 1\)</span>のときのパルス周波数を<span class="math inline">\(f_1\)</span>とすると</p>
+<p><span class="math display">\[f_1 = \sqrt{f_0^2 + 2 \alpha} \qquad (\mathrm{pps})\]</span></p>
+<p>また</p>
+<p><span class="math display">\[f_1 = \alpha t_1 + f_0 \qquad (\mathrm{pps})\]</span></p>
+<p>となるので、パルス周期<span class="math inline">\(t_1\)</span>は</p>
+<p><span class="math display">\[t_1 = \cfrac{f_1 - f_0}{\alpha} \qquad (\mathrm{s})\]</span></p>
+<p>と求められる。<span class="math inline">\(N = 2\)</span>のときのパルス周波数を<span class="math inline">\(f_2\)</span>とすると</p>
+<p><span class="math display">\[f_2 = \sqrt{f_0^2 + 2 \alpha \cdot 2} \qquad (\mathrm{pps})\]</span></p>
+<p>また</p>
+<p><span class="math display">\[f_2 = \alpha t_2 + f_1 \qquad (\mathrm{pps})\]</span></p>
+<p>となるので、パルス周期<span class="math inline">\(t_2\)</span>は</p>
+<p><span class="math display">\[t_2 = \cfrac{f_2 - f_1}{\alpha} \qquad (\mathrm{s})\]</span></p>
+<p>と求められる。<span class="math inline">\(N\)</span>パルスのときのパルス周波数<span class="math inline">\(f_N\)</span>とパルス周期<span class="math inline">\(t_N\)</span>も上と同様に求められる。</p>
+<p><span class="math display">\[f_N = \sqrt{f_0^2 + 2 \alpha N} \qquad (\mathrm{pps})\]</span> <span class="math display">\[t_N = \cfrac{f_N - f_{N - 1}}{\alpha} \qquad (\mathrm{s})\]</span></p>
+<p>時刻<span class="math inline">\(t = 0\)</span>で最初のパルス、<span class="math inline">\(t = t_1\)</span>で2番目のパルス、<span class="math inline">\(t = t_1 + t_2\)</span>で3番目のパルスのように、パルス周期<span class="math inline">\(t_N\)</span>に従ってパルスをモータに与えることで、等加速近似曲線に沿った加速を実現できる。</p>
+<h2 id="ステッピングモータと移動距離の関係">ステッピングモータと移動距離の関係</h2>
+<p>ステッピングモータに車輪を取り付けたとき、車輪の移動距離<span class="math inline">\(L\)</span>(<span class="math inline">\(\mathrm{m}\)</span>)は次のように求められる(車輪が滑らないとする)。1パルスで進む距離を<span class="math inline">\(L&#39;\)</span>(<span class="math inline">\(\mathrm{m}\)</span>)、モータに加える総パルス数を<span class="math inline">\(N\)</span>とすると</p>
+<p><span class="math display">\[L = L&#39; \cdot N \qquad (\mathrm{m})\]</span></p>
+<p>1パルスで進む距離<span class="math inline">\(L&#39;\)</span>は、モータの車軸に取り付けられた車輪の半径を<span class="math inline">\(r\)</span>(<span class="math inline">\(\mathrm{m}\)</span>)、1ステップ角を<span class="math inline">\(\theta\)</span>(<span class="math inline">\(\mathrm{deg}\)</span>)とすると</p>
+<p><span class="math display">\[L&#39; = \cfrac{\theta}{180^\circ} \pi r \qquad (\mathrm{m})\]</span></p>
+<p>である。また、左右2輪速度差方式を用いて旋回を行うとき、モータの回転速度を一定に保てば、ロボットが移動する軌跡は円とみなすことができる。従って、モータに加えるパルス数は、車輪が通る軌跡の円弧の長さから求められる。</p>
+<h2 id="ステッピングモータの等速運転">ステッピングモータの等速運転</h2>
+<p>ステッピングモータを等速運転するためのプログラムを以下に擬似コードで示す。</p>
+<pre><code>    初期化処理;
+
+    while (true) {
+        パルスを出力;
+        一定時間待つ;
+
+        if (パルスを規定数出力した)
+            break;
+    }</code></pre>
+<h2 id="ステッピングモータの加減速簡易版">ステッピングモータの加減速(簡易版)</h2>
+<p>ステッピングモータを簡単に加減速するためのプログラムを以下に擬似コードで示す。原理は簡単で、パルスを出力するごとに、パルス周期を一定量だけ増減させるというものである。但し、パルス周期を一定量だけ小さくしていくと、パルス周波数は急激に増加して脱調が起こり易くなる。増減量を小さくして加速度を小さくする、目標速度を下げるなどの脱調しないための対策が必要となる。</p>
+<pre><code>    初期化処理;
+
+    while (true) {
+        パルスを出力;
+
+        if (加速する)
+            待つ時間を一定量減らす;
+        else if (減速する)
+            待つ時間を一定量増やす;
+        else
+            待つ時間はそのままとする;
+
+        設定した時間だけ待つ;
+
+        if (パルスを規定数出力した)
+            break;
+    }</code></pre>
+<h2 id="ステッピングモータの加減速">ステッピングモータの加減速</h2>
+<p>ステッピングモータを加減速するためのプログラムを以下に擬似コードで示す。上記の計算を行ってパルス周期を求めればよい。</p>
+<pre><code>    /* 初期化処理 */
+    f_0 = (現在の速度);          /* パルス周波数の初期値 */
+    alpha = (希望する加速度);    /* 希望する加速度 */
+    f = 0;                      /* Nパルスのときのパルス周波数 */
+    f_prev = f_0;               /* N - 1パルスのときのパルス周波数 */
+    t = 0;                      /* Nパルスのときのパルス周期 */
+    N = 0;                      /* 現在のパルス数 */
+
+    while (true) {
+        パルスを出力;
+        N++;
+
+        /* パルス周波数とパルス周期の計算 */
+        f = sqrt(f_0 * f_0 + 2 * alpha * N);
+        t = (f - f_prev) / alpha;
+        f_prev = f;
+
+        tだけ待つ;
+        
+        if (パルスを規定数出力した)
+            break;
+    }</code></pre>
+<h1 id="障害物検知">障害物検知</h1>
+<p>障害物として検知した点<span class="math inline">\(\textbf{p}_i\)</span>を、障害物までの距離<span class="math inline">\(l_i\)</span>と方向<span class="math inline">\(\theta_i\)</span>(<span class="math inline">\(i = 1, \cdots, n\)</span>)を用いて</p>
+<p><span class="math display">\[\textbf{p}_i
+= \left[ \begin{array}{c} x_i \\ y_i \end{array} \right]
+= \left[ \begin{array}{c} l_i \cos \theta_i \\ l_i \sin \theta_i \end{array} \right]\]</span></p>
+<p>と表す。<span class="math inline">\(n\)</span>は検知できた点の総数とする。障害物がないときは最大検知半径<span class="math inline">\(R\)</span>を用いて<span class="math inline">\(l_i = R\)</span>とする。この点におけるポテンシャル関数<span class="math inline">\(U_i(x, y)\)</span>を次のように表現する。</p>
+<p><span class="math display">\[\begin{eqnarray} U_i(x, y) = \begin{cases}
+\cfrac{1}{2} \eta \left( \cfrac{1}{\rho_i} - \cfrac{1}{\rho_0} \right)^2 &amp;
+(|\rho_i| \le \rho_0) \\
+0 &amp; (|\rho_i| &gt; \rho_0)
+\end{cases} \end{eqnarray}\]</span></p>
+<p><span class="math display">\[\rho_i = \sqrt{(x - x_i)^2 + (y - y_i)^2}\]</span></p>
+<p>ここで、<span class="math inline">\(\eta\)</span>は正の定数、<span class="math inline">\(\rho_0\)</span>はポテンシャル関数の値域を定めるためのパラメータで、いずれも障害物の検知感度を調整する役割がある。<span class="math inline">\(U_i(x, y)\)</span>の上限値を<span class="math inline">\(U_{\mathrm{max}}\)</span>で抑えるとする。点<span class="math inline">\((x, y)\)</span>におけるポテンシャルは、全ての点に対するポテンシャル関数<span class="math inline">\(U_i(x, y)\)</span>の総和として求められる。</p>
+<p><span class="math display">\[U(x, y) = \sum_{i = 1}^{n} U_i(x, y)\]</span></p>
+</body>
+</html>
