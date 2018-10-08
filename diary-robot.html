@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="SternGerlach" />
+  <title>ロボット作成日記</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">ロボット作成日記</h1>
+<p class="author">SternGerlach</p>
+</header>
+<!--
+ pandoc -s --filter pandoc-crossref -M "crossrefYaml=./crossref_config.yaml" -f markdown -t html5 --mathjax --css style.css diary-robot.md > diary-robot.html
+-->
+<h1 id="このページについて">このページについて</h1>
+<p>ロボット作成の実験で行ったことをまとめていきます。</p>
+<h2 id="年9月24日-月曜日">2018年9月24日 (月曜日)</h2>
+<p>初回の実験。Raspberry Piのセットアップを行っていたらあっという間に時間が過ぎてしまった。班分けが勝手に決められてしまったのは残念だったけど仕方がない。</p>
+<ul>
+<li>Raspberry Piのセットアップ
+<ul>
+<li>ヒートシンクがRaspberry Piに既に装着されていた。また、MicroSDカードには既にUbuntu Mate 16.04.3 LTSがインストールされていたので、OSのインストール作業(イメージファイルのダウンロード、SDカードへのイメージファイルの書き込み、OSのセットアップ)は省略することができた。去年実験を行った人がそのままにしていったのだと思う。</li>
+<li>Raspberry PiのIPアドレスが、DHCPによって動的に割り振られないように、静的アドレスに設定した。</li>
+<li>Raspberry PiのI2CバスとSPIバスが有効になっていることを確認した。</li>
+</ul></li>
+<li>サウンドの設定
+<ul>
+<li>Raspberry Piから音声を出力させるのにかなり手間取った。<code>aplay</code>コマンドを起動するとエラーが出力されて異常終了してしまったが、これは設定ファイルに謎のゴミが含まれていたためで、設定ファイルを修正する必要があった。説明書通りに設定を行っても、スピーカーから出る音が非常に小さい。スピーカーの設定は一旦取りやめることにした。マイクの接続とマイク音声の録音については問題はなかった。</li>
+</ul></li>
+<li>各種ソフトウェアのインストールとセットアップ
+<ul>
+<li>OpenCV、WiringPi、Julius(音声認識ソフトウェア)は既にインストールされていた。</li>
+<li>音声認識のテストは非常に大変だった。説明書通りのコマンドを実行しても、上手く日本語を認識してくれない。それ以前に、説明書の日本語がよく理解できない。何をしようとしているのかもよく分からない。例えば、シェルスクリプトを書き換えろと言われているが、そのシェルスクリプトの在り処が分からない。音声認識を実行するために入力しなければならないコマンドが誤っている。シンボリックリンクを張れといわれているが、そもそもシンボリックリンクを張る必要性が無い。結局仕様書を頼るのは諦めて、インターネットで使用法を調査する必要に迫られる。「仕様書なるものは過信してはいけない」ということを学生の間に教え込もうとしているに違いない。</li>
+<li>超音波センサのテストも手こずったが、こちらは仕様書をじっくり読めば何とか理解できた。</li>
+<li>Webカメラのテストは非常に簡単であった。WebカメラをRaspberry Piに接続したあと、C++とOpenCVで書かれたテストプログラムをコンパイルして実行するだけであった。</li>
+</ul></li>
+</ul>
+<p>初回の実験では、誤植の多い実験書に翻弄された感じだった。自分が想定していないところでエラーが出て、時間が取られる。本当に世話が焼ける。昨年実験を行ったときの設定などがそのまま残されていて、何か悪さをしているに違いないと思われる。ここまで手こずるならOSのインストールからやり直せばよかったと後悔した。すっかり体力を奪われた。</p>
+<h2 id="年10月1日-月曜日">2018年10月1日 (月曜日)</h2>
+<p>2回目の実験。Pythonの<code>pip</code>コマンドが動作しなくて本当に困った。動作しない原因が本当によく分からない。</p>
+<ul>
+<li>各種ソフトウェアのインストールとセットアップ
+<ul>
+<li>pthreadのテストは直ぐに終わった。C++で書かれたpthreadのテストプログラムをコンパイルして実行するだけであった。C++はよく分かりません。</li>
+</ul></li>
+<li>アルミフレームの組み立て
+<ul>
+<li>アルミフレームの組み立ては同じ班の人にお願いした。折角苦労して取り付けたフレームを取り外してしまって、班の人を不機嫌にさせてしまったので申し訳なかった。ハードはやらないと決めた。</li>
+</ul></li>
+<li>ステッピングモータの動作
+<ul>
+<li>自分はステッピングモータを回転させるための準備を行った。とはいっても、ロボット本体にモータを取り付けるためのアルミ板(アルミブラケット)に、モータをネジで固定するだけであった。モータ電源の接続は少し大変であった。モータドライバと電源装置とを接続するための配線は自作する必要があったが、そのことは説明書には特に書かれていなかった。やはり説明書を信用してはいけなかった。配線を自作するといっても、導線を適当な長さに切って、先端の被膜を剥がすだけである(不器用なのでこれも時間が掛かる)。</li>
+<li>電源装置とモータドライバとの間には緊急停止ボタンを接続するように指示されていた。緊急停止ボタンに配線を繋ぐときに、グランドを一箇所にまとめる必要があるということに気付かなかった(説明書が良くない)。このせいで、モータを回転させるまでにかなり時間が掛かった。断線していないかどうか、電圧値は正しいかどうかなどをテスターを用いて細かく調べた。電源装置の使い方もマニュアルで確認した。</li>
+<li>テストプログラムをコンパイルして実行すると、モータは回転してくれた。実行ファイルに与えるパラメータの意味は、ソースコードを解読すれば理解できると思う(まだソースコードを読んでいないのでよく分からない)。WiringPiなるライブラリの使用法についても調べる必要がある。</li>
+</ul></li>
+<li><code>pip</code>コマンドが動作しない
+<ul>
+<li><code>pip</code>コマンドが動かないのでライブラリをインストールできない。<code>Could not find a version that satisfies the requirement</code>で始まるエラーが出て止まる。<code>pip</code>をバージョン8.1.1からバージョン18.0にアップデートすると(<code>pip install --upgrade pip</code>)、<code>pip</code>コマンドそのものが使えなくなってしまう(<code>python3 -m pip</code>と入力しなければならない)。またアップデートしてもライブラリがインストールできないという状況に変わりはなかった。</li>
+<li>Pythonのバージョンを3.5.2から3.6.1に引き上げる、Python関連のパッケージを再インストールする、<code>pip</code>のバージョンを色々と変える(8.1.1、9.0.2、10.0.1、18.0など)、<code>get-pip.py</code>経由で<code>pip</code>を導入する、仮想環境を作成してその内部でパッケージのインストールを実行するなど、思い付く限りの方法を片っ端から試してみたが、どれも上手く行かない。パッケージ(Tensorflow、OpenCV-Pythonの2つ)をインストールしようとして3時間以上格闘したが、結局疲れ果てて心が折れてしまった。</li>
+</ul></li>
+</ul>
+<p>昼ご飯を忘れて作業をしていた。昼ご飯を取ったのは午後2時を過ぎてからのことだった。この実験には底知れぬ闇が広がっている。</p>
+<h2 id="年10月5日-金曜日">2018年10月5日 (金曜日)</h2>
+<p><code>pip</code>よ、動いてくれ。</p>
+<ul>
+<li><code>pip</code>コマンドが復活
+<ul>
+<li>このままPythonのライブラリがインストールできないと非常に困るので金曜日なのに作業をした。最初に取り掛かったのは、Python 3.5.2を再インストールする(<code>apt-get install --reinstall python3-dev</code>)ことだった。依存関係が壊れるなどの細かいトラブルはあったが、何とかなったので一安心した。<code>pip</code>コマンドはバージョンが8.1.1だとどうやら古過ぎるみたいなので、バージョン9.0.2を導入した(<code>python3 -m pip ./get-pip.py pip==9.0.2</code>)。</li>
+</ul></li>
+<li>TensorflowとKerasのインストール
+<ul>
+<li>Tensorflowは、<code>python3 -m pip install tensorflow</code>のコマンドを叩くだけでインストールが完了した。数分経っても端末の画面が更新されないことがあり不安になったが、<code>ps</code>コマンドで確認してみると、どうやらインストール時に必要なライブラリをコンパイルしていて、そのコンパイルに物凄く時間が掛かっているためだった。<code>python3 -c &quot;import tensorflow as tf; print(tf.__version__)</code>のコードが正常に動作したときの安心感は忘れられない。Kerasも全く問題なくインストールできた(<code>pip install keras</code>)。これで友人がプログラムを作れる。</li>
+<li>Tensorflowのインストールでは以下のページを大いに参考にした。
+<ul>
+<li><a href="https://qiita.com/yuzo63/items/4636479c8fe3e80e14f1">Raspberry pi 3 type Bにtensorflowをインストールする</a></li>
+<li><a href="http://ken5owata.hatenablog.com/entry/2017/06/12/232516">raspberry pi 3にTensorFlowを入れて画像認識させる</a></li>
+</ul></li>
+</ul></li>
+<li>OpenCVのインストール
+<ul>
+<li>OpenCV-Pythonは、<code>pip install opencv-python</code>と<code>pip install opencv-contrib-python</code>のいずれも、<code>Could not find a version that satisfies the requirement</code>のエラーが出て動かなかったので、仕方なくソースコードをビルドしてインストールすることにした。</li>
+<li><code>Note that the wheel format does not currently support properly ARM architecture so there are no packages for ARM based platforms in PyPI</code>と<a href="https://pypi.org/project/opencv-python/">PyPIのopencv-pythonのページ</a>に記載されているので、恐らくこれが原因と思われる。</li>
+<li>OpenCVのインストールでは以下のページを参考にした。
+<ul>
+<li><a href="https://a244.hateblo.jp/entry/2016/10/18/053000">Raspbian (Raspberry Pi 3 model B) に OpenCV 3.1 をインストールする</a></li>
+<li><a href="https://qiita.com/takahiro_itazuri/items/a67dd3bb7f5f88ca9dd8">ラズパイにOpenCVをインストールする方法</a></li>
+<li><a href="https://sites.google.com/site/memorandumjavaandalgorithm/raspberry-pi-jiang-zuo-opencv3">Raspberry Pi講座 Python3 + OpenCV3(環境構築編)</a></li>
+<li><a href="https://www.trifields.jp/how-to-install-opencv-on-ubuntu-2742">Ubuntu OpenCVをインストールする手順</a></li>
+</ul></li>
+<li>インストールするOpenCVのバージョンは3.4.3とした。
+<ul>
+<li><a href="https://github.com/opencv/opencv/releases/tag/3.4.3">Release 3.4.3 - opencv/opencv</a></li>
+<li><a href="https://github.com/opencv/opencv_contrib/releases/tag/3.4.3">Release 3.4.3 - opencv/opencv_contrib</a></li>
+</ul></li>
+</ul></li>
+<li>地味な作業
+<ul>
+<li>ロボットの高さ、奥行き、横幅、車輪の間隔、車輪の半径などを定規で大まかに測定した。</li>
+</ul></li>
+</ul>
+<p>OpenCVをビルドしている最中に午後6時を回ってしまったので、次の実験ではビルドを途中から行うことになった。ここまで環境構築に時間が取られるとは思ってもいなかった。</p>
+</body>
+</html>

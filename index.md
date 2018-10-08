@@ -17,12 +17,15 @@ sterngerlachのGitHubページにようこそ。
 調べたことを適当に書いてこちらに置いていきます。
 
 - [今所持しているCD](./cds.html)
+<!-- - [好きな歌詞について](./favorite-lyrics.html) -->
 - [ロボットに関するメモ書き](./robot-memo.html)
 - [C言語の関数をPythonから呼び出す方法](./calling-c-from-python.html)
 
 ## 日記
 
 日記を適当に書いてこちらに置いていきます。
+
+- [ロボット作成日記](./diary-robot.html)
 
 ## 練習用ページ
 
