@@ -79,7 +79,7 @@
 <ul>
 <li><code>pip</code>コマンドが復活
 <ul>
-<li>このままPythonのライブラリがインストールできないと非常に困るので金曜日なのに作業をした。最初に取り掛かったのは、Python 3.5.2を再インストールする(<code>apt-get install --reinstall python3-dev</code>)ことだった。依存関係が壊れるなどの細かいトラブルはあったが、何とかなったので一安心した。<code>pip</code>コマンドはバージョンが8.1.1だとどうやら古過ぎるみたいなので、バージョン9.0.2を導入した(<code>python3 -m pip ./get-pip.py pip==9.0.2</code>)。</li>
+<li>このままPythonのライブラリがインストールできないと非常に困るので金曜日なのに作業をした。最初に取り掛かったのは、Python 3.5.2を再インストールする(<code>apt-get install --reinstall python3-dev</code>)ことだった。依存関係が壊れるなどの細かいトラブルはあったが、何とかなったので一安心した。<code>pip</code>コマンドはバージョンが8.1.1だとどうやら古過ぎるみたいなので、バージョン9.0.2を導入した(<code>python3 ./get-pip.py pip==9.0.2</code>)。</li>
 </ul></li>
 <li>TensorflowとKerasのインストール
 <ul>
@@ -94,22 +94,18 @@
 <ul>
 <li>OpenCV-Pythonは、<code>pip install opencv-python</code>と<code>pip install opencv-contrib-python</code>のいずれも、<code>Could not find a version that satisfies the requirement</code>のエラーが出て動かなかったので、仕方なくソースコードをビルドしてインストールすることにした。</li>
 <li><code>Note that the wheel format does not currently support properly ARM architecture so there are no packages for ARM based platforms in PyPI</code>と<a href="https://pypi.org/project/opencv-python/">PyPIのopencv-pythonのページ</a>に記載されているので、恐らくこれが原因と思われる。</li>
-<li>OpenCVのインストールでは以下のページを参考にした。
+<li>OpenCVのインストールでは以下のページを参考にした。インストールするOpenCVのバージョンは3.4.3とした。
 <ul>
 <li><a href="https://a244.hateblo.jp/entry/2016/10/18/053000">Raspbian (Raspberry Pi 3 model B) に OpenCV 3.1 をインストールする</a></li>
 <li><a href="https://qiita.com/takahiro_itazuri/items/a67dd3bb7f5f88ca9dd8">ラズパイにOpenCVをインストールする方法</a></li>
 <li><a href="https://sites.google.com/site/memorandumjavaandalgorithm/raspberry-pi-jiang-zuo-opencv3">Raspberry Pi講座 Python3 + OpenCV3(環境構築編)</a></li>
 <li><a href="https://www.trifields.jp/how-to-install-opencv-on-ubuntu-2742">Ubuntu OpenCVをインストールする手順</a></li>
 </ul></li>
-<li>インストールするOpenCVのバージョンは3.4.3とした。
-<ul>
-<li><a href="https://github.com/opencv/opencv/releases/tag/3.4.3">Release 3.4.3 - opencv/opencv</a></li>
-<li><a href="https://github.com/opencv/opencv_contrib/releases/tag/3.4.3">Release 3.4.3 - opencv/opencv_contrib</a></li>
-</ul></li>
 </ul></li>
 <li>地味な作業
 <ul>
 <li>ロボットの高さ、奥行き、横幅、車輪の間隔、車輪の半径などを定規で大まかに測定した。</li>
+<li>SSHでRaspberry Piに(踏み台サーバを経由して)リモートログインできることを確認した。</li>
 </ul></li>
 </ul>
 <p>OpenCVをビルドしている最中に午後6時を回ってしまったので、次の実験ではビルドを途中から行うことになった。ここまで環境構築に時間が取られるとは思ってもいなかった。</p>
