@@ -80,3 +80,43 @@ author: SternGerlach
     - SSHでRaspberry Piに(踏み台サーバを経由して)リモートログインできることを確認した。
 
 OpenCVをビルドしている最中に午後6時を回ってしまったので、次の実験ではビルドを途中から行うことになった。ここまで環境構築に時間が取られるとは思ってもいなかった。
+
+## 2018年10月10日 (水曜日)
+
+- OpenCVのインストール
+    - OpenCV(バージョン3.4.3)のソースコードのビルドと、インストールが無事に完了した。これで画像認識のプログラムが組めるようになったので一安心。インストールのために実行したコマンドは大体以下のようになった。
+    
+    ```
+    $ sudo apt-get update
+    $ sudo apt-get install build-essential cmake pkg-config
+    $ sudo apt-get install libjpeg-dev libtiff5-dev libjasper-dev libpng12-dev
+    $ sudo apt-get install libavcodec-dev libavformat-dev libswscale-dev libv4l-dev
+    $ sudo apt-get install libxvidcore-dev libx264-dev
+    $ sudo apt-get install libgtk2.0-dev
+    $ sudo apt-get install libatlas-base-dev gfortran
+    $ cd ~
+    $ wget -o opencv-3.4.3.zip https://github.com/opencv/opencv/archive/3.4.3.zip
+    $ wget -o opencv_contrib-3.4.3.zip https://github.com/opencv/opencv_contrib/archive/3.4.3.zip
+    $ unzip ./opencv-3.4.3.zip
+    $ unzip ./opencv_contrib-3.4.3.zip
+    $ cd opencv-3.4.3/
+    $ mkdir build
+    $ cd build
+    $ cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local -D INSTALL_PYTHON_EXAMPLES=ON -D OPENCV_EXTRA_MODULES_PATH=~/opencv_contrib-3.4.3/modules -D BUILD_EXAMPLES=ON ..
+    $ make
+    $ sudo make install
+    $ sudo ldconfig
+    ```
+    
+    OpenCVがPythonから利用できることは以下のようにして確認できた。
+
+    ```
+    $ python3
+    >>> import cv2
+    >>> print(cv2.__version__)
+    3.4.3
+    ```
+    ソースコードをコンパイルする際、`make -j2`や`make -j4`のように並列実行のオプションを付けると、メモリ不足でOSがハングアップしてしまうので、単純に`make`とした方が良いと思う。
+    
+- モータの制御プログラムの作成
+    - WiringPiのPython向けのラッパライブラリは、`pip install wiringpi`のコマンドを実行するだけで簡単にインストールすることができた。モータ制御のサンプルプログラムはC言語で書かれていたので、Pythonに移植した。期待通りに動作させることができた。
