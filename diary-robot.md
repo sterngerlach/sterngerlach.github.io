@@ -120,3 +120,31 @@ OpenCVをビルドしている最中に午後6時を回ってしまったので�
     
 - モータの制御プログラムの作成
     - WiringPiのPython向けのラッパライブラリは、`pip install wiringpi`のコマンドを実行するだけで簡単にインストールすることができた。モータ制御のサンプルプログラムはC言語で書かれていたので、Pythonに移植した。期待通りに動作させることができた。
+    - WiringPiの使用法は以下のサイトで確認した。
+        - [Reference | WiringPi](http://wiringpi.com/reference/)
+        - [ステッピングモーターその1 モーターとドライバ(L6470)を試す](http://pongsuke.hatenablog.com/entry/2016/09/21/120205)
+        - [L6470ステッピングモータドライバキットでマイクロステップ](http://spinelify.blog.fc2.com/blog-entry-1.html)
+        - [L6470 ステッピングモータ・ドライバキット](https://strawberry-linux.com/pub/l6470-manual.pdf)
+        - [L6470 データシート (リビジョン7)](https://www.st.com/resource/en/datasheet/l6470.pdf)
+
+## 2018年10月15日 (月曜日)
+
+- 超音波センサのテスト
+    - I2C接続された超音波センサSRF02から測距データを取得するためのプログラムを、Pythonとsmbusライブラリで作成した。smbusライブラリで提供されている関数は以下のサイトで確認した。
+        - [Using the I2C Interface](http://www.raspberry-projects.com/pi/programming-in-python/i2c-programming-in-python/using-the-i2c-interface-2)
+        - [wiki:linux:python:smbus:doc](http://wiki.erazor-zone.de/wiki:linux:python:smbus:doc)
+    - C言語のサンプルプログラムをそのままPythonに移植したところ、`IOError: [Errno 5] Input/output error`や`IOError: [Errno 121] Remote I/O error`という内容の例外が発生して動かないことが多かった(動作が不安定だった)。インターネットで検索すると、Raspberry Piが超音波センサを認識できていないためにこのようなエラーが発生する、という旨の記述が多くみられたが、`sudo i2cdetect -y 1`で確認すると超音波センサのアドレスが表示されたので認識はできている。エラーが発生する理由についての説明が以下のサイトに記述されていた。
+        - [IOError: [Errno 5] Input/output error](http://avr.gawakaru.jp/archives/774)
+    - 結局以下のサイトのプログラムを利用することにした。本当に助かる。`IOError`例外は発生しなくなったので一安心。恐らく、呼び出すsmbusの関数を間違えていたのだと思う。
+        - [piTank/srf02.py at master・davstott/piTank](https://github.com/davstott/piTank/blob/master/range/srf02.py)
+        - [SRF02 Ultrasonic sensor (SKU:SEN0005)](https://www.dfrobot.com/wiki/index.php/SRF02_Ultrasonic_sensor_(SKU:SEN0005))
+    - SRF02センサについての情報は以下のサイトから確認した。仕様書を読むのは大切なんだなと改めて思った。
+        - [超音波センサ SRF02: マイコン関連 秋月電子通商-電子部品・ネット通販](http://akizukidenshi.com/catalog/g/gM-06685/)
+        - [SRF02 Ultrasonic range finder Technical Specification](http://robot-electronics.co.uk/htm/srf02tech.htm)
+        - [SRF02 Ultrasonic range finder Technical Specification (I2C Mode)](http://robot-electronics.co.uk/htm/srf02techI2C.htm)
+- 鉛蓄電池のテスト
+    - 仕様書に書かれていた通りの回路(基本回路)を実際に組み立てて、モータを鉛蓄電池で動作させることを行った。圧着という用語を覚えた。何もかもが未知なので、1つ1つの作業に物凄い体力を消費する。
+- 画像認識のテスト
+    - 友人の作成した物体認識(ニューラルネットワークベース)のプログラムが動作した。但し1枚の画像を認識するのに13秒も掛かるので、Raspberry Pi上でリアルタイムの物体認識を行うのは明らかに不可能だと分かった。カメラから取得した映像をRaspberry Piからコンピュータへ送信し、コンピュータ上で物体認識のプログラムを実行して、実行結果(検出された物体)をRaspberry Piに送り返すという方法もあるが、画像をやり取りしようとするとネットワークのかなりの帯域を消費してしまうと思う。もう少し方法を検討する必要がある。
+
+完成までに一体何をすればよいのか、まだ把握しきれていない。その日にできることをこなしている状態だ。ロボットの機構についてはまだ殆ど検討できていない。終わりがみえない。他の班は圧倒的な進捗を生み出している。気分だけが焦る。正直のところ非常に追い込まれている。
