@@ -196,7 +196,7 @@ OpenCVをビルドしている最中に午後6時を回ってしまったので�
 
 - SDカードのバックアップ
     - Raspberry Piに差さっているSDカードのバックアップを取った。Win32DiskImagerというフリーソフトを使用してイメージファイル(容量は30GB)を作成した。これでSDカードが突然故障しても直ぐに復活できる。
-        -[Raspberry Pi の micro SDをまるごとバックアップする方法](https://physical-computing-lab.net/faq/raspberry-pi-micro-sd-backup.html)
+        - [Raspberry Pi の micro SDをまるごとバックアップする方法](https://physical-computing-lab.net/faq/raspberry-pi-micro-sd-backup.html)
         - [HeadlessなRaspberry Pi 3でJupyter notebookを自動起動させてOpenCVを使うまで](https://qiita.com/nbhr/items/68fd9c3f6a31a797a7a8)
 
 ## 2018年10月24日 (水曜日)
