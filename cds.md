@@ -1,6 +1,6 @@
 
 ---
-title: 今所持しているCD
+title: 今所持しているCDとLPレコード
 auhtor: SternGerlach
 ---
 
@@ -10,7 +10,7 @@ auhtor: SternGerlach
 
 # このページについて
 
-今所持しているCDや、欲しいCDについて紹介します。
+今所持しているCDとレコードや、欲しいCDとレコードについて紹介します。
 
 # 雑感
 
@@ -30,26 +30,33 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
     - SWEET PIZZICATO FIVE (スウィート・ピチカート・ファイヴ) (1992年)
     - Expo 2001 (1993年)
     - ノン・スタンダードのピチカート・ファイヴ (1995年)
+* 矢野顕子
+    - SUPER FOLK SONG (スーパー・フォーク・ソング) (1992年)
 * 細野晴臣
     - Paraiso (はらいそ) (1978年)
     - Coincidental Music (コインシデンタル・ミュージック) (1985年)
 * 日向敏文
     - サラの犯罪 (1985年)
     - Story (1987年)
+* 坪倉唯子
+    - Always in Love (1986年)
+* 山根麻衣
+    - Embassy (1986年)
+* Rajie(ラジ)
+    - Quatre (キャトル) (1979年)
+    - 真昼の舗道 (1980年)
+    - アコースティック・ムーン (1981年)
 
-# レアで手に入らないCD
+# レアで手に入らないCDとレコード
 
 未CD化であったり、入手困難なものです。Amazonだと中古で1万円ぐらいするものもあります。
 
-* 坪倉唯子
-    - Always in Love (1986年)
 * 秋元薫
     - Cologne (1986年)
 * Rajie(ラジ)
-    - 午後のレリーフ (1984年)
     - Espresso (1985年)
 
-# 現在持っているCD
+# 現在持っているCDとレコード
 
 ## アーティスト別 (邦楽、女性)
 
@@ -115,6 +122,7 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
     - High Excentrique Piano Music (ハイ・エキセントリック・ピアノ・ミュージック) (1989年)
     - D.M. (1989年)
 * Rajie(ラジ)
+    - 午後のレリーフ (1984年)
     - ゴールデンベスト オールタイム・セレクション (2018年)
 * 石川セリ
     - Möbius (メビウス) (1982年)
@@ -164,7 +172,7 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
 
 * ピチカート・ファイヴ
     - ピチカートマニア! (1987年)
-    - couples (カップルズ) (1988年)
+    - couples (カップルズ) (1987年)
     - 女王陛下のピチカート・ファイヴ (1989年)
 * Yellow Magic Orchestra
     - Yellow Magic Orchestra (イエロー・マジック・オーケストラ) (1978年)

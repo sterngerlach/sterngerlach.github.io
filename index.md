@@ -16,7 +16,7 @@ sterngerlachのGitHubページにようこそ。
 
 調べたことを適当に書いてこちらに置いていきます。
 
-- [今所持しているCD](./cds.html)
+- [今所持しているCDとレコード](./cds.html)
 <!-- - [好きな歌詞について](./favorite-lyrics.html) -->
 - [ロボットに関するメモ書き](./robot-memo.html)
 - [C言語の関数をPythonから呼び出す方法](./calling-c-from-python.html)
