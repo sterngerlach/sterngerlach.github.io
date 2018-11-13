@@ -178,6 +178,20 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
     - Especially For You \~優しさにつつまれて\~ (1989年)
     - Wink Memories 1988-1996 (1996年)
 
+## アーティスト別 (邦楽、女性)
+
+* 宇多田ヒカル
+    - First Love (1999年)
+    - Distance (2001年)
+    - DEEP RIVER (2002年)
+    - Utada Hikaru SINGLE COLLECTION VOL.1 (2004年)
+    - Utada Hikaru SINGLE COLLECTION Vol.2 (2010年)
+* 倉木麻衣
+    - delicious way (2000年)
+    - Perfect Crime (2001年)
+    - FAIRY TALE (2002年)
+    - Wish You The Best (2004年)
+
 ## アーティスト別 (邦楽、男性)
 
 * 山下達郎
