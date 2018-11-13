@@ -24,20 +24,29 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
 
 現在欲しいな、と思っているアルバムのうち、購入を検討しているものです。
 
+* フィッシュマンズ
+* サカナクション
 * ピチカート・ファイヴ
     - Bellissima! (ベリッシマ) (1988年)
     - 月面軟着陸 (1990年)
-    - SWEET PIZZICATO FIVE (スウィート・ピチカート・ファイヴ) (1992年)
-    - Expo 2001 (1993年)
     - ノン・スタンダードのピチカート・ファイヴ (1995年)
+    - ピチカート・ファイヴ TYO \~Big Hits and Jet Lags 1991-1995 (1995年)
 * 矢野顕子
     - SUPER FOLK SONG (スーパー・フォーク・ソング) (1992年)
 * 細野晴臣
     - Paraiso (はらいそ) (1978年)
+    - 銀河鉄道の夜 (1985年)
     - Coincidental Music (コインシデンタル・ミュージック) (1985年)
+* はっぴいえんど
+    - 風街ろまん (1971年)
+* 角松敏生
+    - BEFORE THE DAYLIGHT \~is the most darkness moment in a day (1988年)
+* 中山美穂  
+    - COLLECTION (1987年)
 * 日向敏文
     - サラの犯罪 (1985年)
     - Story (1987年)
+    - ISIS (アイシス) (1988年)
 * 坪倉唯子
     - Always in Love (1986年)
 * 山根麻衣
@@ -46,10 +55,31 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
     - Quatre (キャトル) (1979年)
     - 真昼の舗道 (1980年)
     - アコースティック・ムーン (1981年)
+* 橋本一子
+    - Je m'aime (ジュ・メーム) (1990年)
+    - ロマンティックな雨 (1992年)
+    - Under Water \~水の中のボッサ・ノーヴァ (1994年)
+    - Water Forest \~水の中の森 (1997年)
+    - Phantasmagoria \~幻覚者たち\~ (2000年)
+* 大貫妙子
+    - PURE DROPS (1991年)
+    - Drawing (ドローイング) (1992年)
+    - Shooting Star in the Blue Sky (1993年)
+    - TCHOU! (チャオ!) (1995年)
+    - LUCY (ルーシー) (1997年)
+    - ATTRACTION (アトラクシオン) (1999年)
+    - ENSEMBLE (アンサンブル) (2000年)
+    - note (2002年)
+* EPO
+    - JOEPO \~1981 KHz (1981年)
+    - HI・TOUCH-HI・TECH (1984年)
+    - Super Natural (1989年)
+* 谷山浩子
+* 松任谷由実
 
 # レアで手に入らないCDとレコード
 
-未CD化であったり、入手困難なものです。Amazonだと中古で1万円ぐらいするものもあります。
+未CD化であったり、入手困難なものです。Amazonだと中古で1万円ぐらいするものもあります。誰か持っている人がいたら教えてください。
 
 * 秋元薫
     - Cologne (1986年)
@@ -170,10 +200,17 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
 
 ## グループ別 (邦楽)
 
+* シャンバラ
+    - SHAMBARA (1989年)
 * ピチカート・ファイヴ
     - ピチカートマニア! (1987年)
     - couples (カップルズ) (1987年)
     - 女王陛下のピチカート・ファイヴ (1989年)
+    - Sweet Pizzicato Five (スウィート・ピチカート・ファイヴ) (1992年)
+    - ボサ・ノヴァ2001 (1993年)
+    - EXPO 2001 (1993年)
+    - Overdose (オーヴァードーズ) (1994年)
+    - Romantique 96 (ロマンティーク96) (1995年)
 * Yellow Magic Orchestra
     - Yellow Magic Orchestra (イエロー・マジック・オーケストラ) (1978年)
     - Solid State Survivor (ソリッド・ステイト・サヴァイヴァー) (1979年)
@@ -213,6 +250,15 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
     - SIGNAL (シグナル) (1990年)
     - TWO HEARTS (1991年)
     - Golden Best (Singles+) (2002年)
+
+## グループ別 (邦楽)
+
+* Polaris (ポラリス)
+    - Home (2002年)
+    - Family (2003年)
+    - 音色 (2006年)
+    - 光る音 (2012年)
+    - Music (2015年)
 
 ## アーティスト別 (洋楽、電子音楽)
 
