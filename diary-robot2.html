@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="SternGerlach" />
+  <title>ロボット作成日記 その2</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">ロボット作成日記 その2</h1>
+<p class="author">SternGerlach</p>
+</header>
+<!--
+ pandoc -s --filter pandoc-crossref -M "crossrefYaml=./crossref_config.yaml" -f markdown -t html5 --mathjax --css style.css diary-robot2.md > diary-robot2.html
+-->
+<h1 id="このページについて">このページについて</h1>
+<p>ロボット作成の実験で行ったことをまとめていきます。<a href="diary-robot.html">こちらのページ</a>の続きです。</p>
+<h2 id="年10月29日-月曜日">2018年10月29日 (月曜日)</h2>
+<ul>
+<li>午前中はモータドライバに電源を供給するための導線を圧着したり、ロボットの躯体を改良したりという比較的地味な作業を行っていたら、あっという間に時間が過ぎてしまった。あとは後述の理由によって、あまり記憶がない。</li>
+<li>午後はRaspberry Piを破壊してしまったので、非常に気分が萎えた。左側のモータドライバと鉛蓄電池(電源)を導線で接続するときに、プラスとマイナスを間違えてしまい大変なことが起こった。電源のプラス側とモータドライバのマイナス側、電源のマイナス側とモータドライバのプラス側を繋いでしまったのだ。電源のマイナス側に導線を繋いだ瞬間にバチっという音と共に火花が飛び散り、左側のモータドライバから煙が出てきて、モータドライバの中央のチップ(制御回路)が焼け焦げてしまった。あと一歩間違えていれば感電していたに違いない。そしてRaspberry Piの電源が落ちていて、電源を繋ぎ直しても起動してくれない。モータと電源の配線ミスで、モータドライバだけでなくRaspberry Piも破壊されてしまったのである。Raspberry Piからモータにコマンドを送信する際にはSPI通信を利用しているが、この通信線を伝ってRaspberry Piに逆電流が流れて故障したものと推察される。</li>
+<li>左側のモータドライバを急遽はんだ付けで作り直して、モータドライバと電源の間の配線も正しく繋ぎ変えて、念入りに確認した。電源は鉛蓄電池から別の電源装置に切り替え、Raspberry Piも新しいものに取り替えてもらった。このような万全の状態でモータのテストを行ったが、電源装置のスイッチをオンにした途端、先程は無傷だった右側のモータドライバから煙が噴き出した。右側のモータドライバもはんだ付けで作り直すことになった。もう疲れてしまった。そして鉛蓄電池を使うのが怖くなってしまった。但し幸いなことに、2回目のトラブルではRaspberry Piには影響が無かったほか、1回目で故障したRaspberry Piに差し込んでいたMicroSDカード内のデータは、損傷していなかった。しかしそれでも、MicroSDカード内のデータを丸ごとバックアップしておいて良かったと思う。</li>
+</ul>
+<p>電源のプラスとマイナスを入れ違えるだけでRaspberry Piは簡単に破壊され、貴重な時間があっという間に吹っ飛んでしまう。従って正しく配線されているかどうかは十分注意しなければならない。しかし幾ら気を付けていたとしても、昼食後の眠い時間帯に作業をする以上、またいつかこのようなミスを犯す可能性がある。よってミスが起こっても良いように何らかの安全策をとっておく必要がある。このようなトラブルを10月中に経験できたのは不幸中の幸いなのではないかとすら思う。年明けの物凄く忙しい時期にこのようなトラブルに見舞われていたら、残された作業時間も少なく、ロボットの完成がかなり絶望的になったに違いない。</p>
+<h2 id="年11月5日-月曜日">2018年11月5日 (月曜日)</h2>
+<ul>
+<li>この日でモータを復旧させることを目標に頑張ることにした。先週の段階でモータのテストプログラムが動作せず、モータドライバを交換してもモータは回転しなくなっていたので、モータ周辺の部品を1つずつ交換して、正常に動作するかどうかを確かめることを行った。モータ、モータドライバ、配線には問題が無かった。壊れていたのは、Raspberry PiとモータドライバとのSPI通信を行うための基板だった(一見すると無傷であるように見えた)。この基板(ブレッドボード)には、GPIOピンとモータドライバとを接続するための配線がはんだ付けされていたが、これを交換したところモータは再び回転するようになった。これで本来の作業に戻ることができる。</li>
+<li>午後はロボットの改良に取り組んだ。サーボモータを使用したいということで、サーボモータの電源、GND(グラウンド)、信号線をRaspberry PiのGPIOピンに接続するための、自家製のブレッドボードをはんだ付けで作った。GPIOは合計40ピンあるので、リボンケーブルのコネクタをブレッドボードに載せるだけでも40箇所はんだ付けする必要がある。自分がやってみたところ隣接するピンのはんだがくっ付いてしまって、これではショートしてしまうということで友人に頼んでやってもらった。この友人は自分よりも手先が器用ではんだ付けが非常に上手く、いつも助かっている。はんだ付けで上手く行かなかった部分に対応するピンは使わないことにすれば、多少はんだ付けに失敗してもまあ問題は無いだろうということだった。</li>
+<li>サーボモータから伸びているケーブルの先端を切断して、ストリッパで導線の被膜を剥がし、圧着して独自のコネクタを作成した。これは先程のブレッドボードに取り付けた差し込み口と、形状を合わせる必要があったからである(そのままの状態では差し込めない)。はんだ付けや圧着には慣れていないせいか、どうしても時間が掛かってしまう。ここで時間切れになってしまったので、サーボモータの動作テストは来週行うこととした。</li>
+</ul>
+<h2 id="年11月12日-月曜日">2018年11月12日 (月曜日)</h2>
+<ul>
+<li>サーボモータを回転させることを目標にした。Raspberry Piから電源も供給すると、サーボモータの回転開始時にRaspberry Piの本体に十分な電力を供給できなくなり、Raspberry Piが故障する可能性があったので、GPIOピンから電源を供給するのは諦めることにした。代わりにDC-DCコンバータを用いて24Vを5Vにまで落として、サーボモータに供給することにした。DC-DCコンバータを使用すると再び電源構成が変わってしまうので、作業は非常に慎重に行った。鉛蓄電池は必要最小限の利用に留めることにして、基本は電源装置のみを用いることにした。DC-DCコンバータ、スイッチ、モータなどを接続するための配線11本を圧着器で作ったら手が痛くなってしまったのと、圧着の作業だけで1時間ぐらい時間が掛かってしまった。しかし圧着の作業にだいぶ慣れてきた。GPIOピンから電源を供給するのを止めて、DC-DCコンバータからサーボモータに供給するためには、先週用意したブレッドボードの配線を繋ぎ変える必要があったが、ここは頼れる友人にやって頂いた(本当に有難うございます)。</li>
+<li>サーボモータを回転させるためのテストプログラムを記述していたが、何度テストしてみてもなかなか上手く回らなかった。いろいろなサイトを参考にして何とか動かすことができた。サーボモータに付属している説明書が全く役に立たないのでインターネットで検索しなければならない。サーボモータのコネクタをブレッドボードに設置した差し込み口に入れると、ノイズのせいでサーボモータがピクピク回転したので非常に不気味であった。Raspberry PiのGNDピンとサーボモータのGNDとを接続してグランドを共有する必要があった。またGNDと電源(+5V)との間に適当な静電容量のコンデンサを並列に接続した。これで、ノイズによりサーボモータがピクピクと小刻みに振動する現象が起こらなくなった。</li>
+<li>サーボモータの信号線にはGPIO23ピン(物理ピン番号16)を使用していたが、ソフトウェアPWMしか利用できないとのことだったので、GPIO18ピン(物理ピン番号12)と繋いでハードウェアPWMを利用することにした。ここでもブレッドボードの配線の繋ぎ変えが必要になった。サーボモータやPWM制御についてはまだ理解していない部分があるので要調査である。ハードウェアの進捗を生むのが非常に大変で予想していたよりもかなり時間が掛かった。</li>
+<li>サーボモータを回すうえで参考にしたサイトを以下に示す。特に一番上のサイトが分かり易く非常に助かった。
+<ul>
+<li><a href="http://hara.jpn.com/_default/ja/Topics/RaspPi_Motor.html">RaspberryPi Zeroでサーボモータを動かす</a></li>
+<li><a href="https://qiita.com/undo0530/items/51cc446eefec6c91c26d">Raspberry Piでサーボモーターを回す</a></li>
+<li><a href="https://qiita.com/locatw/items/f15fd9df40153bbb4d27">RaspberryPiとWiringPiでサーボを動かす</a></li>
+<li><a href="https://qiita.com/s417-lama/items/0ef64a7af3fcf6a56cc5">Raspberry PiのハードウェアPWMをpigpioで出力する</a></li>
+<li><a href="https://www.usagi1975.com/03aug172203/">Raspberry Pi : WiringPi-PythonでPWM</a></li>
+<li><a href="https://learn.adafruit.com/adafruits-raspberry-pi-lesson-8-using-a-servo-motor/software">Adafruit’s Raspberry Pi Lesson 8: Using a Servo Motor</a></li>
+<li><a href="http://wiringpi.com/reference/raspberry-pi-specifics/">Raspberry Pi Specifics | Wiring Pi</a></li>
+<li><a href="http://monoist.atmarkit.co.jp/mn/articles/0706/06/news132.html">H8で学ぶマイコン開発入門(9): モータ制御に欠かせない技術“PWM”って何?</a></li>
+<li><a href="https://gwsus.com/english/product/servo/micro.htm">MICRO Series | Grand Wing Servo-Tech Co,. LTD.</a></li>
+</ul></li>
+<li>次のサイトに行くとRaspberry Pi 3 Model Bのピン配置(Pinout)が分かり易くまとめられているので非常に便利である。
+<ul>
+<li><a href="https://pinout.xyz/">Raspberry Pi GPIO Pinout</a></li>
+</ul></li>
+</ul>
+<h2 id="年11月16日-金曜日">2018年11月16日 (金曜日)</h2>
+<ul>
+<li>中間発表が行われるとのことで、2つの動作確認をまず行った。1つは顔を検知して、その方向にロボットが追い掛けていくもの、もう1つは音声に従ってモータを動作させるものであった。ロボットの配線が綺麗な方が完成度が高く見えると考えて、配線を整えるための準備を行った。余計な機能を追加したせいで中間発表のデモンストレーション時に動かなくなるのは避けたかったので、ソフトウェアの改良はごく小さなものに留めた。</li>
+</ul>
+</body>
+</html>

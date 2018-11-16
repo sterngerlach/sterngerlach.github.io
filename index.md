@@ -26,6 +26,7 @@ sterngerlachのGitHubページにようこそ。
 日記を適当に書いてこちらに置いていきます。
 
 - [ロボット作成日記](./diary-robot.html)
+- [ロボット作成日記 その2](./diary-robot2.html)
 
 ## 練習用ページ
 
