@@ -83,8 +83,6 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
 
 * 秋元薫
     - Cologne (1986年)
-* Rajie(ラジ)
-    - Espresso (1985年)
 
 # 現在持っているCDとレコード
 
@@ -153,6 +151,7 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
     - D.M. (1989年)
 * Rajie(ラジ)
     - 午後のレリーフ (1984年)
+    - エスプレッソ (1985年)
     - ゴールデンベスト オールタイム・セレクション (2018年)
 * 石川セリ
     - Möbius (メビウス) (1982年)
