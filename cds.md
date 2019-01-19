@@ -24,6 +24,15 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
 
 現在欲しいな、と思っているアルバムのうち、購入を検討しているものです。
 
+* P-Model
+    - Potpourri (ポプリ) (1981年)
+    - Karkador (カルカドル) (1985年)
+    - One Pattern (1986年)
+    - Big Body (1993年)
+    - 舟 (1995年)
+* 平沢進
+    - 時空の水 (1989年)
+    - サイエンスの幽霊 (1990年)
 * フィッシュマンズ
 * サカナクション
 * ピチカート・ファイヴ
@@ -34,7 +43,12 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
 * 矢野顕子
     - SUPER FOLK SONG (スーパー・フォーク・ソング) (1992年)
 * 細野晴臣
+    - HOSONO HOUSE (1973年)
+    - トロピカル・ダンディー (1975年)
+    - 泰安洋行 (1976年)
     - Paraiso (はらいそ) (1978年)
+    - フィルハーモニー (1982年)
+    - ビデオ・ゲーム・ミュージック (1984年)
     - 銀河鉄道の夜 (1985年)
     - Coincidental Music (コインシデンタル・ミュージック) (1985年)
 * はっぴいえんど
@@ -49,8 +63,6 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
     - ISIS (アイシス) (1988年)
 * 坪倉唯子
     - Always in Love (1986年)
-* 山根麻衣
-    - Embassy (1986年)
 * Rajie(ラジ)
     - Quatre (キャトル) (1979年)
     - 真昼の舗道 (1980年)
@@ -85,8 +97,6 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
     - Cologne (1986年)
 
 # 現在持っているCDとレコード
-
-## アーティスト別 (邦楽、女性)
 
 * 大貫妙子
     - Grey Skies (グレイ・スカイズ)  (1976年)
@@ -170,6 +180,9 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
 * 越美晴
     - Tutu (1983年)
 * 山根麻衣
+    - 月光浴 (1984年)
+    - Flying Elephants (フライング・エレファンツ) (1985年)
+    - Embassy (1986年)
     - Woman Tone (1988年)
 * Cindy
     - Angel Touch (1990年)
@@ -177,7 +190,7 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
     - Especially For You \~優しさにつつまれて\~ (1989年)
     - Wink Memories 1988-1996 (1996年)
 
-## アーティスト別 (邦楽、女性)
+---
 
 * 宇多田ヒカル
     - First Love (1999年)
@@ -191,7 +204,7 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
     - FAIRY TALE (2002年)
     - Wish You The Best (2004年)
 
-## アーティスト別 (邦楽、男性)
+---
 
 * 山下達郎
     - Ride On Time (1980年)
@@ -211,7 +224,7 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
 * 高橋幸宏
     - Once A Fool,... (ワンスアフール 遥かなる思い) (1985年)
 
-## グループ別 (邦楽)
+---
 
 * シャンバラ
     - SHAMBARA (1989年)
@@ -232,6 +245,10 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
     - Technodelic (テクノデリック) (1981年)
     - 浮気なぼくら (1983年)
     - Technodon (テクノドン) (1993年)
+* P-Model
+    - Perspective (1982年)
+    - Another Game (1984年)
+    - P-Model (1992年)
 * 安全地帯
     - 安全地帯I Remember to Remember (1983年)
     - 安全地帯II (1984年)
@@ -241,7 +258,7 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
     - I Love Youからはじめよう -安全地帯Best- (1988年)
     - 安全地帯ベスト2 -ひとりぼっちのエール- (1993年)
 
-## グループ別 (邦楽、ロック)
+---
 
 * レベッカ
     - REBECCA IV \~Maybe Tomorrow\~ (1985年)
@@ -264,7 +281,7 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
     - TWO HEARTS (1991年)
     - Golden Best (Singles+) (2002年)
 
-## グループ別 (邦楽)
+---
 
 * Polaris (ポラリス)
     - Home (2002年)
@@ -273,7 +290,7 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
     - 光る音 (2012年)
     - Music (2015年)
 
-## アーティスト別 (洋楽、電子音楽)
+---
 
 * Depeche Mode (デペッシュ・モード)
     - Construction Time Again (コンストラクション・タイム・アゲイン) (1983年)
@@ -312,7 +329,7 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
 * Koto
     - Masterpieces (1989年)
 
-## アーティスト別 (洋楽、ロック)
+---
 
 * TOTO (トト)
     - TOTO IV \~聖なる剣 (1982年)
