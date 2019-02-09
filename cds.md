@@ -61,20 +61,14 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
     - サラの犯罪 (1985年)
     - Story (1987年)
     - ISIS (アイシス) (1988年)
-* 坪倉唯子
-    - Always in Love (1986年)
 * Rajie(ラジ)
     - Quatre (キャトル) (1979年)
     - 真昼の舗道 (1980年)
-    - アコースティック・ムーン (1981年)
 * 橋本一子
-    - Je m'aime (ジュ・メーム) (1990年)
-    - ロマンティックな雨 (1992年)
     - Under Water \~水の中のボッサ・ノーヴァ (1994年)
     - Water Forest \~水の中の森 (1997年)
     - Phantasmagoria \~幻覚者たち\~ (2000年)
 * 大貫妙子
-    - PURE DROPS (1991年)
     - Drawing (ドローイング) (1992年)
     - Shooting Star in the Blue Sky (1993年)
     - TCHOU! (チャオ!) (1995年)
@@ -85,7 +79,6 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
 * EPO
     - JOEPO \~1981 KHz (1981年)
     - HI・TOUCH-HI・TECH (1984年)
-    - Super Natural (1989年)
 * 谷山浩子
 * 松任谷由実
 
@@ -114,6 +107,7 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
     - Pure Acoustic (1987年)
     - Purissima (プリッシマ) (1988年)
     - New Moon (ニュー・ムーン) (1990年)
+    - PURE DROPS (1991年)
 * 矢野顕子
     - Japanese Girl (1976年)
     - 長月 神無月 (1976年)
@@ -137,11 +131,15 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
     - Harmony (ハーモニー) (1985年)
     - Pump! Pump! (パンプ! パンプ!) (1986年)
     - Free Style (フリースタイル) (1988年)
+    - SuperNatural (1989年)
 * 鈴木さえ子
     - I wish it could be Christmas everyday (1983年)
     - 科学と神秘 (Visinda og Leyndardómur) (1984年)
     - 緑の法則 (The Law Of The Green) (1985年)
     - スタジオ・ロマンチスト (Studio Romantic) (1987年)
+* 松任谷由実
+    - NO SIDE (ノーサイド) (1984年)
+    - DA・DI・DA (ダ・ディ・ダ) (1985年)
 * 竹内まりや
     - Variety (ヴァラエティ) (1984年)
     - Request (リクエスト) (1987年)
@@ -159,7 +157,12 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
     - High Excentrique (ハイ・エキセントリック) (1988年)
     - High Excentrique Piano Music (ハイ・エキセントリック・ピアノ・ミュージック) (1989年)
     - D.M. (1989年)
+    - Je m'aime (ジュ・メーム) (1990年)
+    - ロマンティックな雨 (1992年)
+* 坪倉唯子
+    - Always in Love (1986年)
 * Rajie(ラジ)
+    - アコースティック・ムーン (1981年)
     - 午後のレリーフ (1984年)
     - エスプレッソ (1985年)
     - ゴールデンベスト オールタイム・セレクション (2018年)
@@ -240,10 +243,12 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
 * Yellow Magic Orchestra
     - Yellow Magic Orchestra (イエロー・マジック・オーケストラ) (1978年)
     - Solid State Survivor (ソリッド・ステイト・サヴァイヴァー) (1979年)
+    - パブリック・プレッシャー / 公的抑圧 (1980年)
     - 増殖 (1980年)
     - BGM (1981年)
     - Technodelic (テクノデリック) (1981年)
     - 浮気なぼくら (1983年)
+    - After Service (アフター・サーヴィス) (1984年)
     - Technodon (テクノドン) (1993年)
 * P-Model
     - Perspective (1982年)
