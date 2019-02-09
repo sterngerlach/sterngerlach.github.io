@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="SternGerlach" />
+  <title>2019年2月10日の日記</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <link rel="stylesheet" href="./style.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">2019年2月10日の日記</h1>
+<p class="author">SternGerlach</p>
+</header>
+<!--
+ pandoc -s --filter pandoc-crossref -M "crossrefYaml=./crossref_config.yaml" -f markdown -t html5 --mathjax --css ./style.css ./diary-2019-02-10.md > ./diary-2019-02-10.html
+-->
+<h1 id="年2月10日の日記">2019年2月10日の日記</h1>
+<p>確率的主成分分析で、各パラメータを期待値最大化法(EMアルゴリズム)により求める式の導出の仕方を備忘録として書いてみる。確率的主成分分析では、観測値<span class="math inline">\(\boldsymbol{x}\)</span>が、潜在変数<span class="math inline">\(\boldsymbol{z}\)</span>によって、確率的に生成されたと考えるらしい。<span class="math inline">\(\boldsymbol{\mu}\)</span>は<span class="math inline">\(\boldsymbol{x}\)</span>の平均値を表している(<span class="math inline">\(\boldsymbol{z} = \boldsymbol{0}\)</span>のときに<span class="math inline">\(\boldsymbol{\mu}\)</span>に移る)。観測値<span class="math inline">\(\boldsymbol{x}\)</span>を<span class="math inline">\(M\)</span>次元、潜在変数<span class="math inline">\(\boldsymbol{z}\)</span>を<span class="math inline">\(m\)</span>次元とする。<span class="math inline">\(\boldsymbol{z}\)</span>の事前分布<span class="math inline">\(p(\boldsymbol{z})\)</span>は、取り敢えず正規分布としておく。<span class="math inline">\(p(\boldsymbol{x} | \boldsymbol{z})\)</span>のパラメータ<span class="math inline">\(\boldsymbol{W}, \boldsymbol{\mu}, \sigma^2\)</span>を、観測データ<span class="math inline">\(\mathcal{D} = \left\{ \boldsymbol{x}_1, \cdots, \boldsymbol{x}_N \right\}\)</span>から求めるのが目標となる。</p>
+<p><span class="math display">\[p(\boldsymbol{x} | \boldsymbol{z}) = \mathcal{N}(\boldsymbol{x} | \boldsymbol{W} \boldsymbol{z} + \boldsymbol{\mu}, \sigma^2 \boldsymbol{I}_M)\]</span> <span class="math display">\[p(\boldsymbol{z}) = \mathcal{N}(\boldsymbol{z} | \boldsymbol{0}, \boldsymbol{I}_m)\]</span></p>
+<p>平均ベクトル<span class="math inline">\(\boldsymbol{\mu}\)</span>は簡単に求められる。多変数正規分布のベイズの定理を用いると、<span class="math inline">\(p(\boldsymbol{x})\)</span>は次のようになる。</p>
+<p><span class="math display">\[p(\boldsymbol{x}) = \mathcal{N}(\boldsymbol{x} | \boldsymbol{\mu}, \boldsymbol{C}) \qquad (\boldsymbol{C} = \boldsymbol{W} \boldsymbol{W}^T + \sigma^2 \boldsymbol{I}_M)\]</span></p>
+<p>最尤推定を行うために対数尤度関数<span class="math inline">\(L(\boldsymbol{\mu}, \boldsymbol{W}, \sigma^2 | \mathcal{D})\)</span>を求める。</p>
+<p><span class="math display">\[\begin{align}
+L(\boldsymbol{\mu}, \boldsymbol{W}, \sigma^2 | \mathcal{D})
+&amp;= \ln \prod_{i = 1}^N p(\boldsymbol{x}_i) \\
+&amp;= \ln \prod_{i = 1}^N \mathcal{N}(\boldsymbol{x}_i | \boldsymbol{\mu}, \boldsymbol{C}) \\
+&amp;= \sum_{i = 1}^N \ln \mathcal{N}(\boldsymbol{x}_i | \boldsymbol{\mu}, \boldsymbol{C}) \\
+&amp;= \sum_{i = 1}^N \ln \left( (2\pi)^{-\frac{M}{2}} |C|^{-\frac{1}{2}} \exp \left( -\frac{1}{2} (\boldsymbol{x}_i - \boldsymbol{\mu})^T C^{-1} (\boldsymbol{x}_i - \boldsymbol{\mu}) \right) \right) \\
+&amp;= -\frac{MN}{2} \ln(2\pi) - \frac{N}{2} \ln|C| - \frac{1}{2} \sum_{i = 1}^N (\boldsymbol{x}_i - \boldsymbol{\mu})^T C^{-1} (\boldsymbol{x}_i - \boldsymbol{\mu}) \\
+\end{align}\]</span></p>
+<p><span class="math inline">\(L(\boldsymbol{\mu}, \boldsymbol{W}, \sigma^2 | \mathcal{D})\)</span>を<span class="math inline">\(\boldsymbol{\mu}\)</span>で偏微分して<span class="math inline">\(\boldsymbol{0}\)</span>とおくことによって、<span class="math inline">\(\boldsymbol{\mu}\)</span>の最尤推定値<span class="math inline">\(\hat{\boldsymbol{\mu}}\)</span>が得られる。</p>
+<p><span class="math display">\[\begin{align}
+\frac{\partial L}{\partial \boldsymbol{\mu}}
+&amp;= -\frac{1}{2} \sum_{i = 1}^N \frac{\partial}{\partial \boldsymbol{\mu}} (\boldsymbol{x}_i - \boldsymbol{\mu})^T C^{-1} (\boldsymbol{x}_i - \boldsymbol{\mu}) \\
+&amp;= -\frac{1}{2} \sum_{i = 1}^N \left( (-1) (C^{-1} + (C^{-1})^T)(\boldsymbol{x}_i - \boldsymbol{\mu}) \right) \\
+&amp;= -\frac{1}{2} \sum_{i = 1}^N \left( -2 C^{-1} (\boldsymbol{x}_i - \boldsymbol{\mu}) \right) \\
+&amp;= C^{-1} \sum_{i = 1}^N (\boldsymbol{x}_i - \boldsymbol{\mu}) \\
+&amp;= \boldsymbol{0}
+\end{align}\]</span></p>
+<p><span class="math display">\[\sum_{i = 1}^N \boldsymbol{x}_i = \sum_{i = 1}^N \boldsymbol{\mu} = N \boldsymbol{\mu}\]</span> <span class="math display">\[\boldsymbol{\mu} = \frac{1}{N} \sum_{i = 1}^N \boldsymbol{x}_i\]</span></p>
+<p><span class="math inline">\(\hat{\boldsymbol{\mu}}\)</span>は単なる標本平均となっている。これ以降<span class="math inline">\(\boldsymbol{\mu}\)</span>は既知として扱うことにして、<span class="math inline">\(\boldsymbol{\mu} = \bar{\boldsymbol{x}}\)</span>と書く。パラメータ<span class="math inline">\(\boldsymbol{W}, \sigma^2\)</span>を求めるために、対数尤度関数を改めて書き直す。</p>
+<p><span class="math display">\[\begin{align}
+L(\boldsymbol{W}, \sigma^2 | \mathcal{D})
+&amp;= \ln \prod_{i = 1}^N p(\boldsymbol{x}_i) \\
+&amp;= \sum_{i = 1}^N \ln p(\boldsymbol{x}_i) \\
+&amp;= \sum_{i = 1}^N \ln \int p(\boldsymbol{x}_i | \boldsymbol{z}_i) p(\boldsymbol{z}_i) d\boldsymbol{z}_i
+\end{align}\]</span></p>
+<p>ここでイェンセンの不等式を用いると次のようになる(<span class="math inline">\(q(\boldsymbol{z}_i)\)</span>は何らかの確率分布)。</p>
+<p><span class="math display">\[\begin{align}
+L(\boldsymbol{W}, \sigma^2 | \boldsymbol{x}_i)
+&amp;= \ln \int p(\boldsymbol{x}_i | \boldsymbol{z}_i, \boldsymbol{W}, \sigma^2) p(\boldsymbol{z}_i) d\boldsymbol{z}_i \\
+&amp;\ge \int q(\boldsymbol{z}_i) \ln \frac{p(\boldsymbol{x}_i | \boldsymbol{z}_i, \boldsymbol{W}, \sigma^2) p(\boldsymbol{z}_i)}{q(\boldsymbol{z}_i)} d\boldsymbol{z}_i \\
+&amp;= \int q(\boldsymbol{z}_i) \ln \frac{p(\boldsymbol{x}_i, \boldsymbol{z}_i | \boldsymbol{W}, \sigma^2)}{q(\boldsymbol{z}_i)} d\boldsymbol{z}_i \\
+\end{align}\]</span></p>
+<p><span class="math inline">\(q(\boldsymbol{z}_i) = p(\boldsymbol{z}_i | \boldsymbol{x}_i, \boldsymbol{W}, \sigma^2)\)</span>とすると上手くいく。</p>
+<p><span class="math display">\[\begin{align}
+\int q(\boldsymbol{z}_i) \ln \frac{p(\boldsymbol{x}_i, \boldsymbol{z}_i, \boldsymbol{W}, \sigma^2)}{q(\boldsymbol{z}_i)} d\boldsymbol{z}_i
+&amp;= \int p(\boldsymbol{z}_i | \boldsymbol{x}_i, \boldsymbol{W}, \sigma^2) \ln \frac{p(\boldsymbol{x}_i, \boldsymbol{z}_i | \boldsymbol{W}, \sigma^2)}{p(\boldsymbol{z}_i | \boldsymbol{x}_i, \boldsymbol{W}, \sigma^2)} d\boldsymbol{z}_i \\
+&amp;= \int p(\boldsymbol{z}_i | \boldsymbol{x}_i, \boldsymbol{W}, \sigma^2) \ln \frac{p(\boldsymbol{x}_i, \boldsymbol{z}_i | \boldsymbol{W}, \sigma^2)}{\frac{p(\boldsymbol{x}_i | \boldsymbol{z}_i, \boldsymbol{W}, \sigma^2) p(\boldsymbol{z}_i)}{p(\boldsymbol{x}_i)}} d\boldsymbol{z}_i \\
+&amp;= \int p(\boldsymbol{z}_i | \boldsymbol{x}_i, \boldsymbol{W}, \sigma^2) \ln \frac{p(\boldsymbol{x}_i, \boldsymbol{z}_i | \boldsymbol{W}, \sigma^2)}{\frac{p(\boldsymbol{x}_i, \boldsymbol{z}_i | \boldsymbol{W}, \sigma^2)}{p(\boldsymbol{x}_i)}} d\boldsymbol{z}_i \\
+&amp;= \int p(\boldsymbol{z}_i | \boldsymbol{x}_i, \boldsymbol{W}, \sigma^2) \ln \left( p(\boldsymbol{x}_i) \right) d\boldsymbol{z}_i \\
+&amp;= \ln \left( p(\boldsymbol{x}_i) \right) \int p(\boldsymbol{z}_i | \boldsymbol{x}_i, \boldsymbol{W}, \sigma^2) d\boldsymbol{z}_i \\
+&amp;\qquad (\because \lnの中身が\boldsymbol{z}_iに依存しないため, 係数として積分の外側に括り出す) \\
+&amp;= \ln \left( \int p(\boldsymbol{x}_i | \boldsymbol{z}_i, \boldsymbol{W}, \sigma^2) p(\boldsymbol{z}_i) d \boldsymbol{z}_i \right) \int p(\boldsymbol{z}_i | \boldsymbol{x}_i, \boldsymbol{W}, \sigma^2) d\boldsymbol{z}_i \\
+&amp;\qquad (\because p(\boldsymbol{x}_i)を積分の形で表現する) \\
+&amp;= \ln \int p(\boldsymbol{x}_i | \boldsymbol{z}_i, \boldsymbol{W}, \sigma^2) p(\boldsymbol{z}_i) d \boldsymbol{z}_i \\
+&amp;\qquad (\because 確率分布p(\boldsymbol{z}_i | \boldsymbol{x}_i)に関する規格化条件) \\
+&amp;= L(\boldsymbol{W}, \sigma^2 | \boldsymbol{x}_i)
+\end{align}\]</span></p>
+<p>上式のように、対数関数の中身が積分変数(上の場合は<span class="math inline">\(\boldsymbol{z}_i\)</span>)に関係なくなるときに、イェンセンの不等式による近似の精度が最も良くなる(元々の対数尤度と等しくなっている)。上の式変形は実は正しくないかもしれない。<span class="math inline">\(q(\boldsymbol{z}_i)\)</span>は、多変数正規分布のベイズの定理から次のようになる。</p>
+<p><span class="math display">\[q(\boldsymbol{z}_i) = p(\boldsymbol{z}_i | \boldsymbol{x}_i, \boldsymbol{W}, \sigma^2) = \mathcal{N}(\boldsymbol{z}_i | \boldsymbol{M}^{-1} \boldsymbol{W}^T (\boldsymbol{x} - \bar{\boldsymbol{x}}), \sigma^2 \boldsymbol{M}^{-1})\]</span> <span class="math display">\[\boldsymbol{M} = \boldsymbol{W}^T \boldsymbol{W} + \sigma^2 \boldsymbol{I}_m\]</span></p>
+<p><span class="math inline">\(q(\boldsymbol{z}_i)\)</span>は上式に、パラメータ<span class="math inline">\(\boldsymbol{W}, \sigma^2\)</span>を代入すれば求められる。代入されるパラメータは、<span class="math inline">\(q(\boldsymbol{z}_i)\)</span>を求める前に既に用意してあった仮のものであるため、これらを<span class="math inline">\(\boldsymbol{W}^{\prime}, \sigma^{2^{\prime}}\)</span>と表記する<span class="math inline">\((q(\boldsymbol{z}_i) = p(\boldsymbol{z}_i | \boldsymbol{x}_i, \boldsymbol{W}^{\prime}, \sigma^{2^{\prime}}))\)</span>。さて、最大化しようとしている対数尤度の近似式<span class="math inline">\(L(\boldsymbol{W}, \sigma^2 | \mathcal{D}, \boldsymbol{Z})\)</span>は次のようになる<span class="math inline">\((\boldsymbol{Z} = \left\{ \boldsymbol{z}_1, \cdots, \boldsymbol{z}_N \right\})\)</span>。</p>
+<p><span class="math display">\[\begin{align}
+L(\boldsymbol{W}, \sigma^2 | \mathcal{D}, \boldsymbol{Z})
+&amp;= \ln p(\mathcal{D}, \boldsymbol{Z} | \boldsymbol{W}, \sigma^2) \\
+&amp;= \ln \prod_{i = 1}^N p(\boldsymbol{x}_i | \boldsymbol{z}_i) p(\boldsymbol{z}_i) \\
+&amp;= \sum_{i = 1}^N (\ln p(\boldsymbol{x}_i | \boldsymbol{z}_i) + \ln p(\boldsymbol{z}_i)) \\
+\end{align}\]</span></p>
+<p><span class="math inline">\(q(\boldsymbol{z}_i) = p(\boldsymbol{z}_i | \boldsymbol{x}_i, \boldsymbol{W}^{\prime}, \sigma^{2^{\prime}})\)</span>(潜在変数の事後分布)についての期待値を取ると、上式は次のようになる(こうすると上手く行くらしい)。</p>
+<p><span class="math display">\[\begin{align}
+&amp; \sum_{i = 1}^N \int q(\boldsymbol{z}_i) \left\{ \ln p(\boldsymbol{x}_i | \boldsymbol{z}_i, \boldsymbol{W}, \sigma^2) + \ln p(\boldsymbol{z}_i) \right\} d\boldsymbol{z}_i \\
+&amp;= \sum_{i = 1}^N \int q(\boldsymbol{z}_i) \left\{ \ln \mathcal{N}(\boldsymbol{x}_i | \boldsymbol{W} \boldsymbol{z}_i + \boldsymbol{\mu}, \sigma^2 \boldsymbol{I}_M) + \ln \mathcal{N}(\boldsymbol{z}_i | \boldsymbol{0}, \boldsymbol{I}_m) \right\} d\boldsymbol{z}_i \\
+&amp;= \sum_{i = 1}^N \int q(\boldsymbol{z}_i) (-\frac{M}{2} \ln(2\pi) - \frac{1}{2} \ln|\sigma^2 \boldsymbol{I}_M| - \frac{1}{2} (\boldsymbol{x}_i - (\boldsymbol{W} \boldsymbol{z}_i + \boldsymbol{\mu}))^T (\sigma^2 \boldsymbol{I}_m)^{-1} (\boldsymbol{x}_i - (\boldsymbol{W} \boldsymbol{z}_i + \boldsymbol{\mu})) \\
+&amp; \qquad - \frac{m}{2} \ln(2\pi) - \frac{1}{2} \boldsymbol{z}_i^T \boldsymbol{z}_i) d\boldsymbol{z}_i \\
+&amp;= \sum_{i = 1}^N \int q(\boldsymbol{z}_i) (-\frac{M}{2} \ln(2\pi) - \frac{1}{2} \ln((\sigma^2)^M) - \frac{1}{2 \sigma^2} (\boldsymbol{x}_i - (\boldsymbol{W} \boldsymbol{z}_i + \boldsymbol{\mu}))^T (\boldsymbol{x}_i - (\boldsymbol{W} \boldsymbol{z}_i + \boldsymbol{\mu})) \\
+&amp; \qquad - \frac{m}{2} \ln(2\pi) - \frac{1}{2} \boldsymbol{z}_i^T \boldsymbol{z}_i) d\boldsymbol{z}_i \\
+&amp;= \sum_{i = 1}^N \int q(\boldsymbol{z}_i) (-\frac{M}{2} \ln(2\pi) - \frac{M}{2} \ln(\sigma^2) \\
+&amp; \qquad - \frac{1}{2 \sigma^2} (\boldsymbol{x}_i - \boldsymbol{\mu})^T (\boldsymbol{x}_i - \boldsymbol{\mu}) + \frac{1}{\sigma^2} (\boldsymbol{x}_i - \boldsymbol{\mu})^T \boldsymbol{W} \boldsymbol{z}_i - \frac{1}{2 \sigma^2} (\boldsymbol{W} \boldsymbol{z}_i)^T (\boldsymbol{W} \boldsymbol{z}_i) \\
+&amp; \qquad - \frac{m}{2} \ln(2\pi) - \frac{1}{2} \boldsymbol{z}_i^T \boldsymbol{z}_i) d\boldsymbol{z}_i \\
+&amp;= \sum_{i = 1}^N \int q(\boldsymbol{z}_i) (-\frac{M}{2} \ln(2 \pi \sigma^2) - \frac{m}{2} \ln(2\pi) \\
+&amp; \qquad - \frac{1}{2 \sigma^2} ||\boldsymbol{x}_i - \boldsymbol{\mu}||^2 + \frac{1}{\sigma^2} (\boldsymbol{x}_i - \boldsymbol{\mu})^T \boldsymbol{W} \boldsymbol{z}_i - \frac{1}{2 \sigma^2} \mathrm{Tr}((\boldsymbol{W} \boldsymbol{z}_i)^T (\boldsymbol{W} \boldsymbol{z}_i)) - \frac{1}{2} \mathrm{Tr}(\boldsymbol{z}_i^T \boldsymbol{z}_i)) d\boldsymbol{z}_i \\
+&amp;= -\frac{MN}{2} \ln(2 \pi \sigma^2) - \frac{mN}{2} \ln(2\pi) - \frac{1}{2 \sigma^2} \sum_{i = 1}^N \int q(\boldsymbol{z}_i) (||\boldsymbol{x}_i - \boldsymbol{\mu}||^2 \\
+&amp; \qquad - 2 (\boldsymbol{x}_i - \boldsymbol{\mu})^T \boldsymbol{W} \boldsymbol{z}_i + \mathrm{Tr}(\boldsymbol{z}_i^T \boldsymbol{W}^T \boldsymbol{W} \boldsymbol{z}_i) + \sigma^2 \mathrm{Tr}(\boldsymbol{z}_i \boldsymbol{z}_i^T)) d\boldsymbol{z}_i \\
+&amp;= -\frac{MN}{2} \ln(2 \pi \sigma^2) - \frac{mN}{2} \ln(2\pi) - \frac{1}{2 \sigma^2} \sum_{i = 1}^N \int q(\boldsymbol{z}_i) (||\boldsymbol{x}_i - \bar{\boldsymbol{x}}||^2 \\
+&amp; \qquad - 2 (\boldsymbol{x}_i - \bar{\boldsymbol{x}})^T \boldsymbol{W} \boldsymbol{z}_i + \mathrm{Tr}(\boldsymbol{z}_i \boldsymbol{z}_i^T \boldsymbol{W}^T \boldsymbol{W}) + \sigma^2 \mathrm{Tr}(\boldsymbol{z}_i \boldsymbol{z}_i^T)) d\boldsymbol{z}_i
+\end{align}\]</span></p>
+<p><span class="math inline">\(q(\boldsymbol{z}_i)\)</span>による期待値を<span class="math inline">\(\langle \cdot \rangle\)</span>で表すことにすると、上式は次のようになる。</p>
+<p><span class="math display">\[\begin{align}
+&amp; -\frac{MN}{2} \ln(2 \pi \sigma^2) - \frac{mN}{2} \ln(2\pi) - \frac{1}{2 \sigma^2} \sum_{i = 1}^N (||\boldsymbol{x}_i - \bar{\boldsymbol{x}}||^2 \\
+&amp; \qquad - 2 (\boldsymbol{x}_i - \bar{\boldsymbol{x}})^T \boldsymbol{W} \langle \boldsymbol{z}_i \rangle + \mathrm{Tr}(\langle \boldsymbol{z}_i \boldsymbol{z}_i^T \rangle \boldsymbol{W}^T \boldsymbol{W}) + \sigma^2 \mathrm{Tr}(\langle \boldsymbol{z}_i \boldsymbol{z}_i^T \rangle))
+\end{align}\]</span></p>
+<p>ここで<span class="math inline">\(\langle \boldsymbol{z}_i \rangle\)</span>と、<span class="math inline">\(\langle \boldsymbol{z}_i \boldsymbol{z}_i^T \rangle\)</span>は、更新前の仮のパラメータ<span class="math inline">\(\boldsymbol{W}^{\prime}, \sigma^{2^{\prime}}\)</span>を使って次のように計算できることが分かる(凄い)。以下の2つの式が期待値ステップで利用される。</p>
+<p><span class="math display">\[\langle \boldsymbol{z}_i \rangle = \boldsymbol{M}^{\prime^{-1}} W^{\prime^{T}} (\boldsymbol{x}_i - \bar{\boldsymbol{x}})\]</span> <span class="math display">\[\langle \boldsymbol{z}_i \boldsymbol{z}_i^T \rangle = \sigma^{2^\prime} \boldsymbol{M}^{\prime^{-1}} + \langle \boldsymbol{z}_i \rangle \langle \boldsymbol{z}_i \rangle^T\]</span> <span class="math display">\[\boldsymbol{M}^{\prime} = \boldsymbol{W}^{\prime^T} \boldsymbol{W}^{\prime} + \sigma^{2^\prime} \boldsymbol{I}_m\]</span></p>
+<p>最大化ステップで使用する式(パラメータ<span class="math inline">\(\boldsymbol{W}, \sigma^2\)</span>の更新式)は、上述の対数尤度の近似式を、<span class="math inline">\(\boldsymbol{W}, \sigma^2\)</span>について微分して<span class="math inline">\(0\)</span>とおくことによって得られる。</p>
+<p><span class="math display">\[\begin{align}
+&amp; \frac{\partial}{\partial \boldsymbol{W}} \{ -\frac{MN}{2} \ln(2 \pi \sigma^2) - \frac{mN}{2} \ln(2\pi) - \frac{1}{2 \sigma^2} \sum_{i = 1}^N (||\boldsymbol{x}_i - \bar{\boldsymbol{x}}||^2 \\
+&amp; \qquad - 2 (\boldsymbol{x}_i - \bar{\boldsymbol{x}})^T \boldsymbol{W} \langle \boldsymbol{z}_i \rangle + \mathrm{Tr}(\langle \boldsymbol{z}_i \boldsymbol{z}_i^T \rangle \boldsymbol{W}^T \boldsymbol{W}) + \sigma^2 \mathrm{Tr}(\langle \boldsymbol{z}_i \boldsymbol{z}_i^T \rangle))\} \\
+&amp;= -\frac{1}{2 \sigma^2} \frac{\partial}{\partial \boldsymbol{W}} \sum_{i = 1}^N (-2 (\boldsymbol{x}_i - \bar{\boldsymbol{x}})^T \boldsymbol{W} \langle \boldsymbol{z}_i \rangle + \mathrm{Tr}(\langle \boldsymbol{z}_i \boldsymbol{z}_i^T \rangle \boldsymbol{W}^T \boldsymbol{W})) \\
+&amp;= -\frac{1}{2 \sigma^2} \frac{\partial}{\partial \boldsymbol{W}} \sum_{i = 1}^N (-2 \mathrm{Tr}((\boldsymbol{x}_i - \bar{\boldsymbol{x}})^T \boldsymbol{W} \langle \boldsymbol{z}_i \rangle) + \mathrm{Tr}(\boldsymbol{W} \langle \boldsymbol{z}_i \boldsymbol{z}_i^T \rangle \boldsymbol{W}^T)) \\
+&amp;= -\frac{1}{2 \sigma^2} \frac{\partial}{\partial \boldsymbol{W}} \sum_{i = 1}^N (-2 \mathrm{Tr}(\boldsymbol{W} \langle \boldsymbol{z}_i \rangle (\boldsymbol{x}_i - \bar{\boldsymbol{x}})^T) + \mathrm{Tr}(\boldsymbol{W} \langle \boldsymbol{z}_i \boldsymbol{z}_i^T \rangle \boldsymbol{W}^T)) \\
+&amp;= -\frac{1}{2 \sigma^2} \sum_{i = 1}^N (-2 (\langle \boldsymbol{z}_i \rangle (\boldsymbol{x}_i - \bar{\boldsymbol{x}})^T)^T + \boldsymbol{W} (\langle \boldsymbol{z}_i \boldsymbol{z}_i^T \rangle + \langle \boldsymbol{z}_i \boldsymbol{z}_i^T \rangle^T)) \\
+&amp;= -\frac{1}{2 \sigma^2} \sum_{i = 1}^N (-2 (\boldsymbol{x}_i - \bar{\boldsymbol{x}}) \langle \boldsymbol{z}_i \rangle^T + 2 \boldsymbol{W} \langle \boldsymbol{z}_i \boldsymbol{z}_i^T \rangle) \\
+&amp;= \boldsymbol{0}
+\end{align}\]</span></p>
+<p>これより<span class="math inline">\(\boldsymbol{W}\)</span>の更新式は次のようになる。</p>
+<p><span class="math display">\[\begin{align}
+\therefore \sum_{i = 1}^N \boldsymbol{W} \langle \boldsymbol{z}_i \boldsymbol{z}_i^T \rangle &amp;= \sum_{i = 1}^N (\boldsymbol{x}_i - \bar{\boldsymbol{x}}) \langle \boldsymbol{z}_i \rangle^T \\
+\boldsymbol{W} \left( \sum_{i = 1}^N \langle \boldsymbol{z}_i \boldsymbol{z}_i^T \rangle \right) &amp;= \sum_{i = 1}^N (\boldsymbol{x}_i - \bar{\boldsymbol{x}}) \langle \boldsymbol{z}_i \rangle^T \\
+\boldsymbol{W} &amp;= \left\{ \sum_{i = 1}^N (\boldsymbol{x}_i - \bar{\boldsymbol{x}}) \langle \boldsymbol{z}_i \rangle^T \right\} \left( \sum_{i = 1}^N \langle \boldsymbol{z}_i \boldsymbol{z}_i^T \rangle \right)^{-1}
+\end{align}\]</span></p>
+<p><span class="math inline">\(\sigma^2\)</span>についても同様に行う。</p>
+<p><span class="math display">\[\begin{align}
+&amp; \frac{\partial}{\partial \sigma^2} \{ -\frac{MN}{2} \ln(2 \pi \sigma^2) - \frac{mN}{2} \ln(2\pi) - \frac{1}{2 \sigma^2} \sum_{i = 1}^N (||\boldsymbol{x}_i - \bar{\boldsymbol{x}}||^2 \\
+&amp; \qquad - 2 (\boldsymbol{x}_i - \bar{\boldsymbol{x}})^T \boldsymbol{W} \langle \boldsymbol{z}_i \rangle + \mathrm{Tr}(\langle \boldsymbol{z}_i \boldsymbol{z}_i^T \rangle \boldsymbol{W}^T \boldsymbol{W}) + \sigma^2 \mathrm{Tr}(\langle \boldsymbol{z}_i \boldsymbol{z}_i^T \rangle))\} \\
+&amp;= \frac{\partial}{\partial \sigma^2} \{ -\frac{MN}{2} \ln(2 \pi \sigma^2) - \frac{1}{2 \sigma^2} \sum_{i = 1}^N (||\boldsymbol{x}_i - \bar{\boldsymbol{x}}||^2 \\
+&amp; \qquad - 2 (\boldsymbol{x}_i - \bar{\boldsymbol{x}})^T \boldsymbol{W} \langle \boldsymbol{z}_i \rangle + \mathrm{Tr}(\langle \boldsymbol{z}_i \boldsymbol{z}_i^T \rangle \boldsymbol{W}^T \boldsymbol{W}))\} \\
+&amp;= -\frac{MN}{2} \frac{2\pi}{2 \pi \sigma^2} + \frac{1}{2 \sigma^4} \sum_{i = 1}^N (||\boldsymbol{x}_i - \bar{\boldsymbol{x}}||^2 \\
+&amp; \qquad - 2 (\boldsymbol{x}_i - \bar{\boldsymbol{x}})^T \boldsymbol{W} \langle \boldsymbol{z}_i \rangle + \mathrm{Tr}(\langle \boldsymbol{z}_i \boldsymbol{z}_i^T \rangle \boldsymbol{W}^T \boldsymbol{W}))\} \\
+&amp;= -\frac{MN}{2} \frac{1}{\sigma^2} + \frac{1}{2 \sigma^4} \sum_{i = 1}^N (||\boldsymbol{x}_i - \bar{\boldsymbol{x}}||^2 \\
+&amp; \qquad - 2 (\boldsymbol{x}_i - \bar{\boldsymbol{x}})^T \boldsymbol{W} \langle \boldsymbol{z}_i \rangle + \mathrm{Tr}(\langle \boldsymbol{z}_i \boldsymbol{z}_i^T \rangle \boldsymbol{W}^T \boldsymbol{W}))\} \\
+&amp;= \boldsymbol{0}
+\end{align}\]</span></p>
+<p>これより<span class="math inline">\(\sigma^2\)</span>の更新式は次のようになる。</p>
+<p><span class="math display">\[\begin{align}
+\therefore \frac{MN}{2} \frac{1}{\sigma^2} &amp;= \frac{1}{2 \sigma^4} \sum_{i = 1}^N (||\boldsymbol{x}_i - \bar{\boldsymbol{x}}||^2 \\
+&amp; \qquad - 2 (\boldsymbol{x}_i - \bar{\boldsymbol{x}})^T \boldsymbol{W} \langle \boldsymbol{z}_i \rangle + \mathrm{Tr}(\langle \boldsymbol{z}_i \boldsymbol{z}_i^T \rangle \boldsymbol{W}^T \boldsymbol{W}))\} \\
+\sigma^2 &amp;= \frac{1}{MN} \sum_{i = 1}^N (||\boldsymbol{x}_i - \bar{\boldsymbol{x}}||^2 \\
+&amp; \qquad - 2 (\boldsymbol{x}_i - \bar{\boldsymbol{x}})^T \boldsymbol{W} \langle \boldsymbol{z}_i \rangle + \mathrm{Tr}(\langle \boldsymbol{z}_i \boldsymbol{z}_i^T \rangle \boldsymbol{W}^T \boldsymbol{W}))\}
+\end{align}\]</span></p>
+<p>従って、<span class="math inline">\(\boldsymbol{W}, \sigma^2\)</span>の初期値を適当に決めてから、両者のパラメータが収束するまで、<span class="math inline">\(\langle \boldsymbol{z}_i \rangle, \langle \boldsymbol{z}_i \boldsymbol{z}_i^T \rangle\)</span>の計算と、<span class="math inline">\(\boldsymbol{W}, \sigma^2\)</span>の更新を交互に繰り返していけばよいことが分かる。</p>
+<p>あまり理解できていないな…</p>
+</body>
+</html>
