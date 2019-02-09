@@ -17,7 +17,6 @@ sterngerlachのGitHubページにようこそ。
 調べたことを適当に書いてこちらに置いていきます。
 
 - [今所持しているCDとレコード](./cds.html)
-<!-- - [好きな歌詞について](./favorite-lyrics.html) -->
 - [ロボットに関するメモ書き](./robot-memo.html)
 - [C言語の関数をPythonから呼び出す方法](./calling-c-from-python.html)
 
@@ -27,6 +26,7 @@ sterngerlachのGitHubページにようこそ。
 
 - [ロボット作成日記](./diary-robot.html)
 - [ロボット作成日記 その2](./diary-robot2.html)
+- [2019年2月10日の日記](./diary-2019-02-10.html)
 
 ## 練習用ページ
 
