@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="SternGerlach" />
+  <title>確率的主成分分析とEMアルゴリズム(その2)</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <link rel="stylesheet" href="./style.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">確率的主成分分析とEMアルゴリズム(その2)</h1>
+<p class="author">SternGerlach</p>
+</header>
+<!--
+ pandoc -s --filter pandoc-crossref -M "crossrefYaml=./crossref_config.yaml" -f markdown -t html5 --mathjax --css ./style.css ./diary-2019-02-13.md > ./diary-2019-02-13.html
+-->
+<h1 id="確率的主成分分析とemアルゴリズムその2">確率的主成分分析とEMアルゴリズム(その2)</h1>
+<p><a href="./diary-2019-02-10.md">確率的主成分分析とEMアルゴリズム(その1)</a>の続きで、しっくりこない部分を再度考えてみる。平均ベクトル<span class="math inline">\(\boldsymbol{\mu}\)</span>は、最尤推定で簡単に求めることができた。対数尤度関数<span class="math inline">\(L(\boldsymbol{\mu}, \boldsymbol{W}, \sigma^2 | \mathcal{D})\)</span>を<span class="math inline">\(\boldsymbol{\mu}\)</span>について微分し、<span class="math inline">\(0\)</span>と等値するのみであった。しかし、未知のパラメータ<span class="math inline">\(\boldsymbol{W}, \sigma^2\)</span>を最尤推定によって求めるのは難しい。<span class="math inline">\(L(\boldsymbol{W}, \sigma^2 | \mathcal{D})\)</span>は以下のように、<span class="math inline">\(\boldsymbol{W}, \sigma^2\)</span>についての複雑な式になるためである。<span class="math inline">\(\boldsymbol{W}, \sigma^2\)</span>が行列<span class="math inline">\(\boldsymbol{C} = \boldsymbol{W} \boldsymbol{W}^T + \sigma^2 \boldsymbol{I}_M\)</span>の中に埋め込まれているので、<span class="math inline">\(L(\boldsymbol{W}, \sigma^2 | \mathcal{D})\)</span>を<span class="math inline">\(\boldsymbol{W}, \sigma^2\)</span>で微分して<span class="math inline">\(0\)</span>とおき、解を直接求めるのは大変そうである。</p>
+<p><span class="math display">\[\begin{align}
+L(\boldsymbol{W}, \sigma^2 | \mathcal{D})
+&amp;= \ln p(\mathcal{D} | \boldsymbol{W}, \sigma^2) \\
+&amp;= \ln \prod_{i = 1}^N p(\boldsymbol{x}_i | \boldsymbol{W}, \sigma^2) \\
+&amp;= \sum_{i = 1}^N \ln p(\boldsymbol{x}_i | \boldsymbol{W}, \sigma^2) \\
+&amp;= \sum_{i = 1}^N \ln \mathcal{N}(\boldsymbol{x}_i | \boldsymbol{C}) \\
+&amp;= \sum_{i = 1}^N \ln \left( (2\pi)^{-\frac{M}{2}} |\boldsymbol{C}|^{-\frac{1}{2}} \exp \left( -\frac{1}{2} (\boldsymbol{x}_i - \bar{\boldsymbol{x}})^T \boldsymbol{C}^{-1} (\boldsymbol{x}_i - \bar{\boldsymbol{x}}) \right) \right) \\
+&amp;= -\frac{MN}{2} \ln(2\pi) - \frac{N}{2} \ln|\boldsymbol{C}| - \frac{1}{2} \sum_{i = 1}^N (\boldsymbol{x}_i - \bar{\boldsymbol{x}})^T \boldsymbol{C}^{-1} (\boldsymbol{x}_i - \bar{\boldsymbol{x}}) \\
+\end{align}\]</span></p>
+<p>平均ベクトル<span class="math inline">\(\boldsymbol{\mu}\)</span>の最尤推定量は、観測値<span class="math inline">\(\boldsymbol{x}\)</span>についての単なる標本平均であるため、<span class="math inline">\(\boldsymbol{\mu}\)</span>は既知として扱い、<span class="math inline">\(\boldsymbol{\mu} = \bar{\boldsymbol{x}}\)</span>と書いている。</p>
+<p><span class="math inline">\(L(\boldsymbol{W}, \sigma^2 | \mathcal{D})\)</span>を直接最大化するのは難しい。そこで次のように、潜在変数<span class="math inline">\(\boldsymbol{z}\)</span>についての分布<span class="math inline">\(q(\boldsymbol{z})\)</span>を導入し、2つの項に分解してみることにする。</p>
+<p><span class="math display">\[\begin{align}
+L(\boldsymbol{W}, \sigma^2 | \mathcal{D})
+&amp;= \sum_{i = 1}^N \ln p(\boldsymbol{x}_i | \boldsymbol{W}, \sigma^2) \\
+&amp;= \sum_{i = 1}^N \underbrace{\left( \int q(\boldsymbol{z}_i) d\boldsymbol{z}_i \right)}_{= 1} \ln p(\boldsymbol{x}_i | \boldsymbol{W}, \sigma^2) \\
+&amp;= \sum_{i = 1}^N \int q(\boldsymbol{z}_i) \ln p(\boldsymbol{x}_i | \boldsymbol{W}, \sigma^2) d\boldsymbol{z}_i \\
+&amp;= \sum_{i = 1}^N \int q(\boldsymbol{z}_i) \ln \frac{p(\boldsymbol{x}_i, \boldsymbol{z}_i | \boldsymbol{W}, \sigma^2)}{p(\boldsymbol{z}_i | \boldsymbol{x}_i, \boldsymbol{W}, \sigma^2)} d\boldsymbol{z}_i \\
+&amp;= \sum_{i = 1}^N \int q(\boldsymbol{z}_i) \ln \frac{p(\boldsymbol{x}_i, \boldsymbol{z}_i | \boldsymbol{W}, \sigma^2)}{q(\boldsymbol{z}_i)} \frac{q(\boldsymbol{z}_i)}{p(\boldsymbol{z}_i | \boldsymbol{x}_i, \boldsymbol{W}, \sigma^2)} d\boldsymbol{z}_i \\
+&amp;= \sum_{i = 1}^N \int q(\boldsymbol{z}_i) \left( \ln \frac{p(\boldsymbol{x}_i, \boldsymbol{z}_i | \boldsymbol{W}, \sigma^2)}{q(\boldsymbol{z}_i)} - \ln \frac{p(\boldsymbol{z}_i | \boldsymbol{x}_i, \boldsymbol{W}, \sigma^2)}{q(\boldsymbol{z}_i)} \right) d\boldsymbol{z}_i \\
+&amp;= \sum_{i = 1}^N \left\{ \int q(\boldsymbol{z}_i) \ln \frac{p(\boldsymbol{x}_i, \boldsymbol{z}_i | \boldsymbol{W}, \sigma^2)}{q(\boldsymbol{z}_i)} d\boldsymbol{z}_i - \int q(\boldsymbol{z}_i) \ln \frac{p(\boldsymbol{z}_i | \boldsymbol{x}_i, \boldsymbol{W}, \sigma^2)}{q(\boldsymbol{z}_i)} d\boldsymbol{z}_i \right\} \\
+&amp;= \sum_{i = 1}^N \left\{ \int q(\boldsymbol{z}_i) \ln \frac{p(\boldsymbol{x}_i, \boldsymbol{z}_i | \boldsymbol{W}, \sigma^2)}{q(\boldsymbol{z}_i)} d\boldsymbol{z}_i + \mathrm{KL}(q_i || p_i) \right\} \\
+&amp;= \sum_{i = 1}^N \left\{ \mathcal{L}(q_i, \boldsymbol{W}, \sigma^2) + \mathrm{KL}(q_i || p_i) \right\}
+\end{align}\]</span></p>
+<p>上式では、<span class="math inline">\(q_i = q(\boldsymbol{z}_i), p_i = p(\boldsymbol{z}_i | \boldsymbol{x}_i, \boldsymbol{W}, \sigma^2)\)</span>と略した。<span class="math inline">\(\mathrm{KL}(q_i || p_i)\)</span>は、<span class="math inline">\(q(\boldsymbol{z}_i)\)</span>と事後分布<span class="math inline">\(p(\boldsymbol{z}_i | \boldsymbol{x}_i, \boldsymbol{W}, \sigma^2)\)</span>間の、カルバック-ライブラーダイバージェンス(KLダイバージェンス)と呼ばれる量であり、<span class="math inline">\(q_i\)</span>と<span class="math inline">\(p_i\)</span>がどれだけ分布として違っているのかを表している。<span class="math inline">\(\mathrm{KL}(q_i || p_i) \ge 0\)</span>であり、<span class="math inline">\(q(\boldsymbol{z}_i) = p(\boldsymbol{z}_i | \boldsymbol{x}_i, \boldsymbol{W}, \sigma^2)\)</span>のときに限り等号が成立する。従って、以下の不等式が得られる(前回はイェンセンの不等式から導出した)。</p>
+<p><span class="math display">\[L(\boldsymbol{W}, \sigma^2 | \mathcal{D}) \ge \sum_{i = 1}^N \int q(\boldsymbol{z}_i) \ln \frac{p(\boldsymbol{x}_i, \boldsymbol{z}_i | \boldsymbol{W}, \sigma^2)}{q(\boldsymbol{z}_i)} d\boldsymbol{z}_i = \sum_{i = 1}^N \mathcal{L}(q_i, \boldsymbol{W}, \sigma^2)\]</span></p>
+<p>さて、現在のパラメータが<span class="math inline">\(\boldsymbol{W}^{\prime}, \sigma^{2^\prime}\)</span>であるとする。このとき、<span class="math inline">\(q(\boldsymbol{z}_i) = p(\boldsymbol{z}_i | \boldsymbol{x}_i, \boldsymbol{W}^{\prime}, \sigma^{2^\prime})\)</span>とすれば、上式において等号が成立することは前回確認した。対数の中身は<span class="math inline">\(p(\boldsymbol{x}_i | \boldsymbol{W}^{\prime}, \sigma^{2^\prime})\)</span>のようになり、積分変数<span class="math inline">\(\boldsymbol{z}_i\)</span>に依存しなくなるためだった。<span class="math inline">\(\mathrm{KL}(q_i || p_i) = 0\)</span>となることからも、等号の成立が明らかである。これは、<span class="math inline">\(\boldsymbol{W}^{\prime}, \sigma^{2^\prime}\)</span>の2つのパラメータを固定したまま、<span class="math inline">\(q_i = q(\boldsymbol{z}_i)\)</span>をうまく調整することによって、<span class="math inline">\(\mathcal{L}(q_i, \boldsymbol{W}^{\prime}, \sigma^{2^\prime})\)</span>を最大化したことに相当する。</p>
+<p>現在のパラメータ<span class="math inline">\(\boldsymbol{W}^{\prime}, \sigma^{2^\prime}\)</span>を元に、<span class="math inline">\(q(\boldsymbol{z}_i)\)</span>を更新する方法が分かった。あとは、現在の<span class="math inline">\(q(\boldsymbol{z}_i) = p(\boldsymbol{z}_i | \boldsymbol{x}_i, \boldsymbol{W}^{\prime}, \sigma^{2^\prime})\)</span>を元に、パラメータ<span class="math inline">\(\boldsymbol{W}, \sigma^2\)</span>を更新すればよい。これは、<span class="math inline">\(q_i = q(\boldsymbol{z}_i)\)</span>を固定しつつ、<span class="math inline">\(\boldsymbol{W}, \sigma^2\)</span>について<span class="math inline">\(\mathcal{L}(q_i, \boldsymbol{W}, \sigma^2)\)</span>を最大化するだけである。対数尤度<span class="math inline">\(L(\boldsymbol{W}, \sigma^2 | \mathcal{D})\)</span>を直接最大化するのが困難であっても、このような2段階のステップによって<span class="math inline">\(\mathcal{L}(q_i, \boldsymbol{W}, \sigma^2)\)</span>を徐々に大きくしていけば、<span class="math inline">\(\mathcal{L}(q_i, \boldsymbol{W}, \sigma^2)\)</span>の合計(上の不等式の右辺)が<span class="math inline">\(L(\boldsymbol{W}, \sigma^2 | \mathcal{D})\)</span>の最大値(上の不等式の左辺の最大値)に近づいていくので、上手く行きそうである。<span class="math inline">\(\mathcal{L}(q_i, \boldsymbol{W}, \sigma^2)\)</span>は次のようになる。</p>
+<p><span class="math display">\[\begin{align}
+\mathcal{L}(q_i, \boldsymbol{W}, \sigma^2)
+&amp;= \int q(\boldsymbol{z}_i) \ln \frac{p(\boldsymbol{x}_i, \boldsymbol{z}_i | \boldsymbol{W}, \sigma^2)}{q(\boldsymbol{z}_i)} d\boldsymbol{z}_i \\
+&amp;= \int q(\boldsymbol{z}_i) \ln p(\boldsymbol{x}_i, \boldsymbol{z}_i | \boldsymbol{W}, \sigma^2) d\boldsymbol{z}_i - \int q(\boldsymbol{z}_i) \ln q(\boldsymbol{z}_i) d\boldsymbol{z}_i
+\end{align}\]</span></p>
+<p><span class="math inline">\(q(\boldsymbol{z}_i) = p(\boldsymbol{z}_i | \boldsymbol{x}_i, \boldsymbol{W}^{\prime}, \sigma^{2^\prime})\)</span>を代入すると以下のようになる。</p>
+<p><span class="math display">\[\begin{align}
+&amp; \int q(\boldsymbol{z}_i) \ln p(\boldsymbol{x}_i, \boldsymbol{z}_i | \boldsymbol{W}, \sigma^2) d\boldsymbol{z}_i - \int q(\boldsymbol{z}_i) \ln q(\boldsymbol{z}_i) d\boldsymbol{z}_i \\
+&amp;= \int p(\boldsymbol{z}_i | \boldsymbol{x}_i, \boldsymbol{W}^{\prime}, \sigma^{2^\prime}) \ln p(\boldsymbol{x}_i, \boldsymbol{z}_i | \boldsymbol{W}, \sigma^2) d\boldsymbol{z}_i - \int p(\boldsymbol{z}_i | \boldsymbol{x}_i, \boldsymbol{W}^{\prime}, \sigma^{2^\prime}) \ln p(\boldsymbol{z}_i | \boldsymbol{x}_i, \boldsymbol{W}^{\prime}, \sigma^{2^\prime}) d\boldsymbol{z}_i \\
+&amp;= \int p(\boldsymbol{z}_i | \boldsymbol{x}_i, \boldsymbol{W}^{\prime}, \sigma^{2^\prime}) \ln p(\boldsymbol{x}_i, \boldsymbol{z}_i | \boldsymbol{W}, \sigma^2) d\boldsymbol{z}_i + \mathrm{Const.} \\
+&amp;= \int p(\boldsymbol{z}_i | \boldsymbol{x}_i, \boldsymbol{W}^{\prime}, \sigma^{2^\prime}) \left\{ \ln p(\boldsymbol{x}_i | \boldsymbol{z}_i, \boldsymbol{W}, \sigma^2) + \ln p(\boldsymbol{z}_i) \right\} d\boldsymbol{z}_i + \mathrm{Const.}
+\end{align}\]</span></p>
+<p>上式の第2項は、<span class="math inline">\(q(\boldsymbol{z}_i) = p(\boldsymbol{z}_i | \boldsymbol{x}_i, \boldsymbol{W}^{\prime}, \sigma^{2^\prime})\)</span>のエントロピーであり、<span class="math inline">\(\boldsymbol{W}, \sigma^2\)</span>には関係しない定数として扱うことができる。上式を<span class="math inline">\(\boldsymbol{W}, \sigma^2\)</span>について最大化するために<span class="math inline">\(\boldsymbol{W}, \sigma^2\)</span>で微分しても、第2項には<span class="math inline">\(\boldsymbol{W}, \sigma^2\)</span>が含まれないため単に無視される。結局、<span class="math inline">\(\boldsymbol{W}, \sigma^2\)</span>によって最大化されるのは上式の第1項のみだと分かる。従って、第1項を<span class="math inline">\(\boldsymbol{W}, \sigma^2\)</span>で微分して<span class="math inline">\(0\)</span>と等値すれば、更新後の新たなパラメータ<span class="math inline">\(\boldsymbol{W}, \sigma^2\)</span>が求まる。因みに前回の例では、<span class="math inline">\(p(\boldsymbol{x}_i | \boldsymbol{z}_i, \boldsymbol{W}, \sigma^2)\)</span>は<span class="math inline">\(\mathcal{N}(\boldsymbol{x}_i | \boldsymbol{W} \boldsymbol{z}_i + \bar{\boldsymbol{x}}, \sigma^2 \boldsymbol{I}_M)\)</span>、また<span class="math inline">\(p(\boldsymbol{z}_i)\)</span>は<span class="math inline">\(\mathcal{N}(\boldsymbol{z}_i | \boldsymbol{0}, \boldsymbol{I}_m)\)</span>であった。</p>
+<p>上式は<span class="math inline">\(i\)</span>番目の<span class="math inline">\(\mathcal{L}(q_i, \boldsymbol{W}, \sigma^2)\)</span>ついてのみ考えたものだったので、<span class="math inline">\(i = 1, \cdots, N\)</span>について足し合わせて、以下のように変形してみる。定数項を除いた部分が、<span class="math inline">\(\boldsymbol{W}, \sigma^2\)</span>について最大化する対象となる。</p>
+<p><span class="math display">\[\begin{align}
+\sum_{i = 1}^N \mathcal{L}(q_i, \boldsymbol{W}, \sigma^2)
+&amp;= \sum_{i = 1}^N \int p(\boldsymbol{z}_i | \boldsymbol{x}_i, \boldsymbol{W}^{\prime}, \sigma^{2^\prime}) \ln p(\boldsymbol{x}_i, \boldsymbol{z}_i | \boldsymbol{W}, \sigma^2) d\boldsymbol{z}_i + \mathrm{Const.} \\
+&amp;= \sum_{i = 1}^N \int q(\boldsymbol{z}_i) \left\{ \ln p(\boldsymbol{z}_i | \boldsymbol{x}_i , \boldsymbol{W}, \sigma^2) + \ln p(\boldsymbol{z}_i) \right\} d\boldsymbol{z}_i + \mathrm{Const.}
+\end{align}\]</span></p>
+<p>ここで、</p>
+<p><span class="math display">\[\begin{align}
+L(\boldsymbol{W}, \sigma^2 | \mathcal{D}, \boldsymbol{Z})
+&amp;= \ln p(\mathcal{D}, \boldsymbol{Z} | \boldsymbol{W}, \sigma^2) \\
+&amp;= \ln \prod_{i = 1}^N p(\boldsymbol{x}_i | \boldsymbol{z}_i, \boldsymbol{W}, \sigma^2) p(\boldsymbol{z}_i) \\
+&amp;= \sum_{i = 1}^N (\ln p(\boldsymbol{x}_i | \boldsymbol{z}_i, \boldsymbol{W}, \sigma^2) + \ln p(\boldsymbol{z}_i)) \\
+\end{align}\]</span></p>
+<p>であるから、結局<span class="math inline">\(\boldsymbol{W}, \sigma^2\)</span>によって最大化していたのは、対数尤度<span class="math inline">\(L(\boldsymbol{W}, \sigma^2 | \mathcal{D}, \boldsymbol{Z})\)</span>の、潜在変数の事後分布<span class="math inline">\(q(\boldsymbol{z}_i) = p(\boldsymbol{z}_i | \boldsymbol{x}_i, \boldsymbol{W}^{\prime}, \sigma^{2^{\prime}})\)</span>についての期待値だということが分かった。</p>
+<p>これより、対数尤度<span class="math inline">\(L(\boldsymbol{W}, \sigma^2 | \mathcal{D}, \boldsymbol{Z})\)</span>を最初に用意し、現在のパラメータ<span class="math inline">\(\boldsymbol{W}^{\prime}, \sigma^{2^\prime}\)</span>により計算された潜在変数の事後分布<span class="math inline">\(q(\boldsymbol{z}_i) = p(\boldsymbol{z}_i | \boldsymbol{x}_i, \boldsymbol{W}^{\prime}, \sigma^{2^{\prime}})\)</span>における期待値を求めた後に、この期待対数尤度を最大化することによって、新たなパラメータ<span class="math inline">\(\boldsymbol{W}, \sigma^2\)</span>が得られることが分かった。</p>
+<p>これで前回は曖昧になってしまった部分がやっと分かったので一安心した。</p>
+</body>
+</html>

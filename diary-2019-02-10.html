@@ -5,7 +5,7 @@
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <meta name="author" content="SternGerlach" />
-  <title>2019年2月10日の日記</title>
+  <title>確率的主成分分析とEMアルゴリズム(その1)</title>
   <style type="text/css">
       code{white-space: pre-wrap;}
       span.smallcaps{font-variant: small-caps;}
@@ -20,13 +20,13 @@
 </head>
 <body>
 <header id="title-block-header">
-<h1 class="title">2019年2月10日の日記</h1>
+<h1 class="title">確率的主成分分析とEMアルゴリズム(その1)</h1>
 <p class="author">SternGerlach</p>
 </header>
 <!--
  pandoc -s --filter pandoc-crossref -M "crossrefYaml=./crossref_config.yaml" -f markdown -t html5 --mathjax --css ./style.css ./diary-2019-02-10.md > ./diary-2019-02-10.html
 -->
-<h1 id="年2月10日の日記">2019年2月10日の日記</h1>
+<h1 id="確率的主成分分析とemアルゴリズムその1">確率的主成分分析とEMアルゴリズム(その1)</h1>
 <p>確率的主成分分析で、各パラメータを期待値最大化法(EMアルゴリズム)により求める式の導出の仕方を備忘録として書いてみる。確率的主成分分析では、観測値<span class="math inline">\(\boldsymbol{x}\)</span>が、潜在変数<span class="math inline">\(\boldsymbol{z}\)</span>によって、確率的に生成されたと考えるらしい。<span class="math inline">\(\boldsymbol{\mu}\)</span>は<span class="math inline">\(\boldsymbol{x}\)</span>の平均値を表している(<span class="math inline">\(\boldsymbol{z} = \boldsymbol{0}\)</span>のときに<span class="math inline">\(\boldsymbol{\mu}\)</span>に移る)。観測値<span class="math inline">\(\boldsymbol{x}\)</span>を<span class="math inline">\(M\)</span>次元、潜在変数<span class="math inline">\(\boldsymbol{z}\)</span>を<span class="math inline">\(m\)</span>次元とする。<span class="math inline">\(\boldsymbol{z}\)</span>の事前分布<span class="math inline">\(p(\boldsymbol{z})\)</span>は、取り敢えず正規分布としておく。<span class="math inline">\(p(\boldsymbol{x} | \boldsymbol{z})\)</span>のパラメータ<span class="math inline">\(\boldsymbol{W}, \boldsymbol{\mu}, \sigma^2\)</span>を、観測データ<span class="math inline">\(\mathcal{D} = \left\{ \boldsymbol{x}_1, \cdots, \boldsymbol{x}_N \right\}\)</span>から求めるのが目標となる。</p>
 <p><span class="math display">\[p(\boldsymbol{x} | \boldsymbol{z}) = \mathcal{N}(\boldsymbol{x} | \boldsymbol{W} \boldsymbol{z} + \boldsymbol{\mu}, \sigma^2 \boldsymbol{I}_M)\]</span> <span class="math display">\[p(\boldsymbol{z}) = \mathcal{N}(\boldsymbol{z} | \boldsymbol{0}, \boldsymbol{I}_m)\]</span></p>
 <p>平均ベクトル<span class="math inline">\(\boldsymbol{\mu}\)</span>は簡単に求められる。多変数正規分布のベイズの定理を用いると、<span class="math inline">\(p(\boldsymbol{x})\)</span>は次のようになる。</p>
@@ -37,8 +37,8 @@ L(\boldsymbol{\mu}, \boldsymbol{W}, \sigma^2 | \mathcal{D})
 &amp;= \ln \prod_{i = 1}^N p(\boldsymbol{x}_i) \\
 &amp;= \ln \prod_{i = 1}^N \mathcal{N}(\boldsymbol{x}_i | \boldsymbol{\mu}, \boldsymbol{C}) \\
 &amp;= \sum_{i = 1}^N \ln \mathcal{N}(\boldsymbol{x}_i | \boldsymbol{\mu}, \boldsymbol{C}) \\
-&amp;= \sum_{i = 1}^N \ln \left( (2\pi)^{-\frac{M}{2}} |C|^{-\frac{1}{2}} \exp \left( -\frac{1}{2} (\boldsymbol{x}_i - \boldsymbol{\mu})^T C^{-1} (\boldsymbol{x}_i - \boldsymbol{\mu}) \right) \right) \\
-&amp;= -\frac{MN}{2} \ln(2\pi) - \frac{N}{2} \ln|C| - \frac{1}{2} \sum_{i = 1}^N (\boldsymbol{x}_i - \boldsymbol{\mu})^T C^{-1} (\boldsymbol{x}_i - \boldsymbol{\mu}) \\
+&amp;= \sum_{i = 1}^N \ln \left( (2\pi)^{-\frac{M}{2}} |\boldsymbol{C}|^{-\frac{1}{2}} \exp \left( -\frac{1}{2} (\boldsymbol{x}_i - \boldsymbol{\mu})^T \boldsymbol{C}^{-1} (\boldsymbol{x}_i - \boldsymbol{\mu}) \right) \right) \\
+&amp;= -\frac{MN}{2} \ln(2\pi) - \frac{N}{2} \ln|\boldsymbol{C}| - \frac{1}{2} \sum_{i = 1}^N (\boldsymbol{x}_i - \boldsymbol{\mu})^T \boldsymbol{C}^{-1} (\boldsymbol{x}_i - \boldsymbol{\mu}) \\
 \end{align}\]</span></p>
 <p><span class="math inline">\(L(\boldsymbol{\mu}, \boldsymbol{W}, \sigma^2 | \mathcal{D})\)</span>を<span class="math inline">\(\boldsymbol{\mu}\)</span>で偏微分して<span class="math inline">\(\boldsymbol{0}\)</span>とおくことによって、<span class="math inline">\(\boldsymbol{\mu}\)</span>の最尤推定値<span class="math inline">\(\hat{\boldsymbol{\mu}}\)</span>が得られる。</p>
 <p><span class="math display">\[\begin{align}
@@ -91,18 +91,18 @@ L(\boldsymbol{W}, \sigma^2 | \mathcal{D}, \boldsymbol{Z})
 <p><span class="math inline">\(q(\boldsymbol{z}_i) = p(\boldsymbol{z}_i | \boldsymbol{x}_i, \boldsymbol{W}^{\prime}, \sigma^{2^{\prime}})\)</span>(潜在変数の事後分布)についての期待値を取ると、上式は次のようになる。</p>
 <p><span class="math display">\[\begin{align}
 &amp; \sum_{i = 1}^N \int q(\boldsymbol{z}_i) \left\{ \ln p(\boldsymbol{x}_i | \boldsymbol{z}_i, \boldsymbol{W}, \sigma^2) + \ln p(\boldsymbol{z}_i) \right\} d\boldsymbol{z}_i \\
-&amp;= \sum_{i = 1}^N \int q(\boldsymbol{z}_i) \left\{ \ln \mathcal{N}(\boldsymbol{x}_i | \boldsymbol{W} \boldsymbol{z}_i + \boldsymbol{\mu}, \sigma^2 \boldsymbol{I}_M) + \ln \mathcal{N}(\boldsymbol{z}_i | \boldsymbol{0}, \boldsymbol{I}_m) \right\} d\boldsymbol{z}_i \\
-&amp;= \sum_{i = 1}^N \int q(\boldsymbol{z}_i) (-\frac{M}{2} \ln(2\pi) - \frac{1}{2} \ln|\sigma^2 \boldsymbol{I}_M| - \frac{1}{2} (\boldsymbol{x}_i - (\boldsymbol{W} \boldsymbol{z}_i + \boldsymbol{\mu}))^T (\sigma^2 \boldsymbol{I}_m)^{-1} (\boldsymbol{x}_i - (\boldsymbol{W} \boldsymbol{z}_i + \boldsymbol{\mu})) \\
+&amp;= \sum_{i = 1}^N \int q(\boldsymbol{z}_i) \left\{ \ln \mathcal{N}(\boldsymbol{x}_i | \boldsymbol{W} \boldsymbol{z}_i + \bar{\boldsymbol{x}}, \sigma^2 \boldsymbol{I}_M) + \ln \mathcal{N}(\boldsymbol{z}_i | \boldsymbol{0}, \boldsymbol{I}_m) \right\} d\boldsymbol{z}_i \\
+&amp;= \sum_{i = 1}^N \int q(\boldsymbol{z}_i) (-\frac{M}{2} \ln(2\pi) - \frac{1}{2} \ln|\sigma^2 \boldsymbol{I}_M| - \frac{1}{2} (\boldsymbol{x}_i - (\boldsymbol{W} \boldsymbol{z}_i + \bar{\boldsymbol{x}}))^T (\sigma^2 \boldsymbol{I}_m)^{-1} (\boldsymbol{x}_i - (\boldsymbol{W} \boldsymbol{z}_i + \bar{\boldsymbol{x}})) \\
 &amp; \qquad - \frac{m}{2} \ln(2\pi) - \frac{1}{2} \boldsymbol{z}_i^T \boldsymbol{z}_i) d\boldsymbol{z}_i \\
-&amp;= \sum_{i = 1}^N \int q(\boldsymbol{z}_i) (-\frac{M}{2} \ln(2\pi) - \frac{1}{2} \ln((\sigma^2)^M) - \frac{1}{2 \sigma^2} (\boldsymbol{x}_i - (\boldsymbol{W} \boldsymbol{z}_i + \boldsymbol{\mu}))^T (\boldsymbol{x}_i - (\boldsymbol{W} \boldsymbol{z}_i + \boldsymbol{\mu})) \\
+&amp;= \sum_{i = 1}^N \int q(\boldsymbol{z}_i) (-\frac{M}{2} \ln(2\pi) - \frac{1}{2} \ln((\sigma^2)^M) - \frac{1}{2 \sigma^2} (\boldsymbol{x}_i - (\boldsymbol{W} \boldsymbol{z}_i + \bar{\boldsymbol{x}}))^T (\boldsymbol{x}_i - (\boldsymbol{W} \boldsymbol{z}_i + \bar{\boldsymbol{x}})) \\
 &amp; \qquad - \frac{m}{2} \ln(2\pi) - \frac{1}{2} \boldsymbol{z}_i^T \boldsymbol{z}_i) d\boldsymbol{z}_i \\
 &amp;= \sum_{i = 1}^N \int q(\boldsymbol{z}_i) (-\frac{M}{2} \ln(2\pi) - \frac{M}{2} \ln(\sigma^2) \\
-&amp; \qquad - \frac{1}{2 \sigma^2} (\boldsymbol{x}_i - \boldsymbol{\mu})^T (\boldsymbol{x}_i - \boldsymbol{\mu}) + \frac{1}{\sigma^2} (\boldsymbol{x}_i - \boldsymbol{\mu})^T \boldsymbol{W} \boldsymbol{z}_i - \frac{1}{2 \sigma^2} (\boldsymbol{W} \boldsymbol{z}_i)^T (\boldsymbol{W} \boldsymbol{z}_i) \\
+&amp; \qquad - \frac{1}{2 \sigma^2} (\boldsymbol{x}_i - \bar{\boldsymbol{x}})^T (\boldsymbol{x}_i - \bar{\boldsymbol{x}}) + \frac{1}{\sigma^2} (\boldsymbol{x}_i - \bar{\boldsymbol{x}})^T \boldsymbol{W} \boldsymbol{z}_i - \frac{1}{2 \sigma^2} (\boldsymbol{W} \boldsymbol{z}_i)^T (\boldsymbol{W} \boldsymbol{z}_i) \\
 &amp; \qquad - \frac{m}{2} \ln(2\pi) - \frac{1}{2} \boldsymbol{z}_i^T \boldsymbol{z}_i) d\boldsymbol{z}_i \\
 &amp;= \sum_{i = 1}^N \int q(\boldsymbol{z}_i) (-\frac{M}{2} \ln(2 \pi \sigma^2) - \frac{m}{2} \ln(2\pi) \\
-&amp; \qquad - \frac{1}{2 \sigma^2} ||\boldsymbol{x}_i - \boldsymbol{\mu}||^2 + \frac{1}{\sigma^2} (\boldsymbol{x}_i - \boldsymbol{\mu})^T \boldsymbol{W} \boldsymbol{z}_i - \frac{1}{2 \sigma^2} \mathrm{Tr}((\boldsymbol{W} \boldsymbol{z}_i)^T (\boldsymbol{W} \boldsymbol{z}_i)) - \frac{1}{2} \mathrm{Tr}(\boldsymbol{z}_i^T \boldsymbol{z}_i)) d\boldsymbol{z}_i \\
-&amp;= -\frac{MN}{2} \ln(2 \pi \sigma^2) - \frac{mN}{2} \ln(2\pi) - \frac{1}{2 \sigma^2} \sum_{i = 1}^N \int q(\boldsymbol{z}_i) (||\boldsymbol{x}_i - \boldsymbol{\mu}||^2 \\
-&amp; \qquad - 2 (\boldsymbol{x}_i - \boldsymbol{\mu})^T \boldsymbol{W} \boldsymbol{z}_i + \mathrm{Tr}(\boldsymbol{z}_i^T \boldsymbol{W}^T \boldsymbol{W} \boldsymbol{z}_i) + \sigma^2 \mathrm{Tr}(\boldsymbol{z}_i \boldsymbol{z}_i^T)) d\boldsymbol{z}_i \\
+&amp; \qquad - \frac{1}{2 \sigma^2} ||\boldsymbol{x}_i - \bar{\boldsymbol{x}}||^2 + \frac{1}{\sigma^2} (\boldsymbol{x}_i - \bar{\boldsymbol{x}})^T \boldsymbol{W} \boldsymbol{z}_i - \frac{1}{2 \sigma^2} \mathrm{Tr}((\boldsymbol{W} \boldsymbol{z}_i)^T (\boldsymbol{W} \boldsymbol{z}_i)) - \frac{1}{2} \mathrm{Tr}(\boldsymbol{z}_i^T \boldsymbol{z}_i)) d\boldsymbol{z}_i \\
+&amp;= -\frac{MN}{2} \ln(2 \pi \sigma^2) - \frac{mN}{2} \ln(2\pi) - \frac{1}{2 \sigma^2} \sum_{i = 1}^N \int q(\boldsymbol{z}_i) (||\boldsymbol{x}_i - \bar{\boldsymbol{x}}||^2 \\
+&amp; \qquad - 2 (\boldsymbol{x}_i - \bar{\boldsymbol{x}})^T \boldsymbol{W} \boldsymbol{z}_i + \mathrm{Tr}(\boldsymbol{z}_i^T \boldsymbol{W}^T \boldsymbol{W} \boldsymbol{z}_i) + \sigma^2 \mathrm{Tr}(\boldsymbol{z}_i \boldsymbol{z}_i^T)) d\boldsymbol{z}_i \\
 &amp;= -\frac{MN}{2} \ln(2 \pi \sigma^2) - \frac{mN}{2} \ln(2\pi) - \frac{1}{2 \sigma^2} \sum_{i = 1}^N \int q(\boldsymbol{z}_i) (||\boldsymbol{x}_i - \bar{\boldsymbol{x}}||^2 \\
 &amp; \qquad - 2 (\boldsymbol{x}_i - \bar{\boldsymbol{x}})^T \boldsymbol{W} \boldsymbol{z}_i + \mathrm{Tr}(\boldsymbol{z}_i \boldsymbol{z}_i^T \boldsymbol{W}^T \boldsymbol{W}) + \sigma^2 \mathrm{Tr}(\boldsymbol{z}_i \boldsymbol{z}_i^T)) d\boldsymbol{z}_i
 \end{align}\]</span></p>
