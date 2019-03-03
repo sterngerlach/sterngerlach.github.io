@@ -32,7 +32,6 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
     - 舟 (1995年)
 * 平沢進
     - 時空の水 (1989年)
-    - サイエンスの幽霊 (1990年)
 * フィッシュマンズ
 * サカナクション
 * ピチカート・ファイヴ
@@ -80,7 +79,17 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
     - JOEPO \~1981 KHz (1981年)
     - HI・TOUCH-HI・TECH (1984年)
 * 谷山浩子
+* 荒井由美
+    - ひこうき雲 (1973年)
+    - MISSLIM (ミスリム) (1974年)
+    - COBALT HOUR (コバルト・アワー) (1975年)
+    - The 14th Moon (14番目の月) (1976年)
 * 松任谷由実
+    - 流線形'80 (1978年)
+    - OLIVE (1979年)
+    - 時のないホテル (1980年)
+    - 水の中のASIAへ (1981年)
+    - 昨晩お会いしましょう (1981年)
 
 # レアで手に入らないCDとレコード
 
@@ -138,15 +147,36 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
     - 緑の法則 (The Law Of The Green) (1985年)
     - スタジオ・ロマンチスト (Studio Romantic) (1987年)
 * 松任谷由実
+    - 紅雀 (べにすずめ) (1978年)
+    - 悲しいほどお天気 (The Gallery in My Heart) (1979年)
+    - SURF & SNOW (サーフ・アンド・スノー) (1980年)
+    - PEARL PIERCE (パール・ピアス) (1982年)
+    - REINCARNATION (リ・インカーネーション) (1983年)
+    - VOYAGER (ボイジャー) (1983年)
     - NO SIDE (ノーサイド) (1984年)
     - DA・DI・DA (ダ・ディ・ダ) (1985年)
+    - ALARM à la mode (アラーム・ア・ラ・モード) (1986年)
+    - ダイアモンドダストが消えぬまに (Before the Diamond Dust Fades...) (1987年)
+    - Delight Slight Light KISS (ディライト・スライト・ライト・キス) (1988年)
+    - LOVE WARS (ラヴ・ウォーズ) (1989年)
+    - 天国のドア (THE GATES OF HEAVEN) (1990年)
+    - DAWN PURPLE (ドーン・パープル) (1991年)
+    - TEARS AND REASONS (ティアーズ・アンド・リーズンズ) (1992年)
+    - U-miz (ユーミッズ) (1993年)
+    - THE DANCING SUN (ダンシング・サン) (1994年)
+    - KATHMANDU (カトマンドゥ) (1995年)
+    - Yumi Arai The Concert with old Friends (1996年)
+    - Cowgirl Dreamin' (カゥガール・ドリーミン) (1997年)
+    - スユアの波 (WAVE OF THE ZUVUYA) (1997年)
+    - Neue Musik (ノイエ・ムジーク) (1998年) (母親から貰った)
+    - FROZEN ROSES (フローズン・ローゼズ) (1999年)
+    - 7 TRUTHS 7 LIES \~ヴァージンロードの彼方で (2001年)
+    - sweet, bitter sweet \~YUMING BALLAD BEST (2001年)
 * 竹内まりや
     - Variety (ヴァラエティ) (1984年)
     - Request (リクエスト) (1987年)
     - Quiet Life (クワイエット・ライフ) (1992年) (母親から貰った)
     - Impressions (インプレッションズ) (1994年) (母親から貰った)
-* 松任谷由実
-    - Neue Musik (ノイエ・ムジーク) (1998年) (母親から貰った)
 * 吉田美奈子
     - Monochrome (モノクローム) (1980年)
     - Dark Crystal (ダーク・クリスタル) (1989年)
@@ -254,6 +284,8 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
     - Perspective (1982年)
     - Another Game (1984年)
     - P-Model (1992年)
+* 平沢進
+    - サイエンスの幽霊 (1990年)
 * 安全地帯
     - 安全地帯I Remember to Remember (1983年)
     - 安全地帯II (1984年)
