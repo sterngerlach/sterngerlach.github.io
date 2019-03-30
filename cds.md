@@ -77,10 +77,7 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
 * 角松敏生
     - BEFORE THE DAYLIGHT \~is the most darkness moment in a day (1988年)
 * 日向敏文
-    - サラの犯罪 (1985年)
     - 夏の猫 (1986年)
-    - Story (1987年)
-    - ISIS (アイシス) (1988年)
 * Rajie(ラジ)
     - Quatre (キャトル) (1979年)
     - 真昼の舗道 (1980年)
@@ -281,9 +278,15 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
     - 音楽図鑑 (1984年)
 * 高橋幸宏
     - Once A Fool,... (ワンスアフール 遥かなる思い) (1985年)
-
----
-
+* 日向敏文
+    - サラの犯罪 (Sarah's Crime) (1985年)
+    - ひとつぶの海 (Reality In Love) (1986年)
+    - Story (1987年)
+    - ISIS (アイシス) (1988年)
+    - Another Graffiti (1988年)
+    - Rhapsody In The Twilight (ラプソディ・イン・ザ・トワイライト) (1989年)
+    - いたずら天使 (Little Rascal) (1990年)
+    - 愛という名のもとに (1992年)
 * シャンバラ
     - SHAMBARA (1989年)
 * ピチカート・ファイヴ
