@@ -28,7 +28,6 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
     - Potpourri (ポプリ) (1981年)
     - Karkador (カルカドル) (1985年)
     - One Pattern (1986年)
-    - Big Body (1993年)
     - 舟 (1995年)
 * 平沢進
     - 時空の水 (1989年)
@@ -70,8 +69,6 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
     - Coincidental Music (コインシデンタル・ミュージック) (1985年)
 * 坂本龍一
     - 千のナイフ (1978年)
-    - B-2ユニット (1980年)
-    - 未来派野郎 (1986年)
 * はっぴいえんど
     - 風街ろまん (1971年)
 * 角松敏生
@@ -275,9 +272,14 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
 * 細野晴臣
     - S・F・X (1984年)
 * 坂本龍一
+    - B-2 Unit (1980年)
     - 音楽図鑑 (1984年)
+    - Esperanto (エスペラント) (1985年)
+    - 未来派野郎 (1986年)
 * 高橋幸宏
+    - 四月の魚 (Poisson D'Avril) (1985年)
     - Once A Fool,... (ワンスアフール 遥かなる思い) (1985年)
+    - EGO (イーゴ) (1988年)
 * 日向敏文
     - サラの犯罪 (Sarah's Crime) (1985年)
     - ひとつぶの海 (Reality In Love) (1986年)
@@ -312,6 +314,7 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
     - Perspective (1982年)
     - Another Game (1984年)
     - P-Model (1992年)
+    - Big Body (1993年)
 * 平沢進
     - サイエンスの幽霊 (1990年)
 * 安全地帯
