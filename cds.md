@@ -50,6 +50,12 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
     - 色彩 (2013年)
     - 天体 (2018年)
 * サカナクション
+    - Go To The Future (2007年)
+    - Night Fishing (2008年)
+    - シンシロ (2009年)
+    - kikUUiki (2010年)
+    - DocumentaLy (2011年)
+    - 懐かしい月は新しい月 \~Coupling & Remix works \~(2015年)
     - 魚図鑑 (2018年)
 * ピチカート・ファイヴ
     - Bellissima! (ベリッシマ) (1988年)
@@ -58,6 +64,8 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
     - ピチカート・ファイヴ TYO \~Big Hits and Jet Lags 1991-1995 (1995年)
 * 矢野顕子
     - SUPER FOLK SONG (スーパー・フォーク・ソング) (1992年)
+* 高橋幸宏
+    - サラヴァ! (1978年)
 * 細野晴臣
     - HOSONO HOUSE (1973年)
     - トロピカル・ダンディー (1975年)
@@ -72,7 +80,16 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
 * はっぴいえんど
     - 風街ろまん (1971年)
 * 角松敏生
-    - BEFORE THE DAYLIGHT \~is the most darkness moment in a day (1988年)
+    - Gold Digger \~with true love\~ (1985年)
+* 安全地帯
+    - 安全地帯VI \~月に濡れたふたり (1988年)
+    - 安全地帯VII \~夢の都 (1990年)
+* 大江千里
+    - 未成年 (1985年)
+    - 乳房 (1985年)
+    - AVEC (1986年)
+    - 1234 (1988年)
+    - APOLLO (1990年)
 * 日向敏文
     - 夏の猫 (1986年)
 * Rajie(ラジ)
@@ -93,7 +110,18 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
 * EPO
     - JOEPO \~1981 KHz (1981年)
     - HI・TOUCH-HI・TECH (1984年)
+    - GO GO EPO (1987年)
+    - POP TRACKS (1987年)
+    - Wica (1992年)
+* アン・ルイス
+    - ROMANTIC VIOLENCE (1984年)
+    - Dri夢・X-T-C (1985年)
+    - 遊女 (1986年)
+    - JOSHIN (1987年)
+    - 女息 -MEIKI- (1988年)
 * 谷山浩子
+    - しっぽのきもち (1988年)
+    - お昼寝宮・お散歩宮 (1989年)
 * 荒井由美
     - ひこうき雲 (1973年)
     - MISSLIM (ミスリム) (1974年)
@@ -105,10 +133,29 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
     - 時のないホテル (1980年)
     - 水の中のASIAへ (1981年)
     - 昨晩お会いしましょう (1981年)
+    - YUMING VISUALIVE DA・DI・DA (1986年)
 * 中山美穂  
     - COLLECTION (1987年)
 * 岡田有希子
     - ヴィーナス誕生 (1986年)
+* 大橋純子
+    - Point Zero (1983年)
+* 岡村孝子
+    - After Tone (1987年)
+* 山根麻衣
+    - Will (1982年)
+    - ベスト (1987年)
+    - 1958 (1989年)
+* 森高千里
+* 渡辺美里
+* TM NETWORK
+* 米米CLUB
+* サザンオールスターズ
+    - 人気者で行こう (1984年)
+    - KAMAKURA (1985年)
+    - Southern All Stars (1990年)
+    - 稲村ジェーン (1990年)
+    - 世に万葉の花が咲くなり (1992年)
 
 # レアで手に入らないCDとレコード
 
@@ -116,6 +163,8 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
 
 * 秋元薫
     - Cologne (1986年)
+* PLAYTECHS (プレイテックス)
+    - No Duplicatin' (1983年)
 
 # 現在持っているCDとレコード
 
@@ -210,6 +259,7 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
     - ロマンティックな雨 (1992年)
 * 坪倉唯子
     - Always in Love (1986年)
+    - Loving You (1990年)
 * Rajie(ラジ)
     - アコースティック・ムーン (1981年)
     - 午後のレリーフ (1984年)
@@ -267,6 +317,12 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
     - Artisan (1991年)
     - Treasures (1995年) (母親から貰った)
     - Cozy (1998年) (母親から貰った)
+* 角松敏生
+    - Before The Daylight \~is the most darkness moment in a day (1988年)
+    - Reasons For Thousand Lovers (1989年)
+* 大江千里
+    - OLYMPIC (1987年)
+    - Red Monkey Yellow Fish (1989年)
 * 稲垣潤一
     - 16 Candles (1988年) (母親から貰った)
 * 細野晴臣
@@ -277,9 +333,13 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
     - Esperanto (エスペラント) (1985年)
     - 未来派野郎 (1986年)
 * 高橋幸宏
+    - Neuromantic (ロマン神経症) (1981年)
+    - What, Me Worry? (ボク、大丈夫!!) (1982年)
+    - 薔薇色の明日 (Tomorrow's Just Another Day) (1983年)
     - 四月の魚 (Poisson D'Avril) (1985年)
     - Once A Fool,... (ワンスアフール 遥かなる思い) (1985年)
     - EGO (イーゴ) (1988年)
+    - Broadcast From Heaven (1990年)
 * 日向敏文
     - サラの犯罪 (Sarah's Crime) (1985年)
     - ひとつぶの海 (Reality In Love) (1986年)
@@ -308,6 +368,7 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
     - BGM (1981年)
     - Technodelic (テクノデリック) (1981年)
     - 浮気なぼくら (1983年)
+    - Service (サーヴィス) (1983年)
     - After Service (アフター・サーヴィス) (1984年)
     - Technodon (テクノドン) (1993年)
 * P-Model
@@ -342,6 +403,7 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
 * PSY・S (サイズ)
     - Different View (ディファレント・ビュー) (1985年)
     - PIC-NIC (ピクニック) (1986年)
+    - PSY・S Presents "Collection" (1987年)
     - Mint-Electric (ミント・エレクトリック) (1987年)
     - Non-Fiction (ノン・フィクション) (1988年)
     - ATLAS (アトラス) (1989年)
