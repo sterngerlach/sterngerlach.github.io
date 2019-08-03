@@ -108,11 +108,9 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
     - ENSEMBLE (アンサンブル) (2000年)
     - note (2002年)
 * EPO
-    - JOEPO \~1981 KHz (1981年)
-    - HI・TOUCH-HI・TECH (1984年)
-    - GO GO EPO (1987年)
     - POP TRACKS (1987年)
-    - Wica (1992年)
+    - VOICE OF OOPARTS (1994年)
+    - UVA (1995年)
 * アン・ルイス
     - ROMANTIC VIOLENCE (1984年)
     - Dri夢・X-T-C (1985年)
@@ -146,6 +144,7 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
     - Will (1982年)
     - ベスト (1987年)
     - 1958 (1989年)
+* 遊佐未森
 * 森高千里
 * 渡辺美里
 * TM NETWORK
@@ -205,10 +204,15 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
     - Elephant Hotel (1994年)
     - ひとつだけ the very best of 矢野顕子 (1996年) (母親から貰った)
 * EPO (エポ)
+    - JOEPO \~1981 KHz (1981年)
+    - Vitamin EPO (1983年)
+    - HI・TOUCH-HI・TECH (1984年)
     - Harmony (ハーモニー) (1985年)
     - Pump! Pump! (パンプ! パンプ!) (1986年)
+    - Go Go EPO (ゴーゴーエポ) (1987年)
     - Free Style (フリースタイル) (1988年)
     - SuperNatural (1989年)
+    - Wica (1992年)
 * 鈴木さえ子
     - I wish it could be Christmas everyday (1983年)
     - 科学と神秘 (Visinda og Leyndardómur) (1984年)
