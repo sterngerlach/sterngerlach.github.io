@@ -111,12 +111,6 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
     - POP TRACKS (1987年)
     - VOICE OF OOPARTS (1994年)
     - UVA (1995年)
-* アン・ルイス
-    - ROMANTIC VIOLENCE (1984年)
-    - Dri夢・X-T-C (1985年)
-    - 遊女 (1986年)
-    - JOSHIN (1987年)
-    - 女息 -MEIKI- (1988年)
 * 谷山浩子
     - しっぽのきもち (1988年)
     - お昼寝宮・お散歩宮 (1989年)
@@ -277,6 +271,22 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
     - コミュニケーション (1985年)
     - 純 (1985年)
     - ヤガマニア (1986年)
+* アン・ルイス
+    - Romantic Violence (1984年)
+    - Dri夢・X-T-C (1985年)
+    - 遊女 (1986年)
+    - Joshin (1987年)
+    - 女息 -MEIKI- (1988年)
+    - My Name Is Woman (1989年)
+    - Rude (1990年)
+    - Womanism I \~ZEN・KYOKU・SHOO 1974-1984\~ (1991年)
+    - Womanism II \~ZEN・KYOKU・SHOO 1985-1991\~ (1991年)
+    - Womanism III \~NAKU・TAME・YOO\~ (1991年)
+    - K-Rock (1992年)
+    - Rockadelic (1993年)
+    - Piercer (1994年)
+    - Womanism IV \~NEW・KYOKU・SHOO\~ (1995年)
+    - La Adelita (1996年)
 * 大橋純子
     - DEF (Dance Emotion Fragrance) (1988年)
 * 小林麻美
