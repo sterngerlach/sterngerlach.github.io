@@ -259,6 +259,10 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
     - Service (サーヴィス) (1983年)
     - After Service (アフター・サーヴィス) (1984年)
     - Technodon (テクノドン) (1993年)
+* Logic System (ロジック・システム)
+    - Logic (1981年)
+    - Venus (1981年)
+    - 東方快車 (Orient Express) (1982年)
 * P-Model
     - Perspective (1982年)
     - Another Game (1984年)
