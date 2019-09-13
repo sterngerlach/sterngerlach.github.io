@@ -133,9 +133,9 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
     - Always in Love (1986年)
     - Loving You (1990年)
 * Rajie(ラジ)
-    - アコースティック・ムーン (1981年) (LPレコード)
+    - アコースティック・ムーン (1981年)
     - 午後のレリーフ (1984年) (LPレコード)
-    - エスプレッソ (1985年)
+    - エスプレッソ (1985年) (LPレコード)
     - ゴールデンベスト オールタイム・セレクション (2018年)
 * 石川セリ
     - Möbius (メビウス) (1982年)
@@ -205,6 +205,8 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
     - Artisan (1991年)
     - Treasures (1995年) (母親から貰った)
     - Cozy (1998年) (母親から貰った)
+* ブレッド & バター
+    - Second Serenade (セカンド・セレナーデ) (1984年)
 * 角松敏生
     - Before The Daylight \~is the most darkness moment in a day (1988年)
     - Reasons For Thousand Lovers (1989年)

@@ -132,3 +132,9 @@ auhtor: SternGerlach
 * 遊佐未森
 * 森高千里
 * 渡辺美里
+* 安田成美
+    - ジィンジャー (1988年)
+* 杏里
+    - Heaven Beach (1982年)
+* 菊池桃子
+    - Adventure (1986年)
