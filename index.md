@@ -18,15 +18,17 @@ sterngerlachのGitHubページにようこそ。
 
 - [今所持しているCDとレコード](./cds.html)
 - [欲しいCDとレコード](./want-list.html)
-- [ロボットに関するメモ書き](./robot-memo.html)
-- [C言語の関数をPythonから呼び出す方法](./calling-c-from-python.html)
+<!-- - [ロボットに関するメモ書き](./robot-memo.html) -->
+<!-- - [C言語の関数をPythonから呼び出す方法](./calling-c-from-python.html) -->
+- [ベイズフィルタ](./doc/bayes-filter.pdf)
+- [パーティクルフィルタ](./doc/particle-filter.pdf)
 
 ## 日記
 
 日記を適当に書いてこちらに置いていきます。
 
-- [ロボット作成日記](./diary-robot.html)
-- [ロボット作成日記 その2](./diary-robot2.html)
+<!-- - [ロボット作成日記](./diary-robot.html) -->
+<!-- - [ロボット作成日記 その2](./diary-robot2.html) -->
 - [確率的主成分分析とEMアルゴリズム(その1)](./diary-2019-02-10.html)
 - [確率的主成分分析とEMアルゴリズム(その2)](./diary-2019-02-13.html)
 
