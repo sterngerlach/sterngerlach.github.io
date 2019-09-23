@@ -1,0 +1,168 @@
+
+% particle-filter.tex
+
+\documentclass[dvipdfmx,a4paper]{jsarticle}
+
+\usepackage{docmute}
+\input{settings}
+
+\usepackage{geometry}
+\geometry{left=19.05mm,right=19.05mm,top=19.05mm,bottom=19.05mm}
+
+\title{パーティクルフィルタ}
+\author{にゃーん}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+この資料は、文献~\cite{Thrun07}の4章と、文献~\cite{Bishop06}の11.1.4節、11.1.5節をまとめたものです。
+
+\section{パーティクルフィルタ}
+\subsection{パーティクルフィルタとは}
+ベイズフィルタアルゴリズムを厳密に実行するのは現実的ではないため、実際に用いるためには、何らかの近似を施す必要がある。\textbf{ノンパラメトリックフィルタ}はベイズフィルタの一種であり、信念分布$\bel(x_t)$を有限個の数値で近似する。\textbf{パーティクルフィルタ}はノンパラメトリックフィルタの一種であり、有限個の多数の標本(サンプル、\textbf{パーティクル})で信念分布を表現する。ベイズフィルタのもう一つの派生形として、信念分布を多変量ガウス分布で近似する、\textbf{カルマンフィルタ}(\textbf{拡張カルマンフィルタ})がある。\newline
+
+カルマンフィルタと比較したときのパーティクルフィルタの有利な点として、\textbf{信念分布の形状に関する制限が緩い}ことが挙げられる。カルマンフィルタでは、信念分布をガウス分布で近似するため、分布の形状はユニモーダルな(極大点が一つしか存在しないような)ものに限定される。これは、状態に関して一つの仮説しか持たないことを意味する。一方、パーティクルフィルタでは、パーティクルの個数を増やすことで、マルチモーダルで複雑な形状の信念を表現することも可能である。従って、状態に関して同時に複数の仮説を立てられる。\newline
+
+パーティクルフィルタでは、\textbf{パーティクルの個数(パラメータの個数)を自在に調節できる}。信念分布が複雑な形状をもつとき(複数の状態に推定結果が散らばっているとき)は、パーティクルの個数を増やすことで、十分な精度で信念分布を近似できる。信念分布が単純な形状をもつとき(正規分布のように一つの状態に推定結果が集まっているとき)は、パーティクルの個数を少なくできる。コンピュータの持つ計算資源に応じて、パーティクルの個数を調節することもできる。そして、カルマンフィルタでは状態遷移(直前の状態$x_{t - 1}$と動作$u_t$の関係)および、計測(現在の状態$x_t$と計測$z_t$の関係)が線形に記述されることが前提で、非線形であればテイラー展開などによって線形近似する必要がある。パーティクルフィルタでは、そのような変数間の\textbf{線形性は要求されない}。更にパーティクルフィルタは、カルマンフィルタよりも実装が容易になる。
+
+\subsection{パーティクルフィルタ}
+パーティクルフィルタは以下のアルゴリズム\ref{alg:particle-filter}のように記述される。パーティクルフィルタでは、信念分布$\bel(x_t)$をパーティクルの集合$\mathcal{X}_t$として表現する。$M$はパーティクルの総数を表す。各パーティクル$x_t^{[m]}$($1 \le m \le M$)は、時刻$t$における真の状態$x_t$についての一つの仮説となっている。
+\begin{equation}
+	\mathcal{X}_t = \left\{ x_t^{[1]}, x_t^{[2]}, \cdots, x_t^{[M]} \right\}
+\end{equation}
+\begin{equation}
+	x_t^{[m]} \sim \bel(x_t) = p(x_t | z_{1 : t}, u_{1 : t})
+\end{equation}
+ベイズフィルタでみたように、パーティクルフィルタも時刻$t - 1$における事後信念$\bel(x_{t - 1})$から、時刻$t$における事後信念$\bel(x_t)$を計算する。事後信念はパーティクルの集合として表現されるため、パーティクルの集合$\mathcal{X}_{t - 1}$から、新たなパーティクルの集合$\mathcal{X}_t$が構築されることを意味する。
+
+\begin{algorithm}[H]
+	\caption{パーティクルフィルタ}
+	\label{alg:particle-filter}
+	\begin{algorithmic}[1]
+		\Require
+			\Statex 時刻$t - 1$におけるパーティクルのセット$\mathcal{X}_{t - 1} = \left\{ x_{t - 1}^{[1]}, x_{t - 1}^{[2]}, \cdots, x_{t - 1}^{[M]} \right\}$
+			\Statex 時刻$t$における制御$u_t$
+			\Statex 時刻$t$における計測$z_t$
+		\Ensure
+			\Statex 時刻$t$におけるパーティクルのセット$\mathcal{X}_t = \left\{ x_t^{[1]}, x_t^{[2]}, \cdots, x_t^{[M]} \right\}$ \newline
+		
+		\State 一時的に用いる仮のセット$\overline{\mathcal{X}}_t$を空に初期化
+		\State 時刻$t$におけるパーティクルのセット$\mathcal{X}_t$を空に初期化
+		\For{$m = 1, 2, \cdots, M$}
+			\State 状態に対する仮説$x_t^{[m]}$をサンプリング: $x_t^{[m]} \sim p(x_t | x_{t - 1}^{[m]}, u_t)$
+			\State 仮説$x_t^{[m]}$に対する重みの計算: $w_t^{[m]} = p(z_t | x_t^{[m]})$
+			\State $\overline{\mathcal{X}}_t$に$x_t^{[m]}$と$w_t^{[m]}$のペアを追加
+		\EndFor
+		\For{$m = 1, 2, \cdots, M$}
+			\State 重み$w_t^{[i]}$に比例する確率で、インデックス$i \ (1 \le i \le M)$をサンプリング
+			\State $\mathcal{X}_t$に$x_t^{[i]}$を追加
+		\EndFor
+	\end{algorithmic}
+\end{algorithm}
+
+ベイズフィルタは3つのステップ、\textbf{サンプリング}、\textbf{重みの計算}、\textbf{リサンプリング}に分けられる。\textbf{サンプリング}ステップでは、時刻$t - 1$における各パーティクル$x_{t - 1}^{[m]}$が処理される。$x_{t - 1}^{[m]}$と制御$u_t$から、状態遷移確率$p(x_t | x_{t - 1}^{[m]}, u_t)$に基づいて、時刻$t$における状態の仮説$x_t^{[m]}$がサンプリングされる。$p(x_t | x_{t - 1}^{[m]}, u_t)$からのサンプリングは、$x_{t - 1}^{[m]}$に制御$u_t$を反映させた後にノイズを適用するという、順方向(時間が進む方向)の計算となるので容易と考えられる。\textbf{重みの計算}ステップでは、サンプリングで生成された仮説$x_t^{[m]}$についての重み$w_t^{[m]}$が計算される。重み$w_t^{[m]}$は、状態が$x_t^{[m]}$にあるとき$z_t$が観測される確率密度、即ち計測確率$p(z_t | x_t^{[m]})$となる。仮説$x_t^{[m]}$と対応する重み$w_t^{[m]}$は、一時的なパーティクルの集合$\overline{\mathcal{X}}_t$に保持される。\newline
+
+\textbf{リサンプリング}ステップでは、一時的な集合$\overline{\mathcal{X}}_t$から、重複を許して$M$個のパーティクルが選択され、パーティクルの集合$\mathcal{X}_t$が構成される。$\overline{\mathcal{X}}_t$に含まれるパーティクル$x_t^{[i]}$が選択される確率は、そのパーティクルに対応する重み$w_t^{[i]}$に比例する。リサンプリングを行う前のパーティクルの集合$\overline{\mathcal{X}}_t$は、事前信念$\belp(x_t)$の近似表現となっている。重みに比例したサンプリングによって、最終的なパーティクルの集合$\mathcal{X}_t$は、事後信念$\bel(x_t) = \eta p(z_t | x_t^{[m]}) \belp(x_t)$に従って分布することになる。大きな重みをもつパーティクルは何度も選ばれるため、$\mathcal{X}_t$には通常、重複したパーティクルが含まれる。重みの小さいパーティクルは、$M$回のサンプリングにおいて一度も選択されず、従って最終的な結果$\mathcal{X}_t$には含まれない可能性が高い。リサンプリングは、計測$z_t$を信念分布に反映させる操作とみることができ、ベイズフィルタにおける修正ステップに相当する。\newline
+
+$\mathcal{X}_t$に含まれるパーティクルは、重み付きサンプリングによって、計測確率$p(z_t | x_t)$(事後信念$\bel(x_t)$)の大きな領域に集中する。従って、状態の仮説のなかで可能性が高いものだけに限定して、効率よく計算を進められる。
+
+\subsection{SIR~(Sampling-Importance-Resampling)フィルタ}
+パーティクルフィルタを導出するまえに、ここではサンプリング法について考える。関数$f(x)$の、確率分布$p(x)$のもとでの期待値$\mathbb{E}[f]$を計算したいとする。以下の積分を厳密に実行できないとし、サンプリングによって近似的に求めることを考える。
+\begin{equation}
+	\mathbb{E}[f] = \int f(x) p(x) dx
+\end{equation}
+確率分布$p(x)$から$x$を独立に$M$個抽出して、サンプルの集合$\left\{ x^{[1]}, x^{[2]}, \cdots, x^{[M]} \right\}$を得ることで、期待値$\mathbb{E}[f]$を有限回の和で近似できる。
+\begin{equation}
+	\mathbb{E}[f] \simeq \frac{1}{M} \sum_{m = 1}^M f(x^{[m]})
+\end{equation}
+分布$p(x)$からの直接のサンプリングは困難だが、与えられた$x$について関数の値$p(x)$を求めるのは容易とする。このとき期待値$\mathbb{E}[f]$を求めるための一つの方法として、$x$の定義域を$M$個の均等な範囲に区切って、$\left\{ x^{[1]}, x^{[2]}, \cdots, x^{[M]} \right\}$のように、各範囲を代表する$M$個の点に離散化したうえで、次のように計算することが考えられる。
+\begin{equation}
+	\mathbb{E}[f] \simeq \frac{1}{M} \sum_{m = 1}^M f(x^{[m]}) p(x^{[m]})
+\end{equation}
+この方法では、$x$の次元が増えると、計算量が指数的に増大するという問題がある。各次元について定義域を有限個の範囲に区切る必要があるため、次元が増えれば区切られた範囲の数は指数的に増加する。もう一つの問題として、確率分布$p(x)$の定義域は非常に広大かもしれないが、実際には$x$のごく狭い範囲に、確率密度が集中していることがある。このとき$p(x)$は一部の限られた領域を除いて小さな値を取るため、$M$個のサンプルのうち少数だけが、有限和に対して大きな寄与をする。定義域を有限個に区切って得られる、$M$個のサンプルの大部分は無駄になってしまう。$\mathbb{E}[f]$を計算するとき、$p(x^{[m]})$または$f(x^{[m]})p(x^{[m]})$が大きくなるようなサンプル$x^{[m]}$のみを抽出するのが理想的である。\newline
+
+$p(x)$からサンプリングするのは困難であるので、代わりに別の分布$q(x)$からサンプリングすることを考える。この分布$q(x)$を\textbf{提案分布}という。一方、サンプリングしたい本来の分布$p(x)$は\textbf{目標分布}とよばれる。$q(x)$から独立に抽出されたサンプル$\left\{ x^{[1]}, x^{[2]}, \cdots, x^{[M]} \right\}$を用いることで、期待値$\mathbb{E}[f]$は次のように計算できる。
+\begin{eqnarray}
+	\mathbb{E}[f] &=& \int f(x) p(x) dx \nonumber \\
+	&=& \int f(x) \frac{p(x)}{q(x)} q(x) dx \nonumber \\
+	&\simeq& \frac{1}{M} \sum_{m = 1}^M \frac{p(x^{[m]})}{q(x^{[m]})} f(x^{[m]}) \\
+	&=& \frac{1}{M} \sum_{m = 1}^M \widetilde{w}^{[m]} f(x^{[m]})
+\end{eqnarray}
+この式は、$p(x)$ではなく$q(x)$をサンプリングに用いることによって、本来求めているものとは異なるサンプルが得られてしまうが、$\widetilde{w}^{[m]}$を使って各サンプル$x^{[m]}$に適度な重み付けを行うことによって、サンプルに生じるバイアスを補正できることを示唆している。これは\textbf{重点サンプリング}とよばれる方法である。$q(x)$の形状が$p(x)$とあまりにかけ離れているのは問題になる。$p(x)$が大きな領域で$q(x)$が小さいと、$p(x)$が大きな領域に、$q(x)$から得られたサンプルが一つも入らないことが起こり得る。このようなサンプルから計算された期待値は、本来の$f(x)$の期待値とは大きくずれている可能性がある。しかも、そのような事態を判定するのは容易でないと考えられる。重み$\widetilde{w}^{[m]}$(分布$p(x)$と$q(x)$とのずれ度合)を計算できるためには、$p(x) > 0$であるとき$q(x) > 0$となる必要がある。\newline
+
+正規化定数$Z_p$を含めた$p(x)$に比例する値$\widetilde{p}(x) = Z_p p(x)$なら計算できるが、分布$p(x)$の値(正規化定数$Z_p$)は求められないとする。$q(x)$についても同様で、$q(x)$自体を求めるのは難しいが、正規化定数$Z_q$を含めた値$\widetilde{q}(x) = Z_q q(x)$なら容易に計算できるとする。この場合も、期待値$\mathbb{E}[f]$の計算を問題なく実行できる。$p(x) = Z_p^{-1} \widetilde{p}(x)$、$q(x) = Z_q^{-1} \widetilde{q}(x)$であるから、期待値$\mathbb{E}[f]$は以下の通りである。
+\begin{eqnarray}
+	\mathbb{E}[f] &=& \int f(x) p(x) dx = \frac{Z_q}{Z_p} \int f(x) \frac{\widetilde{p}(x)}{\widetilde{q}(x)} q(x) dx \nonumber \\
+	&\simeq& \frac{Z_q}{Z_p} \frac{1}{M} \sum_{m = 1}^M \frac{\widetilde{p}(x^{[m]})}{\widetilde{q}(x^{[m]})} f(x^{[m]}) \\
+	&=& \frac{Z_q}{Z_p} \frac{1}{M} \sum_{m = 1}^M \widetilde{r}^{[m]} f(x^{[m]})
+\end{eqnarray}
+ここで定数$Z_p/Z_q$は次のように、サンプル$x^{[m]}$を用いて近似できる。
+\begin{eqnarray}
+	\frac{Z_p}{Z_q} &=& \frac{1}{Z_q} \int \widetilde{p}(x) dx = \int \widetilde{p}(x) \frac{1}{\widetilde{q}(x)} q(x) dx \simeq \frac{1}{M} \sum_{m = 1}^M \frac{\widetilde{p}(x^{[m]})}{\widetilde{q}(x^{[m]})} = \frac{1}{M} \sum_{m = 1}^M \widetilde{r}^{[m]}
+\end{eqnarray}
+従って、期待値$\mathbb{E}[f]$は次のようになる。
+\begin{eqnarray}
+	\mathbb{E}[f] &\simeq& \frac{Z_q}{Z_p} \frac{1}{M} \sum_{m = 1}^M \widetilde{r}^{[m]} f(x^{[m]}) \simeq \frac{\displaystyle \frac{1}{M} \sum_{m = 1}^M \widetilde{r}^{[m]} f(x^{[m]})}{\displaystyle \frac{1}{M} \sum_{l = 1}^M \widetilde{r}^{[l]}} = \sum_{m = 1}^M \frac{\displaystyle \widetilde{r}^{[m]}}{\displaystyle \sum_{l = 1}^M \widetilde{r}^{[l]}} f(x^{[m]}) = \sum_{m = 1}^M w^{[m]} f(x^{[m]})
+\end{eqnarray}
+重み$w^{[m]}$は次のように定められる。$\sum_m w^{[m]} = 1, w^{[m]} \ge 0$を満たすので、$w^{[m]}$($1 \le m \le M$)は離散的な確率分布となっている。
+\begin{equation}
+	w^{[m]} = \frac{\displaystyle \widetilde{r}^{[m]}}{\displaystyle \sum_{l = 1}^M \widetilde{r}^{[l]}} = \frac{\displaystyle \frac{\widetilde{p}(x^{[m]})}{\widetilde{q}(x^{[m]})}}{\displaystyle \sum_{l = 1}^M \frac{\widetilde{p}(x^{[l]})}{\widetilde{q}(x^{[l]})}}
+\end{equation}
+パーティクルフィルタの計算でも、上記の重点サンプリングの考え方が元となっている。即ち、提案分布$q(x)$からサンプリングされた標本$x^{[m]}$を、重み$\widetilde{w}^{[m]}$で補正することで、$\widetilde{w}^{[m]} x^{[m]}$が目標分布$p(x)$の近似表現となるように変換される。\newline
+
+\textbf{SIR}~(Sampling-Importance-Resampling)フィルタでは、上記の重点サンプリングとは異なり、2段階のサンプリングが行われる。最初のサンプリングでは、提案分布$q(x)$から$M$個のサンプル$\overline{\mathcal{X}} = \left\{ x^{[1]}, x^{[2]}, \cdots, x^{[M]} \right\}$が得られる。次に、各サンプル$x^{[m]}$に対して重み$w^{[m]}$が計算される。2度目のサンプリングでは、離散分布$\overline{\mathcal{X}}$から、重み$\left\{ w^{[1]}, w^{[2]}, \cdots, w^{[M]} \right\}$に比例する確率に従って、$M$個のサンプル$\mathcal{X}$が抽出される。このようにして得られる$\mathcal{X}$は、分布$p(x)$に従う。アルゴリズム\ref{alg:particle-filter}に示されるパーティクルフィルタの計算は、このSIRフィルタの枠組みに従っている。\newline
+
+$\mathcal{X}$の累積分布関数は、定義域内のある範囲$A$に、$x$が属する確率$p(x \in A)$として記述される。これは上記の期待値$\mathbb{E}[f]$の式において、$f(x) = I(x \in A)$としたものである。関数$I$は指示関数であり、指定された条件を満たす場合は$1$、そうでない場合は$0$となる。以下の式における$x^{[m]}$は、$\overline{\mathcal{X}}$に含まれる各サンプルであり、$w^{[m]}$は$x^{[m]}$に対応する重みである($\mathcal{X}$のものではないことに注意)。
+\begin{equation}
+	p(x \in A) = \int I(x \in A) p(x) dx = \mathbb{E}[I(x \in A)]
+\end{equation}
+\begin{equation}
+	\mathbb{E}[I(x \in A)] \simeq \sum_{m = 1}^M w^{[m]} I(x^{[m]} \in A) = \sum_{m : x^{[m]} \in A} w^{[m]}
+\end{equation}
+\begin{equation}
+	p(x \in A) \simeq \sum_{m : x^{[m]} \in A} w^{[m]} = \sum_{m = 1}^M I(x^{[m]} \in A) w^{[m]} = \frac{\displaystyle \sum_{m = 1}^M I(x^{[m]} \in A) \frac{\widetilde{p}(x^{[m]})}{\widetilde{q}(x^{[m]})}}{\displaystyle \sum_{l = 1}^M \frac{\widetilde{p}(x^{[l]})}{\widetilde{q}(x^{[l]})}}
+\end{equation}
+$M \to \infty$の極限において、総和は積分に置き換えられるので、$p(x) > 0 \to q(x) > 0$として
+\begin{eqnarray}
+	p(x \in A) &=& \frac{\displaystyle \int I(x \in A) \frac{\widetilde{p}(x)}{\widetilde{q}(x)} q(x) dx}{\displaystyle \int \frac{\widetilde{p}(x)}{\widetilde{q}(x)} q(x) dx} = \frac{\displaystyle \frac{1}{Z_q} \int I(x \in A) \widetilde{p}(x) dx}{\displaystyle \frac{1}{Z_q} \int \widetilde{p}(x) dx} = \frac{\displaystyle \int I(x \in A) \widetilde{p}(x) dx}{\displaystyle \int \widetilde{p}(x) dx} \nonumber \\
+	&=& \frac{1}{Z_p} \int I(x \in A) \widetilde{p}(x) dx = \int I(x \in A) p(x) dx
+\end{eqnarray}
+これは$p(x)$の累積分布関数となっている。
+
+\subsection{アルゴリズムの簡単な導出}
+アルゴリズムの導出にあたって、各パーティクルは状態の全履歴$x_{0 : t}^{[m]} = x_0^{[m]}, x_1^{[m]}, \cdots, x_t^{[m]}$を保持すると考える。このとき、時刻$t$のパーティクルの集合$\mathcal{X}_t$は、現在の状態$x_t$に対する事後信念$\bel(x_t) = p(x_t | z_{1 : t}, u_{1 : t})$ではなく、状態の履歴$x_{0 : t}$に対する事後信念$\bel(x_{0 : t}) = p(x_{0 : t} | z_{1 : t}, u_{1 : t})$を表現するものとなる。これは導出のために考える仮のパーティクルフィルタである。時刻$t - 1$における事後信念$\bel(x_{0 : t - 1})$、時刻$t$における制御$u_t$と計測$z_t$を入力として、時刻$t$における、状態のシーケンスに関する事後信念$\bel(x_{0 : t})$が計算される。\newline
+
+時刻$t - 1$において、パーティクルのセット$\mathcal{X}_{t - 1}$が事後信念$\bel(x_{0 : t - 1})$に従って分布していると仮定する。時刻$t$において、事後信念$\bel(x_{0 : t})$は次のようになる。
+\begin{eqnarray}
+	\bel(x_{0 : t}) &=& p(x_{0 : t} | z_{1 : t}, u_{1 : t}) \nonumber \\
+	&=& \frac{p(z_t | x_{0 : t}, z_{1 : t - 1}, u_{1 : t}) p(x_{0 : t} | z_{1 : t - 1}, u_{1 : t})}{p(z_t | z_{1 : t - 1}, u_{1 : t})} \nonumber \\
+	&=& \frac{p(z_t | x_t) p(x_{0 : t} | z_{1 : t - 1}, u_{1 : t})}{p(z_t | z_{1 : t - 1}, u_{1 : t})} \nonumber \\
+	&=& \eta p(z_t | x_t) p(x_{0 : t} | z_{1 : t - 1}, u_{1 : t}) \nonumber \\
+	&=& \eta p(z_t | x_t) \belp(x_{0 : t})
+\end{eqnarray}
+事前信念$\belp(x_{0 : t})$は更に次のように変形できる。
+\begin{eqnarray}
+	\belp(x_{0 : t}) &=& p(x_t | x_{0 : t - 1}, z_{1 : t - 1}, u_{1 : t}) p(x_{0 : t - 1} | z_{1 : t - 1}, u_{1 : t}) \nonumber \\
+	&=& p(x_t | x_{t - 1}, u_t) p(x_{0 : t - 1} | z_{1 : t - 1}, u_{1 : t - 1}) \\
+	&=& p(x_t | x_{t - 1}, u_t) \bel(x_{0 : t - 1})
+\end{eqnarray}
+事前信念$\belp(x_{0 : t})$の式は次のようなことを示唆している。事前信念を表現する各パーティクル$x_{0 : t}^{[m]}$は、時刻$t - 1$におけるパーティクル$x_{0 : t - 1}^{[m]}$を使い、分布$p(x_t | x_{0 : t - 1}^{[m]}, u_t) = p(x_t | x_{t - 1}^{[m]}, u_t)$に従ってサンプリングすることで得られる。$x_{0 : t - 1}^{[m]} \sim \bel(x_{0 : t - 1})$であるから($M \to \infty$の極限において成立)、$p(x_t | x_{t - 1}^{[m]}, u_t)$に従ったサンプリングで得られる一時的なパーティクルのセット$\overline{\mathcal{X}}_t$は、$\bel(x_{0 : t - 1})$と$p(x_t | x_{t - 1}^{[m]}, u_t)$との積の分布、即ち事前信念$\belp(x_{0 : t})$の近似表現となる。そして事後信念$\bel(x_{0 : t})$の式からは次のようなことが考えられる。$\overline{\mathcal{X}}_t$に含まれる各パーティクル$x_{0 : t}^{[m]} \sim \belp(x_{0 : t})$に対して、$\eta p(z_t | x_t^{[m]})$で重み付けをすることで、パーティクルの分布は$\belp(x_{0 : t})$と$\eta p(z_t | x_t^{[m]})$との積の分布、即ち事後信念$\bel(x_{0 : t})$を表したものとなる。即ち、重み$\eta p(z_t | x_t^{[m]})$に比例する確率で、パーティクル$x_{0 : t}^{[m]}$を$\overline{\mathcal{X}}_t$から選択すればよいことが分かる。パーティクル$x_{0 : t}^{[m]}$が分布$\bel(x_{0 : t})$に従うとき、時刻$t$における$x_t^{[m]}$は分布$\bel(x_t)$に従うと考えられるので、これよりパーティクルフィルタのアルゴリズムを導出できる。
+
+\subsection{アルゴリズムの導出の補足}
+先程のSIRフィルタと照らし合わせて考えると、提案分布$q(x)$は事前信念$\belp(x_{0 : t})$、目標分布$p(x)$は事後信念$\bel(x_{0 : t})$に対応する。パーティクルフィルタで得られるサンプル$\mathcal{X}$が、事後信念$\bel(x_{0 : t})$に漸近的に従うことを示す。$\mathcal{X}$の累積分布関数は、状態のシーケンス$x_{0 : t}$が、定義域内のある範囲$A$に属する確率$p(x_{0 : t} \in A)$として次のように表現される。以下の式において$x_{0 : t}^{[m]}$は、$\overline{\mathcal{X}}$に含まれる各パーティクルを表す($w^{[m]}$は$x_{0 : t}^{[m]}$に対応する重み)。
+\begin{equation}
+	p(x_{0 : t} \in A) = \sum_{m : x_{0 : t}^{[m]} \in A} w^{[m]} = \sum_{m = 1}^M I(x_{0 : t}^{[m]} \in A) w^{[m]} = \frac{\displaystyle \sum_{m = 1}^M I(x_{0 : t}^{[m]} \in A) \frac{\bel(x_{0 : t}^{[m]})}{\belp(x_{0 : t}^{[m]})}}{\displaystyle \sum_{l = 1}^M \frac{\bel(x_{0 : t}^{[l]})}{\belp(x_{0 : t}^{[l]})}}
+\end{equation}
+サンプル数$M \to \infty$の極限において、総和を積分に置き換えることにより、次のように変形できる。$M \to \infty$のとき、$\overline{\mathcal{X}}$に含まれる各標本$x_{0 : t}^{[m]}$は、事前信念の分布$\belp(x_{0 : t})$に従う。
+\begin{eqnarray}
+	p(x_{0 : t} \in A) &=& \frac{\displaystyle \int I(x_{0 : t} \in A) \frac{\bel(x_{0 : t})}{\belp(x_{0 : t})} \belp(x_{0 : t}) dx_{0 : t}}{\displaystyle \int \frac{\bel(x_{0 : t})}{\belp(x_{0 : t})} \belp(x_{0 : t}) dx_{0 : t}} = \frac{\displaystyle \int I(x_{0 : t} \in A) \bel(x_{0 : t}) dx_{0 : t}}{\displaystyle \int \bel(x_{0 : t}) dx_{0 : t}} \nonumber \\
+	&=& \int I(x_{0 : t} \in A) \bel(x_{0 : t}) dx_{0 : t}
+\end{eqnarray}
+これは事後信念$\bel(x_{0 : t})$の累積分布関数である。従って、リサンプリング後のパーティクルのセット$\mathcal{X}$は、事後信念$\bel(x_{0 : t})$の近似表現となる。事前信念$\belp(x_{0 : t})$から得られた、各標本$x_{0 : t}^{[m]} \in \overline{\mathcal{X}}$に対して適用される重み$w^{[m]}$は、$\bel(x_{0 : t}^{[m]})$と$\belp(x_{0 : t}^{[m]})$の比、即ち$\eta p(z_t | x_t^{[m]})$から求められる。
+
+\bibliographystyle{plain}
+\bibliography{particle-filter}
+
+\end{document}
