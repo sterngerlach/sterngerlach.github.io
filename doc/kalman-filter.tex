@@ -1,0 +1,382 @@
+
+% kalman-filter.tex
+
+\documentclass[dvipdfmx,a4paper]{jsarticle}
+
+\usepackage{docmute}
+\input{settings}
+
+\usepackage{geometry}
+\geometry{left=19.05mm,right=19.05mm,top=19.05mm,bottom=19.05mm}
+
+\title{カルマンフィルタ}
+\author{にゃーん}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+この資料は、文献~\cite{Thrun07}の3.2節を基に作成されています。
+
+\section{カルマンフィルタ}
+\subsection{カルマンフィルタとは}
+ベイズフィルタアルゴリズムを厳密に実行するのは現実的ではないため、実際に用いるためには、何らかの近似を施す必要がある。\textbf{ガウシアンフィルタ}はベイズフィルタの一種であり、信念分布$\bel(x_t)$を多変量ガウス分布で近似する。\textbf{カルマンフィルタ}や\textbf{情報フィルタ}は、ガウシアンフィルタの一種である。ガウス分布$\mathcal{N}(\mu, \Sigma)$は、平均$\mu$と共分散行列$\Sigma$の2つのパラメータで特徴付けられ、以下のように記述される。
+\begin{equation}
+	\mathcal{N}(x | \mu, \Sigma) = |2 \pi \Sigma|^{-\frac{1}{2}} \exp \left\{ -\frac{1}{2} \left( x - \mu \right)^T \Sigma^{-1} \left( x - \mu \right) \right\}
+\end{equation}
+ガウス分布の形状はユニモーダルである(極大点が一つしか存在しない)ため、信念分布$\bel(x_t) = p(x_t | z_{1 : t}, u_{1 : t})$をガウス分布で近似するということは、状態についてただ一つの仮説しか持たないことを意味する。即ち、観測$z_{1 : t}$と制御動作$u_{1 : t}$が与えられた下で、最も可能性の高いロボットの状態(付近の小さな不確かさ)についてのみ、事後信念$\bel(x_t)$が計算される。問題が困難な場合、与えられた観測$z_{1 : t}$と制御動作$u_{1 : t}$の下で、現在の状態$x_t$に対して複数の異なる仮説が同時に存在し得る(ロボットの現在位置の候補が複数存在する)。このとき事後信念はマルチモーダルで複雑な形状となるが、ガウス分布で事後信念を近似すれば、その中で最も可能性の高い仮説についてのみ考慮される。\newline
+
+ガウス分布には2つの表現方法がある。その1つは上述の通り、平均$\mu$と共分散行列$\Sigma$で表現するものである。もう一つは、情報ベクトル$\xi = \Sigma^{-1} \mu$と情報行列(精度行列) $\Omega = \Sigma^{-1}$を用いる方法である。カルマンフィルタは前者、情報フィルタは後者の表現を用いる。ガウス分布を信念分布$\bel(x_t)$の近似に用いるということは、状態$x_t$は連続変数でなければならず、$x_t$を構成する各変数の中に、離散変数が一つもあってはならないことを意味する。\newline
+
+カルマンフィルタは信念をガウス分布で近似するので、時刻$t$における信念分布$\bel(x_t)$を表現するためには、ガウス分布の平均$\mu_t$と共分散行列$\Sigma_t$の2つのパラメータさえあれば十分である。カルマンフィルタもベイズフィルタと同様に、時刻$t - 1$における事後信念$\bel(x_{t - 1})$から、時刻$t$における事後信念$\bel(x_t)$を計算する。事後信念は2つのパラメータで表現されるため、結局のところ$\mu_{t - 1}$と$\Sigma_{t - 1}$から、$\mu_t$と$\Sigma_t$が計算されることを意味する。
+
+\subsection{線形ガウス型モデル}
+カルマンフィルタの計算を続けるためには、フィルタの出力$\bel(x_t)$が、フィルタへの入力$\bel(x_{t - 1})$と同様にガウス分布にならないといけない。事後信念の分布が変化しないためには、以下の3つの条件を満たす必要がある。\newline
+
+最初に、状態遷移はガウス雑音を含んだ\textbf{線形関数}として記述される。ここで扱っている状態遷移は、時刻$t$でロボットに制御動作$u_t$が加わることにより、状態が$x_{t - 1}$から$x_t$に遷移するというものである。従って、現在の状態$x_t$が、直前の状態$x_{t - 1}$と制御動作$u_t$の線形関数として、次のように記述されることを要求する。
+\begin{equation}
+	x_t = A_t x_{t - 1} + B_t u_t + \varepsilon_t
+\end{equation}
+ロボットの状態ベクトル$x_t$の次元を$n$、制御動作ベクトル$u_t$の次元を$m$とすると、$A_t$は$n \times n$行列、$B_t$は$n \times m$行列となる。$\varepsilon_t$は、平均が零ベクトル、共分散行列が$R_t$のガウス分布に従う雑音である。
+\begin{equation}
+	\varepsilon_t \sim \mathcal{N}(\varepsilon_t | 0, R_t)
+\end{equation}
+$\varepsilon_t$の次元は、ロボットの状態ベクトル$x_t$と同じく$n$であるほか、$R_t$は$n \times n$の正方行列となる。$\varepsilon_t$は、状態遷移における不確かさをモデル化するために足される。$\varepsilon_t$がなければ、次の時刻における状態$x_t$は決定論的な関数として表されるが、ここでは確率的に決まるものとして考えるので$\varepsilon_t$が必要になる。上式のように、線形な式にガウス雑音が足されたモデルを、線形ガウスモデルという。ロボットにおいて、このような線形性を仮定するのは相当な無茶がある。例えばロボットの状態$x_t$が直交座標(デカルト座標)で表現されるとき、ロボットの回転運動は線形に記述できない。さて、$x_t$が上記のように表されるときの、状態遷移確率$p(x_t | x_{t - 1}, u_t)$を求める。$\varepsilon_t$のガウス分布の式を変形すると、次のようになる。
+\begin{eqnarray}
+	p(\varepsilon_t) &=& \mathcal{N}(\varepsilon_t | 0, R_t) \nonumber \\
+	&=& |2 \pi R_t|^{-\frac{1}{2}} \exp \left\{ -\frac{1}{2} \varepsilon_t^T R_t^{-1} \varepsilon_t \right\} \nonumber \\
+	&=& |2 \pi R_t|^{-\frac{1}{2}} \exp \left\{ -\frac{1}{2} \left( x_t - A_t x_{t - 1} - B_t u_t \right)^T R_t^{-1} \left( x_t - A_t x_{t - 1} - B_t u_t \right) \right\}
+\end{eqnarray}
+最後の式変形では$\varepsilon_t = x_t - A_t x_{t - 1} - B_t u_t$を代入している。これより$x_t$に関する式が得られたので、状態遷移確率$p(x_t | x_{t - 1}, u_t)$は次のようになる。これは、平均$A_t x_{t - 1} + B_t u_t$で共分散行列$R_t$の多変量ガウス分布である。
+\begin{eqnarray}
+	p(x_t | x_{t - 1}, u_t) &=& \mathcal{N}(x_t | A_t x_{t - 1} + B_t u_t, R_t) \\
+	&=& |2 \pi R_t|^{-\frac{1}{2}} \exp \left\{ -\frac{1}{2} \left( x_t - A_t x_{t - 1} - B_t u_t \right)^T R_t^{-1} \left( x_t - A_t x_{t - 1} - B_t u_t \right) \right\}
+\end{eqnarray}
+
+次に、計測もガウス雑音を含んだ\textbf{線形関数}として記述される。ロボットは$x_t$へと状態遷移した後に$z_t$を観測する。計測$z_t$が、現在の状態$x_t$の線形関数にガウス雑音が足された、次のような形式で記述されることを要求する。
+\begin{equation}
+	z_t = C_t x_t + \delta_t
+\end{equation}
+計測ベクトル$z_t$の次元を$k$とすると、$C_t$は$k \times n$行列となる。$\delta_t$は、平均が零ベクトル、共分散行列が$Q_t$のガウス分布に従う雑音である。$\delta_t$の次元は$k$、$Q_t$は$k \times k$の正方行列である。
+\begin{equation}
+	\delta_t \sim \mathcal{N}(\delta_t | 0, Q_t)
+\end{equation}
+$\delta_t$のガウス分布の式に$\delta_t = z_t - C_t x_t$を代入することで、$z_t$に関する式が得られる。
+\begin{eqnarray}
+	p(\delta_t) &=& \mathcal{N}(\delta_t | 0, Q_t) \nonumber \\
+	&=& |2 \pi Q_t|^{-\frac{1}{2}} \exp \left\{ -\frac{1}{2} \delta_t^T Q_t^{-1} \delta_t \right\} \\
+	&=& |2 \pi Q_t|^{-\frac{1}{2}} \exp \left\{ -\frac{1}{2} \left( z_t - C_t x_t \right)^T Q_t^{-1} \left( z_t - C_t x_t \right) \right\}
+\end{eqnarray}
+これより計測確率$p(z_t | x_t)$は次のようになる。これは、平均$C_t x_t$で共分散行列$Q_t$の多変量ガウス分布である。
+\begin{eqnarray}
+	p(z_t | x_t) &=& \mathcal{N}(z_t | C_t x_t, Q_t) \\
+	&=& |2 \pi Q_t|^{-\frac{1}{2}} \exp \left\{ -\frac{1}{2} \left( z_t - C_t x_t \right)^T Q_t^{-1} \left( z_t - C_t x_t \right) \right\}
+\end{eqnarray}
+
+最後に、初期状態$x_0$における事後信念$\bel(x_0)$はガウス分布として記述される。初期信念$\bel(x_0) = p(x_0)$は、ベイズフィルタやカルマンフィルタの計算を開始するために必要である。平均を$\mu_0$、共分散行列を$\Sigma_0$とするとき、初期信念$\bel(x_0)$は次のようになる。
+\begin{eqnarray}
+	\bel(x_0) &=& \mathcal{N}(x_0 | \mu_0, \Sigma_0) \\
+	&=& |2 \pi \Sigma_0|^{-\frac{1}{2}} \exp \left\{ -\frac{1}{2} \left( x_0 - \mu_0 \right)^T \Sigma_0^{-1} \left( x_0 - \mu_0 \right) \right\}
+\end{eqnarray}
+
+この3つの条件が満たされるとき、任意の時刻$t$において事後信念$\bel(x_t)$はガウス分布となる。従って、カルマンフィルタは、線形ガウスモデルに対して適用可能なアルゴリズムである。ガウス分布には幾つかの重要な性質がある。ガウス分布は、確率変数を線形変換してもガウス分布になる。即ち、変数$x$に関する確率分布$p(x)$がガウス分布であれば、線形変換$y = Ax + b$により得た変数$y$に関する確率分布$p(y)$もガウス分布になる。更に、2つの変数$x, y$の同時分布$p(x, y)$がガウス分布に従うとき、片方の変数が与えられた下での、もう片方の変数に関する条件付き分布$p(x | y), p(y | x)$はガウス分布に従うほか、周辺分布$p(x), p(y)$もガウス分布になる。これらの性質を活用することで、事後信念$\bel(x_t)$がガウス分布のままとなることを示せる。
+
+\subsection{アルゴリズム}
+カルマンフィルタは以下のアルゴリズム\ref{alg:kalman-filter}のように記述される。時刻$t$における事後信念$\bel(x_t)$は、平均$\mu_t$と共分散行列$\Sigma_t$の2つのパラメータで表現される。カルマンフィルタは、時刻$t$における制御$u_t$、計測$z_t$、時刻$t - 1$における事後信念$\bel(x_{t - 1})$のパラメータ$\mu_{t - 1}, \Sigma_{t - 1}$を入力として受け取り、時刻$t$における事後信念$\bel(x_t)$のパラメータ$\mu_t, \Sigma_t$を出力する。
+
+\begin{algorithm}[H]
+	\caption{カルマンフィルタ}
+	\label{alg:kalman-filter}
+	\begin{algorithmic}[1]
+		\Require
+			\Statex 時刻$t - 1$における事後信念$\bel(x_{t - 1})$の平均$\mu_{t - 1}$と共分散行列$\Sigma_{t - 1}$
+			\Statex 時刻$t$における制御$u_t$
+			\Statex 時刻$t$における計測$z_t$
+		\Ensure
+			\Statex 時刻$t$における事後信念$\bel(x_t)$の平均$\mu_t$と共分散行列$\Sigma_t$ \newline
+
+		\State 事前信念$\belp(x_t)$の平均$\overline{\mu}_t$を計算: $\overline{\mu}_t = A_t \mu_{t - 1} + B_t u_t$ \label{alg:kalman-filter-prediction-mu}
+		\State 事前信念$\belp(x_t)$の共分散行列$\overline{\Sigma}_t$を計算: $\overline{\Sigma}_t = A_t \Sigma_{t - 1} A_t^T + R_t$ \label{alg:kalman-filter-prediction-sigma}
+		\State カルマンゲイン$K_t$を計算: $K_t = \overline{\Sigma}_t C_t^T \left( C_t \overline{\Sigma}_t C_t^T + Q_t \right)^{-1}$ \label{alg:kalman-filter-gain}
+		\State 事後信念$\bel(x_t)$の平均$\mu_t$を計算: $\mu_t = \overline{\mu}_t + K_t \left( z_t - C_t \overline{\mu}_t \right)$ \label{alg:kalman-filter-correction-mu}
+		\State 事後信念$\bel(x_t)$の共分散行列$\Sigma_t$を計算: $\Sigma_t = \left( I - K_t C_t \right) \overline{\Sigma}_t$ \label{alg:kalman-filter-correction-sigma}
+	\end{algorithmic}
+\end{algorithm}
+
+カルマンフィルタは最初に、時刻$t$における事前信念$\belp(x_t)$の、平均$\overline{\mu}_t$と共分散行列$\overline{\Sigma}_t$を計算する。平均$\overline{\mu}_t$は、状態遷移に関する式$x_t = A_t x_{t - 1} + B_t u_t + \varepsilon_t$からガウス雑音の項$\varepsilon_t$を取り除いて、決定論的な部分($A_t x_{t - 1} + B_t u_t$)のみを残し、$x_{t - 1}$を$\mu_{t - 1}$に置き換えたものに対応する。従って$\overline{\mu}_t$は、雑音がないと仮定し、前時刻において最も可能性の高いロボットの状態$\mu_{t - 1}$を使って、状態遷移を計算したものと解釈できる。状態遷移では以前の状態$x_{t - 1}$が、$A_t x_{t - 1}$の項として(行列$A_t$が乗算されたうえで)新しい状態$x_t$に反映される。これと対応して、以前の共分散$\Sigma_{t - 1}$は、行列$A_t$が両側から掛けられた$A_t \Sigma_{t - 1} A_t^T$として、新たな共分散$\overline{\Sigma}_t$に反映される。共分散$\overline{\Sigma}_t$には、状態遷移に加わるガウス雑音の共分散$R_t$も加算される。この$\overline{\mu}_t$と$\overline{\Sigma}_t$の計算は、以前の事後信念$\bel(x_{t - 1})$に、状態遷移確率$p(x_t | x_{t - 1}, u_t)$を反映して、新たな事前信念$\belp(x_t)$を得ることに相当する。即ち、制御$u_t$を処理することで、現在の状態$x_t$に対する予測を立てている。予測は$\overline{\mu}_t$、それに対する不確かさは$\overline{\Sigma}_t$で表現される。\newline
+
+その後、事後信念$\bel(x_t)$の平均$\mu_t$と共分散行列$\Sigma_t$が計算される。平均$\mu_t$の計算において、項$C_t \overline{\mu}_t$は、計測に関する式$z_t = C_t x_t + \delta_t$からガウス雑音の項$\delta_t$を除き、$x_t = \overline{\mu}_t$を代入したものである。従って$C_t \overline{\mu}_t$は、雑音が混入せず、状態$x_t$に関する現在の予測$\overline{\mu}_t$が正しいという仮定の下で、期待される観測$z_t$を意味する。端的に表すと$C_t \overline{\mu}_t$とは、$\overline{\mu}_t$から計測確率によって予想された計測である。それゆえ項$z_t - C_t \overline{\mu}_t$は、実際の計測値と、モデルから予測された計測値との\textbf{差異}を表している。この差異は\textbf{イノベーション}とよばれる。\newline
+
+制御動作$u_t$のみから得られた中間的な予測$\overline{\mu}_t$は、イノベーションとカルマンゲインからなる項$K_t \left( z_t - C_t \overline{\mu}_t \right)$により修正され、時刻$t$に対する最終的な状態予測$\mu_t$となる。即ち、予測された状態$\overline{\mu}_t$に対する修正量は、カルマンゲインとイノベーションの双方に比例する。イノベーションに比例して、状態予測が修正されるのは理に適っている。現在の予測から推定される計測$C_t \overline{\mu}_t$が、実際の計測$z_t$とかけ離れていれば、現在の状態予測$\overline{\mu}_t$には大きな誤差があるに違いないからである。また平均$\mu_t$の式を変形すると$\mu_t = \left( I - K_t C_t \right) \overline{\mu}_t + K_t z_t$となる。計測$z_t$は$K_t z_t$として足されているので、カルマンゲイン$K_t$は、計測$z_t$を新たな状態推定にどの程度反映させるか決定する、重要な行列だと分かる。$\mu_t$と$\Sigma_t$の計算は、予測ステップで得られた事前信念$\belp(x_t)$に計測確率$p(z_t | x_t)$を乗算して、新たな事後信念$\bel(x_t)$を得る操作と等価になる。即ち、計測$z_t$を処理することで、状態に対する予測$x_t$を修正し精度を高めている。\newline
+
+ロボットの動作$u_t$が状態に反映されると、新たな状態はノイズを考慮して確率的に生成されるため、状態に対する不確かさが増大する。これより事前信念$\belp(x_t)$の分布は、前回の事後信念$\bel(x_{t - 1})$よりも広がりをもつようになる。その後、ロボットの計測$z_t$により予測が修正されると、予測された状態の信頼性が増す(より洗練された予測を得られる)ので、状態に対する不確かさは減少する。従って事後信念$\bel(x_t)$の分布は、事前信念$\belp(x_t)$よりも通常狭くなる。
+
+\subsection{アルゴリズムの導出}
+カルマンフィルタの導出は非常に長くなるので、予測ステップと修正ステップの2つに分割する。証明は、先述のガウス分布に関する幾つかの性質を用いて行われる。状態遷移と計測がいずれもガウスノイズを含んだ線形関数として記述され、そして初期信念がガウス分布で表されるという仮定は、任意の時刻$t$において事後信念$\bel(x_t)$がガウス分布となるために必要不可欠なものである。
+
+\subsubsection{予測ステップ}
+アルゴリズム\ref{alg:kalman-filter}の\ref{alg:kalman-filter-prediction-mu}行目と\ref{alg:kalman-filter-prediction-sigma}行目を証明する。何度も示している通り、予測ステップでは制御$u_t$が処理され、時刻$t - 1$における事後信念$\bel(x_{t - 1})$と状態遷移確率$p(x_t | x_{t - 1}, u_t)$から、時刻$t$における事前信念$\belp(x_t)$が計算される。ベイズフィルタにおける予測ステップは次のように記述された。
+\begin{equation}
+	\belp(x_t) = \int p(x_t | x_{t - 1}, u_t) \bel(x_{t - 1}) dx_{t - 1}
+\end{equation}
+分布$\bel(x_{t - 1})$や$p(x_t | x_{t - 1}, u_t)$の形状を特に限定しない場合、変数$x_{t - 1}$に関する上記の積分を厳密に実行するのは困難である。しかしカルマンフィルタでは、2つの分布はガウス分布に限定されるため、上記の積分を解析的に実行できる。信念分布$\bel(x_{t - 1}) = p(x_{t - 1} | z_{1 : t - 1}, u_{1 : t - 1})$は、平均$\mu_{t - 1}$で共分散行列$\Sigma_{t - 1}$のガウス分布$\mathcal{N}(x_{t - 1} | \mu_{t - 1}, \Sigma_{t - 1})$である。状態遷移確率$p(x_t | x_{t - 1}, u_t)$も、平均$A_t x_{t - 1} + B_t u_t$で共分散行列$R_t$のガウス分布$\mathcal{N}(x_t | A_t x_{t - 1} + B_t u_t, R_t)$となる。ここでは、積分によって得られる分布$\belp(x_t)$がガウス分布となり、その平均が$\overline{\mu}_t = A_t \mu_{t - 1} + B_t u_t$で、共分散行列が$\overline{\Sigma}_t = A_t \Sigma_{t - 1} A_t^T + R_t$となることを示す。\newline
+
+$p(x_t | x_{t - 1}, u_t)$に$\mathcal{N}(x_t | A_t x_{t - 1} + B_t u_t, R_t)$、$\bel(x_{t - 1})$に$\mathcal{N}(x_{t - 1} | \mu_{t - 1}, \Sigma_{t - 1})$を代入する。
+\begin{eqnarray}
+	\belp(x_t) &=& \int \left[ | 2 \pi R_t |^{-\frac{1}{2}} \exp \left\{ -\frac{1}{2} \left( x_t - A_t x_{t - 1} - B_t u_t \right)^T R_t^{-1} \left( x_t - A_t x_{t - 1} - B_t u_t \right) \right\} \right] \nonumber \\
+	&& \qquad \left[ | 2 \pi \Sigma_{t - 1} |^{-\frac{1}{2}} \exp \left\{ -\frac{1}{2} \left( x_{t - 1} - \mu_{t - 1} \right)^T \Sigma_{t - 1}^{-1} \left( x_{t - 1} - \mu_{t - 1} \right) \right\} \right] dx_{t - 1} \\
+	&=& \eta \int \exp \left\{ - L_t \right\} dx_{t - 1}
+\end{eqnarray}
+ここで$\eta = |2 \pi R_t|^{-\frac{1}{2}} |2 \pi \Sigma_{t - 1}|^{-\frac{1}{2}}$は定数項である($R_t$と$\Sigma_{t - 1}$のいずれも定数)。また$L_t$は指数関数の中身であり、次のようになる。
+\begin{eqnarray}
+	L_t &=& \frac{1}{2} \left( x_t - A_t x_{t - 1} - B_t u_t \right)^T R_t^{-1} \left( x_t - A_t x_{t - 1} - B_t u_t \right) + \frac{1}{2} \left( x_{t - 1} - \mu_{t - 1} \right)^T \Sigma_{t - 1}^{-1} \left( x_{t - 1} - \mu_{t - 1} \right)
+\end{eqnarray}
+$x_{t - 1}$に関する積分を解くために、$L_t$を2つの項$L_t^{(1)}(x_{t - 1}, x_t)$、$L_t^{(2)}(x_t)$に分解することを考える。
+\begin{equation}
+	L_t = L_t^{(1)}(x_{t - 1}, x_t) + L_t^{(2)}(x_t)
+\end{equation}
+$L_t^{(1)}(x_{t - 1}, x_t)$は$x_{t - 1}$と$x_t$に依存する項、$L_t^{(2)}(x_t)$は$x_t$にのみ依存する項である。このとき以下のように、被積分項から$L_t^{(2)}(x_t)$を定数として取り除くことができる。
+\begin{eqnarray}
+	\belp(x_t) &=& \eta \int \exp \left\{ -L_t \right\} dx_{t - 1} \nonumber \\
+	&=& \eta \int \exp \left\{ -L_t^{(1)}(x_{t - 1}, x_t) - L_t^{(2)}(x_t) \right\} dx_{t - 1} \nonumber \\
+	&=& \eta \exp \left\{ -L_t^{(2)}(x_t) \right\} \int \exp \left\{ -L_t^{(1)}(x_{t - 1}, x_t) \right\} dx_{t - 1}
+\end{eqnarray}
+ここでの目標は、上式の積分が、正規化されていないガウス分布となるように、$L_t$をうまく分解することである。即ち$L_t^{(1)}(x_{t - 1}, x_t)$が、ガウス分布の指数部と同様の形式の、二次関数となるように分解する。それにより、積分の値がガウス分布の正規化係数の逆数となって、$x_{t - 1}$や$x_t$に依存しない定数とみなせる。もう一つの目標は、$L_t^{(2)}(x_t)$を、ガウス分布の指数部と同様の二次関数とすることである。この2つの目標が達成されると、事前信念$\belp(x_t)$は次のようなガウス分布として記述できる。以下の式において積分の結果は定数であるので、先程の$\eta$と合わせて$\eta'$と記述する。
+\begin{equation}
+	\belp(x_t) = \eta' \exp \left\{ -L_t^{(2)}(x_t) \right\}
+\end{equation}
+それでは上記の2つの目標を見据えて、$L_t$を2つの項$L_t^{(1)}(x_{t - 1}, x_t)$と$L_t^{(2)}(x_t)$に分解する。最初に、$L_t$を$x_{t - 1}$に関する2次式、1次式、定数項の3つに分類する。2次式には二重下線、1次式には下線が引かれている。
+\begin{eqnarray}
+	L_t &=& \frac{1}{2} \left( x_t - A_t x_{t - 1} - B_t u_t \right)^T R_t^{-1} \left( x_t - A_t x_{t - 1} - B_t u_t \right) + \frac{1}{2} \left( x_{t - 1} - \mu_{t - 1} \right)^T \Sigma_{t - 1}^{-1} \left( x_{t - 1} - \mu_{t - 1} \right) \nonumber \\
+	&=& \frac{1}{2} \left( A_t x_{t - 1} - \left( x_t - B_t u_t \right) \right)^T R_t^{-1} \left( A_t x_{t - 1} - \left( x_t - B_t u_t \right) \right) + \frac{1}{2} \left( x_{t - 1} - \mu_{t - 1} \right)^T \Sigma_{t - 1}^{-1} \left( x_{t - 1} - \mu_{t - 1} \right) \nonumber \\
+	&=& \underline{\underline{\frac{1}{2} x_{t - 1}^T A_t^T R_t^{-1} A_t x_{t - 1}}} \underline{-\left( x_t - B_t u_t \right)^T R_t^{-1} A_t x_{t - 1}} + \frac{1}{2} \left( x_t - B_t u_t \right)^T R_t^{-1} \left( x_t - B_t u_t \right) + \nonumber \\
+	&& \qquad \underline{\underline{\frac{1}{2} x_{t - 1}^T \Sigma_{t - 1}^{-1} x_{t - 1}}} \underline{-\mu_{t - 1}^T \Sigma_{t - 1}^{-1} x_{t - 1}} + \frac{1}{2} \mu_{t - 1}^T \Sigma_{t - 1}^{-1} \mu_{t - 1} \nonumber \\
+	&=& \underline{\underline{\frac{1}{2} x_{t - 1}^T \left( A_t^T R_t^{-1} A_t + \Sigma_{t - 1}^{-1} \right) x_{t - 1}}} \underline{-\left( \left( x_t - B_t u_t \right)^T R_t^{-1} A_t + \mu_{t - 1}^T \Sigma_{t - 1}^{-1} \right) x_{t - 1}} + \nonumber \\
+	&& \qquad \frac{1}{2} \left( x_t - B_t u_t \right)^T R_t^{-1} \left( x_t - B_t u_t \right) + \frac{1}{2} \mu_{t - 1}^T \Sigma_{t - 1}^{-1} \mu_{t - 1}
+\end{eqnarray}
+$x_{t - 1}$に関する2次式と1次式を使って平方完成を行い、$L_t^{(1)}(x_{t - 1}, x_t)$を構成する。
+\begin{eqnarray}
+	&& \frac{1}{2} x_{t - 1}^T \left( A_t^T R_t^{-1} A_t + \Sigma_{t - 1}^{-1} \right) x_{t - 1} -\left( \left( x_t - B_t u_t \right)^T R_t^{-1} A_t + \mu_{t - 1}^T \Sigma_{t - 1}^{-1} \right) x_{t - 1} \nonumber \\
+	&=& \frac{1}{2} \left( x_{t - 1} - \left( A_t^T R_t^{-1} A_t + \Sigma_{t - 1}^{-1} \right)^{-1} \left( \left( x_t - B_t u_t \right)^T R_t^{-1} A_t + \mu_{t - 1}^T \Sigma_{t - 1}^{-1} \right)^T \right)^T \left( A_t^T R_t^{-1} A_t + \Sigma_{t - 1}^{-1} \right) \nonumber \\
+	&& \qquad \left( x_{t - 1} - \left( A_t^T R_t^{-1} A_t + \Sigma_{t - 1}^{-1} \right)^{-1} \left( \left( x_t - B_t u_t \right)^T R_t^{-1} A_t + \mu_{t - 1}^T \Sigma_{t - 1}^{-1} \right)^T \right) - \nonumber \\
+	&& \qquad \frac{1}{2} \left( \left( x_t - B_t u_t \right)^T R_t^{-1} A_t + \mu_{t - 1}^T \Sigma_{t - 1}^{-1} \right) \left( A_t^T R_t^{-1} A_t + \Sigma_{t - 1}^{-1} \right)^{-1} \left( \left( x_t - B_t u_t \right)^T R_t^{-1} A_t + \mu_{t - 1}^T \Sigma_{t - 1}^{-1} \right)^T \nonumber \\
+	&=& \frac{1}{2} \left( x_{t - 1} - \Psi_t \left( \left( x_t - B_t u_t \right)^T R_t^{-1} A_t + \mu_{t - 1}^T \Sigma_{t - 1}^{-1} \right)^T \right)^T \Psi_t^{-1} \nonumber \\
+	&& \qquad \left( x_{t - 1} - \Psi_t \left( \left( x_t - B_t u_t \right)^T R_t^{-1} A_t + \mu_{t - 1}^T \Sigma_{t - 1}^{-1} \right)^T \right) - \nonumber \\
+	&& \qquad \frac{1}{2} \left( \left( x_t - B_t u_t \right)^T R_t^{-1} A_t + \mu_{t - 1}^T \Sigma_{t - 1}^{-1} \right) \Psi_t \left( \left( x_t - B_t u_t \right)^T R_t^{-1} A_t + \mu_{t - 1}^T \Sigma_{t - 1}^{-1} \right)^T \\
+	&=& L_t^{(1)}(x_{t - 1}, x_t) - \frac{1}{2} \left( \left( x_t - B_t u_t \right)^T R_t^{-1} A_t + \mu_{t - 1}^T \Sigma_{t - 1}^{-1} \right) \Psi_t \left( \left( x_t - B_t u_t \right)^T R_t^{-1} A_t + \mu_{t - 1}^T \Sigma_{t - 1}^{-1} \right)^T
+\end{eqnarray}
+ここで$\Psi_t = \left( A_t^T R_t^{-1} A_t + \Sigma_{t - 1}^{-1} \right)^{-1}$と定めた。上記の最初の式変形が成り立つのは、$\Psi_t$が対称行列であることによる。$\Psi_t$が対称行列であることは容易に示せる。$R_t$は、状態遷移において加わるガウス雑音の共分散行列である。また$\Sigma_{t - 1}$は、ガウス分布で表現された事後信念$\bel(x_{t - 1})$の共分散行列である。従って$R_t$と$\Sigma_{t - 1}$はいずれも半正定値の対称行列であるから、$R_t^T = R_t$と$\Sigma_{t - 1}^T = \Sigma_{t - 1}$が成り立つ。
+\begin{eqnarray}
+	\Psi_t^T &=& \left( \left( A_t^T R_t^{-1} A_t + \Sigma_{t - 1}^{-1} \right)^{-1} \right)^T = \left( \left( A_t^T R_t^{-1} A_t + \Sigma_{t - 1}^{-1} \right)^T \right)^{-1} = \nonumber \\
+	&=& \left( \left( A_t^T R_t^{-1} A_t \right)^T + \left( \Sigma_{t - 1}^{-1} \right)^T \right)^{-1} = \left( A_t^T \left( R_t^{-1} \right)^T \left( A_t^T \right)^T + \left( \Sigma_{t - 1}^T \right)^{-1} \right)^{-1} \nonumber \\
+	&=& \left( A_t^T \left( R_t^T \right)^{-1} A_t + \Sigma_{t - 1}^{-1} \right)^{-1} = \left( A_t^T R_t^{-1} A_t + \Sigma_{t - 1}^{-1} \right)^{-1} = \Psi_t
+\end{eqnarray}
+$\Psi_t$が対称行列であるから、上式の平方完成を再度展開すれば、元の1次式の項が出現する。
+\begin{eqnarray}
+	&& \left( \Psi_t \left( \left( x_t - B_t u_t \right)^T R_t^{-1} A_t + \mu_{t - 1}^T \Sigma_{t - 1}^{-1} \right)^T \right)^T \Psi_t^{-1} x_{t - 1} \nonumber \\
+	&=& \left( \left( x_t - B_t u_t \right)^T R_t^{-1} A_t + \mu_{t - 1}^T \Sigma_{t - 1}^{-1} \right) \Psi_t^T \Psi_t^{-1} x_{t - 1} \nonumber \\
+	&=& \left( \left( x_t - B_t u_t \right)^T R_t^{-1} A_t + \mu_{t - 1}^T \Sigma_{t - 1}^{-1} \right) \Psi_t \Psi_t^{-1} x_{t - 1} \nonumber \\
+	&=& \left( \left( x_t - B_t u_t \right)^T R_t^{-1} A_t + \mu_{t - 1}^T \Sigma_{t - 1}^{-1} \right) x_{t - 1}
+\end{eqnarray}
+平方完成により得た項$L_1^{(1)}(x_{t - 1}, x_t)$は、ガウス分布の指数部と同様の二次式となっている。そして導出から明らかなように、$L_t$の$x_{t - 1}$に関する項は全て$L_1^{(1)}(x_{t - 1}, x_t)$に集められている。$L_t$から$x_{t - 1}$に関する全ての2次式と1次式を取り出して、平方完成した結果を$L_1^{(1)}(x_{t - 1}, x_t)$と定めたからである。
+\begin{eqnarray}
+	L_1^{(1)}(x_{t - 1}, x_t) &=& \frac{1}{2} \left( x_{t - 1} - \Psi_t \left( \left( x_t - B_t u_t \right)^T R_t^{-1} A_t + \mu_{t - 1}^T \Sigma_{t - 1}^{-1} \right)^T \right)^T \Psi_t^{-1} \nonumber \\
+	&& \qquad \left( x_{t - 1} - \Psi_t \left( \left( x_t - B_t u_t \right)^T R_t^{-1} A_t + \mu_{t - 1}^T \Sigma_{t - 1}^{-1} \right)^T \right)
+\end{eqnarray}
+平方完成の結果を、$L_t$の式(以下の下線部)に再度代入すると、次のようになる。先述の通り$R_t$と$\Sigma_{t - 1}$は対称行列であるから、以下の式変形では$\left( R_t^{-1} \right)^T = \left( R_t^T \right)^{-1} = R_t^{-1}$と$\left( \Sigma_{t - 1}^{-1} \right)^T = \left( \Sigma_{t - 1}^T \right)^{-1} = \Sigma_{t - 1}^{-1}$が成り立つことを利用する。
+\begin{eqnarray}
+	L_t &=& \underline{\frac{1}{2} x_{t - 1}^T \left( A_t^T R_t^{-1} A_t + \Sigma_{t - 1}^{-1} \right) x_{t - 1} - \left( \left( x_t - B_t u_t \right)^T R_t^{-1} A_t + \mu_{t - 1}^T \Sigma_{t - 1}^{-1} \right) x_{t - 1}} + \nonumber \\
+	&& \qquad \frac{1}{2} \left( x_t - B_t u_t \right)^T R_t^{-1} \left( x_t - B_t u_t \right) + \frac{1}{2} \mu_{t - 1}^T \Sigma_{t - 1}^{-1} \mu_{t - 1} \nonumber \\
+	&=& \underline{L_t^{(1)}(x_{t - 1}, x_t) - \frac{1}{2} \left( \left( x_t - B_t u_t \right)^T R_t^{-1} A_t + \mu_{t - 1}^T \Sigma_{t - 1}^{-1} \right) \Psi_t \left( \left( x_t - B_t u_t \right)^T R_t^{-1} A_t + \mu_{t - 1}^T \Sigma_{t - 1}^{-1} \right)^T} + \nonumber \\
+	&& \qquad \frac{1}{2} \left( x_t - B_t u_t \right)^T R_t^{-1} \left( x_t - B_t u_t \right) + \frac{1}{2} \mu_{t - 1}^T \Sigma_{t - 1}^{-1} \mu_{t - 1} \nonumber \\
+	&=& L_t^{(1)}(x_{t - 1}, x_t) - \frac{1}{2} \left( x_t - B_t u_t \right)^T R_t^{-1} A_t \Psi_t \left( \left( x_t - B_t u_t \right)^T R_t^{-1} A_t \right)^T - \nonumber \\
+	&& \qquad \mu_{t - 1}^T \Sigma_{t - 1}^{-1} \Psi_t \left( \left( x_t - B_t u_t \right)^T R_t^{-1} A_t \right)^T - \frac{1}{2} \mu_{t - 1}^T \Sigma_{t - 1}^{-1} \Psi_t \left( \mu_{t - 1}^T \Sigma_{t - 1}^{-1} \right)^T + \nonumber \\
+	&& \qquad \frac{1}{2} \left( x_t - B_t u_t \right)^T R_t^{-1} \left( x_t - B_t u_t \right) + \frac{1}{2} \mu_{t - 1}^T \Sigma_{t - 1}^{-1} \mu_{t - 1} \nonumber \\
+	&=& L_t^{(1)}(x_{t - 1}, x_t) - \frac{1}{2} \left( x_t - B_t u_t \right)^T R_t^{-1} A_t \Psi_t A_t^T \left( R_t^{-1} \right)^T \left( x_t - B_t u_t \right) - \nonumber \\
+	&& \qquad \mu_{t - 1}^T \Sigma_{t - 1}^{-1} \Psi_t A_t^T \left( R_t^{-1} \right)^T \left( x_t - B_t u_t \right) - \frac{1}{2} \mu_{t - 1}^T \Sigma_{t - 1}^{-1} \Psi_t \left( \Sigma_{t - 1}^{-1} \right)^T \mu_{t - 1} + \nonumber \\
+	&& \qquad \frac{1}{2} \left( x_t - B_t u_t \right)^T R_t^{-1} \left( x_t - B_t u_t \right) + \frac{1}{2} \mu_{t - 1}^T \Sigma_{t - 1}^{-1} \mu_{t - 1} \nonumber \\
+	&=& L_t^{(1)}(x_{t - 1}, x_t) - \frac{1}{2} \left( x_t - B_t u_t \right)^T R_t^{-1} A_t \Psi_t A_t^T R_t^{-1} \left( x_t - B_t u_t \right) - \nonumber \\
+	&& \qquad \mu_{t - 1}^T \Sigma_{t - 1}^{-1} \Psi_t A_t^T R_t^{-1} \left( x_t - B_t u_t \right) - \frac{1}{2} \mu_{t - 1}^T \Sigma_{t - 1}^{-1} \Psi_t \Sigma_{t - 1}^{-1} \mu_{t - 1} + \nonumber \\
+	&& \qquad \frac{1}{2} \left( x_t - B_t u_t \right)^T R_t^{-1} \left( x_t - B_t u_t \right) + \frac{1}{2} \mu_{t - 1}^T \Sigma_{t - 1}^{-1} \mu_{t - 1}
+\end{eqnarray}
+$L_t^{(1)}(x_{t - 1}, x_t)$を除いた部分について、$x_t - B_t u_t$に関する2次式、1次式、定数項の3つに分類する。2次式には二重下線、1次式には下線が引かれている。
+\begin{eqnarray}
+	L_t &=& L_t^{(1)}(x_{t - 1}, x_t) + \underline{\underline{\frac{1}{2} \left( x_t - B_t u_t \right)^T \left[ R_t^{-1} - R_t^{-1} A_t \Psi_t A_t^T R_t^{-1} \right] \left( x_t - B_t u_t \right)}} \nonumber \\
+	&& \qquad \underline{- \mu_{t - 1}^T \Sigma_{t - 1}^{-1} \Psi_t A_t^T R_t^{-1} \left( x_t - B_t u_t \right)} + \frac{1}{2} \mu_{t - 1}^T \left[ \Sigma_{t - 1}^{-1} - \Sigma_{t - 1}^{-1} \Psi_t \Sigma_{t - 1}^{-1} \right] \mu_{t - 1}
+\end{eqnarray}
+
+$x_t - B_t u_t$に関する2次式と1次式を使って平方完成を行う。
+\begin{eqnarray}
+	&& \frac{1}{2} \left( x_t - B_t u_t \right)^T \left[ R_t^{-1} - R_t^{-1} A_t \Psi_t A_t^T R_t^{-1} \right] \left( x_t - B_t u_t \right) - \mu_{t - 1}^T \Sigma_{t - 1}^{-1} \Psi_t A_t^T R_t^{-1} \left( x_t - B_t u_t \right) \nonumber \\
+	&=& \frac{1}{2} \left( x_t - B_t u_t - \left[ R_t^{-1} - R_t^{-1} A_t \Psi_t A_t^T R_t^{-1} \right]^{-1} \left( \mu_{t - 1}^T \Sigma_{t - 1}^{-1} \Psi_t A_t^T R_t^{-1} \right)^T \right)^T \left[ R_t^{-1} - R_t^{-1} A_t \Psi_t A_t^T R_t^{-1} \right] \nonumber \\
+	&& \qquad \left( x_t - B_t u_t - \left[ R_t^{-1} - R_t^{-1} A_t \Psi_t A_t^T R_t^{-1} \right]^{-1} \left( \mu_{t - 1}^T \Sigma_{t - 1}^{-1} \Psi_t A_t^T R_t^{-1} \right)^T \right) - \nonumber \\
+	&& \qquad \frac{1}{2} \left( \mu_{t - 1}^T \Sigma_{t - 1}^{-1} \Psi_t A_t^T R_t^{-1} \right) \left[ R_t^{-1} - R_t^{-1} A_t \Psi_t A_t^T R_t^{-1} \right]^{-1} \left( \mu_{t - 1}^T \Sigma_{t - 1}^{-1} \Psi_t A_t^T R_t^{-1} \right)^T
+\end{eqnarray}
+ここで、以下に示す\textbf{ウッドベリー行列恒等式}を逆方向に用いて、上記の$R_t^{-1} - R_t^{-1} A_t \Psi_t A_t^T R_t^{-1}$を簡略化する。
+\begin{equation}
+	\left( A + B D^{-1} C \right)^{-1} = A^{-1} - A^{-1} B \left( D + C A^{-1} B \right)^{-1} C A^{-1}
+\end{equation}
+上記の恒等式に$A = R_t$、$B = A_t$、$C = A_t^T$、$D = \Sigma_{t - 1}^{-1}$を代入すれば以下を得る。
+\begin{equation}
+	R_t^{-1} - R_t^{-1} A_t \Psi_t A_t^T R_t^{-1} = R_t^{-1} - R_t^{-1} A_t \left( A_t^T R_t^{-1} A_t + \Sigma_{t - 1}^{-1} \right)^{-1} A_t^T R_t^{-1} = \left( R_t + A_t \Sigma_{t - 1} A_t^T \right)^{-1}
+\end{equation}
+従って平方完成の結果は次のように書ける。
+\begin{eqnarray}
+	&& \frac{1}{2} \left( x_t - B_t u_t - \left( R_t + A_t \Sigma_{t - 1} A_t^T \right) \left( \mu_{t - 1}^T \Sigma_{t - 1}^{-1} \Psi_t A_t^T R_t^{-1} \right)^T \right)^T \left( R_t + A_t \Sigma_{t - 1} A_t^T \right)^{-1} \nonumber \\
+	&& \qquad \left( x_t - B_t u_t - \left( R_t + A_t \Sigma_{t - 1} A_t^T \right) \left( \mu_{t - 1}^T \Sigma_{t - 1}^{-1} \Psi_t A_t^T R_t^{-1} \right)^T \right) - \nonumber \\
+	&& \qquad \frac{1}{2} \left( \mu_{t - 1}^T \Sigma_{t - 1}^{-1} \Psi_t A_t^T R_t^{-1} \right) \left( R_t + A_t \Sigma_{t - 1} A_t^T \right) \left( \mu_{t - 1}^T \Sigma_{t - 1}^{-1} \Psi_t A_t^T R_t^{-1} \right)^T
+\end{eqnarray}
+上式に現れる$\left( R_t + A_t \Sigma_{t - 1} A_t^T \right) \left( \mu_{t - 1}^T \Sigma_{t - 1}^{-1} \Psi_t A_t^T R_t^{-1} \right)^T$の部分は、次のように非常に単純になる。
+\begin{eqnarray}
+	&& \left( R_t + A_t \Sigma_{t - 1} A_t^T \right) \left( \mu_{t - 1}^T \Sigma_{t - 1}^{-1} \Psi_t A_t^T R_t^{-1} \right)^T \nonumber \\
+	&=& \left( R_t + A_t \Sigma_{t - 1} A_t^T \right) R_t^{-1} A_t \Psi_t \Sigma_{t - 1}^{-1} \mu_{t - 1} \nonumber \\
+	&=& \left( R_t + A_t \Sigma_{t - 1} A_t^T \right) R_t^{-1} A_t \left( A_t^T R_t^{-1} A_t + \Sigma_{t - 1}^{-1} \right)^{-1} \Sigma_{t - 1}^{-1} \mu_{t - 1} \nonumber \\
+	&=& \left( A_t + A_t \Sigma_{t - 1} A_t^T R_t^{-1} A_t \right) \left( A_t^T R_t^{-1} A_t + \Sigma_{t - 1}^{-1} \right)^{-1} \Sigma_{t - 1}^{-1} \mu_{t - 1} \nonumber \\
+	&=& \left( A_t + A_t \Sigma_{t - 1} A_t^T R_t^{-1} A_t \right) \left( \Sigma_{t - 1} A_t^T R_t^{-1} A_t + I \right)^{-1} \mu_{t - 1} \nonumber \\
+	&=& A_t \left( I + \Sigma_{t - 1} A_t^T R_t^{-1} A_t \right) \left( \Sigma_{t - 1} A_t^T R_t^{-1} A_t + I \right)^{-1} \mu_{t - 1} \nonumber \\
+	&=& A_t \mu_{t - 1}
+\end{eqnarray}
+これより平方完成の結果を再度書き直し、更に$L_t^{(2)}(x_t)$を構成する。
+\begin{eqnarray}
+	&& \frac{1}{2} \left( x_t - A_t \mu_{t - 1} - B_t u_t \right)^T \left( R_t + A_t \Sigma_{t - 1} A_t^T \right)^{-1} \left( x_t - A_t \mu_{t - 1} - B_t u_t \right) - \frac{1}{2} \mu_{t - 1}^T \Sigma_{t - 1}^{-1} \Psi_t A_t^T R_t^{-1} A_t \mu_{t - 1} \nonumber \\
+	&=& L_t^{(2)}(x_t) - \frac{1}{2} \mu_{t - 1}^T \Sigma_{t - 1}^{-1} \Psi_t A_t^T R_t^{-1} A_t \mu_{t - 1}
+\end{eqnarray}
+上式を$L_t$の式に代入すると次のようになる。
+\begin{eqnarray}
+	L_t &=& L_t^{(1)}(x_{t - 1}, x_t) + L_t^{(2)}(x_t) - \frac{1}{2} \mu_{t - 1}^T \Sigma_{t - 1}^{-1} \Psi_t A_t^T R_t^{-1} A_t \mu_{t - 1} + \frac{1}{2} \mu_{t - 1}^T \left[ \Sigma_{t - 1}^{-1} - \Sigma_{t - 1}^{-1} \Psi_t \Sigma_{t - 1}^{-1} \right] \mu_{t - 1}
+\end{eqnarray}
+$x_{t - 1}$と$x_t$に依存しない定数項をまとめる。
+\begin{eqnarray}
+	&& -\frac{1}{2} \mu_{t - 1}^T \Sigma_{t - 1}^{-1} \Psi_t A_t^T R_t^{-1} A_t \mu_{t - 1} + \frac{1}{2} \mu_{t - 1}^T \left[ \Sigma_{t - 1}^{-1} - \Sigma_{t - 1}^{-1} \Psi_t \Sigma_{t - 1}^{-1} \right] \mu_{t - 1} \nonumber \\
+	&=& \frac{1}{2} \mu_{t - 1}^T \Sigma_{t - 1}^{-1} \left( I - \Psi_t \Sigma_{t - 1}^{-1} - \Psi_t A_t^T R_t^{-1} A_t \right) \mu_{t - 1} \nonumber \\
+	&=& \frac{1}{2} \mu_{t - 1}^T \Sigma_{t - 1}^{-1} \left( I - \Psi_t \left( \Sigma_{t - 1}^{-1} + A_t^T R_t^{-1} A_t \right) \right) \mu_{t - 1} \nonumber \\
+	&=& \frac{1}{2} \mu_{t - 1}^T \Sigma_{t - 1}^{-1} \left( I - \left( \Sigma_{t - 1}^{-1} + A_t^T R_t^{-1} A_t \right)^{-1} \left( \Sigma_{t - 1}^{-1} + A_t^T R_t^{-1} A_t \right) \right) \mu_{t - 1} \nonumber \\
+	&=& \frac{1}{2} \mu_{t - 1}^T \Sigma_{t - 1}^{-1} \left( I - I \right) = 0
+\end{eqnarray}
+以上より定数項が互いに打ち消し合うので、$L_t$を$L_t^{(1)}(x_{t - 1}, x_t)$と$L_t^{(2)}(x_t)$の2つに分解できた。$L_t^{(2)}(x_t)$も、ガウス分布の指数部と同様の形式となっており、$x_t$のみに依存している。
+\begin{equation}
+	L_t^{(2)}(x_t) = \frac{1}{2} \left( x_t - A_t \mu_{t - 1} - B_t u_t \right)^T \left( R_t + A_t \Sigma_{t - 1} A_t^T \right)^{-1} \left( x_t - A_t \mu_{t - 1} - B_t u_t \right)
+\end{equation}
+以上より$L_t^{(1)}(x_{t - 1}, x_t)$と$L_t^{(2)}(x_t)$の完全な形が求まった。事前信念$\belp(x_t)$は、2つの項を使って以下のように記述された。
+\begin{equation}
+	\belp(x_t) = \eta \exp \left\{ -L_t^{(2)}(x_t) \right\} \int \exp \left\{ -L_t^{(1)}(x_{t - 1}, x_t) \right\} dx_{t - 1}
+\end{equation}
+$L_t^{(1)}(x_{t - 1}, x_t)$を指数部に代入すると、次の積分が得られる。
+\begin{eqnarray}
+	\int \exp \left\{ -L_t^{(1)}(x_{t - 1}, x_t) \right\} dx_{t - 1} &=& \int \exp \left\{ \frac{1}{2} \left( x_{t - 1} - \Psi_t \left( \left( x_t - B_t u_t \right)^T R_t^{-1} A_t + \mu_{t - 1}^T \Sigma_{t - 1}^{-1} \right)^T \right)^T \Psi_t^{-1} \right. \nonumber \\
+	&& \qquad \left. \left( x_{t - 1} - \Psi_t \left( \left( x_t - B_t u_t \right)^T R_t^{-1} A_t + \mu_{t - 1}^T \Sigma_{t - 1}^{-1} \right)^T \right) \right\} dx_{t - 1}
+\end{eqnarray}
+これは平均が$\Psi_t \left( \left( x_t - B_t u_t \right)^T R_t^{-1} A_t + \mu_{t - 1}^T \Sigma_{t - 1}^{-1} \right)^T$で、共分散が$\Psi_t$のガウス分布から定数項を取り除き、指数部のみを積分したものである。ガウス分布の積分が1になることを利用すれば、積分の結果は容易に求められる。
+\begin{eqnarray}
+	&& \int \mathcal{N} \left( x_{t - 1} | \Psi_t \left( \left( x_t - B_t u_t \right)^T R_t^{-1} A_t + \mu_{t - 1}^T \Sigma_{t - 1}^{-1} \right)^T, \Psi_t \right) dx_{t - 1} \nonumber \\
+	&=& |2 \pi \Psi_t|^{-\frac{1}{2}} \int \exp \left\{ \frac{1}{2} \left( x_{t - 1} - \Psi_t \left( \left( x_t - B_t u_t \right)^T R_t^{-1} A_t + \mu_{t - 1}^T \Sigma_{t - 1}^{-1} \right)^T \right)^T \Psi_t^{-1} \right. \nonumber \\
+	&& \qquad \left. \left( x_{t - 1} - \Psi_t \left( \left( x_t - B_t u_t \right)^T R_t^{-1} A_t + \mu_{t - 1}^T \Sigma_{t - 1}^{-1} \right)^T \right) \right\} dx_{t - 1} \nonumber \\
+	&=& |2 \pi \Psi_t|^{-\frac{1}{2}} \int \exp \left\{ -L_t^{(1)}(x_{t - 1}, x_t) \right\} dx_{t - 1} = 1
+\end{eqnarray}
+従って積分の結果は目論み通り、$x_{t - 1}$や$x_t$には依存しない定数となる。
+\begin{eqnarray}
+	\int \exp \left\{ -L_t^{(1)}(x_{t - 1}, x_t) \right\} dx_{t - 1} = |2 \pi \Psi_t|^\frac{1}{2}
+\end{eqnarray}
+上記の$\eta$と合わせて定数項を$\eta'$と記述すれば、事前信念$\belp(x_t)$は次のように書ける。
+\begin{eqnarray}
+	\belp(x_t) &=& \eta' \exp \left\{ -L_t^{(2)}(x_t) \right\} \nonumber \\
+	&=& \eta' \exp \left\{ -\frac{1}{2} \left( x_t - A_t \mu_{t - 1} - B_t u_t \right)^T \left( R_t + A_t \Sigma_{t - 1} A_t^T \right)^{-1} \left( x_t - A_t \mu_{t - 1} - B_t u_t \right) \right\} \\
+	&=& \mathcal{N}(x_t | A_t \mu_{t - 1} + B_t u_t, A_t \Sigma_{t - 1} A_t^T + R_t) \\
+	&=& \mathcal{N}(x_t | \overline{\mu}_t, \overline{\Sigma}_t)
+\end{eqnarray}
+これは、平均が$A_t \mu_{t - 1} + B_t u_t$で共分散が$R_t + A_t \Sigma_{t - 1} A_t^T$のガウス分布を表している。従って、事前信念$\belp(x_t)$の平均は$\overline{\mu}_t = A_t \mu_{t - 1} + B_t u_t$、共分散は$\overline{\Sigma}_t = R_t + A_t \Sigma_{t - 1} A_t^T$として求められる。以上より、カルマンフィルタの予測ステップの式(アルゴリズム\ref{alg:kalman-filter}の\ref{alg:kalman-filter-prediction-mu}行目と\ref{alg:kalman-filter-prediction-sigma}行目)が証明された。
+
+\subsubsection{修正ステップ}
+アルゴリズム\ref{alg:kalman-filter}の\ref{alg:kalman-filter-correction-mu}行目と\ref{alg:kalman-filter-correction-sigma}行目を証明する。修正ステップでは観測$z_t$が処理され、時刻$t$における事前信念$\belp(x_t)$と計測確率$p(z_t | x_t)$から、時刻$t$における事後信念$\bel(x_t)$が計算される。即ち、制御$u_t$を基に予測ステップで立てた、現在の状態に対する大まかな予測を、計測$z_t$を用いて修正する。ベイズフィルタにおける修正ステップは次のように記述された。
+\begin{equation}
+	\bel(x_t) = \eta p(z_t | x_t) \belp(x_t)
+\end{equation}
+予測ステップのところでも触れたが、$p(z_t | x_t)$と$\belp(x_t)$の双方がガウス分布に制限されるおかげで、上記の積の結果もガウス分布となって、そのパラメータ(平均と共分散)を解析的に求められる。事前信念$\belp(x_t)$は先程示したように、平均$\overline{\mu}_t$で共分散$\overline{\Sigma}_t$のガウス分布$\mathcal{N}(x_t | \overline{\mu}_t, \overline{\Sigma}_t)$である。また計測確率$p(z_t | x_t)$も、平均$C_t x_t$で共分散$Q_t$のガウス分布$\mathcal{N}(z_t | C_t x_t, Q_t)$に従う。ここでは、上記の計算により得られる信念分布$\bel(x_t)$がガウス分布となり、その平均が$\mu_t = \overline{\mu}_t + K_t \left( z_t - C_t \overline{\mu}_t \right)$、共分散が$\Sigma_t = \left( I - K_t C_t \right) \overline{\Sigma}_t$として求められることを示す。行列$K_t$はカルマンゲインとよばれ、$K_t = \overline{\Sigma}_t C_t^T \left( C_t \overline{\Sigma}_t C_t^T + Q_t \right)^{-1}$から計算できる。\newline
+
+先ずは$p(z_t | x_t)$に$\mathcal{N}(z_t | C_t x_t, Q_t)$、$\belp(x_t)$に$\mathcal{N}(x_t | \overline{\mu}_t, \overline{\Sigma}_t)$を代入する。
+\begin{eqnarray}
+	\bel(x_t) &=& \left[ |2 \pi Q_t|^{-\frac{1}{2}} \exp \left\{ -\frac{1}{2} \left( z_t - C_t x_t \right)^T Q_t^{-1} \left( z_t - C_t x_t \right) \right\} \right] \nonumber \\
+	&& \qquad \left[ |2 \pi \overline{\Sigma}_t|^{-\frac{1}{2}} \exp \left\{ -\frac{1}{2} \left( x_t - \overline{\mu}_t \right)^T \overline{\Sigma}_t^{-1} \left( x_t - \overline{\mu}_t \right) \right\} \right] \nonumber \\
+	&=& \eta \exp \left\{ -J_t \right\} 
+\end{eqnarray}
+ここで$\eta = |2 \pi Q_t|^{-\frac{1}{2}} |2 \pi \overline{\Sigma}_t|^{-\frac{1}{2}}$は定数項である。また$J_t$は指数関数の中身であり、次のようになる。
+\begin{eqnarray}
+	J_t &=& \frac{1}{2} \left( z_t - C_t x_t \right)^T Q_t^{-1} \left( z_t - C_t x_t \right) + \frac{1}{2} \left( x_t - \overline{\mu}_t \right)^T \overline{\Sigma}_t^{-1} \left( x_t - \overline{\mu}_t \right)
+\end{eqnarray}
+指数関数の中身は$x_t$に関する二次関数であり、このことから信念分布$\bel(x_t)$はガウス分布だと分かる。上式の$J_t$を、平均と共分散が分かりやすくなるように変形する。
+\begin{eqnarray}
+	J_t &=& \frac{1}{2} \left( C_t x_t - z_t \right)^T Q_t^{-1} \left( C_t x_t - z_t \right) + \frac{1}{2} \left( x_t - \overline{\mu}_t \right)^T \overline{\Sigma}_t^{-1} \left( x_t - \overline{\mu}_t \right) \nonumber \\
+	&=& \underline{\underline{\frac{1}{2} x_t^T C_t^T Q_t^{-1} C_t x_t}} \underline{-z_t^T Q_t^{-1} C_t x_t} + \frac{1}{2} z_t^T Q_t^{-1} z_t + \underline{\underline{\frac{1}{2} x_t^T \overline{\Sigma}_t^{-1} x_t}} \underline{-\overline{\mu}_t^T \overline{\Sigma}_t^{-1} x_t} + \frac{1}{2} \overline{\mu}_t^T \overline{\Sigma}_t^{-1} \overline{\mu}_t \\
+	&=& \underline{\underline{\frac{1}{2} x_t^T \left( C_t^T Q_t^{-1} C_t + \overline{\Sigma}_t^{-1} \right) x_t}} \underline{-\left( z_t^T Q_t^{-1} C_t + \overline{\mu}_t^T \overline{\Sigma}_t^{-1} \right) x_t} + \frac{1}{2} z_t^T Q_t^{-1} z_t + \frac{1}{2} \overline{\mu}_t^T \overline{\Sigma}_t^{-1} \overline{\mu}_t
+\end{eqnarray}
+上記のように、$x_t$に関する2次式と1次式を括り出し、次のように平方完成を行う。
+\begin{eqnarray}
+	&& \underline{\underline{\frac{1}{2} x_t^T \left( C_t^T Q_t^{-1} C_t + \overline{\Sigma}_t^{-1} \right) x_t}} \underline{-\left( z_t^T Q_t^{-1} C_t + \overline{\mu}_t^T \overline{\Sigma}_t^{-1} \right) x_t} \nonumber \\
+	&=& \frac{1}{2} \left( x_t^T - \left( C_t^T Q_t^{-1} C_t + \overline{\Sigma}_t^{-1} \right)^{-1} \left( z_t^T Q_t^{-1} C_t + \overline{\mu}_t^T \overline{\Sigma}_t^{-1} \right)^T \right)^T \left( C_t^T Q_t^{-1} C_t + \overline{\Sigma}_t^{-1} \right) \nonumber \\
+	&& \qquad \left( x_t^T - \left( C_t^T Q_t^{-1} C_t + \overline{\Sigma}_t^{-1} \right)^{-1} \left( z_t^T Q_t^{-1} C_t + \overline{\mu}_t^T \overline{\Sigma}_t^{-1} \right)^T \right)^T - \nonumber \\
+	&& \qquad \frac{1}{2} \left( z_t^T Q_t^{-1} C_t + \overline{\mu}_t^T \overline{\Sigma}_t^{-1} \right) \left( C_t^T Q_t^{-1} C_t + \overline{\Sigma}_t^{-1} \right)^{-1} \left( z_t^T Q_t^{-1} C_t + \overline{\mu}_t^T \overline{\Sigma}_t^{-1} \right)^T
+\end{eqnarray}
+上式が成り立つのは、行列$\left( C_t^T Q_t^{-1} C_t + \overline{\Sigma}_t^{-1} \right)^{-1}$が対称行列だからである。$Q_t$は計測において加わるガウス雑音の共分散、$\overline{\Sigma}_t$は事前信念の共分散であるから、いずれも半正定値の対称行列である。故に$\left( Q_t^{-1} \right)^T = \left( Q_t^T \right)^{-1} = Q_t^{-1}$と$\left( \overline{\Sigma}_t^{-1} \right)^T = \left( \overline{\Sigma}_t^T \right)^{-1} = \overline{\Sigma}_t^{-1}$であるから、以下のように対称性を示せる。
+\begin{eqnarray}
+	\left( \left( C_t^T Q_t^{-1} C_t + \overline{\Sigma}_t^{-1} \right)^{-1} \right)^T &=& \left( \left( C_t^T Q_t^{-1} C_t + \overline{\Sigma}_t^{-1} \right)^T \right)^{-1} = \left( \left( C_t^T Q_t^{-1} C_t \right)^T + \left( \overline{\Sigma}_t^{-1} \right)^T \right)^{-1} \nonumber \\
+	&=& \left( C_t^T \left( Q_t^{-1} \right)^T C_t + \overline{\Sigma}_t^{-1} \right)^{-1} = \left( C_t^T Q_t^{-1} C_t + \overline{\Sigma}_t^{-1} \right)^{-1}
+\end{eqnarray}
+これより上式の平方完成を再度展開すれば、元の1次式の項が出現するので、平方完成が正しいことを示せる。
+\begin{eqnarray}
+	&& \left( \left( C_t^T Q_t^{-1} C_t + \overline{\Sigma}_t^{-1} \right)^{-1} \left( z_t^T Q_t^{-1} C_t + \overline{\mu}_t^T \overline{\Sigma}_t^{-1} \right)^T \right)^T \left( C_t^T Q_t^{-1} C_t + \overline{\Sigma}_t^{-1} \right) x_t \nonumber \\
+	&=& \left( z_t^T Q_t^{-1} C_t + \overline{\mu}_t^T \overline{\Sigma}_t^{-1} \right) \underline{\left( \left( C_t^T Q_t^{-1} C_t + \overline{\Sigma}_t^{-1} \right)^{-1} \right)^T} \left( C_t^T Q_t^{-1} C_t + \overline{\Sigma}_t^{-1} \right) x_t \nonumber \\
+	&=& \left( z_t^T Q_t^{-1} C_t + \overline{\mu}_t^T \overline{\Sigma}_t^{-1} \right) \underline{\left( C_t^T Q_t^{-1} C_t + \overline{\Sigma}_t^{-1} \right)^{-1}} \left( C_t^T Q_t^{-1} C_t + \overline{\Sigma}_t^{-1} \right) x_t \nonumber \\
+	&=& \left( z_t^T Q_t^{-1} C_t + \overline{\mu}_t^T \overline{\Sigma}_t^{-1} \right) x_t
+\end{eqnarray}
+ここで平方完成の式に現れる$\left( C_t^T Q_t^{-1} C_t + \overline{\Sigma}_t^{-1} \right)^{-1} \left( z_t^T Q_t^{-1} C_t + \overline{\mu}_t^T \overline{\Sigma}_t^{-1} \right)^T$を次のように書き直す。
+\begin{eqnarray}
+	&& \left( C_t^T Q_t^{-1} C_t + \overline{\Sigma}_t^{-1} \right)^{-1} \left( z_t^T Q_t^{-1} C_t + \overline{\mu}_t^T \overline{\Sigma}_t^{-1} \right)^T \nonumber \\
+	&=& \left( C_t^T Q_t^{-1} C_t + \overline{\Sigma}_t^{-1} \right)^{-1} \left( C_t^T Q_t^{-1} z_t + \overline{\Sigma}_t^{-1} \overline{\mu}_t \right) \nonumber \\
+	&=& \left( C_t^T Q_t^{-1} C_t + \overline{\Sigma}_t^{-1} \right)^{-1} C_t^T Q_t^{-1} z_t + \left( C_t^T Q_t^{-1} C_t + \overline{\Sigma}_t^{-1} \right)^{-1} \overline{\Sigma}_t^{-1} \overline{\mu}_t \nonumber \\
+	&=& \left( C_t^T Q_t^{-1} C_t + \overline{\Sigma}_t^{-1} \right)^{-1} C_t^T Q_t^{-1} z_t + \left( C_t^T Q_t^{-1} C_t + \overline{\Sigma}_t^{-1} \right)^{-1} \left( C_t^T Q_t^{-1} C_t + \overline{\Sigma}_t^{-1} - C_t^T Q_t^{-1} C_t \right) \overline{\mu}_t \nonumber \\
+	&=& \left( C_t^T Q_t^{-1} C_t + \overline{\Sigma}_t^{-1} \right)^{-1} C_t^T Q_t^{-1} z_t + \nonumber \\
+	&& \qquad \left( C_t^T Q_t^{-1} C_t + \overline{\Sigma}_t^{-1} \right)^{-1} \left( C_t^T Q_t^{-1} C_t + \overline{\Sigma}_t^{-1} \right) \overline{\mu}_t - \left( C_t^T Q_t^{-1} C_t + \overline{\Sigma}_t^{-1} \right)^{-1} C_t^T Q_t^{-1} C_t \overline{\mu}_t \nonumber \\
+	&=& \left( C_t^T Q_t^{-1} C_t + \overline{\Sigma}_t^{-1} \right)^{-1} C_t^T Q_t^{-1} z_t + \overline{\mu}_t - \left( C_t^T Q_t^{-1} C_t + \overline{\Sigma}_t^{-1} \right)^{-1} C_t^T Q_t^{-1} C_t \overline{\mu}_t \nonumber \\
+	&=& \overline{\mu}_t + \underline{\left( C_t^T Q_t^{-1} C_t + \overline{\Sigma}_t^{-1} \right)^{-1} C_t^T Q_t^{-1}} \left( z_t - C_t \overline{\mu}_t \right) \label{eq:mu-tmp}
+\end{eqnarray}
+行列$\left( C_t^T Q_t^{-1} C_t + \overline{\Sigma}_t^{-1} \right)^{-1} C_t^T Q_t^{-1}$は次のようにも書ける。最初の式変形では、先程示したウッドベリー行列恒等式を用いている。
+\begin{eqnarray}
+	&& \left( C_t^T Q_t^{-1} C_t + \overline{\Sigma}_t^{-1} \right)^{-1} C_t^T Q_t^{-1} \nonumber \\
+	&=& \left( \overline{\Sigma}_t - \overline{\Sigma}_t C_t^T \left( Q_t + C_t \overline{\Sigma}_t C_t^T \right)^{-1} C_t \overline{\Sigma}_t \right) C_t^T Q_t^{-1} \nonumber \\
+	&=& \overline{\Sigma}_t C_t^T Q_t^{-1} - \overline{\Sigma}_t C_t^T \left( Q_t + C_t \overline{\Sigma}_t C_t^T \right)^{-1} C_t \overline{\Sigma}_t C_t^T Q_t^{-1} \nonumber \\
+	&=& \overline{\Sigma}_t C_t^T \left( Q_t^{-1} - \left( Q_t + C_t \overline{\Sigma}_t C_t^T \right)^{-1} C_t \overline{\Sigma}_t C_t^T Q_t^{-1} \right) \nonumber \\
+	&=& \overline{\Sigma}_t C_t^T \left( Q_t^{-1} - \left( Q_t + C_t \overline{\Sigma}_t C_t^T \right)^{-1} \left( Q_t + C_t \overline{\Sigma}_t C_t^T - Q_t \right) Q_t^{-1} \right) \nonumber \\
+	&=& \overline{\Sigma}_t C_t^T \left( Q_t^{-1} - \left( Q_t + C_t \overline{\Sigma}_t C_t^T \right)^{-1} \left( Q_t + C_t \overline{\Sigma}_t C_t^T \right) Q_t^{-1} + \left( Q_t + C_t \overline{\Sigma}_t C_t^T \right)^{-1} Q_t Q_t^{-1} \right) \nonumber \\
+	&=& \overline{\Sigma}_t C_t^T \left( Q_t^{-1} - Q_t^{-1} + \left( Q_t + C_t \overline{\Sigma}_t C_t^T \right)^{-1} \right) \nonumber \\
+	&=& \overline{\Sigma}_t C_t^T \left( Q_t + C_t \overline{\Sigma}_t C_t^T \right)^{-1}
+\end{eqnarray}
+上式からカルマンゲイン$K_t = \overline{\Sigma}_t C_t^T \left( Q_t + C_t \overline{\Sigma}_t C_t^T \right)^{-1}$を定義できる。このとき(\ref{eq:mu-tmp})式は以下のようになる。
+\begin{eqnarray}
+	\overline{\mu}_t + \left( C_t^T Q_t^{-1} C_t + \overline{\Sigma}_t^{-1} \right)^{-1} C_t^T Q_t^{-1} \left( z_t - C_t \overline{\mu}_t \right) = \overline{\mu}_t + K_t \left( z_t - C_t \overline{\mu}_t \right)
+\end{eqnarray}
+これより$J_t$は次のようになる。
+\begin{eqnarray}
+	J_t &=& \frac{1}{2} \left( x_t^T - \overline{\mu}_t - K_t \left( z_t - C_t \overline{\mu}_t \right) \right)^T \left( C_t^T Q_t^{-1} C_t + \overline{\Sigma}_t^{-1} \right) \left( x_t^T - \overline{\mu}_t - K_t \left( z_t - C_t \overline{\mu}_t \right) \right) - \nonumber \\
+	&& \qquad \frac{1}{2} \left( z_t^T Q_t^{-1} C_t + \overline{\mu}_t^T \overline{\Sigma}_t^{-1} \right) \left( \overline{\mu}_t + K_t \left( z_t - C_t \overline{\mu}_t \right) \right) + \frac{1}{2} z_t^T Q_t^{-1} z_t + \frac{1}{2} \overline{\mu}_t^T \overline{\Sigma}_t^{-1} \overline{\mu}_t \nonumber \\
+	&=& \frac{1}{2} \left( x_t^T - \overline{\mu}_t - K_t \left( z_t - C_t \overline{\mu}_t \right) \right)^T \left( C_t^T Q_t^{-1} C_t + \overline{\Sigma}_t^{-1} \right) \left( x_t^T - \overline{\mu}_t - K_t \left( z_t - C_t \overline{\mu}_t \right) \right) - \eta'
+\end{eqnarray}
+上式において$\eta'$は、$x_t$には依存しない定数項である。以上より事後信念$\bel(x_t)$は以下のようになる。
+\begin{eqnarray}
+	\bel(x_t) &=& \eta \exp \left\{ -J_t \right\} \nonumber \\
+	&=& \eta \exp \left\{ -\frac{1}{2} \left( x_t^T - \overline{\mu}_t - K_t \left( z_t - C_t \overline{\mu}_t \right) \right)^T \left( C_t^T Q_t^{-1} C_t + \overline{\Sigma}_t^{-1} \right) \left( x_t^T - \overline{\mu}_t - K_t \left( z_t - C_t \overline{\mu}_t \right) \right) + \eta' \right\} \nonumber \\
+	&=& \eta \exp \left\{ \eta' \right\} \exp \left\{ -\frac{1}{2} \left( x_t^T - \overline{\mu}_t - K_t \left( z_t - C_t \overline{\mu}_t \right) \right)^T \left( C_t^T Q_t^{-1} C_t + \overline{\Sigma}_t^{-1} \right) \left( x_t^T - \overline{\mu}_t - K_t \left( z_t - C_t \overline{\mu}_t \right) \right) \right\} \nonumber \\
+	&=& \eta \exp \left\{ -\frac{1}{2} \left( x_t^T - \overline{\mu}_t - K_t \left( z_t - C_t \overline{\mu}_t \right) \right)^T \left( C_t^T Q_t^{-1} C_t + \overline{\Sigma}_t^{-1} \right) \left( x_t^T - \overline{\mu}_t - K_t \left( z_t - C_t \overline{\mu}_t \right) \right) \right\} \\
+	&=& \mathcal{N} \left( x_t | \overline{\mu}_t + K_t \left( z_t - C_t \overline{\mu}_t \right), \left( C_t^T Q_t^{-1} C_t + \overline{\Sigma}_t^{-1} \right)^{-1} \right) \\
+	&=& \mathcal{N}(x_t | \mu_t, \Sigma_t)
+\end{eqnarray}
+これは、平均が$\overline{\mu}_t + K_t \left( z_t - C_t \overline{\mu}_t \right)$で共分散が$\left( C_t^T Q_t^{-1} C_t + \overline{\Sigma}_t^{-1} \right)^{-1}$のガウス分布を表している。共分散の式には、事前信念の共分散の逆行列$\overline{\Sigma}_t^{-1}$が含まれている。逆行列計算を避けるために、カルマンゲイン$K_t$を用いて共分散の式を次のように変形する。
+\begin{eqnarray}
+	\left( C_t^T Q_t^{-1} C_t + \overline{\Sigma}_t^{-1} \right)^{-1} &=& \overline{\Sigma}_t - \overline{\Sigma}_t C_t^T \left( Q_t + C_t \overline{\Sigma}_t C_t^T \right)^{-1} C_t \overline{\Sigma}_t = \overline{\Sigma}_t - K_t C_t \overline{\Sigma}_t = \left( I - K_t C_t \right) \overline{\Sigma}_t
+\end{eqnarray}
+従って事後信念の平均は$\mu = \overline{\mu}_t + K_t \left( z_t - C_t \overline{\mu}_t \right)$、共分散は$\Sigma_t = \left( I - K_t C_t \right) \overline{\Sigma}_t)$となる。以上より、カルマンフィルタの修正ステップの式(アルゴリズム\ref{alg:kalman-filter}の\ref{alg:kalman-filter-correction-mu}行目と\ref{alg:kalman-filter-correction-sigma}行目)が証明された。
+
+\bibliographystyle{plain}
+\bibliography{kalman-filter}
+
+\end{document}
