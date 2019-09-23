@@ -18,10 +18,13 @@ sterngerlachのGitHubページにようこそ。
 
 - [今所持しているCDとレコード](./cds.html)
 - [欲しいCDとレコード](./want-list.html)
+
 <!-- - [ロボットに関するメモ書き](./robot-memo.html) -->
 <!-- - [C言語の関数をPythonから呼び出す方法](./calling-c-from-python.html) -->
+
 - [ベイズフィルタ](./doc/bayes-filter.pdf)
 - [パーティクルフィルタ](./doc/particle-filter.pdf)
+- [カルマンフィルタ](./doc/kalman-filter.pdf)
 
 ## 日記
 

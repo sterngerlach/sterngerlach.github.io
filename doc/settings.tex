@@ -1,0 +1,50 @@
+
+% settings.tex
+
+\usepackage{atbegshi}
+\AtBeginDvi{\special{pdf:tounicode 90ms-RKSJ-UCS2}}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage{bm}
+\usepackage{ascmac}
+\usepackage{comment}
+\usepackage{fancybox}
+\usepackage{framed}
+\usepackage{color}
+\usepackage[dvipdfmx]{graphicx}
+\usepackage{multicol}
+\usepackage{multirow}
+\usepackage{pdflscape}
+\usepackage{verbatim}
+
+\usepackage{url}
+\urlstyle{same}
+
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator{\Tr}{Tr}
+\DeclareMathOperator{\KL}{KL}
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\bel}{bel}
+\DeclareMathOperator{\belp}{\overline{bel}}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{algorithmicx}
+
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+
+\makeatletter
+\renewcommand{\ALG@name}{アルゴリズム}
+\makeatother
+
+\algnewcommand{\Initialize}[1]{
+	\State \textbf{Initialize:}
+ 	\State \hspace*{\algorithmicindent}\parbox[t]{0.8\linewidth}{\raggedright #1}}
