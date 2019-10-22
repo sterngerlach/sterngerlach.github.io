@@ -110,11 +110,6 @@ auhtor: SternGerlach
     - COBALT HOUR (コバルト・アワー) (1975年)
     - The 14th Moon (14番目の月) (1976年)
 * 松任谷由実
-    - 流線形'80 (1978年)
-    - OLIVE (1979年)
-    - 時のないホテル (1980年)
-    - 水の中のASIAへ (1981年)
-    - 昨晩お会いしましょう (1981年)
     - YUMING VISUALIVE DA・DI・DA (1986年)
 * 中山美穂  
     - COLLECTION (1987年)

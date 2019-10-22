@@ -88,8 +88,13 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
     - スタジオ・ロマンチスト (Studio Romantic) (1987年)
 * 松任谷由実
     - 紅雀 (べにすずめ) (1978年)
+    - 流線形'80 (1978年)
+    - OLIVE (1979年)
     - 悲しいほどお天気 (The Gallery in My Heart) (1979年)
+    - 時のないホテル (1980年)
     - SURF & SNOW (サーフ・アンド・スノー) (1980年)
+    - 水の中のASIAへ (1981年)
+    - 昨晩お会いしましょう (1981年)
     - PEARL PIERCE (パール・ピアス) (1982年)
     - REINCARNATION (リ・インカーネーション) (1983年)
     - VOYAGER (ボイジャー) (1983年)
