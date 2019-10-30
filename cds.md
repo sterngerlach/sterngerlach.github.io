@@ -181,9 +181,20 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
     - Woman Tone (1988年)
 * Cindy
     - Angel Touch (1990年)
+* 安田成美
+    - 安田成美 (1984年)
+    - ジィンジャー (Ginger) (1988年)
 * Wink
     - Especially For You \~優しさにつつまれて\~ (1989年)
     - Wink Memories 1988-1996 (1996年)
+* 相田翔子
+    - Delphinium (デルフィニューム) (1992年)
+* 菊池桃子
+    - Adventure (1986年)
+* 谷山浩子
+    - ボクハ・キミガ・スキ (1991年)
+* 遊佐未森
+    - 瞳水晶 (1988年)
 
 ---
 
@@ -224,11 +235,13 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
     - フィルハーモニー (1982年)
     - S・F・X (1984年)
 * 坂本龍一
+    - 千のナイフ (1978年)
     - B-2 Unit (1980年)
     - 音楽図鑑 (1984年)
     - Esperanto (エスペラント) (1985年)
     - 未来派野郎 (1986年)
 * 高橋幸宏
+    - サラヴァ! (Saravah!) (1978年)
     - Neuromantic (ロマン神経症) (1981年)
     - What, Me Worry? (ボク、大丈夫!!) (1982年)
     - 薔薇色の明日 (Tomorrow's Just Another Day) (1983年)
