@@ -25,6 +25,7 @@ sterngerlachのGitHubページにようこそ。
 - [ベイズフィルタ](./doc/bayes-filter.pdf)
 - [パーティクルフィルタ](./doc/particle-filter.pdf)
 - [カルマンフィルタ](./doc/kalman-filter.pdf)
+- [拡張カルマンフィルタ](./doc/extended-kalman-filter.pdf)
 
 ## 日記
 
