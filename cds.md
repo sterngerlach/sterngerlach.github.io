@@ -169,7 +169,9 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
 * 大橋純子
     - DEF (Dance Emotion Fragrance) (1988年)
 * 小林麻美
-    - Cryptograph \~愛の暗号 (1984年)
+    - Cryptograph \~愛の暗号 (1984年) (35DH 148)
+    - Cryptograph \~愛の暗号 (1984年) (CSCL 1294)
+    - Anthurium \~媚薬\~ (1985年)
     - Best Collection (1986年)
     - Grey (1987年)
 * 越美晴
