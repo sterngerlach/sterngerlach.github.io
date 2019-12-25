@@ -68,6 +68,7 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
     - グッド・イーブニング・トウキョウ (1988年)
     - Welcome Back (ウェルカム・バック) (1989年)
     - Love Life (1991年)
+    - Super Folk Song (1992年)
     - Love Is Here (1993年)
     - Elephant Hotel (1994年)
     - ひとつだけ the very best of 矢野顕子 (1996年) (母親から貰った)
@@ -81,6 +82,14 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
     - Free Style (フリースタイル) (1988年)
     - SuperNatural (1989年)
     - Wica (1992年)
+* 杏里
+    - Heaven Beach (ヘブン・ビーチ) (1982年)
+    - Timely!! (タイムリー) (1983年)
+    - Wave (ウェーブ) (1985年)
+    - Boogie Woogie Mainland (1988年)
+    - Circuit of Rainbow (1989年)
+    - Mind Cruisin' (マインド・クルージン) (1990年)
+    - Neutral (ニュートラル) (1991年)
 * 鈴木さえ子
     - I wish it could be Christmas everyday (1983年)
     - 科学と神秘 (Visinda og Leyndardómur) (1984年)
@@ -117,6 +126,8 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
     - FROZEN ROSES (フローズン・ローゼズ) (1999年)
     - 7 TRUTHS 7 LIES \~ヴァージンロードの彼方で (2001年)
     - sweet, bitter sweet \~YUMING BALLAD BEST (2001年)
+* 尾崎亜美
+    - Hot Baby (1981年)
 * 竹内まりや
     - Variety (ヴァラエティ) (1984年)
     - Request (リクエスト) (1987年)
@@ -197,6 +208,16 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
     - ボクハ・キミガ・スキ (1991年)
 * 遊佐未森
     - 瞳水晶 (1988年)
+* 彩恵津子
+    - Passiō (パシオ) (1986年)
+* 風見りつ子
+    - Aventuriér (アヴァンチュリエ) (1986年)
+* 門あさ美
+    - Belladonna (ベラドンナ) (1985年)
+* 笠井紀美子
+    - Tokyo Special (1977年)
+    - Butterfly (1979年)
+    - Kimiko (1982年)
 
 ---
 
