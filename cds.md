@@ -35,6 +35,8 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
   * 午後のレリーフ (1984年) (CA35-1093)
 * 加藤和彦
   * ヴェネツィア (1984年) (32DH 268)
+* 山根麻衣
+  * Will (1985年) (30CH-45)
 
 ## 現在持っているCDとレコード
 
@@ -85,6 +87,11 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
   * Free Style (フリースタイル) (1988年)
   * SuperNatural (1989年)
   * Wica (1992年)
+* 中原めいこ
+  * ミ・ン・ト (Mint) (1983年)
+  * Lotos -ロートスの果実- (1984年)
+  * Chaki Chaki Club (1985年)
+  * 鏡の中のアクトレス (The Actress In The Mirror) (1988年)
 * 杏里
   * Heaven Beach (ヘブン・ビーチ) (1982年)
   * Timely!! (タイムリー) (1983年)
