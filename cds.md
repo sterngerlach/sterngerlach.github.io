@@ -188,6 +188,7 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
   * Womanism IV \~NEW・KYOKU・SHOO\~ (1995年)
   * La Adelita (1996年)
 * 大橋純子
+  * Point Zero (1983年) (iTunes)
   * DEF (Dance Emotion Fragrance) (1988年)
 * 小林麻美
   * Cryptograph \~愛の暗号 (1984年) (35DH 148)
@@ -198,6 +199,7 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
 * 越美晴
   * Tutu (1983年)
 * 山根麻衣
+  * Will (1982年) (iTunes)
   * 月光浴 (1984年)
   * Flying Elephants (フライング・エレファンツ) (1985年)
   * Embassy (1986年)
