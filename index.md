@@ -31,7 +31,9 @@ sterngerlachのGitHubページにようこそ。
 - [カルマンフィルタ](./doc/kalman-filter.pdf)
 - [拡張カルマンフィルタ](./doc/extended-kalman-filter.pdf)
 - [SLAM問題の定式化](./doc/slam-formulation.pdf)
-- [パーティクルフィルタによるSLAM: FastSLAM 1.0](./doc/fast-slam.pdf)
+
+<!-- - [パーティクルフィルタによるSLAM: FastSLAM 1.0](./doc/fast-slam.pdf) -->
+
 - [グラフベースSLAM](./doc/graph-based-slam-intro.pdf)
 
 ## 日記
