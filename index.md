@@ -12,12 +12,16 @@ author: SternGerlach
 
 sterngerlachのGitHubページにようこそ。
 
-## 雑記
+## 趣味
 
-調べたことを適当に書いてこちらに置いていきます。
+ここは趣味のページです。
 
 - [今所持しているCDとレコード](./cds.html)
 - [欲しいCDとレコード](./want-list.html)
+
+## 雑記
+
+調べたことを適当に書いてこちらに置いていきます。
 
 <!-- - [ロボットに関するメモ書き](./robot-memo.html) -->
 <!-- - [C言語の関数をPythonから呼び出す方法](./calling-c-from-python.html) -->
@@ -28,6 +32,7 @@ sterngerlachのGitHubページにようこそ。
 - [拡張カルマンフィルタ](./doc/extended-kalman-filter.pdf)
 - [SLAM問題の定式化](./doc/slam-formulation.pdf)
 - [パーティクルフィルタによるSLAM: FastSLAM 1.0](./doc/fast-slam.pdf)
+- [グラフベースSLAM](./doc/graph-based-slam-intro.pdf)
 
 ## 日記
 
