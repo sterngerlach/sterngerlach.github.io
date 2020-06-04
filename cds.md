@@ -88,10 +88,11 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
   * SuperNatural (1989年)
   * Wica (1992年)
 * 中原めいこ
-  * ミ・ン・ト (Mint) (1983年)
-  * Lotos -ロートスの果実- (1984年)
-  * Chaki Chaki Club (1985年)
-  * 鏡の中のアクトレス (The Actress In The Mirror) (1988年)
+  * ミ・ン・ト (Mint) (1983年) (TOCT-12009)
+  * Lotos -ロートスの果実- (1984年) (TOCT-12010)
+  * Chaki Chaki Club (1985年) (TOCT-12011)
+  * モガ -ベスト・コレクション- (1986年) (CA32-1278)
+  * 鏡の中のアクトレス (The Actress In The Mirror) (1988年) (CT32-5150)
 * 杏里
   * Heaven Beach (ヘブン・ビーチ) (1982年)
   * Timely!! (タイムリー) (1983年)
@@ -105,6 +106,9 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
   * 科学と神秘 (Visinda og Leyndardómur) (1984年)
   * 緑の法則 (The Law Of The Green) (1985年)
   * スタジオ・ロマンチスト (Studio Romantic) (1987年)
+* 荒井由実
+  * Yuming History (1987年) (ALCA-25 / ALCA-26)
+  * Yumi Arai The Concert with old Friends (1996年)
 * 松任谷由実
   * 紅雀 (べにすずめ) (1978年)
   * 流線形'80 (1978年)
@@ -129,7 +133,6 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
   * U-miz (ユーミッズ) (1993年)
   * THE DANCING SUN (ダンシング・サン) (1994年)
   * KATHMANDU (カトマンドゥ) (1995年)
-  * Yumi Arai The Concert with old Friends (1996年)
   * Cowgirl Dreamin' (カゥガール・ドリーミン) (1997年)
   * スユアの波 (WAVE OF THE ZUVUYA) (1997年)
   * Neue Musik (ノイエ・ムジーク) (1998年) (母親から貰った)
@@ -138,6 +141,7 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
   * sweet, bitter sweet \~YUMING BALLAD BEST (2001年)
 * 尾崎亜美
   * Hot Baby (1981年)
+  * Plastic Garden (1984年) (D38A0042)
 * 竹内まりや
   * Variety (ヴァラエティ) (1984年)
   * Request (リクエスト) (1987年)
@@ -221,7 +225,9 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
 * 遊佐未森
   * 瞳水晶 (1988年)
 * 彩恵津子
-  * Passiō (パシオ) (1986年)
+  * Passiō (パシオ) (1986年) (30CH-199)
+  * ベスト・コレクション (1988年) (25CH-1)
+  * In Bloom (1989年) (30CH-377)
 * 風見りつ子
   * Aventuriér (アヴァンチュリエ) (1986年)
 * 門あさ美
@@ -236,6 +242,8 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
   * Sweet 15th Diamond (2000年)
 * 秋元薫
   * Cologne (1986年) (NCS-10238)
+* 今井優子
+  * Silky Touch ~Lovin' You (1991年) (KICS-160)
 
 ---
 
@@ -266,6 +274,7 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
   * Second Serenade (セカンド・セレナーデ) (1984年)
 * ハイ・ファイ・セット
   * 卒業写真 (1975年)
+  * Indigo (1985年) (32DH 179)
 * 角松敏生
   * Before The Daylight \~is the most darkness moment in a day (1988年)
   * Reasons For Thousand Lovers (1989年)
@@ -273,7 +282,12 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
   * OLYMPIC (1987年)
   * Red Monkey Yellow Fish (1989年)
 * 稲垣潤一
+  * 246:3AM (1982年) (CA35-1013)
   * 16 Candles (1988年) (母親から貰った)
+* 井上鑑
+  * 架空庭園論 (1985年) (CA32-1108)
+* 安部恭弘
+  * Summertime In Blue ~さよならの共犯者 (1988年) (CT32-5195)
 * 細野晴臣
   * フィルハーモニー (1982年)
   * S・F・X (1984年)
