@@ -93,6 +93,8 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
   * Chaki Chaki Club (1985年) (TOCT-12011)
   * モガ -ベスト・コレクション- (1986年) (CA32-1278)
   * 鏡の中のアクトレス (The Actress In The Mirror) (1988年) (CT32-5150)
+* 和田加奈子
+  * エスキース (Esquisse) (1987年) (CA32-1511)
 * 杏里
   * Heaven Beach (ヘブン・ビーチ) (1982年)
   * Timely!! (タイムリー) (1983年)
