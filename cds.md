@@ -88,6 +88,7 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
   * SuperNatural (1989年)
   * Wica (1992年)
 * 中原めいこ
+  * 2時までのシンデレラ -Friday Magic- (1982年) (TOCT-12008)
   * ミ・ン・ト (Mint) (1983年) (TOCT-12009)
   * Lotos -ロートスの果実- (1984年) (TOCT-12010)
   * Chaki Chaki Club (1985年) (TOCT-12011)
@@ -287,9 +288,14 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
   * 246:3AM (1982年) (CA35-1013)
   * 16 Candles (1988年) (母親から貰った)
 * 井上鑑
+  * Prophetic Dream -預言者の夢 (1982年) (UPCY-7340)
+  * Splash (1983年) (UPCY-7342)
   * 架空庭園論 (1985年) (CA32-1108)
 * 安部恭弘
   * Summertime In Blue ~さよならの共犯者 (1988年) (CT32-5195)
+* 佐藤隆
+  * 甘い生活 (La Dolce Vita) (1988年) (CT32-5322)
+  * 十六夜曲 '80～'90 (1990年) (TOCT-5924)
 * 細野晴臣
   * フィルハーモニー (1982年)
   * S・F・X (1984年)
