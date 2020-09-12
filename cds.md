@@ -31,12 +31,33 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
   * No Duplicatin' (1983年)
 * 佐藤博
   * This Boy (ディス・ボーイ) (1985年) (32XA-39)
+  * 記憶の中の未来 (1988年) (32A2-1)
 * ラジ (Rajie)
   * 午後のレリーフ (1984年) (CA35-1093)
 * 加藤和彦
   * ヴェネツィア (1984年) (32DH 268)
 * 山根麻衣
-  * Will (1985年) (30CH-45)
+  * Will (1982年) (30CH-45)
+  * The Day Before Yesterday (1984年) (35CH-6)
+  * ベスト (1987年) (30CH-252)
+* 井上鑑
+  * Splash (1983年) (CA35-1055)
+  * SF新世紀レンズマン オリジナル・サウンドトラック音楽編 (1984年) (D35A0041)
+  * Tokyo Installation (1986年) (50DH 441-442 / 32DH 441)
+* 原田知世
+  * 撫子純情 (1984年) (30DH 202)
+* ハイ・ファイ・セット
+  * 3 Notes (1981年) (CT32-5204)
+  * 1 & 2 (1982年) (CA35-1018 / CT32-5205)
+  * I miss you (1983年) (CA35-1028)
+* 稲垣潤一 / 安部恭弘 / 井上鑑 / 鈴木雄大
+  * Modern Wave II (1983年) (CA35-1045)
+* 橋本一子
+  * Ichiko (1984年) (VDP-79)
+* 越美晴
+  * パラレリズム (Parallelisme) (1984年) (ALCA-378 / ALCA-9117)
+* 風見りつ子
+  * Nouvelles (ヌヴェル) (1987年) (CA32-1471)
 
 ## 現在持っているCDとレコード
 
@@ -291,9 +312,14 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
   * Prophetic Dream -預言者の夢 (1982年) (UPCY-7340)
   * Splash (1983年) (UPCY-7342)
   * 架空庭園論 (1985年) (CA32-1108)
+  * アンジュレーション (Undulation) (1986年) (CA32-1239)
 * 安部恭弘
   * Summertime In Blue ~さよならの共犯者 (1988年) (CT32-5195)
 * 佐藤隆
+  * 男と女 (Un Homme Et Une Femme) (1984年) (CA35-1082)
+  * 土曜の夜と日曜の朝 (Nuit Du Samedi Et Matin Du Dimanche) (1985年) (CA32-1109)
+  * 日々の泡 (L'Ecume Des Jours) (1986年) (CA32-1227)
+  * 水の中の太陽 (Le Soleil Dans Leau) (1987年) (CA32-1467)
   * 甘い生活 (La Dolce Vita) (1988年) (CT32-5322)
   * 十六夜曲 '80～'90 (1990年) (TOCT-5924)
 * 細野晴臣
