@@ -67,7 +67,6 @@ auhtor: SternGerlach
   * Omni Sight Seeing (1989年)
 * 高橋幸宏
   * 音楽殺人 (Murdered By The Music) (1980年)
-  * ワイルド・アンド・ムーディ (Wild & Moody) (1984年)
   * タイム・アンド・プレイス (Time And Place) (1984年)
   * ...Only When I Laugh (...笑っている時だけ) (1986年)
   * ラ・パンセ (La Pensée) (1987年)
@@ -94,7 +93,6 @@ auhtor: SternGerlach
   * マルタの鷹 (1987年)
   * ボレロ・カリフォルニア (1991年)
 * 井上鑑
-  * Cryptogram (1982年)
   * Splash (1983年) (CA35-1055)
   * カルサヴィーナ (1984年)
   * SF新世紀レンズマン オリジナル・サウンドトラック音楽編 (1984年)
@@ -328,7 +326,6 @@ auhtor: SternGerlach
   * 氷の世界 (1973年)
   * 二色の独楽 (1974年)
   * 招待状のないショー (1976年)
-  * 9.5カラット (1984年)
 * 来生たかお
   * 遊歩道 (1982年)
   * Ordinary (1983年)
@@ -410,6 +407,9 @@ auhtor: SternGerlach
   * 懐かしい未来 (1986年)
 * 福島祐子
   * 時の記憶 (1992年)
+* 裕木奈江
+  * 素描 (デッサン) (1994年)
+  * 水の精 (1994年)
 * アリス
   * ベスト10 (1983年) (CA35-1008)
 * オフコース
@@ -505,3 +505,15 @@ auhtor: SternGerlach
   * Intrigue (1985年)
   * High Noon High Moon (1987年)
   * TricTrac \~相曽晴日ベストセレクション (1987年)
+* サディスティック・ミカ・バンド
+  * Sadistic Mika Band (1973年)
+  * Hot! Menu (1975年)
+* 崎谷健次郎
+  * Difference (1987年)
+  * Realism (1988年)
+  * Kiss Of Life (1989年)
+* 高岡早紀
+  * Sabrina (1989年)
+  * 楽園の雫 (1990年)
+  * Romancero (1990年)
+  * Mon Cher (1991年)

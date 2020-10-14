@@ -190,6 +190,7 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
   * アコースティック・ムーン (1981年)
   * 午後のレリーフ (1984年) (LPレコード)
   * エスプレッソ (1985年) (LPレコード)
+  * ニュー・ベストナウ (1987年) (CA32-1506)
   * ゴールデンベスト オールタイム・セレクション (2018年)
 * 石川セリ
   * Möbius (メビウス) (1982年)
@@ -310,6 +311,7 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
   * 16 Candles (1988年) (母親から貰った)
 * 井上鑑
   * Prophetic Dream -預言者の夢 (1982年) (UPCY-7340)
+  * Cryptogram (1982年) (UPCY-7341)
   * Splash (1983年) (UPCY-7342)
   * 架空庭園論 (1985年) (CA32-1108)
   * アンジュレーション (Undulation) (1986年) (CA32-1239)
@@ -336,6 +338,7 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
   * Neuromantic (ロマン神経症) (1981年)
   * What, Me Worry? (ボク、大丈夫!!) (1982年)
   * 薔薇色の明日 (Tomorrow's Just Another Day) (1983年)
+  * ワイルド・アンド・ムーディ (Wild & Moody) (1984年) (ALCA-365)
   * 四月の魚 (Poisson D'Avril) (1985年)
   * Once A Fool,... (ワンスアフール 遥かなる思い) (1985年)
   * EGO (イーゴ) (1988年)
@@ -399,6 +402,10 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
   * 安全地帯V (1986年)
   * I Love Youからはじめよう -安全地帯Best- (1988年)
   * 安全地帯ベスト2 -ひとりぼっちのエール- (1993年)
+* 井上陽水
+  * 9.5カラット (1984年) (35KD-4)
+* サディスティック・ミカ・バンド
+  * 黒船 (1974年) (CA30-1410)
 
 ---
 
