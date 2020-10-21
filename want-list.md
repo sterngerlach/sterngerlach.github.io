@@ -378,7 +378,6 @@ auhtor: SternGerlach
   * パズル (Puzzle) (1987年)
   * 303 East 60th Street (1990年)
   * High Energy -Remixed in N.Y.- (1991年)
-  * On The Planet \~地球でのできごと\~ (1991年)
 * 和田加奈子
   * テンダネス (Tenderness) (1986年)
   * クワイエット・ストーム (Quiet Storm) (1987年)
