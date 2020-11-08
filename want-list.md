@@ -64,7 +64,6 @@ auhtor: SternGerlach
   * マーキュリック・ダンス (Mercuric Dance) (1985年)
   * エンドレス・トーキング (The Endless Talking) (1985年)
   * 紫式部・源氏物語 (1987年)
-  * Omni Sight Seeing (1989年)
 * 高橋幸宏
   * 音楽殺人 (Murdered By The Music) (1980年)
   * タイム・アンド・プレイス (Time And Place) (1984年)

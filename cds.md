@@ -328,6 +328,7 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
 * 細野晴臣
   * フィルハーモニー (1982年)
   * S・F・X (1984年)
+  * Omni Sight Seeing (オムニ・サイトシーング) (1989年) (MHCL 10136)
 * 坂本龍一
   * 千のナイフ (1978年)
   * B-2 Unit (1980年)
