@@ -113,7 +113,9 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
   * ミ・ン・ト (Mint) (1983年) (TOCT-12009)
   * Lotos -ロートスの果実- (1984年) (TOCT-12010)
   * Chaki Chaki Club (1985年) (TOCT-12011)
+  * ムーズ (Moods) (1986年) (CA32-1228)
   * モガ -ベスト・コレクション- (1986年) (CA32-1278)
+  * パズル (Puzzle) (1987年) (CA32-1393)
   * 鏡の中のアクトレス (The Actress In The Mirror) (1988年) (CT32-5150)
   * On The Planet -地球でのできごと- (1991年) (TOCT-6324)
 * 和田加奈子
@@ -251,6 +253,7 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
 * 遊佐未森
   * 瞳水晶 (1988年)
 * 彩恵津子
+  * Delication (デリケーション) (1986年) (30CH-164)
   * Passiō (パシオ) (1986年) (30CH-199)
   * ベスト・コレクション (1988年) (25CH-1)
   * In Bloom (1989年) (30CH-377)
@@ -270,6 +273,8 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
   * Cologne (1986年) (NCS-10238)
 * 今井優子
   * Silky Touch ~Lovin' You (1991年) (KICS-160)
+* 原田知世
+  * Soshite (1986年) (33DH-574)
 
 ---
 
@@ -287,6 +292,8 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
 
 ---
 
+* 大瀧詠一
+  * A Long Vacation (1981年) (35DH 1 131A3)
 * 山下達郎
   * Ride On Time (1980年)
   * Greatest Hits! Of Tatsuro Yamashita (1982年)
@@ -296,6 +303,9 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
   * Artisan (1991年)
   * Treasures (1995年) (母親から貰った)
   * Cozy (1998年) (母親から貰った)
+* サザンオールスターズ
+  * 人気者で行こう (1984年) (VICL-60217)
+  * Kamakura (1985年) (VDR-9003 / VDR-9004)
 * ブレッド & バター
   * Second Serenade (セカンド・セレナーデ) (1984年)
 * ハイ・ファイ・セット
@@ -311,11 +321,13 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
   * 246:3AM (1982年) (CA35-1013)
   * 16 Candles (1988年) (母親から貰った)
 * 井上鑑
-  * Prophetic Dream -預言者の夢 (1982年) (UPCY-7340)
+  * Prophetic Dream -予言者の夢 (1982年) (UPCY-7340)
   * Cryptogram (1982年) (UPCY-7341)
   * Splash (1983年) (UPCY-7342)
   * 架空庭園論 (1985年) (CA32-1108)
   * アンジュレーション (Undulation) (1986年) (CA32-1239)
+  * System Overload (システム・オーバーロード) (1988年) (32WD-0004)
+  * Head, Hands And Feet (ヘッド・ハンズ・アンド・フィート) (1989年) (PCCR-00014)
 * 安部恭弘
   * Summertime In Blue ~さよならの共犯者 (1988年) (CT32-5195)
 * 佐藤隆
@@ -325,13 +337,18 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
   * 水の中の太陽 (Le Soleil Dans Leau) (1987年) (CA32-1467)
   * 甘い生活 (La Dolce Vita) (1988年) (CT32-5322)
   * 十六夜曲 '80～'90 (1990年) (TOCT-5924)
+* 池田聡
+  * Missing (ミッシング) (1986年) (30CH-211)
+  * Joy And Pain (ジョイ・アンド・ペイン) (1987年) (35CH-246)
 * 細野晴臣
-  * フィルハーモニー (1982年)
+  * はらいそ (Paraiso) (1978年) (MHCL-509)
+  * フィルハーモニー (1982年) (MHCL-510)
   * S・F・X (1984年)
   * Omni Sight Seeing (オムニ・サイトシーング) (1989年) (MHCL 10136)
 * 坂本龍一
   * 千のナイフ (1978年)
   * B-2 Unit (1980年)
+  * 左うでの夢 (1981年) (32XA-148)
   * 音楽図鑑 (1984年)
   * Esperanto (エスペラント) (1985年)
   * 未来派野郎 (1986年)
@@ -350,6 +367,8 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
   * うたかたのオペラ (1980年)
   * ベル・エキセントリック (1981年)
   * あの頃、マリー・ローランサン (1983年)
+* かしぶち哲郎
+  * 彼女の時 (1985年) (MID-2001)
 * 日向敏文
   * サラの犯罪 (Sarah's Crime) (1985年)
   * ひとつぶの海 (Reality In Love) (1986年)
@@ -408,6 +427,8 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
   * 9.5カラット (1984年) (35KD-4)
 * サディスティック・ミカ・バンド
   * 黒船 (1974年) (CA30-1410)
+* ミカド (Mikado)
+  * Mikado (1985年) (TECN-18045)
 
 ---
 
@@ -493,7 +514,10 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
   * Technique (テクニーク) (1989年)
   * World in Motion (ワールド・イン・モーション) (1990年)
   * Republic (リパブリック) (1993年)
+  * (The Best of) New Order (1994年) (3984 28228 2)
   * International (インターナショナル) (2002年)
+* Joy Division (ジョイ・ディヴィジョン)
+  * The Best of Joy Division (2008年) (WPCR-12905 / WPCR-12906)
 * Kraftwerk (クラフトワーク)
   * Die Mensch-Maschine (The Man-Machine, 人間解体) (1978年)
   * Computerwelt (Computer World, コンピューター・ワールド) (1981年)
@@ -519,3 +543,6 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
   * TOTO IV \~聖なる剣 (1982年)
 * Journey (ジャーニー)
   * Frontiers (フロンティアーズ) (1983年)
+* King Crimson (キング・クリムゾン)
+  * Larks' Tongues in Aspic (太陽と戦慄) (1973年) (VJD28003)
+  * Discipline (ディシプリン) (1981年) (DGM0508)

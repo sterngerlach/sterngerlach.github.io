@@ -54,7 +54,6 @@ auhtor: SternGerlach
   * HOSONO HOUSE (1973年)
   * トロピカル・ダンディー (1975年)
   * 泰安洋行 (1976年)
-  * はらいそ (Paraiso) (1978年)
   * コチンの月 (Cochin Moon) (1978年)
   * ビデオ・ゲーム・ミュージック (1984年)
   * 花に水 (1984年)
@@ -64,6 +63,7 @@ auhtor: SternGerlach
   * マーキュリック・ダンス (Mercuric Dance) (1985年)
   * エンドレス・トーキング (The Endless Talking) (1985年)
   * 紫式部・源氏物語 (1987年)
+  * Medicine Compilation (メディスン・コンピレーション) (1993年)
 * 高橋幸宏
   * 音楽殺人 (Murdered By The Music) (1980年)
   * タイム・アンド・プレイス (Time And Place) (1984年)
@@ -71,7 +71,6 @@ auhtor: SternGerlach
   * ラ・パンセ (La Pensée) (1987年)
 * 坂本龍一
   * サマー・ナーヴス (Summer Nerves) (1979年)
-  * 左うでの夢 (1981年)
   * エンド・オブ・エイジア (The End of Asia) (1982年)
   * アレンジメント (The Arrangement) (1982年)
   * コーダ (Coda) (1983年)
@@ -96,7 +95,6 @@ auhtor: SternGerlach
   * カルサヴィーナ (1984年)
   * SF新世紀レンズマン オリジナル・サウンドトラック音楽編 (1984年)
   * Tokyo Installation (1986年)
-  * System Overload (1988年)
   * Sardana \~パブロ・カザルスに捧ぐ (1988年)
   * Dolphin (1991年)
 * 稲垣潤一 / 安部恭弘 / 井上鑑 / 鈴木雄大
@@ -242,7 +240,6 @@ auhtor: SternGerlach
   * 撫子純情 (1984年)
   * Pavane (パヴァーヌ) (1985年)
   * Next Door (1986年)
-  * Soshite (1986年)
   * Schmatz (1987年)
   * Tears of Joy (1990年)
 * 薬師丸ひろ子
@@ -333,7 +330,6 @@ auhtor: SternGerlach
   * I Will... (1986年)
   * Étranger (エトランジェ) (1987年)
 * 大瀧詠一
-  * A Long Vacation (1981年)
   * Each Time (1984年)
 * ハイ・ファイ・セット
   * Fashionable Lover (ファッショナブル・ラヴァー) (1976年)
@@ -365,16 +361,12 @@ auhtor: SternGerlach
   * ステレオ太陽族 (1981年)
   * Nude Man (1982年)
   * 綺麗 (1983年)
-  * 人気者で行こう (1984年)
-  * Kamakura (1985年)
   * Southern All Stars (1990年)
   * 稲村ジェーン (1990年)
   * 世に万葉の花が咲くなり (1992年)
 * 中原めいこ
   * ココナッツ・ハウス (Coconuts House) (1982年)
   * Meiko's Best Selection 10+1 (1984年)
-  * ムーズ (Moods) (1986年)
-  * パズル (Puzzle) (1987年)
   * 303 East 60th Street (1990年)
   * High Energy -Remixed in N.Y.- (1991年)
 * 和田加奈子
@@ -451,14 +443,11 @@ auhtor: SternGerlach
   * Portrait (1981年)
 * 越美晴
   * パラレリズム (Parallelisme) (1984年)
-* ミカド (Mikado)
-  * Mikado (1985年)
 * Flat Face (フラット・フェイス)
   * Face (1986年)
 * 彩恵津子
   * Reach Out (1984年)
   * All I Need (1985年)
-  * Delication (デリケーション) (1986年)
   * College Life (1986年)
   * Unknown Things (1987年)
 * 風見りつ子
@@ -478,7 +467,6 @@ auhtor: SternGerlach
   * Amateur Academy (アマチュア・アカデミー) (1984年)
 * かしぶち哲郎
   * リラのホテル (1983年)
-  * 彼女の時 (1985年)
 * ヒカシュー
   * ヒカシュー (1980年)
   * 夏 (1980年)
