@@ -117,6 +117,7 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
   * モガ -ベスト・コレクション- (1986年) (CA32-1278)
   * パズル (Puzzle) (1987年) (CA32-1393)
   * 鏡の中のアクトレス (The Actress In The Mirror) (1988年) (CT32-5150)
+  * 303 East 60th Street (1990年) (TOCT-5645)
   * On The Planet -地球でのできごと- (1991年) (TOCT-6324)
 * 和田加奈子
   * エスキース (Esquisse) (1987年) (CA32-1511)
@@ -275,6 +276,8 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
   * Silky Touch ~Lovin' You (1991年) (KICS-160)
 * 原田知世
   * Soshite (1986年) (33DH-574)
+* イリア(Iria)
+  * Tingle (ティングル) (1988年) (H33P20260)
 
 ---
 

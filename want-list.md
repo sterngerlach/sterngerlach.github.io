@@ -367,7 +367,6 @@ auhtor: SternGerlach
 * 中原めいこ
   * ココナッツ・ハウス (Coconuts House) (1982年)
   * Meiko's Best Selection 10+1 (1984年)
-  * 303 East 60th Street (1990年)
   * High Energy -Remixed in N.Y.- (1991年)
 * 和田加奈子
   * テンダネス (Tenderness) (1986年)
