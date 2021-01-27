@@ -202,11 +202,9 @@ auhtor: SternGerlach
   * Summer Breeze (1986年)
   * Exotique (1986年)
   * One And Only (1987年)
-  * Collection (1987年)
   * Catch The Nite (1988年)
   * Mind Game (1988年)
   * Angel Hearts (1988年)
-  * Hide'n' Seek (1989年)
 * 岡田有希子
   * ヴィーナス誕生 (1986年)
 * 岡村孝子
@@ -222,17 +220,6 @@ auhtor: SternGerlach
 * 安田成美
   * 全曲集 (1984年)
   * 全曲集 (1989年)
-* Wink
-  * Moonlight Serenade (1988年)
-  * At Heel Diamonds (1988年)
-  * Twin Memories (1989年)
-  * Velvet (1990年)
-  * Crescent (1990年)
-  * Queen Of Love (1991年)
-  * Sapphire (1991年)
-  * Each Side Of Screen (1992年)
-  * Nocturne \~夜想曲\~ (1992年)
-  * Αφροδιτη (アプロデーテ) (1993年)
 * 鈴木早智子
   * Mode (1992年)
 * 原田知世

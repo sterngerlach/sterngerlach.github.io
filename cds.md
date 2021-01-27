@@ -239,12 +239,26 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
   * Woman Tone (1988年)
 * Cindy
   * Angel Touch (1990年)
+* 中山美穂
+  * Collection (1987年) (K32X-200)
+  * Hide'n'Seek (1989年) (292A 50)
+  * Collection II (1990年) (KICS 60)
 * 安田成美
   * 安田成美 (1984年)
   * ジィンジャー (Ginger) (1988年)
 * Wink
-  * Especially For You \~優しさにつつまれて\~ (1989年)
-  * Wink Memories 1988-1996 (1996年)
+  * Moonlight Serenade (1988年) (H33R-20010)
+  * At Heel Diamonds (1988年) (H25R-20013)
+  * Especially For You \~優しさにつつまれて\~ (1989年) (H30R-10001)
+  * Twin Memories (1989年) (H00R-10008)
+  * Velvet (1990年) (PSCR-1010)
+  * Crescent (1990年) (PSCR-1017)
+  * Queen Of Love (1991年) (PSCR-1025)
+  * Sapphire (1991年) (PSCR-1036)
+  * Each Side Of Screen (1992年) (PSCR-1047)
+  * Nocturne \~夜想曲\~ (1992年) (PSCR-1060)
+  * Αφροδιτη (アプロデーテ) (1993年) (PSCR-5016)
+  * Wink Memories 1988-1996 (1996年) (PSCR-5460-1)
 * 相田翔子
   * Delphinium (デルフィニューム) (1992年)
 * 菊池桃子
