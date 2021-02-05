@@ -16,6 +16,7 @@ author: SternGerlach
 書いてみて分かったけど、全然持ってないな。もっと増強しなければ。
 
 * CA35-1013: 稲垣潤一 / 246:3AM (1982年; 1983年7月21日)
+* CA35-1066: ハイ・ファイ・セット / Pops Best Setting (1984年; 1984年3月21日)
 * CA35-1082: 佐藤隆 / 男と女 (Un Homme Et Une Femme) (1984年; 1984年7月21日)
 * CA32-1108: 井上鑑 / 架空庭園論 (Imaginary Arboretum) (1985年; 1985年3月30日)
 * CA32-1109: 佐藤隆 / 土曜の夜と日曜の朝 (Nuit Du Samedi Et Matin Du Dimanche) (1985年; 1985年3月30日)
@@ -50,7 +51,6 @@ author: SternGerlach
 
 * CA35-1001: 松任谷由実 / Pearl Pierce (パール・ピアス) (1982年; 1982年11月1日)
 * CA35-1002: オフコース / I Love You (1982年; 1983年?月)
-* CA35-1066: ハイ・ファイ・セット / Pops Best Setting (1984年; 1984年?月)
 * CA35-1067: ハイ・ファイ・セット / 4 Beat Best Setting (1984年; 1984年?月)
 * CA38-1068: 薬師丸ひろ子 / 古今集 (1984年; 1984年2月14日)
 * CA35-1097: 中原めいこ / Meiko's Best Selection 10+1 (1984年; 1984年12月21日)

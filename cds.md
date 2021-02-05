@@ -63,12 +63,12 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
 
 * 大貫妙子
   * Grey Skies (グレイ・スカイズ)  (1976年)
-  * SUNSHOWER (サンシャワー) (1977年)
-  * MIGNONNE (ミニヨン) (1978年)
-  * ROMANTIQUE (ロマンティーク) (1980年)
-  * AVENTURE (アヴァンチュール) (1981年)
+  * Sunshower (サンシャワー) (1977年)
+  * Mignonne (ミニヨン) (1978年)
+  * Romantique (ロマンティーク) (1980年)
+  * Aventure (アヴァンチュール) (1981年)
   * Cliché (クリシェ) (1982年)
-  * SIGNIFIE (シニフィエ) (1983年)
+  * Signifie (シニフィエ) (1983年)
   * カイエ (1984年)
   * Copine. (コパン) (1985年)
   * Comin' Soon (カミング・スーン) (1986年)
@@ -77,7 +77,8 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
   * Pure Acoustic (1987年)
   * Purissima (プリッシマ) (1988年)
   * New Moon (ニュー・ムーン) (1990年)
-  * PURE DROPS (1991年)
+  * Pure Drops (1991年)
+  * Drawing (1992年) (TOCT-6430)
 * 矢野顕子
   * Japanese Girl (1976年)
   * 長月 神無月 (1976年)
@@ -292,6 +293,8 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
   * Soshite (1986年) (33DH-574)
 * イリア(Iria)
   * Tingle (ティングル) (1988年) (H33P20260)
+* 裕木奈江
+  * 水の精 (1994年) (SRCL 3027)
 
 ---
 
@@ -327,6 +330,7 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
   * Second Serenade (セカンド・セレナーデ) (1984年)
 * ハイ・ファイ・セット
   * 卒業写真 (1975年)
+  * Pops Best Setting (1984年) (CA35-1066)
   * Indigo (1985年) (32DH 179)
 * 角松敏生
   * Before The Daylight \~is the most darkness moment in a day (1988年)
@@ -369,6 +373,8 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
   * 音楽図鑑 (1984年)
   * Esperanto (エスペラント) (1985年)
   * 未来派野郎 (1986年)
+  * Neo Geo (1987年) (32DH 700)
+  * Gruppo Musicale (1989年) (32MD-1046)
 * 高橋幸宏
   * サラヴァ! (Saravah!) (1978年)
   * Neuromantic (ロマン神経症) (1981年)

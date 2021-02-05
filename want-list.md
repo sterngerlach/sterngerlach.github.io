@@ -80,7 +80,6 @@ auhtor: SternGerlach
   * メディア・バーン・ライヴ (Media Bahn Live) (1986年)
   * ラストエンペラー (1987年)
   * オネアミスの翼 \~王立宇宙軍\~ オリジナル・サウンド・トラック (Aile De Honneamise - Royal Space Force) (1987年)
-  * ネオ・ジオ (Neo Geo) (1987年)
   * プレイング・ジ・オーケストラ (Playing The Orchestra) (1988年)
   * ビューティ (Beauty) (1989年)
 * 加藤和彦
@@ -149,7 +148,6 @@ auhtor: SternGerlach
   * Phantasmagoria \~幻覚者たち\~ (2000年)
   * Miles Blend (2001年)
 * 大貫妙子
-  * Drawing (ドローイング) (1992年)
   * Shooting Star in the Blue Sky (1993年)
   * Tchou! (チャオ!) (1995年)
   * Lucy (ルーシー) (1997年)
@@ -385,7 +383,6 @@ auhtor: SternGerlach
   * 時の記憶 (1992年)
 * 裕木奈江
   * 素描 (デッサン) (1994年)
-  * 水の精 (1994年)
 * アリス
   * ベスト10 (1983年) (CA35-1008)
 * オフコース
