@@ -19,46 +19,6 @@ auhtor: SternGerlach
 
 iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリーミングサービスで扱われていないものが結構多いと思います。個人的には、こういったサービスは所有欲が満たされないので(図書室で本を借りたり、毎月の家賃を払ってアパートを借りたりするように、いつまで経っても自分のものにはならないので)あまり好きではありません。それはそれとして、誰かお勧めのアーティストがいたら教えてください。
 
-## 欲しいCDとレコード
-
-[こちら](./want-list.html)
-
-## レアで手に入らないCDとレコード
-
-未CD化であったり、入手困難なものです。Amazonだと中古で1万円ぐらいするものもあります。誰か持っている人がいたら教えてください。
-
-* PLAYTECHS (プレイテックス)
-  * No Duplicatin' (1983年)
-* 佐藤博
-  * This Boy (ディス・ボーイ) (1985年) (32XA-39)
-  * 記憶の中の未来 (1988年) (32A2-1)
-* ラジ (Rajie)
-  * 午後のレリーフ (1984年) (CA35-1093)
-* 加藤和彦
-  * ヴェネツィア (1984年) (32DH 268)
-* 山根麻衣
-  * Will (1982年) (30CH-45)
-  * The Day Before Yesterday (1984年) (35CH-6)
-  * ベスト (1987年) (30CH-252)
-* 井上鑑
-  * Splash (1983年) (CA35-1055)
-  * SF新世紀レンズマン オリジナル・サウンドトラック音楽編 (1984年) (D35A0041)
-  * Tokyo Installation (1986年) (50DH 441-442 / 32DH 441)
-* 原田知世
-  * 撫子純情 (1984年) (30DH 202)
-* ハイ・ファイ・セット
-  * 3 Notes (1981年) (CT32-5204)
-  * 1 & 2 (1982年) (CA35-1018 / CT32-5205)
-  * I miss you (1983年) (CA35-1028)
-* 稲垣潤一 / 安部恭弘 / 井上鑑 / 鈴木雄大
-  * Modern Wave II (1983年) (CA35-1045)
-* 橋本一子
-  * Ichiko (1984年) (VDP-79)
-* 越美晴
-  * パラレリズム (Parallelisme) (1984年) (ALCA-378 / ALCA-9117)
-* 風見りつ子
-  * Nouvelles (ヌヴェル) (1987年) (CA32-1471)
-
 ## 現在持っているCDとレコード
 
 * 大貫妙子
@@ -138,7 +98,7 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
   * スタジオ・ロマンチスト (Studio Romantic) (1987年)
 * 荒井由実
   * Yuming History (1987年) (ALCA-25 / ALCA-26)
-  * Yumi Arai The Concert with old Friends (1996年)
+  * Yumi Arai The Concert With Old Friends (1996年)
 * 松任谷由実
   * 紅雀 (べにすずめ) (1978年)
   * 流線形'80 (1978年)
@@ -192,7 +152,7 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
   * High Excentrique (ハイ・エキセントリック) (1988年)
   * High Excentrique Piano Music (ハイ・エキセントリック・ピアノ・ミュージック) (1989年)
   * D.M. (1989年)
-  * Je m'aime (ジュ・メーム) (1990年)
+  * Je M'aime (ジュ・メーム) (1990年)
   * ロマンティックな雨 (1992年)
 * 坪倉唯子
   * Always In Love (1986年)
@@ -216,7 +176,7 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
   * Dri夢・X-T-C (1985年)
   * 遊女 (1986年)
   * Joshin (1987年)
-  * 女息 -MEIKI- (1988年)
+  * 女息 -Meiki- (1988年)
   * My Name Is Woman (1989年)
   * Rude (1990年)
   * Womanism I \~Zen・Kyoku・Shoo 1974-1984\~ (1991年)
@@ -307,13 +267,13 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
 * 宇多田ヒカル
   * First Love (1999年)
   * Distance (2001年)
-  * DEEP RIVER (2002年)
-  * Utada Hikaru SINGLE COLLECTION VOL.1 (2004年)
-  * Utada Hikaru SINGLE COLLECTION Vol.2 (2010年)
+  * Deep River (2002年)
+  * Utada Hikaru Single Collection Vol.1 (2004年)
+  * Utada Hikaru Single Collection Vol.2 (2010年)
 * 倉木麻衣
-  * delicious way (2000年)
+  * Delicious Way (2000年)
   * Perfect Crime (2001年)
-  * FAIRY TALE (2002年)
+  * Fairy Tale (2002年)
   * Wish You The Best (2004年)
 
 ---
@@ -339,10 +299,10 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
   * Pops Best Setting (1984年) (CA35-1066)
   * Indigo (1985年) (32DH 179)
 * 角松敏生
-  * Before The Daylight \~is the most darkness moment in a day (1988年)
+  * Before The Daylight \~Is The Most Darkness Moment In A Day (1988年)
   * Reasons For Thousand Lovers (1989年)
 * 大江千里
-  * OLYMPIC (1987年)
+  * Olympic (1987年)
   * Red Monkey Yellow Fish (1989年)
 * 稲垣潤一
   * 246:3AM (1982年) (CA35-1013)
@@ -389,7 +349,7 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
   * ワイルド・アンド・ムーディ (Wild & Moody) (1984年) (ALCA-365)
   * 四月の魚 (Poisson D'Avril) (1985年)
   * Once A Fool,... (ワンスアフール 遥かなる思い) (1985年)
-  * EGO (イーゴ) (1988年)
+  * Ego (イーゴ) (1988年)
   * Broadcast From Heaven (1990年)
 * 加藤和彦
   * パパ・ヘミングウェイ (1979年)
@@ -402,7 +362,7 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
   * サラの犯罪 (Sarah's Crime) (1985年)
   * ひとつぶの海 (Reality In Love) (1986年)
   * Story (1987年)
-  * ISIS (アイシス) (1988年)
+  * Isis (アイシス) (1988年)
   * Another Graffiti (1988年)
   * Rhapsody In The Twilight (ラプソディ・イン・ザ・トワイライト) (1989年)
   * いたずら天使 (Little Rascal) (1990年)
@@ -411,11 +371,11 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
   * SHAMBARA (1989年)
 * ピチカート・ファイヴ
   * ピチカートマニア! (1987年)
-  * couples (カップルズ) (1987年)
+  * Couples (カップルズ) (1987年)
   * 女王陛下のピチカート・ファイヴ (1989年)
   * Sweet Pizzicato Five (スウィート・ピチカート・ファイヴ) (1992年)
   * ボサ・ノヴァ2001 (1993年)
-  * EXPO 2001 (1993年)
+  * Expo 2001 (1993年)
   * Overdose (オーヴァードーズ) (1994年)
   * Romantique 96 (ロマンティーク96) (1995年)
 * ICE
@@ -462,25 +422,25 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
 ---
 
 * レベッカ
-  * REBECCA IV \~Maybe Tomorrow\~ (1985年)
-  * TIME (1986年)
+  * Rebecca IV \~Maybe Tomorrow\~ (1985年)
+  * Time (1986年)
   * Poison (1987年)
   * Blond Saurus (1989年)
   * The Best Of Dreams (1990年)
   * The Best Of Dreams Another Side (1991年)
-* BARBEE BOYS (バービーボーイズ)
-  * LISTEN! BARBEE BOYS 4 (1987年)
+* Barbee Boys (バービーボーイズ)
+  * Listen! Barbee Boys 4 (1987年)
   * √5 (1989年)
-  * BARBEE BOYS (1992年)
+  * Barbee Boys (1992年)
 * PSY・S (サイズ)
   * Different View (ディファレント・ビュー) (1985年)
-  * PIC-NIC (ピクニック) (1986年)
+  * Pic-Nic (ピクニック) (1986年)
   * PSY・S Presents "Collection" (1987年)
   * Mint-Electric (ミント・エレクトリック) (1987年)
   * Non-Fiction (ノン・フィクション) (1988年)
-  * ATLAS (アトラス) (1989年)
-  * SIGNAL (シグナル) (1990年)
-  * TWO HEARTS (1991年)
+  * Atlas (アトラス) (1989年)
+  * Signal (シグナル) (1990年)
+  * Two Hearts (1991年)
   * Golden Best (Singles+) (2002年)
 
 ---
@@ -492,7 +452,7 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
 * Every Little Thing
   * Every Best Single +3 (1999年)
 * My Little Lover
-  * evergreen (1995年)
+  * Evergreen (1995年)
 * Hysteric Blue
   * Wallaby (2000年)
 * ポケットビスケッツ
@@ -500,7 +460,7 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
 * Jungle Smile
   * 虹のカプセル (1997年)
 * PUFFY
-  * amiyumi (1996年)
+  * Amiyumi (1996年)
   * Jet CD (1998年)
 * globe
   * Cruise Record 1995-2000 (1999年)
@@ -568,8 +528,8 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
 
 ---
 
-* TOTO (トト)
-  * TOTO IV \~聖なる剣 (1982年)
+* Toto (トト)
+  * Toto IV \~聖なる剣 (1982年)
 * Journey (ジャーニー)
   * Frontiers (フロンティアーズ) (1983年)
 * King Crimson (キング・クリムゾン)
