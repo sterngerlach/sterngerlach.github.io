@@ -37,6 +37,8 @@ sterngerlachのGitHubページにようこそ。
 
 - [グラフベースSLAM](./doc/graph-based-slam-intro.pdf)
 
+- [ガウス・ニュートン法とレーベンバーグ・マーカート法](./doc/gauss-newton.pdf)
+
 ## 日記
 
 日記を適当に書いてこちらに置いていきます。
