@@ -1,0 +1,306 @@
+
+% gauss-newton.tex
+
+\documentclass[dvipdfmx,a4paper]{jsarticle}
+
+\usepackage{docmute}
+\input{settings}
+
+% \usepackage{geometry}
+% \geometry{left=19.05mm,right=19.05mm,top=19.05mm,bottom=19.05mm}
+
+\title{ガウス・ニュートン法とレーベンバーグ・マーカート法}
+\author{ほげ}
+\date{2021年2月7日}
+
+\begin{document}
+
+\maketitle
+
+\section{ニュートン法}
+ニュートン法は, 2階微分可能な関数$f(\bm{x})$を, $\bm{x}$に関して最小化するための逐次的な手法である\cite{Kanamori16}.
+その派生であるガウス・ニュートン法や, レーベンバーグ・マーカート法は, グラフベースSLAMの基礎となるポーズ調整\cite{Grisetti10}\cite{Konolige10}\cite{Kuemmerle11}や, スキャンマッチング\cite{Biber03}\cite{Kohlbrecher11}などで用いられている. \newline
+
+関数$f(\bm{x}): \mathbb{R}^N \to \mathbb{R}$の最適化を, 初期値$\breve{\bm{x}} \in \mathbb{R}^N$から始めるとする.
+初期値$\breve{\bm{x}}$からの変位を$\Delta \bm{x}$として, 元の関数$f(\bm{x})$を変位に対する関数$f(\breve{\bm{x}} + \Delta \bm{x})$として書き直し, $\Delta \bm{x}$に関して最小化する.
+そのような$\Delta \bm{x}$が求まったら, 現在の値を$\breve{\bm{x}}$から$\breve{\bm{x}} + \Delta \bm{x}$に更新する.
+これがニュートン法の大まかな流れとなる. \newline
+
+変位に対する関数$f(\breve{\bm{x}} + \Delta \bm{x})$を, 2次の項までテイラー展開すると
+\begin{equation} \label{eq:newton-function-approx}
+    f(\breve{\bm{x}} + \Delta \bm{x})
+    \simeq f(\breve{\bm{x}}) + \bm{g}^\top \Delta \bm{x}
+    + \frac{1}{2} \Delta \bm{x}^\top \bm{H} \Delta \bm{x}
+\end{equation}
+(\ref{eq:newton-function-approx})式において, $\bm{g} = \nabla f(\breve{\bm{x}}) \in \mathbb{R}^N$と$\bm{H} = \nabla^2 f(\breve{\bm{x}}) \in \mathbb{R}^{N \times N}$は, それぞれ$f(\bm{x})$の勾配およびヘッセ行列であり, 次のように書ける.
+\begin{eqnarray}
+    \nabla f(\bm{x})
+    &=& \frac{\partial}{\partial \bm{x}} f(\bm{x})
+    = \left[ \frac{\partial}{\partial x_1} f(\bm{x}), \cdots,
+    \frac{\partial}{\partial x_N} f(\bm{x}) \right]^\top \in \mathbb{R}^N \\
+    \nabla^2 f(\bm{x}) \label{eq:newton-gradient}
+    &=& \left[ \begin{array}{cccc}
+    \cfrac{\partial^2}{\partial x_1^2} f(\bm{x}) &
+    \cfrac{\partial^2}{\partial x_1 \partial x_2} f(\bm{x}) & \cdots &
+    \cfrac{\partial^2}{\partial x_1 \partial x_N} f(\bm{x}) \\
+    \cfrac{\partial^2}{\partial x_2 \partial x_1} f(\bm{x}) &
+    \cfrac{\partial^2}{\partial x_2^2} f(\bm{x}) & \cdots &
+    \cfrac{\partial^2}{\partial x_2 \partial x_N} f(\bm{x}) \\
+    \vdots & \vdots & \ddots & \vdots \\
+    \cfrac{\partial^2}{\partial x_N \partial x_1} f(\bm{x}) &
+    \cfrac{\partial^2}{\partial x_N \partial x_2} f(\bm{x}) & \cdots &
+    \cfrac{\partial^2}{\partial x_N^2} f(\bm{x}) \end{array} \right]
+    \in \mathbb{R}^{N \times N} \label{eq:newton-hessian}
+\end{eqnarray}
+(\ref{eq:newton-function-approx})式を$\Delta \bm{x}$に関して最小化するために, $f(\breve{\bm{x}} + \Delta \bm{x})$を$\Delta \bm{x}$で偏微分すると
+\begin{equation} \label{eq:newton-function-partial}
+    \frac{\partial}{\partial \Delta \bm{x}} f(\breve{\bm{x}} + \Delta \bm{x})
+    = \frac{\partial}{\partial \Delta \bm{x}} \left(
+    f(\breve{\bm{x}}) + \bm{g}^\top \Delta \bm{x}
+    + \frac{1}{2} \Delta \bm{x}^\top \bm{H} \Delta \bm{x} \right)
+    = \bm{g} + \bm{H} \Delta \bm{x}
+\end{equation}
+ここでベクトルの微分に関する次の関係式を用いた.
+\begin{eqnarray}
+    \frac{\partial}{\partial \bm{x}} \bm{a}^\top \bm{x} &=& \bm{a} \\
+    \frac{\partial}{\partial \bm{x}} \bm{x}^\top \bm{A} \bm{x} &=& \left( \bm{A} + \bm{A}^\top \right) \bm{x} \label{eq:quadratic-derivative}
+\end{eqnarray}
+$f(\bm{x})$は2階微分可能であるので, ヘッセ行列$\bm{H} = \nabla^2 f(\bm{x})$を構成する各要素は, 微分の順序を入れ替えられる.
+従って$\partial^2 / \partial x_i \partial x_j f(\bm{x}) = \partial^2 / \partial x_j \partial x_i f(\bm{x})$であるから, ヘッセ行列$\bm{H}$の$(i, j)$要素と$(j, i)$要素は等しく, 対称行列になる.
+(\ref{eq:quadratic-derivative})式の結果は, 行列$\bm{A}$が対称であれば$2 \bm{A} \bm{x}$とできる($\bm{A} = \bm{A}^\top$).
+(\ref{eq:newton-function-partial})式を$0$とおいて$\Delta \bm{x}$について解けば, (\ref{eq:newton-function-approx})式を最小化する$\Delta \bm{x}^*$は次のようになる.
+\begin{equation} \label{eq:newton-update}
+    \Delta \bm{x}^* = -\bm{H}^{-1} \bm{g}
+\end{equation}
+
+以上より, ニュートン法のアルゴリズムは次のようにまとめられる.
+
+\begin{algorithm}[H]
+    \caption{ニュートン法}
+    \label{alg:newton}
+    \begin{algorithmic}[1]
+        \Require 初期値$\breve{\bm{x}} \in \mathbb{R}^N$, 収束判定に用いる閾値$\varepsilon \ll 1$
+
+        \State $\bm{x}_1 \gets \breve{\bm{x}}$として初期化する
+        \For{$i = 1, 2, \cdots$}
+            \State $\bm{x} = \bm{x}_i$における$f(\bm{x})$の勾配$\bm{g} = \nabla f(\bm{x}_i)$とヘッセ行列$\bm{H} = \nabla^2 f(\bm{x}_i)$を求める
+            \State $\bm{x}_i$に対する変位を$\Delta \bm{x}^* \gets -\bm{H}^{-1} \bm{g}$として求める
+            \State $\bm{x}_{i + 1} \gets \bm{x}_i + \Delta \bm{x}^*$として解を更新する
+            \State $\left| f(\bm{x}_i) - f(\bm{x}_{i + 1}) \right| < \varepsilon$であれば終了する
+        \EndFor
+    \end{algorithmic}
+\end{algorithm}
+
+\section{ガウス・ニュートン法}
+ガウス・ニュートン(Gauss-Newton)法は, 関数$f(\bm{x})$が次のように, $M$個の関数$e_1(\bm{x}), \cdots, e_M(\bm{x})$の二乗和で表される場合に利用できる.
+\begin{equation} \label{eq:gauss-newton-function}
+    f(\bm{x}) = \frac{1}{2} \sum_{i = 1}^M e_i(\bm{x})^2
+\end{equation}
+例えば, $M$個の入力と教師データの組$\left\{ (\bm{a}_1, b_1), \cdots, (\bm{a}_M, b_M) \right\}$があるとして, これらのデータに当てはまるように, モデル$b = \phi(\bm{a}; \bm{x})$のパラメータ$\bm{x} \in \mathbb{R}^N$を決めたいとする.
+このとき(\ref{eq:gauss-newton-function})式の$e_i(\bm{x})$を, $i$番目の入力データ$\bm{a}_i$に対するモデルの予測値$\phi(\bm{a}_i; \bm{x})$と, 期待される出力値$b_i$との残差$e_i(\bm{x}) = b_i - \phi(\bm{a}_i; \bm{x})$とする.
+(\ref{eq:gauss-newton-function})式の$f(\bm{x})$は残差の二乗和となるが, これをパラメータ$\bm{x}$に関して最小化すれば, データに最もよく適合するパラメータ$\bm{x}$が得られる.
+グラフベースSLAMのポーズ調整であれば, $e_i(\bm{x})$は$i$番目のポーズグラフのエッジについての残差となる.
+
+先程のニュートン法と同様に, 関数$f(\bm{x})$を, 初期値$\breve{\bm{x}}$からの変位$\Delta \bm{x}$についての関数$f(\breve{\bm{x}} + \Delta \bm{x})$に置き換えて考える.
+$f(\breve{\bm{x}} + \Delta \bm{x})$を最小化するような$\Delta \bm{x}$は, (\ref{eq:newton-update})式のように, $f(\bm{x})$のヘッセ行列の逆行列$\bm{H}^{-1}$と, 勾配$\bm{g}$との積で表現される.
+残差$e_i(\bm{x})$の勾配$\nabla e_i(\bm{x}) \in \mathbb{R}^N$とヘッセ行列$\nabla^2 e_i(\bm{x}) \in \mathbb{R}^{N \times N}$は, $j$番目の要素$\left( \nabla e_i(\bm{x}) \right)_j$と, $(j, k)$番目の要素$\left( \nabla^2 e_i(\bm{x}) \right)_{jk}$がそれぞれ
+\begin{eqnarray}
+    \left( \nabla e_i(\bm{x}) \right)_j
+    = \frac{\partial}{\partial x_j} e_i(\bm{x}), \quad
+    \left( \nabla^2 e_i(\bm{x}) \right)_{jk}
+    = \cfrac{\partial^2}{\partial x_j \partial x_k} e_i(\bm{x})
+\end{eqnarray}
+で与えられるので, $f(\bm{x})$の勾配$\bm{g}$の第$k$要素$g_k$と, ヘッセ行列$\bm{H}$の$(j, k)$要素$H_{jk}$は
+\begin{equation}
+    g_k = \frac{\partial}{\partial x_k} f(\bm{x})
+    = \sum_{i = 1}^M e_i(\bm{x}) \frac{\partial}{\partial x_k} e_i(\bm{x})
+    = \sum_{i = 1}^M e_i(\bm{x}) \left( \nabla e_i(\bm{x}) \right)_k
+\end{equation}
+\begin{eqnarray}
+    H_{jk} &=& \frac{\partial^2}{\partial x_j \partial x_k} f(\bm{x})
+    = \frac{\partial}{\partial x_j} \left(
+    \sum_{i = 1}^M e_i(\bm{x}) \frac{\partial}{\partial x_k} e_i(\bm{x}) \right) \nonumber \\
+    &=& \sum_{i = 1}^M \left( \frac{\partial}{\partial x_j} e_i(\bm{x})
+    \frac{\partial}{\partial x_k} e_i(\bm{x})
+    + e_i(\bm{x}) \frac{\partial^2}{\partial x_j \partial x_k} e_i(\bm{x}) \right) \nonumber \\
+    &=& \sum_{i = 1}^M \frac{\partial}{\partial x_j} e_i(\bm{x})
+    \frac{\partial}{\partial x_k} e_i(\bm{x})
+    + \sum_{i = 1}^M e_i(\bm{x}) \frac{\partial^2}{\partial x_j \partial x_k} e_i(\bm{x}) \nonumber \\
+    &=& \sum_{i = 1}^M \left( \nabla e_i(\bm{x}) \right)_j
+    \left( \nabla e_i(\bm{x}) \right)_k +
+    \sum_{i = 1}^M e_i(\bm{x}) \left( \nabla^2 e_i(\bm{x}) \right)_{jk}
+\end{eqnarray}
+これより$f(\breve{\bm{x}} + \Delta \bm{x})$の勾配$\bm{g} = \nabla f(\breve{\bm{x}})$とヘッセ行列$\bm{H} = \nabla^2 f(\breve{\bm{x}})$は
+\begin{eqnarray}
+    \bm{g} &=& \left[ g_1, \cdots, g_N \right]^\top
+    = \sum_{i = 1}^M e_i(\bm{x}) \nabla e_i(\breve{\bm{x}})
+    \label{eq:gauss-newton-gradient} \\
+    \bm{H} &=& \left[ H_{jk} \right]
+    = \sum_{i = 1}^M \nabla e_i(\breve{\bm{x}}) \nabla e_i(\breve{\bm{x}})^\top +
+    \sum_{i = 1}^M e_i(\breve{\bm{x}}) \nabla^2 e_i(\breve{\bm{x}})
+    \label{eq:gauss-newton-hessian}
+\end{eqnarray}
+のように書ける.
+ニュートン法では, 最適な$\Delta \bm{x}$を$-\bm{H}^{-1} \bm{g}$として求める.
+
+ヘッセ行列$\bm{H}$を得るには, $e_i(\bm{x})$に関する$N \times N$ヘッセ行列$\nabla^2 e_i(\bm{x})$を$M$個, 即ち$M \cdot N(N + 1)/2$種類の2階微分を計算する必要がある.
+$N$や$M$が大きければ, ヘッセ行列を求めるのは困難である.
+そこで, (\ref{eq:gauss-newton-hessian})式の$\nabla^2 e_i(\bm{x})$を省略する.
+このとき$\bm{H}$は, $e_i(\bm{x})$に関する勾配$\nabla e_i(\bm{x})$のみから計算でき, ヘッセ行列$\nabla^2 e_i(\bm{x})$は不要になる.
+新たな$\tilde{\bm{H}}$は
+\begin{equation}
+    \tilde{\bm{H}} = \sum_{i = 1}^M \nabla e_i(\breve{\bm{x}}) \nabla e_i(\breve{\bm{x}})^\top
+    \label{eq:gauss-newton-hessian-approx}
+\end{equation}
+であるから, 最適な$\Delta \bm{x}$は
+\begin{equation}
+    \Delta \bm{x} = -\left( \sum_{i = 1}^M \nabla e_i(\breve{\bm{x}})
+    \nabla e_i(\breve{\bm{x}})^\top \right)^{-1}
+    \sum_{i = 1}^M e_i(\bm{x}) \nabla e_i(\breve{\bm{x}})
+    \label{eq:gauss-newton-update}
+\end{equation}
+となる. $N \times M$行列$\bm{J}(\breve{\bm{x}})$を
+\begin{equation}
+    \bm{J}(\breve{\bm{x}}) = \left[
+    \nabla e_1(\breve{\bm{x}}), \nabla e_2(\breve{\bm{x}}), \cdots,
+    \nabla e_M(\breve{\bm{x}}) \right] \in \mathbb{R}^{N \times M}
+\end{equation}
+とおけば$\tilde{\bm{H}} = \bm{J}(\breve{\bm{x}}) \bm{J}(\breve{\bm{x}})^\top$であるから, $\Delta \bm{x}$は
+\begin{equation}
+    \Delta \bm{x} = -\left( \bm{J}(\breve{\bm{x}}) \bm{J}(\breve{\bm{x}})^\top \right)^{-1}
+    \nabla f(\breve{\bm{x}})
+\end{equation}
+のように書ける. 以上より, ガウス・ニュートン法のアルゴリズムが得られる.
+
+\begin{algorithm}[H]
+    \caption{ガウス・ニュートン法}
+    \label{alg:gauss-newton}
+    \begin{algorithmic}[1]
+        \Require 初期値$\breve{\bm{x}} \in \mathbb{R}^N$, 収束判定に用いる閾値$\varepsilon \ll 1$
+
+        \State $\bm{x}_1 \gets \breve{\bm{x}}$として初期化する
+        \For{$i = 1, 2, \cdots$}
+            \State $\bm{x} = \bm{x}_i$における勾配$\bm{g}$とヘッセ行列$\tilde{\bm{H}}$を, (\ref{eq:gauss-newton-gradient})式と(\ref{eq:gauss-newton-hessian-approx})式から求める
+            \State $\bm{x}_i$に対する変位を$\Delta \bm{x}^* \gets -\tilde{\bm{H}}^{-1} \bm{g}$として求める
+            \State $\bm{x}_{i + 1} \gets \bm{x}_i + \Delta \bm{x}^*$として解を更新する
+            \State $\left| f(\bm{x}_i) - f(\bm{x}_{i + 1}) \right| < \varepsilon$であれば終了する
+        \EndFor
+    \end{algorithmic}
+\end{algorithm}
+
+$f(\bm{x})$を構成する各残差$e_i(\bm{x}) = e_i(\breve{\bm{x}} + \Delta \bm{x})$を, 1次の項までテイラー展開して近似すれば
+\begin{equation}
+    e_i(\breve{\bm{x}} + \Delta \bm{x})
+    \simeq e_i(\breve{\bm{x}}) + \nabla e_i(\breve{\bm{x}})^\top \Delta \bm{x}
+    \label{eq:gauss-newton-residual-approx}
+\end{equation}
+となる. これを元の関数$f(\bm{x}) = f(\breve{\bm{x}} + \Delta \bm{x})$に代入すれば
+\begin{eqnarray}
+    f(\breve{\bm{x}} + \Delta \bm{x})
+    &\simeq& \frac{1}{2} \sum_{i = 1}^M
+    \left( e_i(\breve{\bm{x}})
+    + \nabla e_i(\breve{\bm{x}})^\top \Delta \bm{x} \right)^2
+    \label{eq:gauss-newton-function-approx} \\
+    &=& \frac{1}{2} \sum_{i = 1}^M
+    \left( e_i(\breve{\bm{x}})^2
+    + 2 e_i(\breve{\bm{x}}) \nabla e_i(\breve{\bm{x}})^\top \Delta \bm{x}
+    + \Delta \bm{x}^\top \nabla e_i(\breve{\bm{x}})
+    \nabla e_i(\breve{\bm{x}})^\top \Delta \bm{x} \right)
+\end{eqnarray}
+を得る. $f(\breve{\bm{x}} + \Delta \bm{x})$を$\Delta \bm{x}$で偏微分すれば
+\begin{eqnarray}
+    \frac{\partial}{\partial \Delta \bm{x}} f(\breve{\bm{x}} + \Delta \bm{x})
+    &=& \sum_{i = 1}^M \left( e_i(\breve{\bm{x}})
+    + \nabla e_i(\breve{\bm{x}})^\top \Delta \bm{x} \right) \nabla e_i(\breve{\bm{x}}) \\
+    &=& \sum_{i = 1}^M \left( e_i(\breve{\bm{x}}) \nabla e_i(\breve{\bm{x}})
+    + \nabla e_i(\breve{\bm{x}}) \nabla e_i(\breve{\bm{x}})^\top \Delta \bm{x} \right)
+\end{eqnarray}
+となるから, $0$とおいて$\Delta \bm{x}$について解けば, $f(\breve{\bm{x}} + \Delta \bm{x})$を最小化する$\Delta \bm{x}$として
+\begin{equation}
+    \Delta \bm{x}^* = -\left( \sum_{i = 1}^M \nabla e_i(\breve{\bm{x}})
+    \nabla e_i(\breve{\bm{x}})^\top \right)^{-1}
+    \sum_{i = 1}^M e_i(\bm{x}) \nabla e_i(\breve{\bm{x}})
+\end{equation}
+が得られ, (\ref{eq:gauss-newton-update})式と同一になる.
+従って, ガウス・ニュートン法では, 残差$e_i(\bm{x})$を初期値$\breve{\bm{x}}$の周りで線形近似することで, 目的関数$f(\bm{x})$を近似している.
+一方, ニュートン法では, 目的関数$f(\bm{x})$を初期値$\breve{\bm{x}}$の周りで2次近似している.
+
+\section{レーベンバーグ・マーカート法}
+ガウス・ニュートン法では, 目的関数の近似である(\ref{eq:gauss-newton-function-approx})式を, (初期値$\breve{\bm{x}}$に加える)変位$\Delta \bm{x}$に関して最小化した.
+(\ref{eq:gauss-newton-residual-approx})式の残差を, 初期値$\breve{\bm{x}}$のまわりで線形近似しているため, 初期値から離れた点では近似による誤差が大きくなる($e_i(\bm{x})$が三角関数$\sin$や$\cos$で表現される場合などに相当する).
+レーベンバーグ・マーカート(Levenberg-Marquardt)法では, ガウス・ニュートン法の目的関数(\ref{eq:gauss-newton-function-approx})式に, 変位$\Delta \bm{x}$が大きくなり過ぎないための罰則項($\Delta \bm{x}$の各要素の二乗和)を加えた新たな目的関数を, $\Delta \bm{x}$に関して最小化する.
+\begin{equation}
+    f(\breve{\bm{x}} + \Delta \bm{x})
+    + \frac{\lambda}{2} \left\| \Delta \bm{x} \right\|^2
+    = \frac{1}{2} \sum_{i = 1}^M
+    \left( e_i(\breve{\bm{x}})
+    + \nabla e_i(\breve{\bm{x}})^\top \Delta \bm{x} \right)^2
+    + \frac{\lambda}{2} \left\| \Delta \bm{x} \right\|^2
+    \label{eq:lm-function}
+\end{equation}
+(\ref{eq:lm-function})式を$\Delta \bm{x}$で偏微分すれば
+\begin{equation}
+    \frac{\partial}{\partial \Delta \bm{x}} \left(
+    f(\breve{\bm{x}} + \Delta \bm{x})
+    + \frac{\lambda}{2} \left\| \Delta \bm{x} \right\|^2 \right)
+    = \left( \sum_{i = 1}^M \left( e_i(\breve{\bm{x}}) \nabla e_i(\breve{\bm{x}})
+    + \nabla e_i(\breve{\bm{x}}) \nabla e_i(\breve{\bm{x}})^\top \Delta \bm{x} \right) \right)
+    + \lambda \Delta \bm{x}
+\end{equation}
+となるから, $0$とおいて$\Delta \bm{x}$について解けば, (\ref{eq:lm-function})式を最小化する$\Delta \bm{x}$として
+\begin{eqnarray}
+    \Delta \bm{x}^* &=& -\left( \sum_{i = 1}^M \nabla e_i(\breve{\bm{x}})
+    \nabla e_i(\breve{\bm{x}})^\top + {\color{red}\lambda \bm{I}} \right)^{-1}
+    \sum_{i = 1}^M e_i(\bm{x}) \nabla e_i(\breve{\bm{x}})
+    \label{eq:lm-update} \\
+    &=& -\left( \bm{J}(\breve{\bm{x}}) \bm{J}(\breve{\bm{x}})^\top
+    + {\color{red}\lambda \bm{I}} \right)^{-1}
+    \nabla f(\breve{\bm{x}})
+\end{eqnarray}
+が得られる($\bm{I}$は単位行列). 罰則項に対応する項$\lambda \bm{I}$を, $\tilde{\bm{H}} = \bm{J}(\breve{\bm{x}}) \bm{J}(\breve{\bm{x}})^\top$の対角要素を使って, $\lambda \diag(\tilde{\bm{H}})$とすることもある($\diag(\bm{A})$は, 行列$\bm{A}$の対角要素のみを残し, 他の要素を$0$で置き換えた対角行列).
+\begin{equation}
+    \Delta \bm{x}^* = -\left( \bm{J}(\breve{\bm{x}}) \bm{J}(\breve{\bm{x}})^\top
+    + {\color{red}\lambda \diag(\tilde{\bm{H}})} \right)^{-1}
+    \nabla f(\breve{\bm{x}})
+\end{equation}
+(\ref{eq:gauss-newton-update})式に示すガウス・ニュートン法の更新量$\Delta \bm{x}$を求める際は, ヘッセ行列$\tilde{\bm{H}} = \bm{J}(\breve{\bm{x}}) \bm{J}(\breve{\bm{x}})^\top$の正則性(逆行列の存在)を仮定している.
+数値誤差などによって$\tilde{\bm{H}}$の逆行列の計算が不安定になる場合があるが, $\lambda \bm{I}$を加えることで安定化する.
+レーベンバーグ・マーカート法では目的関数$f(\breve{\bm{x}} + \Delta \bm{x})$が減少するように, $\lambda$が自動的に調節される.
+\begin{equation}
+    \lambda \Delta \bm{x}^* = -\left( \frac{1}{\lambda}
+    \bm{J}(\breve{\bm{x}}) \bm{J}(\breve{\bm{x}})^\top
+    + \bm{I} \right)^{-1} \nabla f(\breve{\bm{x}})
+\end{equation}
+上式より$\lambda \to \infty$とすれば更新量は$\Delta \bm{x} \to -\nabla f(\breve{\bm{x}})$となり, 勾配降下法に近づく.
+また(\ref{eq:lm-update})式から, $\lambda \to 0$とすれば$\Delta \bm{x}$は(\ref{eq:gauss-newton-update})式に示すガウス・ニュートン法となる.
+現在の$\lambda$の下で, 解を$\breve{\bm{x}} + \Delta \bm{x}^*$により更新し, 目的関数の値$f(\breve{\bm{x}} + \Delta \bm{x}^*)$が$f(\breve{\bm{x}})$よりも増加(悪化)してしまった場合は, $\lambda$を大きくして勾配降下法に近づける(更新量を小さくする).
+また目的関数の値が改善(減少)した場合は, $\lambda$を小さくしてガウス・ニュートン法に近づける(更新量を大きくする).
+アルゴリズムは最初, 目的関数の値が改善し続けるので更新量が大きくなり, 最適解の近くに移動するまでは粗い探索を行う.
+最適解にある程度近づいたら, 更新量が小さくなり細かな探索を行うようになる(粗く探索すると, 最適解から離れて目的関数の値が悪化してしまう).
+以上より, レーベンバーグ・マーカート法のアルゴリズムが得られる.
+
+\begin{algorithm}[H]
+    \caption{レーベンバーグ・マーカート法}
+    \label{alg:levenberg-marquardt}
+    \begin{algorithmic}[1]
+        \Require 初期値$\breve{\bm{x}} \in \mathbb{R}^N$, 収束判定に用いる閾値$\varepsilon \ll 1$, $\lambda$の初期値($0.001$など), 係数$\rho > 1$($2, 10$など)
+
+        \State $\bm{x}_1 \gets \breve{\bm{x}}$として初期化する
+        \For{$i = 1, 2, \cdots$}
+            \State $\bm{x} = \bm{x}_i$における勾配$\bm{g}$とヘッセ行列$\tilde{\bm{H}}$を, (\ref{eq:gauss-newton-gradient})式と(\ref{eq:gauss-newton-hessian-approx})式から求める
+            \State $\bm{x}_i$に対する変位を$\Delta \bm{x}^* \gets -\left( \tilde{\bm{H}} + \lambda \bm{I} \right)^{-1} \bm{g}$として求める
+            \State $\bm{x}_{i + 1} \gets \bm{x}_i + \Delta \bm{x}^*$として解を更新する
+            \State $\left| f(\bm{x}_i) - f(\bm{x}_{i + 1}) \right| < \varepsilon$であれば終了する
+            \If{$f(\bm{x}_i) < f(\bm{x}_{i + 1})$}
+                \State $\lambda \gets \lambda \rho$に設定
+            \Else
+                \State $\lambda \gets \lambda \rho^{-1}$に設定
+            \EndIf
+        \EndFor
+    \end{algorithmic}
+\end{algorithm}
+
+\bibliographystyle{plain}
+\bibliography{refer}
+
+\end{document}
