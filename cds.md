@@ -317,6 +317,8 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
   * Head, Hands And Feet (ヘッド・ハンズ・アンド・フィート) (1989年) (PCCR-00014)
 * 安部恭弘
   * Summertime In Blue ~さよならの共犯者 (1988年) (CT32-5195)
+* 山本達彦
+  * メディテラネ (Mediterranee) (1985年) (CA32-1105)
 * 佐藤隆
   * 男と女 (Un Homme Et Une Femme) (1984年) (CA35-1082)
   * 土曜の夜と日曜の朝 (Nuit Du Samedi Et Matin Du Dimanche) (1985年) (CA32-1109)
