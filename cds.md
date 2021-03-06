@@ -207,7 +207,13 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
 * Cindy
   * Angel Touch (1990年)
 * 中山美穂
-  * Collection (1987年) (K32X-200)
+  * Summer Breeze (1986年) (K32X 100)
+  * Exotique (1986年) (K32X 120)
+  * One And Only (1987年) (K32X 170)
+  * Collection (1987年) (K32X 200)
+  * Catch The Nite (1988年) (K32X 240)
+  * Mind Game (1988年) (K32X 270)
+  * Angel Hearts (1988年) (K32X 350)
   * Hide'n'Seek (1989年) (292A 50)
   * Collection II (1990年) (KICS 60)
 * 安田成美
@@ -311,6 +317,7 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
   * Prophetic Dream -予言者の夢 (1982年) (UPCY-7340)
   * Cryptogram (1982年) (UPCY-7341)
   * Splash (1983年) (UPCY-7342)
+  * カルサヴィーナ (1984年) (PCD-26076)
   * 架空庭園論 (1985年) (CA32-1108)
   * アンジュレーション (Undulation) (1986年) (CA32-1239)
   * System Overload (システム・オーバーロード) (1988年) (32WD-0004)
@@ -420,6 +427,8 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
   * 黒船 (1974年) (CA30-1410)
 * ミカド (Mikado)
   * Mikado (1985年) (TECN-18045)
+* 南佳孝
+  * 冒険王 (1984年) (38DH 119)
 
 ---
 

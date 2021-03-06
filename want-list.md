@@ -127,7 +127,6 @@ auhtor: SternGerlach
   * ボレロ・カリフォルニア (1991年)
 * 井上鑑
   * Splash (1983年) (CA35-1055)
-  * カルサヴィーナ (1984年)
   * SF新世紀レンズマン オリジナル・サウンドトラック音楽編 (1984年)
   * Tokyo Installation (1986年)
   * Sardana \~パブロ・カザルスに捧ぐ (1988年)
@@ -233,12 +232,6 @@ auhtor: SternGerlach
 * 中山美穂
   * 「C」 (1985年)
   * After School (1985年)
-  * Summer Breeze (1986年)
-  * Exotique (1986年)
-  * One And Only (1987年)
-  * Catch The Nite (1988年)
-  * Mind Game (1988年)
-  * Angel Hearts (1988年)
 * 岡田有希子
   * ヴィーナス誕生 (1986年)
 * 岡村孝子
