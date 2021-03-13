@@ -376,6 +376,8 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
   * Rhapsody In The Twilight (ラプソディ・イン・ザ・トワイライト) (1989年)
   * いたずら天使 (Little Rascal) (1990年)
   * 愛という名のもとに (1992年)
+* 佐藤博
+  * 記憶の中の未来 (1988年) (32A2-1)
 * シャンバラ
   * SHAMBARA (1989年)
 * ピチカート・ファイヴ
@@ -429,6 +431,8 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
   * Mikado (1985年) (TECN-18045)
 * 南佳孝
   * 冒険王 (1984年) (38DH 119)
+* アリス
+  * ベスト10 (1983年) (CA35-1008)
 
 ---
 

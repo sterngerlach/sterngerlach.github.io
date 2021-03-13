@@ -19,7 +19,6 @@ auhtor: SternGerlach
   * No Duplicatin' (1983年)
 * 佐藤博
   * This Boy (ディス・ボーイ) (1985年) (32XA-39)
-  * 記憶の中の未来 (1988年) (32A2-1)
 * ラジ (Rajie)
   * 午後のレリーフ (1984年) (CA35-1093)
 * 加藤和彦
@@ -140,7 +139,6 @@ auhtor: SternGerlach
   * Sound Of Science (1986年)
   * Future File (1987年)
   * Aqua (1988年)
-  * 記憶の中の未来 (1988年)
   * Touch The Heart (1989年)
   * Hiroshi Sato '90 \~Snow Land (1989年)
 * はっぴいえんど
@@ -412,8 +410,6 @@ auhtor: SternGerlach
   * 時の記憶 (1992年)
 * 裕木奈江
   * 素描 (デッサン) (1994年)
-* アリス
-  * ベスト10 (1983年) (CA35-1008)
 * オフコース
   * Selection 1973-78 (1978年) (CA35-1006)
   * Selection 1978-81 (1981年) (CA35-1007)
