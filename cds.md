@@ -320,6 +320,7 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
   * カルサヴィーナ (1984年) (PCD-26076)
   * 架空庭園論 (1985年) (CA32-1108)
   * アンジュレーション (Undulation) (1986年) (CA32-1239)
+  * Tokyo Installation (1986年) (50DH 441-2 / 32DH 441 + 18DH 442)
   * System Overload (システム・オーバーロード) (1988年) (32WD-0004)
   * Head, Hands And Feet (ヘッド・ハンズ・アンド・フィート) (1989年) (PCCR-00014)
 * 安部恭弘
