@@ -337,6 +337,9 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
 * 池田聡
   * Missing (ミッシング) (1986年) (30CH-211)
   * Joy And Pain (ジョイ・アンド・ペイン) (1987年) (35CH-246)
+  * Silk (1988年) (30CH-322)
+  * Swimmer (1989年) (30CH-401)
+  * 君を忘れない (1990年) (TECN-28027)
 * 細野晴臣
   * はらいそ (Paraiso) (1978年) (MHCL-509)
   * フィルハーモニー (1982年) (MHCL-510)
@@ -431,6 +434,11 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
 * ミカド (Mikado)
   * Mikado (1985年) (TECN-18045)
 * 南佳孝
+  * South Of The Border (1978年) (SRCL-1815)
+  * Speak Low (1979年) (MHCL-30061)
+  * Montage (1980年) (MHCL-30062)
+  * Silkscreen (1981年) (MHCL-30063)
+  * Seventh Avenue South (1982年) (MHCL-30064)
   * 冒険王 (1984年) (38DH 119)
 * アリス
   * ベスト10 (1983年) (CA35-1008)
