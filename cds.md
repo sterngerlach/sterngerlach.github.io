@@ -312,6 +312,7 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
   * Red Monkey Yellow Fish (1989年)
 * 稲垣潤一
   * 246:3AM (1982年) (CA35-1013)
+  * Shylights (シャイライツ) (1983年) (CA35-1023)
   * 16 Candles (1988年) (母親から貰った)
 * 井上鑑
   * Prophetic Dream -予言者の夢 (1982年) (UPCY-7340)
