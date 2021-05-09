@@ -181,7 +181,7 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
   * Rude (1990年)
   * Womanism I \~Zen・Kyoku・Shoo 1974-1984\~ (1991年)
   * Womanism II \~Zen・Kyoku・Shoo 1985-1991\~ (1991年)
-  * Womanism III \~Naku・Tame・Yii\~ (1991年)
+  * Womanism III \~Naku・Tame・Yoo\~ (1991年)
   * K-Rock (1992年)
   * Rockadelic (1993年)
   * Piercer (1994年)
@@ -383,6 +383,12 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
   * 愛という名のもとに (1992年)
 * 佐藤博
   * 記憶の中の未来 (1988年) (32A2-1)
+  * Touch The Heart (1989年) (29A2-18)
+  * Hiroshi Sato '90 Snow Land (1989年) (25A2-38)
+* 鳥山雄司
+  * Yuji Toriyama (1983年) (D32Y0026)
+  * A Taste Of Paradise (1985年) (D32Y0017)
+  * Transfusion (1988年) (32DH 5051)
 * シャンバラ
   * SHAMBARA (1989年)
 * ピチカート・ファイヴ
@@ -441,8 +447,11 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
   * Silkscreen (1981年) (MHCL-30063)
   * Seventh Avenue South (1982年) (MHCL-30064)
   * 冒険王 (1984年) (38DH 119)
+  * Last Picture Show (1986年) (32DH 352)
 * アリス
   * ベスト10 (1983年) (CA35-1008)
+* アストゥーリアス (Asturias)
+  * Cryptogam Illusion (1993年) (NKCD 3856)
 
 ---
 

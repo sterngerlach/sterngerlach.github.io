@@ -137,8 +137,6 @@ auhtor: SternGerlach
   * Sound Of Science (1986年)
   * Future File (1987年)
   * Aqua (1988年)
-  * Touch The Heart (1989年)
-  * Hiroshi Sato '90 \~Snow Land (1989年)
 * はっぴいえんど
   * はっぴいえんど (1970年)
   * 風街ろまん (1971年)
@@ -150,9 +148,6 @@ auhtor: SternGerlach
 * 鳥山雄司
   * Take a Break (1981年)
   * Silver Shoes (1982年)
-  * Yuji Toriyama (1983年)
-  * A Taste of Paradise (1985年)
-  * Transfusion (1988年)
   * プラチナ通り (1990年)
 * 安全地帯
   * 安全地帯VI \~月に濡れたふたり (1988年)
