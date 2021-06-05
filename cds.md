@@ -476,6 +476,10 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
   * Signal (シグナル) (1990年)
   * Two Hearts (1991年)
   * Golden Best (Singles+) (2002年)
+* ジッタリン・ジン (Jitterin'Jinn)
+  * Dokidoki (1989年) (CA-4102)
+  * Hi-King (1990年) (CA-4612)
+  * パンチアウト (1990年) (COCA-6645)
 
 ---
 
