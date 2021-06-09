@@ -83,6 +83,7 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
   * On The Planet -地球でのできごと- (1991年) (TOCT-6324)
 * 和田加奈子
   * エスキース (Esquisse) (1987年) (CA32-1511)
+  * Kana (1987年) (CT32-5076)
 * 杏里
   * Heaven Beach (ヘブン・ビーチ) (1982年)
   * Timely!! (タイムリー) (1983年)
@@ -331,6 +332,7 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
 * 佐藤隆
   * 男と女 (Un Homme Et Une Femme) (1984年) (CA35-1082)
   * 土曜の夜と日曜の朝 (Nuit Du Samedi Et Matin Du Dimanche) (1985年) (CA32-1109)
+  * コムシ、コムサ (Comme Ci, Comme Ça) (1985年) (CA32-1152)
   * 日々の泡 (L'Ecume Des Jours) (1986年) (CA32-1227)
   * 水の中の太陽 (Le Soleil Dans Leau) (1987年) (CA32-1467)
   * 甘い生活 (La Dolce Vita) (1988年) (CT32-5322)
@@ -389,6 +391,10 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
   * Yuji Toriyama (1983年) (D32Y0026)
   * A Taste Of Paradise (1985年) (D32Y0017)
   * Transfusion (1988年) (32DH 5051)
+* 高中正義
+  * Traumatic・極東探偵団 (1985年) (CA32-1147)
+  * ジャングル・ジェーン (Jungle Jane) (1986年) (CA32-1262)
+  * ランデ・ヴー (Rendez-vous) (1987年) (CA32-1445)
 * シャンバラ
   * SHAMBARA (1989年)
 * ピチカート・ファイヴ

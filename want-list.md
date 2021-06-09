@@ -376,7 +376,6 @@ auhtor: SternGerlach
 * 和田加奈子
   * テンダネス (Tenderness) (1986年)
   * クワイエット・ストーム (Quiet Storm) (1987年)
-  * Kana (1987年)
   * Vocu (1988年)
   * Dear (1989年)
   * Dessertに星くずのゼリーを (1990年)
