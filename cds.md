@@ -264,6 +264,8 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
   * Silky Touch ~Lovin' You (1991年) (KICS-160)
 * 原田知世
   * Soshite (1986年) (33DH-574)
+* 薬師丸ひろ子
+  * 古今集 (1984年) (CA38-1068)
 * イリア(Iria)
   * Tingle (ティングル) (1988年) (H33P20260)
 * 裕木奈江
