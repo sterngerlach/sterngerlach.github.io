@@ -7,6 +7,8 @@ auhtor: SternGerlach
  pandoc -s --filter pandoc-crossref -M "crossrefYaml=./crossref_config.yaml" -f markdown -t html5 --mathjax --css ./style.css ./cds.md > ./cds.html
 -->
 
+[ホームに戻る](./index.html)
+
 ## このページについて
 
 今所持しているCDとレコードについて紹介します。

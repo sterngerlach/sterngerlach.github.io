@@ -7,6 +7,8 @@ author: SternGerlach
  pandoc -s --filter pandoc-crossref -M "crossrefYaml=./crossref_config.yaml" -f markdown -t html5 --mathjax --css ./style.css ./toshiba-emi.md > ./toshiba-emi.html
 -->
 
+[ホームに戻る](./index.html)
+
 ## このページについて
 
 今所持しているCDのうち、東芝EMIから発売された初期のものを紹介します。
