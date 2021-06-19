@@ -268,6 +268,7 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
   * Soshite (1986年) (33DH-574)
 * 薬師丸ひろ子
   * 古今集 (1984年) (CA38-1068)
+  * ベスト・コレクション (1986年) (CA32-1333)
 * イリア(Iria)
   * Tingle (ティングル) (1988年) (H33P20260)
 * 裕木奈江
@@ -462,6 +463,8 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
   * ベスト10 (1983年) (CA35-1008)
 * アストゥーリアス (Asturias)
   * Cryptogam Illusion (1993年) (NKCD 3856)
+* ゴダイゴ (Godiego)
+  * オリジナル・ヒット・ディスク (1984年) (35C31-7165)
 
 ---
 
