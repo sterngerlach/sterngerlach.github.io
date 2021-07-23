@@ -342,10 +342,14 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
   * 男と女 (Un Homme Et Une Femme) (1984年) (CA35-1082)
   * 土曜の夜と日曜の朝 (Nuit Du Samedi Et Matin Du Dimanche) (1985年) (CA32-1109)
   * コムシ、コムサ (Comme Ci, Comme Ça) (1985年) (CA32-1152)
+  * ピアノとヴァイオリンのための巴里物語 (佐藤 隆 インストゥルメンタル) (1985年) (CA32-1199)
   * 日々の泡 (L'Ecume Des Jours) (1986年) (CA32-1227)
   * 水の中の太陽 (Le Soleil Dans Leau) (1987年) (CA32-1467)
   * 甘い生活 (La Dolce Vita) (1988年) (CT32-5322)
   * 十六夜曲 '80～'90 (1990年) (TOCT-5924)
+  * ゴールデン・ベスト (2004年) (TOCT-10978)
+* 三宅純
+  * 永遠乃掌 (32WD-0003)
 * 池田聡
   * Missing (ミッシング) (1986年) (30CH-211)
   * Joy And Pain (ジョイ・アンド・ペイン) (1987年) (35CH-246)
