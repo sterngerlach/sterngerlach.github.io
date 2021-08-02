@@ -36,7 +36,7 @@ auhtor: SternGerlach
   * 撫子純情 (1984年) (30DH 202)
 * ハイ・ファイ・セット
   * 3 Notes (1981年) (CT32-5204)
-  * 1 & 2 (1982年) (CA35-1018 / CT32-5205)
+  * 1 & 2 (1982年) (CA35-1018)
   * I miss you (1983年) (CA35-1028)
 * 稲垣潤一 / 安部恭弘 / 井上鑑 / 鈴木雄大
   * Modern Wave II (1983年) (CA35-1045)
@@ -346,9 +346,7 @@ auhtor: SternGerlach
   * 閃光 (フラッシュ) (1979年)
   * Quarter Rest (1979年)
   * 3 Notes (1981年)
-  * 1 & 2 (1982年)
   * I Miss You (1983年)
-  * Pasadena Park (1984年)
   * Sweet Locomotion (1986年)
   * Gibraltar (1987年)
   * Eyebrow (1988年)
