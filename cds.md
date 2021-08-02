@@ -312,6 +312,8 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
   * Second Serenade (セカンド・セレナーデ) (1984年)
 * ハイ・ファイ・セット
   * 卒業写真 (1975年)
+  * 1 & 2 (1982年) (CT32-5205)
+  * Pasadena Park (パサディナ・パーク) (1984年) (38DH 73)
   * Pops Best Setting (1984年) (CA35-1066)
   * Indigo (1985年) (32DH 179)
 * 角松敏生
@@ -473,6 +475,9 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
   * Cryptogam Illusion (1993年) (NKCD 3856)
 * ゴダイゴ (Godiego)
   * オリジナル・ヒット・ディスク (1984年) (35C31-7165)
+* 高橋鮎生 (Ayuo)
+  * Memory Theatre (メモリー・シアター) (1985年) (35MD-1008)
+  * Nova Carmina (ノヴァ・カルミナ) (1986年) (35MD-1021)
 
 ---
 
