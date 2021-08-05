@@ -473,12 +473,17 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
   * ベスト10 (1983年) (CA35-1008)
 * アストゥーリアス (Asturias)
   * Cryptogam Illusion (1993年) (NKCD 3856)
+* アイン・ソフ (Ain Soph)
+  * A Story Of Mysterious Forest (妖精の森) (1980年) (KICS 2054)
 * ゴダイゴ (Godiego)
   * オリジナル・ヒット・ディスク (1984年) (35C31-7165)
 * 高橋鮎生 (Ayuo)
   * Memory Theatre (メモリー・シアター) (1985年) (35MD-1008)
   * Nova Carmina (ノヴァ・カルミナ) (1986年) (35MD-1021)
   * Nova Carmina (ノヴァ・カルミナ) (1986年) (35MD-1021) (2枚所持)
+  * Songs From A Eurasian Journey (ユーラシアン・ジャーニー) (1997年) (VICG 60011)
+* 土屋昌巳
+  * Time Passenger (1989年) (32・8H-5113)
 
 ---
 
