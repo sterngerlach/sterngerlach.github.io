@@ -39,6 +39,7 @@ sterngerlachのGitHubページにようこそ。
 - [グラフベースSLAM](./doc/graph-based-slam-intro.pdf)
 
 - [ガウス・ニュートン法とレーベンバーグ・マーカート法](./doc/gauss-newton.pdf)
+- [スキャンマッチング (ガウス・ニュートン法; Hector SLAM)](./doc/scan-matching-gauss-newton.pdf)
 
 ## 日記
 
