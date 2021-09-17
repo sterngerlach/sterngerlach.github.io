@@ -496,8 +496,3 @@ auhtor: SternGerlach
   * Difference (1987年)
   * Realism (1988年)
   * Kiss Of Life (1989年)
-* 高岡早紀
-  * Sabrina (1989年)
-  * 楽園の雫 (1990年)
-  * Romancero (1990年)
-  * Mon Cher (1991年)
