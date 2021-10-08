@@ -19,9 +19,12 @@ sterngerlachのGitHubページにようこそ。
 - [今所持しているCDとレコード](./cds.html)
 - [欲しいCDとレコード](./want-list.html)
 - [東芝EMIコレクション](./toshiba-emi.html)
-- [東芝EMIデータベース(その1)](./toshiba-emi-db-1.html)
-- [東芝EMIデータベース(その2)](./toshiba-emi-db-2.html)
-- [東芝EMIデータベース(その3)](./toshiba-emi-db-3.html)
+- [東芝EMIデータベース (その1: CA35-1001からCA35-1100)](./toshiba-emi-db-1.html)
+- [東芝EMIデータベース (その2: CA35-1101からCA32-1200)](./toshiba-emi-db-2.html)
+- [東芝EMIデータベース (その3: CA32-1201からCA32-1300)](./toshiba-emi-db-3.html)
+- [東芝EMIデータベース (その4: CA32-1301からCA28-1400)](./toshiba-emi-db-4.html)
+- [東芝EMIデータベース (その5: CA32-1401からCA32-1500)](./toshiba-emi-db-5.html)
+- [東芝EMIデータベース (その6: CA32-1501からCA32-1554)](./toshiba-emi-db-6.html)
 
 ## 雑記
 
