@@ -403,7 +403,6 @@ auhtor: SternGerlach
   * 素描 (デッサン) (1994年)
 * オフコース
   * Selection 1973-78 (1978年) (CA35-1006)
-  * Selection 1978-81 (1981年) (CA35-1007)
 * 稲垣潤一
   * J.I. (1983年)
   * Personally (1984年)

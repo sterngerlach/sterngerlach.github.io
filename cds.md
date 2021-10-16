@@ -477,6 +477,9 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
   * Last Picture Show (1986年) (32DH 352)
 * アリス
   * ベスト10 (1983年) (CA35-1008)
+* オフコース
+  * Selection 1978-81 (1981年) (CA35-1007)
+  * Yes-Yes-Yes -オフコースA面コレクション- (1983年) (CA35-1063)
 * アストゥーリアス (Asturias)
   * Cryptogam Illusion (1993年) (NKCD 3856)
 * アイン・ソフ (Ain Soph)
@@ -496,8 +499,8 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
 * 小室哲哉
   * Digitalian Is Eating Breakfast (1989年) (ESCB-1013)
 * 米米CLUB
-  * Komeguny (1987年) (32DH-823)
-  * Go Funk (1988年) (32DH-5117)
+  * Komeguny (1987年) (SRCL-2039)
+  * Go Funk (1988年) (SRCL-2040)
 
 ---
 
