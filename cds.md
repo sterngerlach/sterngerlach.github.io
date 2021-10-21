@@ -336,6 +336,7 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
   * Prophetic Dream -予言者の夢 (1982年) (UPCY-7340)
   * Cryptogram (1982年) (UPCY-7341)
   * Splash (1983年) (UPCY-7342)
+  * Splash (1983年) (CA35-1055)
   * カルサヴィーナ (1984年) (PCD-26076)
   * 架空庭園論 (1985年) (CA32-1108)
   * アンジュレーション (Undulation) (1986年) (CA32-1239)
