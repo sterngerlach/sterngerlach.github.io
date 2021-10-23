@@ -25,6 +25,8 @@ sterngerlachのGitHubページにようこそ。
 - [東芝EMIデータベース (その4: CA32-1301からCA28-1400)](./toshiba-emi-db-4.html)
 - [東芝EMIデータベース (その5: CA32-1401からCA32-1500)](./toshiba-emi-db-5.html)
 - [東芝EMIデータベース (その6: CA32-1501からCA32-1554)](./toshiba-emi-db-6.html)
+- [テイチクデータベース (その1: 35CH-1から30CH-200)](./teichiku-db-1.html)
+- [テイチクデータベース (その2: 30CH-201から30CH-419)](./teichiku-db-2.html)
 
 ## 雑記
 
