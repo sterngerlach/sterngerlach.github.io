@@ -20,7 +20,7 @@ header {
     display:                none;
 }
 
-h1, h2 {
+h1, h2, h3 {
     border-left-color:      black;
     border-left-style:      solid;
     border-left-width:      10px;
@@ -39,6 +39,10 @@ h2 {
     font-size:              large;
 }
 
+h3 {
+    font-size:              medium;
+}
+
 pre, code {
     font-family:            'Consolas', 'Courier New', Courier, monospace;
     font-size:              small;
@@ -48,3 +52,4 @@ pre, code {
     word-wrap:              break-word;
     background:             #E8E8E8;
 }
+
