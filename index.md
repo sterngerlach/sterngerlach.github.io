@@ -28,6 +28,10 @@ sterngerlachのGitHubページにようこそ。
 - [テイチクデータベース (その1: 35CH-1から30CH-200)](./teichiku-db-1.html)
 - [テイチクデータベース (その2: 30CH-201から30CH-419)](./teichiku-db-2.html)
 
+<!-- -->
+
+- [井上鑑 / Tokyo Installation (1986年)](./akira-inoue-1986-tokyo-installation.html)
+
 ## 雑記
 
 調べたことを適当に書いてこちらに置いていきます。
