@@ -100,6 +100,10 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
   * 緑の法則 (The Law Of The Green) (1985年)
   * スタジオ・ロマンチスト (Studio Romantic) (1987年)
 * 荒井由実
+  * ひこうき雲 (1973年) (ALCA-9029)
+  * ミスリム (Misslim) (1974年) (ALCA-9030)
+  * コバルト・アワー (Cobalt Hour) (1975年) (ALCA-9031)
+  * 14番目の月 (The 14th Moon) (1976年) (ALCA-9032)
   * Yuming History (1987年) (ALCA-25 / ALCA-26)
   * Yumi Arai The Concert With Old Friends (1996年)
 * 松任谷由実
@@ -140,6 +144,7 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
 * 尾崎亜美
   * Hot Baby (1981年)
   * Plastic Garden (1984年) (D38A0042)
+  * 10番目のミュー (1985年) (D32A0112)
 * 竹内まりや
   * Variety (ヴァラエティ) (1984年)
   * Request (リクエスト) (1987年)
@@ -199,8 +204,9 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
   * Anthurium \~媚薬\~ (1985年)
   * Best Collection (1986年)
   * Grey (1987年)
-* 越美晴
-  * Tutu (1983年)
+* 越美晴(コシミハル)
+  * チュチュ (Tutu) (1983年) (ALCA-9117)
+  * パラレリズム (Parallelisme) (1984年) (ALCA-379)
 * 山根麻衣
   * Will (1982年) (iTunes)
   * 月光浴 (1984年)
@@ -273,6 +279,8 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
   * Tingle (ティングル) (1988年) (H33P20260)
 * 裕木奈江
   * 水の精 (1994年) (SRCL 3027)
+* 福島祐子
+  * 時の記憶 (1991年) (VJCA-00007)
 * 香坂みゆき
   * ベスト・セレクション (1984年) (3113-40)
   * フェアウェイ (Fairway) (1985年) (H33P20043)

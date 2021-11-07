@@ -41,8 +41,6 @@ auhtor: SternGerlach
   * Modern Wave II (1983年) (CA35-1045)
 * 橋本一子
   * Ichiko (1984年) (VDP-79)
-* 越美晴
-  * パラレリズム (Parallelisme) (1984年) (ALCA-378 / ALCA-9117)
 * 風見りつ子
   * Nouvelles (ヌヴェル) (1987年) (CA32-1471)
 
@@ -210,11 +208,7 @@ auhtor: SternGerlach
   * 冷たい水の中をきみと歩いていく (1990年)
   * 歪んだ王国 (1992年)
 * 荒井由実
-  * ひこうき雲 (1973年)
-  * Misslim (ミスリム) (1974年)
-  * Cobalt Hour (コバルト・アワー) (1975年)
   * Yuming Brand (ユーミン・ブランド) (1976年)
-  * The 14th Moon (14番目の月) (1976年)
   * Yuming Brand Part.2 (1979年)
   * Yuming Brand Part.3 (1981年)
   * Yuming Singles 1972-1976 (1987年)
@@ -292,7 +286,6 @@ auhtor: SternGerlach
   * Shot (1982年)
   * Miracle (1983年)
   * Points (1983年)
-  * 10番目のミュー (1985年)
   * Points-2 (1986年)
   * Kids (1986年)
   * 時間地図 (1987年)
@@ -395,8 +388,6 @@ auhtor: SternGerlach
   * Tenderly (1991年)
 * 新居昭乃
   * 懐かしい未来 (1986年)
-* 福島祐子
-  * 時の記憶 (1992年)
 * 裕木奈江
   * 素描 (デッサン) (1994年)
 * 稲垣潤一
@@ -434,8 +425,6 @@ auhtor: SternGerlach
   * Love Songs (1980年)
   * Miss M (1980年)
   * Portrait (1981年)
-* 越美晴
-  * パラレリズム (Parallelisme) (1984年)
 * Flat Face (フラット・フェイス)
   * Face (1986年)
 * 彩恵津子
