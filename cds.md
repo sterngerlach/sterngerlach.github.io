@@ -489,6 +489,7 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
 * オフコース
   * Selection 1973-78 (1978年) (CA35-1006)
   * Selection 1978-81 (1981年) (CA35-1007)
+  * Over (1981年) (CA35-1021)
   * Yes-Yes-Yes -オフコースA面コレクション- (1983年) (CA35-1063)
 * アストゥーリアス (Asturias)
   * Cryptogam Illusion (1993年) (NKCD 3856)
