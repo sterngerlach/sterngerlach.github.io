@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="SternGerlach" />
+  <title>分枝限定法によるスキャンマッチング</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">分枝限定法によるスキャンマッチング</h1>
+<p class="author">SternGerlach</p>
+</header>
+<!--
+ pandoc -s --filter pandoc-crossref -M "crossrefYaml=./crossref_config.yaml" -f markdown -t html5 --mathjax --css style.css scan-matching-branch-and-bound.md > scan-matching-branch-and-bound.html
+-->
+<p><a href="./index.html">ホームに戻る</a></p>
+<h1 id="このページについて">このページについて</h1>
+<p>このページは、慶應理工アドベントカレンダー2021の15日目の記事です。</p>
+<h2 id="スキャンマッチングとslam">スキャンマッチングとSLAM</h2>
+<p>皆さんは、2Dの占有格子地図(Occupancy Grid Map)と、2D LiDARから取得したスキャンデータを重ね合わせて、ロボットの現在の自己位置を推定したいと思ったことがあると思います。 このような重ね合わせ処理のことを、<strong>スキャンマッチング</strong>(Scan Matching)といいます。</p>
+<ul>
+<li>占有格子地図とは、環境(2次元の平面)を格子状に区切って、それぞれの格子に障害物が存在する確率(占有確率)を割り当てるものです。 またLiDAR(Light Detection And Ranging)は、センサから周囲の環境に向けてレーザ光を照射し、その反射光を受光素子で検出することで、センサからみた障害物までの距離(Range, Distance)と方向(Angle, Bearing)を取得します。 レーザ光が障害物に当たって跳ね返り、センサの中心まで戻ってくるまでの時間(Time of Flight)を計測することで、障害物までの距離を計算できます。 LiDARセンサが回転しながら、あらゆる方向に対してレーザ光を照射するので、周囲の様々な障害物までの、距離と方向のペアが幾つも得られます。 LiDARセンサ1周分のデータをスキャンといい、周囲360度にある障害物(家具や壁など)の形状を反映した<strong>点群</strong>(Point Cloud)となります。</li>
+</ul>
+<p>スキャン同士、スキャンと地図、地図同士など、重ね合わせの対象には幾つかの種類がありますが、Scan-to-scan Matching、Scan-to-map Matching、Map-to-map Matchingなどと呼んで区別します。 ここでは、<strong>スキャンと占有格子地図の重ね合わせ</strong>(Scan-to-map)を扱いますが、スキャン同士(Scan-to-scan)の場合と比べると誤差が小さいとされています。 ICP(Iterative Closest Point)とその派生は、スキャン同士のマッチング手法、NDT(Normal Distributions Transform)は、スキャンと地図のマッチング手法に分類できます(NDTは占有格子地図ではなく、各格子が正規分布を表す格子地図を使います)。</p>
+<p>スキャンマッチングは、自己位置推定と地図構築、言い換えるとSLAM(Simultaneous Localization And Mapping)の核となる極めて重要な処理です。 SLAMでは、ロボットの自己位置(ロボットが辿った軌跡)と、環境地図(占有格子地図)の2つを推定しますが、これらの精度は、どのようなスキャンマッチングの手法を採用するかによって大きく左右されます。 各手法には長所と短所があるので、計算量、メモリ消費、精度などの様々な観点から、最適なものを1つ選んで用いたり、あるいは複数の手法を組み合わせて用いたりすることが重要です。</p>
+<h2 id="分枝限定法によるスキャンマッチング---概要">分枝限定法によるスキャンマッチング - 概要</h2>
+<p>2次元LiDAR SLAMの最先端であるGoogle Cartographerでは、<strong>ループ検出</strong>とよばれる処理に、分枝限定法(Branch-and-bound)ベースのスキャンマッチング手法を用いています。 ループ検出(Loop Detection)とは、ロボットが以前訪れた場所に、再び戻ってきたことを検出するための処理で、スキャンマッチングにより実現されます。</p>
+<ul>
+<li>SLAMでは通常、直近の幾つかのLiDARスキャンをもとに占有格子地図を作成し、最新のLiDARスキャンをこの地図とマッチングすることで、ロボットの現在位置を更新していきます。 しかし、上記のような、<strong>直近の観測データ</strong>と最新の観測データとのマッチングだけを繰り返していくと、ロボットの現在位置には誤差が累積していき、本来の正しい位置から大きく外れてしまいます。 ループ検出では、<strong>古い観測データ</strong>と最新の観測データとのマッチングを行います。 これによって、ある場所を訪れてから、再びそこを訪れるまでの間に溜まった誤差を一気に解消し、ロボットの現在位置を本来の正しい位置に戻すことができます。</li>
+</ul>
+<p>ループ検出では、(以前その場所を訪れたときに取得した)古いスキャンを含む地図と、最新のスキャンとのマッチングを行います。 直近のスキャンと、最新のスキャンとのマッチングによって、ロボットの現在位置は一応得られています。 しかし、本来の位置からは大きくずれているので、ループ検出によって大幅に修正されるでしょう。 大幅に修正されるということは、初期値と最適解とが離れているということです。</p>
+<p>ガウス・ニュートン法(Gauss-Newton)やレーベンバーグ・マーカート法(Levenberg-Marquardt)、山登り法(Hill-Climbing)のような逐次的なマッチング手法では、初期値が最適解にある程度近いことが要求されます。 言い換えると、ロボットの現在位置が真値とかなり近く、誤差が少ない状態である(地図とスキャンとが既にある程度重なり合っている)ことが求められますが、ループ検出での前提とは異なります。 従って、逐次的なマッチング手法は利用できず、初期値に依存しない頑健な手法が求められます。 分枝限定法によるスキャンマッチングは、効率が良く、しかも頑健な手法であるため、ループ検出に利用できます。</p>
+<h2 id="分枝限定法によるスキャンマッチング---下準備">分枝限定法によるスキャンマッチング - 下準備</h2>
+<p>今まではロボットの位置と書きましたが、平面上の位置(<span class="math inline">\(x\)</span>座標と<span class="math inline">\(y\)</span>座標)に加えて、実際にはロボットの向き(回転角<span class="math inline">\(\theta\)</span>)も考慮しなければなりません。 並進成分(<span class="math inline">\(x\)</span>、<span class="math inline">\(y\)</span>)と回転成分(<span class="math inline">\(\theta\)</span>)とがセットになったものを、位置とは区別して<strong>姿勢</strong>(Pose)とよびます。 2次元の姿勢は、<span class="math inline">\(x\)</span>、<span class="math inline">\(y\)</span>、<span class="math inline">\(\theta\)</span>(ヨー角)の3成分で表されますが、3次元の場合は、<span class="math inline">\(x\)</span>、<span class="math inline">\(y\)</span>、<span class="math inline">\(z\)</span>、<span class="math inline">\(\phi\)</span>(ロール角)、<span class="math inline">\(\theta\)</span>(ピッチ角)、<span class="math inline">\(\psi\)</span>(ヨー角)の6成分で表されます。 2次元の姿勢を、ここでは<span class="math inline">\(\mathbf{\xi} = \left[ \xi_x, \xi_y, \xi_\theta \right]^\top\)</span>と表記します。</p>
+<p>スキャンデータは、LiDARセンサの中心から、障害物までの距離<span class="math inline">\(r\)</span>と方向<span class="math inline">\(\theta\)</span>のセットです。 これを<span class="math inline">\(\mathcal{S} = \left\{ \mathbf{z}_1, \ldots, \mathbf{z}_N \right\} = \left\{ \left( r_1, \theta_1 \right), \ldots, \left( r_N, \theta_N \right) \right\}\)</span>と表しましょう。 <span class="math inline">\(r \ge 0\)</span>、<span class="math inline">\(-\pi \le \theta &lt; \pi\)</span>が成立するほか、<span class="math inline">\(N\)</span>は、スキャンデータに含まれる点の個数です。 <span class="math inline">\(\mathbf{z}_i = \left( r_i, \theta_i \right)\)</span>は、単一のスキャン点(距離と方向のペア)です。 距離と方向は、いずれもLiDARの中心を原点とした座標系(LiDAR座標系)で表されます。</p>
+<p>占有格子地図を<span class="math inline">\(\mathcal{M}\)</span>とします。 <span class="math inline">\(\mathcal{M}\)</span>の<span class="math inline">\((i, j)\)</span>番目の格子に対応する占有確率(Occupancy Probability)は<span class="math inline">\(\mathcal{M}(i, j)\)</span>で表します(<span class="math inline">\(0 \le \mathcal{M}(i, j) \le 1\)</span>)。 格子のサイズ(Resolution)を<span class="math inline">\(r\)</span>とします。</p>
+<p>ロボットの姿勢<span class="math inline">\(\mathbf{\xi}\)</span>は、地図座標系からみたLiDAR座標系の姿勢(座標変換、剛体変換)として捉えられます。 各スキャン点<span class="math inline">\(\mathbf{z}_i = (r_i, \theta_i)\)</span>はLiDAR座標系ですが、姿勢<span class="math inline">\(\mathbf{\xi} = \left[ \xi_x, \xi_y, \xi_\theta \right]^\top\)</span>を使えば、地図座標系に変換できます(スキャン点が、地図上でどの位置に対応するのかが分かります)。 以下の式によって、スキャン点<span class="math inline">\(\mathbf{z}_i\)</span>を地図上の座標<span class="math inline">\(\mathbf{p}_i = \left[ p_{i, x}, p_{i, y} \right]^\top = \varphi(\mathbf{\xi}, \mathbf{z}_i) \in \mathbb{R}^2\)</span>に変換できます(<span class="math inline">\(\mathbf{z}_i\)</span>は極座標ですが、<span class="math inline">\(\mathbf{p}_i = \varphi(\mathbf{\xi}, \mathbf{z}_i)\)</span>は直交座標とします)。 <span class="math display">\[
+  \mathbf{p}_i = \varphi(\mathbf{\xi}, \mathbf{z}_i)
+  = \left[ \begin{array}{c} p_{i, x} \\ p_{i, y} \end{array} \right]
+  = \left[ \begin{array}{c} \xi_x + r_i \cos(\xi_\theta + \theta_i) \\
+  \xi_y + r_i \sin(\xi_\theta + \theta_i) \end{array} \right] \in \mathbb{R}^2
+\]</span></p>
+<p>地図上の点<span class="math inline">\(\mathbf{p}_i = \varphi(\mathbf{\xi}, \mathbf{z}_i)\)</span>における占有確率を考えましょう。 点<span class="math inline">\(\mathbf{p}_i\)</span>と対応する格子のインデックス<span class="math inline">\((i, j)\)</span>は、各座標<span class="math inline">\(p_{i, x}\)</span>、<span class="math inline">\(p_{i, y}\)</span>を、格子のサイズ<span class="math inline">\(r\)</span>で割れば求められます。 <span class="math inline">\(\lfloor x \rfloor\)</span>は床関数であり、<span class="math inline">\(x\)</span>以下の最大の整数を返します。 <span class="math display">\[
+  (i, j) = \left( \left\lfloor \frac{p_{i, x}}{r} \right\rfloor, \
+  \left\lfloor \frac{p_{i, y}}{r} \right\rfloor \right) \in \mathbb{Z}^2
+\]</span> この<span class="math inline">\((i, j)\)</span>を用いれば、地図上の点<span class="math inline">\(\mathbf{p}_i\)</span>における占有確率は<span class="math inline">\(\mathcal{M}(i, j)\)</span>と書けます。 ここでは簡潔さのために、<span class="math inline">\(\mathbf{p}_i\)</span>における占有確率を単に<span class="math inline">\(\mathcal{M}(\mathbf{p}_i)\)</span>で表しましょう。</p>
+<h2 id="分枝限定法によるスキャンマッチング---定式化">分枝限定法によるスキャンマッチング - 定式化</h2>
+<p>スキャンマッチングでは、スコア関数<span class="math inline">\(s(\mathbf{\xi}; \mathcal{M}, \mathcal{S})\)</span>を、ロボットの姿勢<span class="math inline">\(\mathbf{\xi}\)</span>について最大化することで、最適な姿勢<span class="math inline">\(\mathbf{\xi}^*\)</span>を求めます。 <span class="math display">\[
+  \mathbf{\xi}^* = \arg \max_{\mathbf{\xi}} s(\mathbf{\xi}; \mathcal{M}, \mathcal{S})
+\]</span> スコア関数<span class="math inline">\(s(\mathbf{\xi}; \mathcal{M}, \mathcal{S})\)</span>は次のように定義できます(最小値は<span class="math inline">\(0\)</span>、最大値は<span class="math inline">\(N\)</span>)。 <span class="math display">\[
+  s(\mathbf{\xi}; \mathcal{M}, \mathcal{S})
+  = \sum_{i = 1}^N \mathcal{M}(\mathbf{p}_i)
+  = \sum_{i = 1}^N \mathcal{M}(\varphi(\mathbf{\xi}, \mathbf{z}_i))
+\]</span></p>
+<ul>
+<li><p>ガウス・ニュートン法などの逐次的な(勾配を基にした)手法では、上記の最大化の代わりに、以下の二乗誤差の最小化を考えます(ここでは忘れましょう)。 <span class="math display">\[
+\sum_{i = 1}^N \left( 1 - \mathcal{M}(\mathbf{p}_i) \right)^2
+= \sum_{i = 1}^N \left( 1 - \mathcal{M}(\varphi(\mathbf{\xi}, \mathbf{z}_i)) \right)^2
+\]</span></p></li>
+<li><p>姿勢<span class="math inline">\(\mathbf{\xi}\)</span>が正しいとします。 その姿勢を使って、スキャン点<span class="math inline">\(\mathbf{z}_i\)</span>と対応する地図上の座標<span class="math inline">\(\mathbf{p}_i\)</span>を求めると、その点における占有確率<span class="math inline">\(\mathcal{M}(\mathbf{p}_i)\)</span>は<span class="math inline">\(1\)</span>に近いはずです。 なぜかといえば、スキャン点は障害物の存在を表しているためです(スキャン点が指し示している地図上の格子は、障害物に占有されているべき)。 従って、姿勢<span class="math inline">\(\mathbf{\xi}\)</span>が正しければ、スキャン点に対応する占有確率は大きく、その結果としてスコアも高くなるはずです。</p></li>
+<li><p>一方、姿勢<span class="math inline">\(\mathbf{\xi}\)</span>が正しくないとすると、<span class="math inline">\(\mathcal{M}(\mathbf{p}_i)\)</span>は本来であれば<span class="math inline">\(1\)</span>に近いはずなのに、実際には<span class="math inline">\(0\)</span>に近い(<span class="math inline">\(\mathbf{p}_i\)</span>は障害物を指し示しているはずなのに、地図上で確認すると何もないことになっていて矛盾する)といったことが頻繁に発生するので、スコアは低くなるでしょう。 従ってスコア<span class="math inline">\(s(\mathbf{\xi}; \mathcal{M}, \mathcal{S})\)</span>は、姿勢<span class="math inline">\(\mathbf{\xi}\)</span>のもとで、占有格子地図<span class="math inline">\(\mathcal{M}\)</span>とLiDARスキャン<span class="math inline">\(\mathcal{S}\)</span>とが、どの程度綺麗に重なり合うのかを表します。 このスコアを最大化すれば、最適な姿勢が得られるわけです。</p></li>
+</ul>
+<p>姿勢の解<span class="math inline">\(\mathbf{\xi}^*\)</span>の候補は無数にあります(<span class="math inline">\(x\)</span>、<span class="math inline">\(y\)</span>成分は実数、<span class="math inline">\(\theta\)</span>成分は<span class="math inline">\(-\pi\)</span>から<span class="math inline">\(\pi\)</span>までの間の何らかの実数)。 このままではどうしようもないので、適当な解の<strong>探索領域</strong>(Search Window)を考え、この領域のなかから、最適な解を1つ選ぶことにしましょう。 探索領域を<span class="math inline">\(\mathcal{W}\)</span>で表すと、スキャンマッチングは次のように定式化されます。 <span class="math display">\[
+  \mathbf{\xi}^* = \mathop{\rm arg~max}\limits_{\mathbf{\xi} \in \mathcal{W}} \
+  s(\mathbf{\xi}; \mathcal{M}, \mathcal{S})
+\]</span></p>
+<p>探索領域<span class="math inline">\(\mathcal{W}\)</span>は、<span class="math inline">\(x\)</span>、<span class="math inline">\(y\)</span>、<span class="math inline">\(\theta\)</span>の3次元方向に広がっており、適当な<strong>ステップサイズ</strong>で区切られているので、解の候補は離散値で表現されます。 従って、有限個の解の候補のなかから、最も良いものを1つ選ぶことになります。</p>
+<p>ステップサイズは重要なパラメータで、探索領域をどれだけ細かく区切るのか(解の候補をどれだけ多く作り出すのか)を決定します。 ステップサイズを小さくとれば、探索領域<span class="math inline">\(\mathcal{W}\)</span>のなかを細かく調べることになるから、解の精度は良くなりますが、そのぶん計算時間が掛かります。 ステップサイズを大きくしすぎると、解の候補が減るので計算時間は抑えられますが、最適解を見逃してしまうので、解の精度は悪くなるでしょう。</p>
+<p>ステップサイズは、<span class="math inline">\(x\)</span>と<span class="math inline">\(y\)</span>の方向を<span class="math inline">\(r\)</span>、<span class="math inline">\(\theta\)</span>の方向を<span class="math inline">\(\delta_\theta\)</span>とします。 <span class="math inline">\(\delta_\theta\)</span>には適当な小さな値を設定します(<span class="math inline">\(0.001 \mathrm{rad}\)</span>程度)。 <span class="math inline">\(x\)</span>と<span class="math inline">\(y\)</span>の方向には<span class="math inline">\(r\)</span>としたので、格子のサイズと同じ間隔で探索することになります。 占有格子地図を使ってスキャンマッチングを行う以上、どれだけ頑張っても、地図の解像度<span class="math inline">\(r\)</span>を上回る精度は得られないはずなので、これで十分です(<span class="math inline">\(r\)</span>には<span class="math inline">\(0.05 \mathrm{m}\)</span>がよく使用されます)。</p>
+<p>探索領域<span class="math inline">\(\mathcal{W}\)</span>の<span class="math inline">\(x\)</span>、<span class="math inline">\(y\)</span>、<span class="math inline">\(\theta\)</span>方向のサイズ(半径)を、<span class="math inline">\(W_x\)</span>、<span class="math inline">\(W_y\)</span>、<span class="math inline">\(W_\theta\)</span>とします(<span class="math inline">\(W_x\)</span>と<span class="math inline">\(W_y\)</span>の単位は<span class="math inline">\(\mathrm{m}\)</span>、<span class="math inline">\(W_\theta\)</span>の単位は<span class="math inline">\(\mathrm{rad}\)</span>)。 各方向の解の個数を<span class="math inline">\(w_x\)</span>、<span class="math inline">\(w_y\)</span>、<span class="math inline">\(w_\theta\)</span>とすると、次のように計算できます。<span class="math inline">\(\lceil x \rceil\)</span>は天井関数であり、<span class="math inline">\(x\)</span>以上の最小の整数を返します。 <span class="math display">\[
+  w_x = \left\lceil \frac{W_x}{r} \right\rceil, \
+  w_y = \left\lceil \frac{W_y}{r} \right\rceil, \
+  w_\theta = \left\lceil \frac{W_\theta}{\delta_\theta} \right\rceil
+\]</span></p>
+<p>これを基に、探索領域<span class="math inline">\(\mathcal{W}\)</span>を次のように書くことにしましょう。 <span class="math display">\[
+  \overline{\mathcal{W}} = \left\{ 0, \ldots, 2w_x \right\}
+  \times \left\{ 0, \ldots, 2w_y \right\}
+  \times \left\{ 0, \ldots, 2w_\theta \right\}
+\]</span> <span class="math display">\[
+  \mathcal{W} = \left\{ \mathcal{\xi}_0
+  + \left[ r \left( -w_x + j_x \right), r \left( -w_y + j_y \right),
+  \delta_\theta \left( -w_\theta + j_\theta \right) \right]^\top \mid
+  \left( j_x, j_y, j_\theta \right) \in \overline{\mathcal{W}} \right\}
+\]</span></p>
+<p>探索領域<span class="math inline">\(\mathcal{W}\)</span>は<span class="math inline">\(x\)</span>、<span class="math inline">\(y\)</span>、<span class="math inline">\(\theta\)</span>の方向に離散化されているので、<span class="math inline">\(\mathcal{W}\)</span>に含まれる解の候補は、3つの整数の組<span class="math inline">\((j_x, j_y, j_\theta)\)</span>で表せます。 <span class="math inline">\(j_x\)</span>は<span class="math inline">\(0\)</span>以上<span class="math inline">\(2w_x\)</span>以下、<span class="math inline">\(j_y\)</span>は<span class="math inline">\(0\)</span>以上<span class="math inline">\(2w_y\)</span>以下、そして<span class="math inline">\(j_\theta\)</span>は<span class="math inline">\(0\)</span>以上<span class="math inline">\(2w_\theta\)</span>以下の整数です。 探索領域の中心<span class="math inline">\((w_x, w_y, w_\theta)\)</span>に対応する姿勢を<span class="math inline">\(\mathbf{\xi}_0\)</span>と表記します。 <span class="math inline">\((j_x, j_y, j_\theta)\)</span>と対応する姿勢は、<span class="math inline">\(\mathbf{\xi}_0\)</span>に、<span class="math inline">\(\left[ r \left( -w_x + j_x \right), r \left( -w_y + j_y \right), \delta_\theta \left( -w_\theta + j_\theta \right) \right]^\top\)</span>を加えれば求められます。</p>
+<p>例えば、探索領域の端<span class="math inline">\((0, 0, 0)\)</span>に対応する姿勢(座標値が最小)は <span class="math display">\[
+  \xi_0 + \left[ -r w_x, -r w_y, -\delta_\theta w_\theta \right]^\top
+\]</span> もう一方の端<span class="math inline">\((2w_x, 2w_y, 2w_\theta)\)</span>に対応する姿勢(座標値が最大)は <span class="math display">\[
+  \xi_0 + \left[ r w_x, r w_y, \delta_\theta w_\theta \right]^\top
+\]</span> と書けます。 両者を比べることで、探索領域のサイズは<span class="math inline">\(2r w_x, 2r w_y, 2 \delta_\theta w_\theta\)</span>、言い換えると<span class="math inline">\(2 W_x, 2 W_y, 2 W_\theta\)</span>になることが分かります。 簡単のために、解の候補<span class="math inline">\((j_x, j_y, j_\theta)\)</span>に対応する姿勢を<span class="math inline">\(\mathbf{\xi}(j_x, j_y, j_\theta)\)</span>とおきましょう。 <span class="math display">\[
+  \mathbf{\xi}(j_x, j_y, j_\theta) = \xi_0
+  + \left[ r \left( -w_x + j_x \right), r \left( -w_y + j_y \right),
+  \delta_\theta \left( -w_\theta + j_\theta \right) \right]^\top
+\]</span></p>
+<p>ここまでで、分枝限定法によるスキャンマッチングを定式化できました。 <span class="math display">\[
+  \mathbf{\xi}^* = \mathop{\rm arg~max}\limits_{\mathbf{\xi} \in \mathcal{W}} \
+  s(\mathbf{\xi}; \mathcal{M}, \mathcal{S})
+  = \mathop{\rm arg~max}\limits_{(j_x, j_y, j_\theta) \in \overline{\mathcal{W}}} \
+  s(\mathbf{\xi}(j_x, j_y, j_\theta); \mathcal{M}, \mathcal{S})
+\]</span></p>
+<p>続いて、具体的なアルゴリズムを導出してみましょう。</p>
+<h2 id="分枝限定法によるスキャンマッチング---導出">分枝限定法によるスキャンマッチング - 導出</h2>
+<p>最初に考えつくのは力ずくな方法、言い換えると、探索領域<span class="math inline">\(\mathcal{W}\)</span>内の全ての候補をしらみつぶしに調べていき、最もスコアが高くなった候補を最終的な解として返すものです。 この方法は最も単純ですが、計算時間が掛かりすぎて実用的ではありません。 解の候補は、全部で<span class="math inline">\((2 w_x + 1) \cdot (2 w_y + 1) \cdot (2 w_\theta + 1)\)</span>個あります。 <span class="math inline">\(W_x = W_y = 5 \mathrm{m}\)</span>、<span class="math inline">\(W_\theta = 0.25 \mathrm{rad}\)</span>、<span class="math inline">\(r = 0.05 \mathrm{m}\)</span>、<span class="math inline">\(\delta_\theta = 0.0025 \mathrm{rad}\)</span>とすると、<span class="math inline">\(w_x = w_y = 100\)</span>、<span class="math inline">\(w_\theta = 100\)</span>となりますから、解の候補は約800万になります。 1つ<span class="math inline">\(0.1 \mathrm{ms}\)</span>で終わるとしても、全てを調べ尽くすのには800秒掛かります。 先程の例であれば、SLAMはリアルタイムに動作するので、1回のループ検出に800秒掛かるようでは全く使い物になりません。</p>
+<p>そこで、<strong>分枝限定法</strong>(Branch and Bound)を使うことを考えましょう。</p>
+<p>分枝限定法では、木構造を使って探索領域<span class="math inline">\(\overline{\mathcal{W}}\)</span>を分割していきます。 各ノードを、4つの整数の組<span class="math inline">\(\mathbf{c} = \left( c_x, c_y, c_\theta, h \right) \in \mathbb{Z}^4\)</span>で表現します。 ノード<span class="math inline">\(\mathbf{c}\)</span>が表す探索領域を<span class="math inline">\(\overline{\mathcal{W}}(\mathbf{c})\)</span>とすると、以下のようになります。 <span class="math display">\[
+  \begin{eqnarray}
+    \overline{\overline{\mathcal{W}}}(\mathbf{c})
+    &amp;=&amp; \overline{\overline{\mathcal{W}}}(c_x, c_y, c_\theta, h) \\
+    &amp;=&amp; \left\{ c_x, \ldots, c_x + 2^h - 1 \right\}
+    \times \left\{ c_y, \ldots, c_y + 2^h - 1 \right\}
+    \times \left\{ c_\theta \right\} \\
+    &amp;=&amp; \left\{ c_x \le j_x &lt; c_x + 2^h, c_y \le j_y &lt; c_y + 2^h \mid
+    \left( j_x, j_y \right) \in \mathbb{Z}^2 \right\}
+    \times \left\{ c_\theta \right\} \\
+    \overline{\mathcal{W}}(\mathbf{c})
+    &amp;=&amp; \overline{\overline{\mathcal{W}}}(\mathbf{c}) \cap \overline{\mathcal{W}} \\
+    \mathcal{W}(\mathbf{c}) &amp;=&amp; \left\{
+    \mathbf{\xi}(j_x, j_y, c_\theta) \mid
+    c_x \le j_x &lt; c_x + 2^h, c_y \le j_y &lt; c_y + 2^h \right\}
+  \end{eqnarray}
+\]</span> このように定義した<span class="math inline">\(\overline{\mathcal{W}}(\mathbf{c})\)</span>は、探索領域<span class="math inline">\(\overline{\mathcal{W}}\)</span>の部分集合となります。 ノード<span class="math inline">\(\mathbf{c}\)</span>は、ある決まった角度<span class="math inline">\(c_\theta\)</span>をもつ、<span class="math inline">\((c_x, c_y)\)</span>から<span class="math inline">\((c_x + 2^h - 1, c_y + 2^h - 1)\)</span>までの、<span class="math inline">\(2^h \times 2^h\)</span>個の解を表しています。 <span class="math inline">\(h\)</span>は、ノード<span class="math inline">\(\mathbf{c}\)</span>の高さです。 <span class="math inline">\(\mathbf{c}\)</span>が末端の葉ノードであるとすると、高さは<span class="math inline">\(h = 0\)</span>であるから <span class="math display">\[
+  \overline{\mathcal{W}}(\mathbf{c}) = \overline{\mathcal{W}}(c_x, c_y, c_\theta, 0)
+  = \left\{ \left( c_x, c_y, c_\theta \right) \right\}
+\]</span> のようになって、ある単一の解<span class="math inline">\((c_x, c_y, c_\theta) \in \overline{\mathcal{W}}\)</span>を表すことが分かります。 根ノードは、全探索領域<span class="math inline">\(\overline{\mathcal{W}}\)</span>に対応します。</p>
+<p>あるノード<span class="math inline">\(\mathbf{c}\)</span>(探索領域は<span class="math inline">\(\overline{\mathcal{W}}(\mathbf{c})\)</span>)があるとします。 <span class="math inline">\(\mathbf{c}\)</span>の子ノード<span class="math inline">\(\mathbf{c}_1, \mathbf{c}_2, \ldots\)</span>がもつ探索領域<span class="math inline">\(\overline{\mathcal{W}}(\mathbf{c}_1), \overline{\mathcal{W}}(\mathbf{c}_2), \ldots\)</span>は、<span class="math inline">\(\overline{\mathcal{W}}(\mathbf{c})\)</span>の部分集合となります。 また、子ノードの探索領域<span class="math inline">\(\overline{\mathcal{W}}(\mathbf{c}_1), \overline{\mathcal{W}}(\mathbf{c}_2), \ldots\)</span>を集めると、親ノードの探索領域<span class="math inline">\(\overline{\mathcal{W}}(\mathbf{c})\)</span>に等しくなります。 これは、<span class="math inline">\(\overline{\mathcal{W}}(\mathbf{c}) = \overline{\mathcal{W}}(\mathbf{c}_1) \cup \overline{\mathcal{W}}(\mathbf{c}_2) \cup \ldots\)</span>のように表現できます。 この条件を満たすように、ノード<span class="math inline">\(\mathbf{c}\)</span>を複数の子ノード<span class="math inline">\(\mathbf{c}_1, \mathbf{c}_2, \ldots\)</span>に分割する操作を<strong>分枝</strong>(Branching)とよびます。</p>
+<p>分枝操作によってノードを作成し、それらを順に探索していきます。 あるノード<span class="math inline">\(\mathbf{c}\)</span>が探索領域<span class="math inline">\(\overline{\mathcal{W}}(\mathbf{c})\)</span>をもつとき、ノード内の候補がもつスコアが、<span class="math inline">\(\overline{s}(\mathbf{c})\)</span>以下であるとします。 言い換えると、次の式のように書けるとします。 この<span class="math inline">\(\overline{s}(\mathbf{c})\)</span>を、ノード<span class="math inline">\(\mathbf{c}\)</span>のスコアの<strong>上界</strong>(Upper-bound)とよぶことにします。 上界<span class="math inline">\(\overline{s}(\mathbf{c})\)</span>は、ノード<span class="math inline">\(\mathbf{c}\)</span>内の候補を全て調べなくとも、簡単に計算できるとします。 <span class="math display">\[
+  \forall (j_x, j_y, j_\theta) \in \overline{\mathcal{W}}(\mathbf{c}) \quad
+  s(\mathbf{\xi}(j_x, j_y, j_\theta); \mathcal{M}, \mathcal{S}) \le \overline{s}
+\]</span> スコアの上界<span class="math inline">\(\overline{s}\)</span>が、現在判明している最大値<span class="math inline">\(s^*\)</span>以下である場合は、このノードを探索する必要はありません。 なぜなら、このノード内の全ての候補を調べても、<span class="math inline">\(s^*\)</span>より良いスコアを持つ候補はみつからず、徒労に終わるからです。 あるノードのスコアの上界を計算することを<strong>限定</strong>(Bounding)、ノードを切り捨てる操作を<strong>枝刈り</strong>(Pruning)とよびます。 広い探索領域に対応するノードを枝刈りすれば、探索するノード数を大きく削減でき、アルゴリズムの効率化につながります。</p>
+<p>ノードの探索は、<strong>深さ優先探索</strong>(Depth-first Search)の方針で進めていきます。 分枝操作によって子ノードを作成したら、各ノードに対してスコアの上界を計算し、最大の上界をもつ子ノードから順に探索していくわけです。 上界の大きなノードから探索することで、余計なノードの探索を省き、最適解に素早く到達できます。</p>
+<hr />
+<p>さて、話が前後していますが、分枝はどのように行えばよいでしょうか。 高さ<span class="math inline">\(h\)</span>のノード<span class="math inline">\(\mathbf{c}\)</span>が、上式のような探索領域<span class="math inline">\(\overline{\mathcal{W}}(\mathbf{c})\)</span>をもつとき、分枝によって新たに高さ<span class="math inline">\(h - 1\)</span>のノードが作成されます。 探索領域<span class="math inline">\(\overline{\mathcal{W}}(\mathbf{c})\)</span>は、<span class="math inline">\((c_x, c_y, c_\theta)\)</span>から<span class="math inline">\((c_x + 2^h - 1, c_y + 2^h - 1, c_\theta)\)</span>までの、<span class="math inline">\(2^h \times 2^h\)</span>個の解の集合を表します。 子ノードは<span class="math inline">\(2^{h - 1} \times 2^{h - 1}\)</span>個の解の集合を表し、親ノードの4分の1の探索領域をカバーするので、1つのノードから4つの子ノードが作成されることが分かります。 4つの子ノードの探索領域は次のように書けます。 <span class="math display">\[
+  \begin{eqnarray}
+    &amp;&amp; \overline{\mathcal{W}}(c_x, c_y, c_\theta, \color{red}{h - 1} \color{black})
+    = \overline{\overline{\mathcal{W}}}(c_x, c_y, c_\theta,
+    \color{red}{h - 1} \color{black}) \cap \overline{\mathcal{W}} \\
+    &amp;&amp; \overline{\mathcal{W}}(c_x + \color{red}{2^{h - 1}} \color{black},
+    c_y, c_\theta, \color{red}{h - 1} \color{black})
+    = \overline{\overline{\mathcal{W}}}(c_x + \color{red}{2^{h - 1}} \color{black},
+    c_y, c_\theta, \color{red}{h - 1} \color{black}) \cap \overline{\mathcal{W}} \\
+    &amp;&amp; \overline{\mathcal{W}}(c_x, c_y + \color{red}{2^{h - 1}} \color{black},
+    c_\theta, \color{red}{h - 1} \color{black})
+    = \overline{\overline{\mathcal{W}}}(c_x, c_y + \color{red}{2^{h - 1}} \color{black},
+    c_\theta, \color{red}{h - 1} \color{black}) \cap \overline{\mathcal{W}} \\
+    &amp;&amp; \overline{\mathcal{W}}(c_x + \color{red}{2^{h - 1}} \color{black},
+    c_y + \color{red}{2^{h - 1}} \color{black},
+    c_\theta, \color{red}{h - 1} \color{black})
+    = \overline{\overline{\mathcal{W}}}(c_x + \color{red}{2^{h - 1}} \color{black},
+    c_y + \color{red}{2^{h - 1}} \color{black},
+    c_\theta, \color{red}{h - 1} \color{black}) \cap \overline{\mathcal{W}}
+  \end{eqnarray}
+\]</span> 式は多いですが、<span class="math inline">\((c_x, c_y)\)</span>から始まる<span class="math inline">\(2^h \times 2^h\)</span>の探索領域を、左上、右上、左下、右下の4つの領域に分割しているわけです。 それぞれ、<span class="math inline">\((c_x, c_y)\)</span>、<span class="math inline">\((c_x + 2^{h - 1}, c_y)\)</span>、<span class="math inline">\((c_x, c_y + 2^{h - 1})\)</span>、<span class="math inline">\((c_x + 2^{h - 1}, c_y + 2^{h - 1})\)</span>から始まる、<span class="math inline">\(2^{h - 1} \times 2^{h - 1}\)</span>の領域になります。</p>
+<p>根ノードは全探索領域<span class="math inline">\(\overline{\mathcal{W}}\)</span>に対応します。 根ノード1つだけの状態から分枝限定法を始めても動作しますが、実際には、ある程度の個数の子ノードを作成しておいてから、分枝限定法を開始します。 言い換えると、探索木の高さを<span class="math inline">\(h_0\)</span>に制限して、高さ<span class="math inline">\(h_0\)</span>のノードを最初に作成するということです。 子ノードの集合を<span class="math inline">\(\mathcal{C}_0\)</span>とすると、次のように書けます。 <span class="math display">\[
+  \begin{eqnarray}
+    \overline{\mathcal{W}}_{0, x} &amp;=&amp; \left\{ 2^{h_0} j_x \mid
+    j_x \in \mathbb{Z}, 0 \le 2^{h_0} j_x \le 2 w_x \right\} \\
+    \overline{\mathcal{W}}_{0, y} &amp;=&amp; \left\{ 2^{h_0} j_y \mid
+    j_y \in \mathbb{Z}, 0 \le 2^{h_0} j_y \le 2 w_y \right\} \\
+    \overline{\mathcal{W}}_{0, \theta} &amp;=&amp; \left\{ j_\theta \mid
+    j_\theta \in \mathbb{Z}, 0 \le j_\theta \le 2 w_\theta \right\} \\
+    \mathcal{C}_0 &amp;=&amp; \overline{\mathcal{W}}_{0, x}
+    \times \overline{\mathcal{W}}_{0, y}
+    \times \overline{\mathcal{W}}_{0, \theta}
+    \times \left\{ h_0 \right\}
+  \end{eqnarray}
+\]</span> 探索領域<span class="math inline">\(\overline{\mathcal{W}}\)</span>の定義を思い返すと、上記のノード群<span class="math inline">\(\mathcal{C}_0\)</span>は、<span class="math inline">\(\overline{\mathcal{W}}\)</span>全体を満遍なくカバーすることが分かります。 分枝限定法の初期状態では、ノード数は<span class="math inline">\(\lceil 2w_x / 2^{h_0} \rceil \times \lceil 2w_y / 2^{h_0} \rceil \times \left( 2 w_\theta + 1 \right)\)</span>になります。 <span class="math inline">\(\mathcal{C}_0\)</span>に含まれる各ノード<span class="math inline">\(\mathbf{c} \in \mathcal{C}_0\)</span>について、スコアの上界<span class="math inline">\(\overline{s}(\mathbf{c})\)</span>を調べて、上界が最も大きいノードから分枝を始めるわけです。</p>
+<hr />
+<p>最後に、スコアの上界を計算する方法を考えましょう。 あるノード<span class="math inline">\(\mathbf{c} = (c_x, c_y, c_\theta, h)\)</span>があるとします(探索領域は<span class="math inline">\(\overline{\mathcal{W}}(\mathbf{c})\)</span>)。 ノード<span class="math inline">\(\mathbf{c}\)</span>のスコアの<strong>最大値</strong><span class="math inline">\(s_\mathrm{max}(\mathbf{c})\)</span>は、次のように表せます。 <span class="math display">\[
+  s_\mathrm{max}(\mathbf{c}) = s_\mathrm{max}(c_x, c_y, c_\theta, h)
+  = \max_{(j_x, j_y, j_\theta) \in \overline{\mathcal{W}}(\mathbf{c})}
+  s(\mathbf{\xi}(j_x, j_y, j_\theta); \mathcal{M}, \mathcal{S})
+\]</span> 上式は、ノード内の全ての候補<span class="math inline">\((j_x, j_y, j_\theta) \in \overline{\mathcal{W}}(\mathbf{c})\)</span>についてスコアを調べ、そのなかで最大のものを取るということです。 この最大値を上界として用いてもいいのですが、最初に示した力ずくな方法になってしまいます。 最大値ではなくとも、<strong>最大値以上</strong>であることが保証されている(何らかの)上界を計算すれば、分枝限定法は動作します。 そこで、ノード内の全ての候補を調べることなしに、上界を求める方法を考えてみます。 最大値の式を手掛かりに、上界の計算式を導出してみましょう。 <span class="math display">\[
+  \begin{eqnarray}
+    s_\mathrm{max}(\mathbf{c})
+    &amp;=&amp; \max_{(j_x, j_y, j_\theta) \in \overline{\mathcal{W}}(\mathbf{c})}
+    s(\mathbf{\xi}(j_x, j_y, j_\theta); \mathcal{M}, \mathcal{S}) \\
+    &amp;\le&amp; \max_{(j_x, j_y, j_\theta) \in \overline{\overline{\mathcal{W}}}(\mathbf{c})}
+    s(\mathbf{\xi}(j_x, j_y, j_\theta); \mathcal{M}, \mathcal{S}) \\
+    &amp;=&amp; \max_{(j_x, j_y, j_\theta) \in \overline{\overline{\mathcal{W}}}(\mathbf{c})}
+    \sum_{i = 1}^N \mathcal{M}(\varphi(\mathbf{\xi}(j_x, j_y, j_\theta), \mathbf{z}_i)) \\
+    &amp;\le&amp; \sum_{i = 1}^N
+    \max_{(j_x, j_y, j_\theta) \in \overline{\overline{\mathcal{W}}}(\mathbf{c})}
+    \mathcal{M}(\varphi(\mathbf{\xi}(j_x, j_y, j_\theta), \mathbf{z}_i))
+  \end{eqnarray}
+\]</span> 最初の式変形は、<span class="math inline">\(\overline{\mathcal{W}}(\mathbf{c})\)</span>が<span class="math inline">\(\overline{\overline{\mathcal{W}}}(\mathbf{c})\)</span>の部分集合である(<span class="math inline">\(\overline{\mathcal{W}}(\mathbf{c}) = \overline{\overline{\mathcal{W}}}(\mathbf{c}) \cap \overline{\mathcal{W}}\)</span>)ことから分かります。 <span class="math inline">\(\overline{\overline{\mathcal{W}}}(\mathbf{c})\)</span>は<span class="math inline">\(\overline{\mathcal{W}}(\mathbf{c})\)</span>よりも広い探索領域を表すので、<span class="math inline">\(\overline{\mathcal{W}}(\mathbf{c})\)</span>のなかでとった最大値よりも、<span class="math inline">\(\overline{\overline{\mathcal{W}}}(\mathbf{c})\)</span>のなかでとった最大値のほうが大きいはずです。 2番目の式変形では、スコア(<span class="math inline">\(s(\mathbf{\xi}; \mathcal{M}, \mathcal{S})\)</span>)の定義を代入しています。 最後の式変形では、総和<span class="math inline">\(\sum\)</span>と最大値<span class="math inline">\(\max\)</span>の順番を入れ替えています。 任意の<span class="math inline">\((j_x&#39;, j_y&#39;, j_\theta&#39;) \in \overline{\overline{\mathcal{W}}}(\mathbf{c})\)</span>および<span class="math inline">\(1 \le i \le N\)</span>について、明らかに以下が成立します。 <span class="math display">\[
+  \mathcal{M}(\varphi(\mathbf{\xi}(j_x&#39;, j_y&#39;, j_\theta&#39;), \mathbf{z}_i))
+  \le \max_{(j_x, j_y, j_\theta) \in \overline{\overline{\mathcal{W}}}(\mathbf{c})}
+  \mathcal{M}(\varphi(\mathbf{\xi}(j_x, j_y, j_\theta), \mathbf{z}_i))
+\]</span> <span class="math inline">\(i\)</span>に関する総和を取ると <span class="math display">\[
+  \sum_{i = 1}^N \mathcal{M}(\varphi(\mathbf{\xi}(j_x&#39;, j_y&#39;, j_\theta&#39;), \mathbf{z}_i))
+  \le \sum_{i = 1}^N \max_{(j_x, j_y, j_\theta) \in \overline{\overline{\mathcal{W}}}(\mathbf{c})}
+  \mathcal{M}(\varphi(\mathbf{\xi}(j_x, j_y, j_\theta), \mathbf{z}_i))
+\]</span> 上式が任意の<span class="math inline">\((j_x&#39;, j_y&#39;, j_\theta&#39;) \in \overline{\overline{\mathcal{W}}}(\mathbf{c})\)</span>について成り立つということは、左辺が最大になるような<span class="math inline">\((j_x&#39;, j_y&#39;, j_\theta&#39;)\)</span>に関しても成り立つことを意味するから、以下がいえます。 <span class="math display">\[
+  \max_{(j_x&#39;, j_y&#39;, j_\theta&#39;) \in \overline{\overline{\mathcal{W}}}(\mathbf{c})}
+  \sum_{i = 1}^N \mathcal{M}(\varphi(\mathbf{\xi}(j_x&#39;, j_y&#39;, j_\theta&#39;), \mathbf{z}_i))
+  \le \sum_{i = 1}^N \max_{(j_x, j_y, j_\theta) \in \overline{\overline{\mathcal{W}}}(\mathbf{c})}
+  \mathcal{M}(\varphi(\mathbf{\xi}(j_x, j_y, j_\theta), \mathbf{z}_i))
+\]</span></p>
+<p>既にお腹いっぱいかもしれませんが、上で得られた不等式を、もう少し詳しく調べてみましょう。 <span class="math display">\[
+  \begin{eqnarray}
+    s_\mathrm{max}(\mathbf{c}) &amp;\le&amp; \sum_{i = 1}^N
+    \max_{(j_x, j_y, j_\theta) \in \overline{\overline{\mathcal{W}}}(\mathbf{c})}
+    \mathcal{M}(\varphi(\mathbf{\xi}(j_x, j_y, j_\theta), \mathbf{z}_i)) \\
+    &amp;=&amp; \sum_{i = 1}^N
+    \max_{\substack{c_x \le j_x &lt; c_x + 2^h \\ c_y \le j_y &lt; c_y + 2^h}}
+    \mathcal{M}(\varphi(\mathbf{\xi}(j_x, j_y, c_\theta), \mathbf{z}_i))
+  \end{eqnarray}
+\]</span> 上式のなかで<span class="math inline">\(\varphi(\mathbf{\xi}(j_x, j_y, c_\theta), \mathbf{z}_i)\)</span>の部分に着目し、<span class="math inline">\(\mathbf{p}_i = \left[ p_{i, x}, p_{i, y} \right]^\top\)</span>とおきます。 この項は、<span class="math inline">\(i\)</span>番目のスキャンデータ(距離と方向のペア)<span class="math inline">\(\mathbf{z}_i = \left( r_i, \theta_i \right)\)</span>を、姿勢<span class="math inline">\(\mathbf{\xi}(j_x, j_y, c_\theta)\)</span>を使って、LiDAR座標系から地図座標系に変換したものです。 この項に<span class="math inline">\(\mathbf{\xi}(j_x, j_y, j_\theta)\)</span>の定義を代入します。 また、<span class="math inline">\(\mathbf{\xi}_0 = \left[ \xi_{0, x}, \xi_{0, y}, \xi_{0, \theta} \right]^\top\)</span>とします。 <span class="math display">\[
+  \begin{eqnarray}
+    \mathbf{p}_i &amp;=&amp; \varphi(\mathbf{\xi}(j_x, j_y, c_\theta), \mathbf{z}_i) \\
+    &amp;=&amp; \varphi(\mathbf{\xi}_0 + \left[
+    r \left( -w_x + j_x \right), r \left( -w_y + j_y \right),
+    \delta_\theta \left( -w_\theta + c_\theta \right) \right]^\top, \mathbf{z}_i) \\
+    &amp;=&amp; \varphi(\left[ \xi_{0, x} + r \left( -w_x + j_x \right),
+    \xi_{0, y} + r \left( -w_y + j_y \right),
+    \xi_{0, \theta} + \delta_\theta \left( -w_\theta + c_\theta \right)
+    \right]^\top, \mathbf{z}_i)
+  \end{eqnarray}
+\]</span> <span class="math inline">\(\varphi\)</span>の定義から、<span class="math inline">\(\mathbf{p}_i = \left[ p_{i, x}, p_{i, y} \right]^\top\)</span>の各要素が得られます。 <span class="math display">\[
+  \begin{eqnarray}
+    &amp;&amp; \varphi(\left[ \xi_{0, x} + r \left( -w_x + j_x \right),
+    \xi_{0, y} + r \left( -w_y + j_y \right),
+    \xi_{0, \theta} + \delta_\theta \left( -w_\theta + c_\theta \right)
+    \right]^\top, \mathbf{z}_i) \\
+    &amp;=&amp; \left[ \begin{array}{c}
+    \xi_{0, x} + r \left( -w_x + j_x \right) + r_i \cos \left(
+    \xi_{0, \theta} + \delta_\theta \left( -w_\theta + c_\theta \right) + \theta_i \right) \\
+    \xi_{0, y} + r \left( -w_y + j_y \right) + r_i \sin \left(
+    \xi_{0, \theta} + \delta_\theta \left( -w_\theta + c_\theta \right) + \theta_i \right)
+    \end{array} \right]
+  \end{eqnarray}
+\]</span> <span class="math inline">\(\mathcal{M}(\mathbf{p}_i) = \mathcal{M}(\varphi(\mathbf{\xi}(j_x, j_y, c_\theta), \mathbf{z}_i))\)</span>は、<span class="math inline">\(\mathbf{p}_i\)</span>に対応する格子のインデックス<span class="math inline">\((I_{i, x}, I_{i, y})\)</span>を計算し、その格子がもつ占有確率<span class="math inline">\(\mathcal{M}(I_{i, x}, I_{i, y})\)</span>を参照すれば分かります(定式化の部分の説明を思い出してください)。 <span class="math inline">\(\mathbf{p}_i\)</span>に対応する格子のインデックス<span class="math inline">\((I_{i, x}, I_{i, y})\)</span>は次のように書けます。 <span class="math display">\[
+  \begin{eqnarray}
+  (I_{i, x}, I_{i, y}) &amp;=&amp; \left( \left\lfloor \frac{p_{i, x}}{r} \right\rfloor, \
+  \left\lfloor \frac{p_{i, y}}{r} \right\rfloor \right) \in \mathbb{Z}^2 \\
+  &amp;=&amp; \bigg( \left\lfloor \frac{\xi_{0, x} + r_i \cos \left(
+  \xi_{0, \theta} + \delta_\theta \left( -w_\theta + c_\theta \right) + \theta_i \right)}{r}
+  \right\rfloor + \left( -w_x + j_x \right), \\
+  &amp;&amp; \quad \left\lfloor \frac{\xi_{0, y} + r_i \sin \left(
+  \xi_{0, \theta} + \delta_\theta \left( -w_\theta + c_\theta \right) + \theta_i \right)}{r}
+  \right\rfloor + \left( -w_y + j_y \right) \bigg) \\
+  &amp;=&amp; \left( I_{i, x}^0 + j_x, I_{i, y}^0 + j_y \right)
+  \end{eqnarray}
+\]</span> ここで注目すべきは、<span class="math inline">\((j_x, j_y)\)</span>が変化すると、格子のインデックス<span class="math inline">\((I_{i, x}, I_{i, y})\)</span>も同じ量だけスライドするということです。 また<span class="math inline">\(I_{i, x}^0, I_{i, y}^0\)</span>は、<span class="math inline">\(j_x\)</span>と<span class="math inline">\(j_y\)</span>には依存しません。</p>
+<p>このインデックス表記を、先程の不等式に代入しましょう。 <span class="math display">\[
+  \begin{eqnarray}
+    s_\mathrm{max}(\mathbf{c}) &amp;\le&amp; \sum_{i = 1}^N
+    \max_{\substack{c_x \le j_x &lt; c_x + 2^h \\ c_y \le j_y &lt; c_y + 2^h}}
+    \mathcal{M}(\varphi(\mathbf{\xi}(j_x, j_y, c_\theta), \mathbf{z}_i)) \\
+    &amp;=&amp; \sum_{i = 1}^N
+    \max_{\substack{c_x \le j_x &lt; c_x + 2^h \\ c_y \le j_y &lt; c_y + 2^h}}
+    \mathcal{M}(I_{i, x}^0 + j_x, I_{i, y}^0 + j_y) \\
+  \end{eqnarray}
+\]</span></p>
+<p>ここで、次のような占有格子地図<span class="math inline">\(\mathcal{M}_\mathrm{precomp}^h\)</span>を新たに考えます。 <span class="math display">\[
+  \mathcal{M}_\mathrm{precomp}^h(i, j)
+  = \max_{\substack{i \le i&#39; &lt; i + 2^h \\ j \le j&#39; &lt; j + 2^h}} \mathcal{M}(i&#39;, j&#39;)
+\]</span> <span class="math inline">\(\mathcal{M}_\mathrm{precomp}^h\)</span>の<span class="math inline">\((i, j)\)</span>番目の格子には、元々の地図<span class="math inline">\(\mathcal{M}\)</span>の、<span class="math inline">\((i, j)\)</span>から<span class="math inline">\((i + 2^h - 1, j + 2^h - 1)\)</span>までの格子がもつ占有確率の、最大値が格納されています。 これを使うと、ノード<span class="math inline">\(\mathbf{c}\)</span>に対応する上界<span class="math inline">\(\overline{s}(\mathbf{c})\)</span>の式が得られます。 <span class="math display">\[
+  \begin{eqnarray}
+    s_\mathrm{max}(\mathbf{c}) &amp;\le&amp; \sum_{i = 1}^N
+    \max_{\substack{c_x \le j_x &lt; c_x + 2^h \\ c_y \le j_y &lt; c_y + 2^h}}
+    \mathcal{M}(I_{i, x}^0 + j_x, I_{i, y}^0 + j_y) \\
+    &amp;=&amp; \color{red} \sum_{i = 1}^N \mathcal{M}_\mathrm{precomp}^h(
+    I_{i, x}^0 + c_x, I_{i, y}^0 + c_y) \\
+    &amp;=&amp; \color{red} \overline{s}(\mathbf{c})
+  \end{eqnarray}
+\]</span> 但し<span class="math inline">\(I_{i, x}^0, I_{i, y}^0\)</span>は次のように定義されます。 <span class="math display">\[
+  \begin{eqnarray}
+    I_{i, x}^0 &amp;=&amp; \left\lfloor \frac{\xi_{0, x} + r_i \cos \left(
+    \xi_{0, \theta} + \delta_\theta \left( -w_\theta + c_\theta \right)
+    + \theta_i \right)}{r} \right\rfloor - w_x \\
+    I_{i, y}^0 &amp;=&amp; \left\lfloor \frac{\xi_{0, y} + r_i \sin \left(
+    \xi_{0, \theta} + \delta_\theta \left( -w_\theta + c_\theta \right)
+    + \theta_i \right)}{r} \right\rfloor - w_y
+  \end{eqnarray}
+\]</span></p>
+<p>分枝限定法では、この上界を使うことにしましょう。 上界<span class="math inline">\(\overline{s}(\mathbf{c})\)</span>を計算するためには、占有確率の局所的な最大値を集めた地図<span class="math inline">\(\mathcal{M}_\mathrm{precomp}^h\)</span>を、事前に計算しておく必要があります。 ノードの高さは最大<span class="math inline">\(h_0\)</span>なので、<span class="math inline">\(\mathcal{M}_\mathrm{precomp}^1, \ldots, \mathcal{M}_\mathrm{precomp}^{h_0}\)</span>までの計<span class="math inline">\(h_0\)</span>個の地図が必要です。 地図の全格子数を<span class="math inline">\(n\)</span>とすると、計算量のオーダは<span class="math inline">\(\mathcal{O}(n)\)</span>となります。</p>
+<p>ここまでで、分枝と限定を行う方法が分かったので、スキャンマッチングのアルゴリズムをまとめましょう。</p>
+<h2 id="分枝限定法によるスキャンマッチング---アルゴリズム">分枝限定法によるスキャンマッチング - アルゴリズム</h2>
+<p>最初に、アルゴリズムの入出力を整理します。 入力とパラメータは次の通りです。</p>
+<ul>
+<li>探索領域のサイズ: <span class="math inline">\((W_x, W_y, W_\theta)\)</span> (<span class="math inline">\(W_x, W_y\)</span>は<span class="math inline">\(\mathrm{m}\)</span>、<span class="math inline">\(W_\theta\)</span>は<span class="math inline">\(\mathrm{rad}\)</span>)</li>
+<li><span class="math inline">\(\theta\)</span>方向のステップサイズ: <span class="math inline">\(\delta_\theta\)</span> (<span class="math inline">\(\mathrm{rad}\)</span>)</li>
+<li>ノードの高さ: <span class="math inline">\(h_0\)</span></li>
+<li>スキャンデータ: <span class="math inline">\(\mathcal{S} = \left\{ \mathbf{z}_1, \ldots, \mathbf{z}_N \right\} = \left\{ (r_1, \theta_1), \ldots, (r_N, \theta_N) \right\}\)</span></li>
+<li>占有格子地図: <span class="math inline">\(\mathcal{M}\)</span> (解像度<span class="math inline">\(r\)</span>)</li>
+<li>探索領域の中心に対応する姿勢: <span class="math inline">\(\mathbf{\xi}_0 = \left[ \xi_{0, x}, \xi_{0, y}, \xi_{0, \theta} \right]^\top\)</span></li>
+</ul>
+<p>出力は次の通りです。</p>
+<ul>
+<li>最大のスコア: <span class="math inline">\(s^*\)</span></li>
+<li>スコアを最大化する姿勢: <span class="math inline">\(\mathbf{\xi}^*\)</span></li>
+</ul>
+<p>アルゴリズムは以下のようにまとめられます。</p>
+<ul>
+<li><p>探索領域のサイズ<span class="math inline">\(w_x, w_y, w_\theta\)</span>を計算し、探索領域<span class="math inline">\(\overline{\mathcal{W}}\)</span>と<span class="math inline">\(\mathcal{W}\)</span>を定める。 <span class="math display">\[
+w_x = \left\lceil \frac{W_x}{r} \right\rceil, \
+w_y = \left\lceil \frac{W_y}{r} \right\rceil, \
+w_\theta = \left\lceil \frac{W_\theta}{\delta_\theta} \right\rceil
+\]</span> <span class="math display">\[
+\begin{eqnarray}
+  \overline{\mathcal{W}} &amp;=&amp; \left\{ 0, \ldots, 2w_x \right\}
+  \times \left\{ 0, \ldots, 2w_y \right\}
+  \times \left\{ 0, \ldots, 2w_\theta \right\} \\
+  \mathcal{W} &amp;=&amp; \left\{ \mathcal{\xi}_0
+  + \left[ r \left( -w_x + j_x \right), r \left( -w_y + j_y \right),
+  \delta_\theta \left( -w_\theta + j_\theta \right) \right]^\top \mid
+  \left( j_x, j_y, j_\theta \right) \in \overline{\mathcal{W}} \right\}
+\end{eqnarray}
+\]</span></p></li>
+<li><p>与えられた地図<span class="math inline">\(\mathcal{M}\)</span>を基に、<span class="math inline">\(h_0\)</span>個の地図<span class="math inline">\(\mathcal{M}_\mathrm{precomp}^1, \ldots, \mathcal{M}_\mathrm{precomp}^{h_0}\)</span>を計算する。 <span class="math display">\[
+\mathcal{M}_\mathrm{precomp}^h(i, j)
+= \max_{\substack{i \le i&#39; &lt; i + 2^h \\ j \le j&#39; &lt; j + 2^h}} \mathcal{M}(i&#39;, j&#39;)
+\]</span></p></li>
+<li><p>空のスタック(あるいは優先度付きキュー)<span class="math inline">\(\mathcal{C}\)</span>を用意する。</p></li>
+<li><p><span class="math inline">\(\mathcal{C}\)</span>を<span class="math inline">\(\mathcal{C}_0\)</span>で初期化する。 <span class="math inline">\(\mathcal{C}_0\)</span>はノードの集合であり、次のように定義される。 <span class="math display">\[
+\begin{eqnarray}
+  \overline{\mathcal{W}}_{0, x} &amp;=&amp; \left\{ 2^{h_0} j_x \mid
+  j_x \in \mathbb{Z}, 0 \le 2^{h_0} j_x \le 2 w_x \right\} \\
+  \overline{\mathcal{W}}_{0, y} &amp;=&amp; \left\{ 2^{h_0} j_y \mid
+  j_y \in \mathbb{Z}, 0 \le 2^{h_0} j_y \le 2 w_y \right\} \\
+  \overline{\mathcal{W}}_{0, \theta} &amp;=&amp; \left\{ j_\theta \mid
+  j_\theta \in \mathbb{Z}, 0 \le j_\theta \le 2 w_\theta \right\} \\
+  \mathcal{C}_0 &amp;=&amp; \overline{\mathcal{W}}_{0, x}
+  \times \overline{\mathcal{W}}_{0, y}
+  \times \overline{\mathcal{W}}_{0, \theta}
+  \times \left\{ h_0 \right\}
+\end{eqnarray}
+\]</span> 各ノード<span class="math inline">\(\mathbf{c} = \left( 2^{h_0} j_x, 2^{h_0} j_y, j_\theta, h_0 \right) \in \mathcal{C}_0\)</span>について、<span class="math inline">\(\mathcal{M}_\mathrm{precomp}^{h_0}\)</span>を使って、スコアの上界<span class="math inline">\(\overline{s}(\mathbf{c})\)</span>を計算する。 上界<span class="math inline">\(\overline{s}(\mathbf{c})\)</span>が最も高いノードが、<span class="math inline">\(\mathcal{C}\)</span>の先頭に来るように、<span class="math inline">\(\mathcal{C}_0\)</span>に含まれる全ノードを<span class="math inline">\(\mathcal{C}\)</span>に追加していく(上界も一緒に追加)。 各<span class="math inline">\(j_\theta\)</span>について<span class="math inline">\(I_{i, x}^0, I_{i, y}^0\)</span>は一度だけ計算すればよい。 <span class="math display">\[
+\begin{eqnarray}
+  \overline{s}(\mathbf{c})
+  &amp;=&amp; \sum_{i = 1}^N \mathcal{M}_\mathrm{precomp}^{h_0}(
+  I_{i, x}^0 + 2^{h_0} j_x, I_{i, y}^0 + 2^{h_0} j_y) \\
+  I_{i, x}^0 &amp;=&amp; \left\lfloor \frac{\xi_{0, x} + r_i \cos \left(
+  \xi_{0, \theta} + \delta_\theta \left( -w_\theta + j_\theta \right)
+  + \theta_i \right)}{r} \right\rfloor - w_x \\
+  I_{i, y}^0 &amp;=&amp; \left\lfloor \frac{\xi_{0, y} + r_i \sin \left(
+  \xi_{0, \theta} + \delta_\theta \left( -w_\theta + j_\theta \right)
+  + \theta_i \right)}{r} \right\rfloor - w_y
+\end{eqnarray}
+\]</span></p></li>
+<li><p>最大のスコア<span class="math inline">\(s^*\)</span>を<span class="math inline">\(-\infty\)</span>で、また最適解<span class="math inline">\((j_x^*, j_y^*, j_\theta^*) \in \overline{\mathcal{W}}\)</span>を<span class="math inline">\((0, 0, 0)\)</span>で初期化する。</p></li>
+<li><p>キュー<span class="math inline">\(\mathcal{C}\)</span>が空になるまで、以下を繰り返す。</p>
+<ul>
+<li><span class="math inline">\(\mathcal{C}\)</span>の先頭から、ノード<span class="math inline">\(\mathbf{c} = (c_x, c_y, c_\theta, h)\)</span>と上界<span class="math inline">\(\overline{s}(\mathbf{c})\)</span>を取り出す。</li>
+<li><strong>枝刈り</strong>: 上界<span class="math inline">\(\overline{s}(\mathbf{c})\)</span>が、現在の最大値<span class="math inline">\(s^*\)</span>以下であれば、ノード<span class="math inline">\(\mathbf{c}\)</span>と、その子ノードの探索は不要であるから、上に戻って次のノードを試す。</li>
+<li>ノード<span class="math inline">\(\mathbf{c}\)</span>の高さが<span class="math inline">\(h = 0\)</span>、言い換えると葉ノードである場合は、現在の最大値<span class="math inline">\(s^*\)</span>を<span class="math inline">\(\overline{s}(\mathbf{c})\)</span>、また最適解<span class="math inline">\((j_x^*, j_y^*, j_\theta^*)\)</span>を<span class="math inline">\((c_x, c_y, c_\theta)\)</span>で更新し、上に戻る。</li>
+<li><strong>分枝</strong>: ノードが葉ノードでなければ、4つの子ノード<span class="math inline">\(\mathbf{c}_1, \mathbf{c}_2, \mathbf{c}_3, \mathbf{c}_4\)</span>に分割する。 <span class="math display">\[
+\begin{eqnarray}
+  \mathbf{c}_1 &amp;=&amp; (c_x, c_y, c_\theta, h - 1) \\
+  \mathbf{c}_2 &amp;=&amp; (c_x + 2^{h - 1}, c_y, c_\theta, h - 1) \\
+  \mathbf{c}_3 &amp;=&amp; (c_x, c_y + 2^{h - 1}, c_\theta, h - 1) \\
+  \mathbf{c}_4 &amp;=&amp; (c_x + 2^{h - 1}, c_y + 2^{h - 1}, c_\theta, h - 1)
+\end{eqnarray}
+\]</span> 各ノード<span class="math inline">\(\mathbf{c}_i\)</span>について上界<span class="math inline">\(\overline{s}(\mathbf{c}_i)\)</span>を計算する(<strong>限定</strong>)。 以下は<span class="math inline">\(\mathbf{c}_3\)</span>の場合の計算式。 <span class="math display">\[
+\begin{eqnarray}
+  \overline{s}(\mathbf{c}_3)
+  &amp;=&amp; \sum_{i = 1}^N \mathcal{M}_\mathrm{precomp}^{h - 1}(
+  I_{i, x}^0 + c_x + 2^{h - 1}, I_{i, y}^0 + c_y + 2^{h - 1}) \\
+  I_{i, x}^0 &amp;=&amp; \left\lfloor \frac{\xi_{0, x} + r_i \cos \left(
+  \xi_{0, \theta} + \delta_\theta \left( -w_\theta + c_\theta \right)
+  + \theta_i \right)}{r} \right\rfloor - w_x \\
+  I_{i, y}^0 &amp;=&amp; \left\lfloor \frac{\xi_{0, y} + r_i \sin \left(
+  \xi_{0, \theta} + \delta_\theta \left( -w_\theta + c_\theta \right)
+  + \theta_i \right)}{r} \right\rfloor - w_y
+\end{eqnarray}
+\]</span> 上界の最も大きな子ノードが先頭に来るように、4つの子ノードを<span class="math inline">\(\mathcal{C}\)</span>に追加していく。</li>
+</ul></li>
+<li><p>上記の手続きによって最適解<span class="math inline">\((j_x^*, j_y^*, j_\theta^*) \in \overline{\mathcal{W}}\)</span>が得られたので、最適な姿勢<span class="math inline">\(\mathbf{\xi}^*\)</span>を次のように計算する。 <span class="math display">\[
+\mathbf{\xi}^* = \left[
+\xi_{0, x} + r \left( -w_x + j_x^* \right),
+\xi_{0, y} + r \left( -w_y + j_y^* \right),
+\xi_{0, \theta} + \delta_\theta \left( -w_\theta + j_\theta^* \right) \right]^\top
+\]</span></p></li>
+<li><p>最大のスコア<span class="math inline">\(s^*\)</span>と、最適な姿勢<span class="math inline">\(\mathbf{\xi}^*\)</span>を返す。</p></li>
+</ul>
+</body>
+</html>
