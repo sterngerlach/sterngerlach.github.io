@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="SternGerlach" />
+  <title>分枝限定法によるスキャンマッチング(実装編)</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">分枝限定法によるスキャンマッチング(実装編)</h1>
+<p class="author">SternGerlach</p>
+</header>
+<!--
+ pandoc -s --filter pandoc-crossref -M "crossrefYaml=./crossref_config.yaml" -f markdown -t html5 --mathjax --css style.css scan-matching-branch-and-bound-impl.md > scan-matching-branch-and-bound-impl.html
+-->
+<p><a href="./index.html">ホームに戻る</a></p>
+<h1 id="このページについて">このページについて</h1>
+<p>このページは、慶應理工アドベントカレンダー2021の15日目の記事です。</p>
+<p><a href="./scan-matching-branch-and-bound.html">こちらのページ</a>の続きです。 分枝限定法によるスキャンマッチングのPythonによる実装を示します。 Pythonの実装は<a href="https://github.com/sterngerlach/scan_matcher_2d_python">GitHubのリポジトリ</a>に置かれています(中の人が1から作っています)。</p>
+<h2 id="次元の姿勢と位置">2次元の姿勢と位置</h2>
+<p>2次元の姿勢を<code>Pose2D</code>クラス、2次元の位置を<code>Point2D</code>クラスとして次のように定義します。 <code>Pose2D</code>クラスのソースコードは<a href="https://github.com/sterngerlach/scan_matcher_2d_python/blob/master/pose_2d.py">こちら</a>、<code>Point2D</code>クラスのソースコードは<a href="https://github.com/sterngerlach/scan_matcher_2d_python/blob/master/point_2d.py">こちら</a>を参照してください。</p>
+<div class="sourceCode" id="lst:py-source" data-startFrom="1"><pre class="sourceCode numberSource py numberLines"><code class="sourceCode python"><span id="lst:py-source-1"><a href="#lst:py-source-1"></a><span class="kw">class</span> Point2D(<span class="bu">object</span>):</span>
+<span id="lst:py-source-2"><a href="#lst:py-source-2"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>) <span class="op">-&gt;</span> <span class="va">None</span>:</span>
+<span id="lst:py-source-3"><a href="#lst:py-source-3"></a>        <span class="va">self</span>.x <span class="op">=</span> <span class="fl">0.0</span></span>
+<span id="lst:py-source-4"><a href="#lst:py-source-4"></a>        <span class="va">self</span>.y <span class="op">=</span> <span class="fl">0.0</span></span>
+<span id="lst:py-source-5"><a href="#lst:py-source-5"></a></span>
+<span id="lst:py-source-6"><a href="#lst:py-source-6"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, x: <span class="bu">float</span>, y: <span class="bu">float</span>) <span class="op">-&gt;</span> <span class="va">None</span>:</span>
+<span id="lst:py-source-7"><a href="#lst:py-source-7"></a>        <span class="va">self</span>.x <span class="op">=</span> x</span>
+<span id="lst:py-source-8"><a href="#lst:py-source-8"></a>        <span class="va">self</span>.y <span class="op">=</span> y</span></code></pre></div>
+<p><code>project_point_2d()</code>関数は、ある姿勢のもとで、点の座標を変換します。 姿勢は引数<code>pose</code>、点の座標は引数<code>point</code>にそれぞれ指定します。 例えば、<code>pose</code>がロボットの姿勢(地図座標系からLiDAR座標系への座標変換)、<code>point</code>がLiDAR座標系におけるスキャン点の座標(直交座標)であれば、地図座標系におけるスキャン点の座標が返されます。</p>
+<div class="sourceCode" id="lst:py-source" data-startFrom="1"><pre class="sourceCode numberSource py numberLines"><code class="sourceCode python"><span id="lst:py-source-1"><a href="#lst:py-source-1"></a><span class="kw">class</span> Pose2D(<span class="bu">object</span>):</span>
+<span id="lst:py-source-2"><a href="#lst:py-source-2"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>) <span class="op">-&gt;</span> <span class="va">None</span>:</span>
+<span id="lst:py-source-3"><a href="#lst:py-source-3"></a>        <span class="va">self</span>.x <span class="op">=</span> <span class="fl">0.0</span></span>
+<span id="lst:py-source-4"><a href="#lst:py-source-4"></a>        <span class="va">self</span>.y <span class="op">=</span> <span class="fl">0.0</span></span>
+<span id="lst:py-source-5"><a href="#lst:py-source-5"></a>        <span class="va">self</span>.theta <span class="op">=</span> <span class="fl">0.0</span></span>
+<span id="lst:py-source-6"><a href="#lst:py-source-6"></a></span>
+<span id="lst:py-source-7"><a href="#lst:py-source-7"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, x: <span class="bu">float</span>, y: <span class="bu">float</span>, theta: <span class="bu">float</span>) <span class="op">-&gt;</span> <span class="va">None</span>:</span>
+<span id="lst:py-source-8"><a href="#lst:py-source-8"></a>        <span class="va">self</span>.x <span class="op">=</span> x</span>
+<span id="lst:py-source-9"><a href="#lst:py-source-9"></a>        <span class="va">self</span>.y <span class="op">=</span> y</span>
+<span id="lst:py-source-10"><a href="#lst:py-source-10"></a>        <span class="va">self</span>.theta <span class="op">=</span> theta</span>
+<span id="lst:py-source-11"><a href="#lst:py-source-11"></a></span>
+<span id="lst:py-source-12"><a href="#lst:py-source-12"></a><span class="kw">def</span> project_point_2d(pose: Pose2D, point: Point2D) <span class="op">-&gt;</span> Point2D:</span>
+<span id="lst:py-source-13"><a href="#lst:py-source-13"></a>    <span class="co">&quot;&quot;&quot;Project a 2D point using a 2D pose&quot;&quot;&quot;</span></span>
+<span id="lst:py-source-14"><a href="#lst:py-source-14"></a>    sin_theta <span class="op">=</span> math.sin(pose.theta)</span>
+<span id="lst:py-source-15"><a href="#lst:py-source-15"></a>    cos_theta <span class="op">=</span> math.cos(pose.theta)</span>
+<span id="lst:py-source-16"><a href="#lst:py-source-16"></a></span>
+<span id="lst:py-source-17"><a href="#lst:py-source-17"></a>    x <span class="op">=</span> pose.x <span class="op">+</span> cos_theta <span class="op">*</span> point.x <span class="op">-</span> sin_theta <span class="op">*</span> point.y</span>
+<span id="lst:py-source-18"><a href="#lst:py-source-18"></a>    y <span class="op">=</span> pose.y <span class="op">+</span> sin_theta <span class="op">*</span> point.x <span class="op">+</span> cos_theta <span class="op">*</span> point.y</span>
+<span id="lst:py-source-19"><a href="#lst:py-source-19"></a></span>
+<span id="lst:py-source-20"><a href="#lst:py-source-20"></a>    <span class="cf">return</span> Point2D(x, y)</span></code></pre></div>
+<h2 id="占有格子地図の実装">占有格子地図の実装</h2>
+<p>占有格子地図(Occupancy Grid Map)の実装(<code>Grid2D</code>クラス)を示します。 <code>Grid2D</code>クラスのソースコードは<a href="https://github.com/sterngerlach/scan_matcher_2d_python/blob/master/grid_2d.py">こちら</a>を参照してください。 重要な部分だけを以下に列挙します。</p>
+<ul>
+<li>占有格子地図は、解像度、中心の座標、<span class="math inline">\(x\)</span>と<span class="math inline">\(y\)</span>方向の格子の数で定義されます。 解像度は<code>resolution()</code>メソッド、中心の座標は<code>center_pos()</code>メソッド、左下端(<span class="math inline">\((0, 0)\)</span>番目の格子)の座標は<code>min_pos()</code>メソッド、<span class="math inline">\(x\)</span>と<span class="math inline">\(y\)</span>方向の格子の数は<code>num_of_cells_x()</code>、<code>num_of_cells_y()</code>メソッドからそれぞれ取得できます。</li>
+<li>各格子の占有確率は、16ビットの整数(1から65535まで)に量子化したうえで、リストに格納されます。 格子は<span class="math inline">\(x\)</span>と<span class="math inline">\(y\)</span>の2つのインデックスで表せますが、<code>flat_index()</code>メソッドによって、リストにアクセスするための1次元のインデックスに変換できます。 分枝限定法によるスキャンマッチングの際は、占有確率の総和を取る必要があります。 占有確率が16ビット整数に量子化されているので、浮動小数点数の総和が整数の総和に置き換わって、多少の高速化を期待できます。</li>
+<li><code>index_to_point()</code>メソッドは、指定された格子に対応する座標を返します。 <code>point_to_index()</code>メソッドはその逆で、指定された位置に対応する格子のインデックスを返します。</li>
+<li><code>get_index_value()</code>と<code>get_index_probability()</code>メソッドは、指定された格子の占有確率を、16ビットの整数、あるいは浮動小数点数で返します。</li>
+<li><code>compute_coarse_map()</code>関数は、<a href="./scan-matching-branch-and-bound.html">以前のページ</a>における<span class="math inline">\(\mathcal{M}_\mathrm{precomp}^h\)</span>を計算します。 引数<code>win_size</code>に<span class="math inline">\(2^h\)</span>、<code>grid_map</code>に占有格子地図<span class="math inline">\(\mathcal{M}\)</span>を指定します。 計算にあたっては、占有確率の比較が繰り返し必要です。 占有確率が16ビット整数に量子化されているので、浮動小数点数の比較が整数の比較に置き換わって、多少の高速化を期待できます。 <span class="math display">\[
+\mathcal{M}_\mathrm{precomp}^h(i, j)
+= \max_{\substack{i \le i&#39; &lt; i + 2^h \\ j \le j&#39; &lt; j + 2^h}} \mathcal{M}(i&#39;, j&#39;)
+\]</span></li>
+<li>ここでは使っていませんが、地図の更新に必要な各種メソッドも定義されているので、興味があれば読んでみてください。 格子がもつ占有確率の更新には、バイナリベイズフィルタを利用します。 また、LiDARセンサの中心と各スキャン点を結ぶ直線を考え、その直線上を通過する格子のインデックスを計算するために、ブレゼンハムのアルゴリズムを利用します。</li>
+</ul>
+<div class="sourceCode" id="lst:py-source" data-startFrom="1"><pre class="sourceCode numberSource py numberLines"><code class="sourceCode python"><span id="lst:py-source-1"><a href="#lst:py-source-1"></a><span class="co"># coding: utf-8</span></span>
+<span id="lst:py-source-2"><a href="#lst:py-source-2"></a><span class="co"># grid_2d.py</span></span>
+<span id="lst:py-source-3"><a href="#lst:py-source-3"></a></span>
+<span id="lst:py-source-4"><a href="#lst:py-source-4"></a><span class="im">import</span> math</span>
+<span id="lst:py-source-5"><a href="#lst:py-source-5"></a></span>
+<span id="lst:py-source-6"><a href="#lst:py-source-6"></a><span class="im">from</span> collections <span class="im">import</span> deque</span>
+<span id="lst:py-source-7"><a href="#lst:py-source-7"></a><span class="im">from</span> typing <span class="im">import</span> Callable, List, Tuple</span>
+<span id="lst:py-source-8"><a href="#lst:py-source-8"></a></span>
+<span id="lst:py-source-9"><a href="#lst:py-source-9"></a><span class="im">from</span> point_2d <span class="im">import</span> Point2D</span>
+<span id="lst:py-source-10"><a href="#lst:py-source-10"></a><span class="im">from</span> pose_2d <span class="im">import</span> Pose2D, project_point_2d</span>
+<span id="lst:py-source-11"><a href="#lst:py-source-11"></a><span class="im">from</span> util <span class="im">import</span> bresenham</span>
+<span id="lst:py-source-12"><a href="#lst:py-source-12"></a></span>
+<span id="lst:py-source-13"><a href="#lst:py-source-13"></a><span class="kw">def</span> probability_to_value(x: <span class="bu">float</span>) <span class="op">-&gt;</span> <span class="bu">int</span>:</span>
+<span id="lst:py-source-14"><a href="#lst:py-source-14"></a>    <span class="cf">return</span> <span class="bu">int</span>(x <span class="op">*</span> <span class="fl">65536.0</span>)</span>
+<span id="lst:py-source-15"><a href="#lst:py-source-15"></a></span>
+<span id="lst:py-source-16"><a href="#lst:py-source-16"></a><span class="kw">def</span> value_to_probability(x: <span class="bu">int</span>) <span class="op">-&gt;</span> <span class="bu">float</span>:</span>
+<span id="lst:py-source-17"><a href="#lst:py-source-17"></a>    <span class="cf">return</span> <span class="bu">float</span>(x) <span class="op">/</span> <span class="fl">65536.0</span></span>
+<span id="lst:py-source-18"><a href="#lst:py-source-18"></a></span>
+<span id="lst:py-source-19"><a href="#lst:py-source-19"></a><span class="kw">def</span> probability_to_log_odds(x: <span class="bu">float</span>) <span class="op">-&gt;</span> <span class="bu">float</span>:</span>
+<span id="lst:py-source-20"><a href="#lst:py-source-20"></a>    <span class="cf">return</span> math.log(x <span class="op">/</span> (<span class="fl">1.0</span> <span class="op">-</span> x))</span>
+<span id="lst:py-source-21"><a href="#lst:py-source-21"></a></span>
+<span id="lst:py-source-22"><a href="#lst:py-source-22"></a><span class="kw">def</span> log_odds_to_probability(x: <span class="bu">float</span>) <span class="op">-&gt;</span> <span class="bu">float</span>:</span>
+<span id="lst:py-source-23"><a href="#lst:py-source-23"></a>    <span class="cf">return</span> <span class="fl">1.0</span> <span class="op">/</span> (<span class="fl">1.0</span> <span class="op">+</span> math.exp(<span class="op">-</span>x))</span>
+<span id="lst:py-source-24"><a href="#lst:py-source-24"></a></span>
+<span id="lst:py-source-25"><a href="#lst:py-source-25"></a><span class="kw">def</span> probability_to_odds(x: <span class="bu">float</span>) <span class="op">-&gt;</span> <span class="bu">float</span>:</span>
+<span id="lst:py-source-26"><a href="#lst:py-source-26"></a>    <span class="cf">return</span> x <span class="op">/</span> (<span class="fl">1.0</span> <span class="op">-</span> x)</span>
+<span id="lst:py-source-27"><a href="#lst:py-source-27"></a></span>
+<span id="lst:py-source-28"><a href="#lst:py-source-28"></a><span class="kw">def</span> odds_to_probability(x: <span class="bu">float</span>) <span class="op">-&gt;</span> <span class="bu">float</span>:</span>
+<span id="lst:py-source-29"><a href="#lst:py-source-29"></a>    <span class="cf">return</span> x <span class="op">/</span> (<span class="fl">1.0</span> <span class="op">+</span> x)</span>
+<span id="lst:py-source-30"><a href="#lst:py-source-30"></a></span>
+<span id="lst:py-source-31"><a href="#lst:py-source-31"></a><span class="kw">def</span> log_odds_to_value(x: <span class="bu">float</span>) <span class="op">-&gt;</span> <span class="bu">int</span>:</span>
+<span id="lst:py-source-32"><a href="#lst:py-source-32"></a>    <span class="cf">return</span> probability_to_value(log_odds_to_probability(x))</span>
+<span id="lst:py-source-33"><a href="#lst:py-source-33"></a></span>
+<span id="lst:py-source-34"><a href="#lst:py-source-34"></a><span class="kw">def</span> value_to_log_odds(x: <span class="bu">int</span>) <span class="op">-&gt;</span> <span class="bu">float</span>:</span>
+<span id="lst:py-source-35"><a href="#lst:py-source-35"></a>    <span class="cf">return</span> probability_to_log_odds(value_to_probability(x))</span>
+<span id="lst:py-source-36"><a href="#lst:py-source-36"></a></span>
+<span id="lst:py-source-37"><a href="#lst:py-source-37"></a><span class="kw">def</span> probability_to_grayscale(x: <span class="bu">float</span>) <span class="op">-&gt;</span> <span class="bu">int</span>:</span>
+<span id="lst:py-source-38"><a href="#lst:py-source-38"></a>    <span class="cf">return</span> <span class="dv">255</span> <span class="op">-</span> <span class="bu">int</span>(x <span class="op">*</span> <span class="fl">255.0</span>)</span>
+<span id="lst:py-source-39"><a href="#lst:py-source-39"></a></span>
+<span id="lst:py-source-40"><a href="#lst:py-source-40"></a><span class="kw">def</span> value_to_grayscale(x: <span class="bu">int</span>) <span class="op">-&gt;</span> <span class="bu">int</span>:</span>
+<span id="lst:py-source-41"><a href="#lst:py-source-41"></a>    <span class="cf">return</span> <span class="dv">255</span> <span class="op">-</span> (x <span class="op">&gt;&gt;</span> <span class="dv">8</span>)</span>
+<span id="lst:py-source-42"><a href="#lst:py-source-42"></a></span>
+<span id="lst:py-source-43"><a href="#lst:py-source-43"></a><span class="kw">class</span> Grid2D(<span class="bu">object</span>):</span>
+<span id="lst:py-source-44"><a href="#lst:py-source-44"></a>    <span class="co">&quot;&quot;&quot;Grid2D class represents a simple 2D grid map. Each grid cell contains</span></span>
+<span id="lst:py-source-45"><a href="#lst:py-source-45"></a><span class="co">    a quantized occupancy probability, which is incrementally updated by</span></span>
+<span id="lst:py-source-46"><a href="#lst:py-source-46"></a><span class="co">    Binary Bayes Filter.&quot;&quot;&quot;</span></span>
+<span id="lst:py-source-47"><a href="#lst:py-source-47"></a></span>
+<span id="lst:py-source-48"><a href="#lst:py-source-48"></a>    VALUE_MIN <span class="op">=</span> <span class="dv">1</span></span>
+<span id="lst:py-source-49"><a href="#lst:py-source-49"></a>    VALUE_MAX <span class="op">=</span> <span class="dv">65535</span></span>
+<span id="lst:py-source-50"><a href="#lst:py-source-50"></a>    PROBABILITY_MIN <span class="op">=</span> value_to_probability(VALUE_MIN)</span>
+<span id="lst:py-source-51"><a href="#lst:py-source-51"></a>    PROBABILITY_MAX <span class="op">=</span> value_to_probability(VALUE_MAX)</span>
+<span id="lst:py-source-52"><a href="#lst:py-source-52"></a>    LOG_ODDS_MIN <span class="op">=</span> probability_to_log_odds(PROBABILITY_MIN)</span>
+<span id="lst:py-source-53"><a href="#lst:py-source-53"></a>    LOG_ODDS_MAX <span class="op">=</span> probability_to_log_odds(PROBABILITY_MAX)</span>
+<span id="lst:py-source-54"><a href="#lst:py-source-54"></a></span>
+<span id="lst:py-source-55"><a href="#lst:py-source-55"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, resolution: <span class="bu">float</span>, center_x: <span class="bu">float</span>, center_y: <span class="bu">float</span>,</span>
+<span id="lst:py-source-56"><a href="#lst:py-source-56"></a>                 num_of_cells_x: <span class="bu">int</span>, num_of_cells_y: <span class="bu">int</span>,</span>
+<span id="lst:py-source-57"><a href="#lst:py-source-57"></a>                 log_odds_hit: <span class="bu">float</span>, log_odds_miss: <span class="bu">float</span>) <span class="op">-&gt;</span> <span class="va">None</span>:</span>
+<span id="lst:py-source-58"><a href="#lst:py-source-58"></a>        <span class="cf">assert</span> num_of_cells_x <span class="op">&gt;</span> <span class="dv">0</span></span>
+<span id="lst:py-source-59"><a href="#lst:py-source-59"></a>        <span class="cf">assert</span> num_of_cells_y <span class="op">&gt;</span> <span class="dv">0</span></span>
+<span id="lst:py-source-60"><a href="#lst:py-source-60"></a>        <span class="cf">assert</span> Grid2D.LOG_ODDS_MIN <span class="op">&lt;=</span> log_odds_miss <span class="op">&lt;=</span> Grid2D.LOG_ODDS_MAX</span>
+<span id="lst:py-source-61"><a href="#lst:py-source-61"></a>        <span class="cf">assert</span> Grid2D.LOG_ODDS_MIN <span class="op">&lt;=</span> log_odds_hit <span class="op">&lt;=</span> Grid2D.LOG_ODDS_MAX</span>
+<span id="lst:py-source-62"><a href="#lst:py-source-62"></a></span>
+<span id="lst:py-source-63"><a href="#lst:py-source-63"></a>        <span class="va">self</span>.__resolution <span class="op">=</span> resolution</span>
+<span id="lst:py-source-64"><a href="#lst:py-source-64"></a>        <span class="va">self</span>.__min_x <span class="op">=</span> center_x <span class="op">-</span> resolution <span class="op">*</span> num_of_cells_x <span class="op">/</span> <span class="fl">2.0</span></span>
+<span id="lst:py-source-65"><a href="#lst:py-source-65"></a>        <span class="va">self</span>.__min_y <span class="op">=</span> center_y <span class="op">-</span> resolution <span class="op">*</span> num_of_cells_y <span class="op">/</span> <span class="fl">2.0</span></span>
+<span id="lst:py-source-66"><a href="#lst:py-source-66"></a>        <span class="va">self</span>.__center_x <span class="op">=</span> center_x</span>
+<span id="lst:py-source-67"><a href="#lst:py-source-67"></a>        <span class="va">self</span>.__center_y <span class="op">=</span> center_y</span>
+<span id="lst:py-source-68"><a href="#lst:py-source-68"></a>        <span class="va">self</span>.__num_of_cells_x <span class="op">=</span> num_of_cells_x</span>
+<span id="lst:py-source-69"><a href="#lst:py-source-69"></a>        <span class="va">self</span>.__num_of_cells_y <span class="op">=</span> num_of_cells_y</span>
+<span id="lst:py-source-70"><a href="#lst:py-source-70"></a>        <span class="va">self</span>.__log_odds_miss <span class="op">=</span> log_odds_miss</span>
+<span id="lst:py-source-71"><a href="#lst:py-source-71"></a>        <span class="va">self</span>.__log_odds_hit <span class="op">=</span> log_odds_hit</span>
+<span id="lst:py-source-72"><a href="#lst:py-source-72"></a></span>
+<span id="lst:py-source-73"><a href="#lst:py-source-73"></a>        num_of_cells <span class="op">=</span> num_of_cells_x <span class="op">*</span> num_of_cells_y</span>
+<span id="lst:py-source-74"><a href="#lst:py-source-74"></a>        <span class="va">self</span>.__values <span class="op">=</span> [Grid2D.VALUE_MIN <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(num_of_cells)]</span>
+<span id="lst:py-source-75"><a href="#lst:py-source-75"></a></span>
+<span id="lst:py-source-76"><a href="#lst:py-source-76"></a>    <span class="kw">def</span> resolution(<span class="va">self</span>) <span class="op">-&gt;</span> <span class="bu">float</span>:</span>
+<span id="lst:py-source-77"><a href="#lst:py-source-77"></a>        <span class="cf">return</span> <span class="va">self</span>.__resolution</span>
+<span id="lst:py-source-78"><a href="#lst:py-source-78"></a></span>
+<span id="lst:py-source-79"><a href="#lst:py-source-79"></a>    <span class="kw">def</span> num_of_cells_x(<span class="va">self</span>) <span class="op">-&gt;</span> <span class="bu">int</span>:</span>
+<span id="lst:py-source-80"><a href="#lst:py-source-80"></a>        <span class="cf">return</span> <span class="va">self</span>.__num_of_cells_x</span>
+<span id="lst:py-source-81"><a href="#lst:py-source-81"></a></span>
+<span id="lst:py-source-82"><a href="#lst:py-source-82"></a>    <span class="kw">def</span> num_of_cells_y(<span class="va">self</span>) <span class="op">-&gt;</span> <span class="bu">int</span>:</span>
+<span id="lst:py-source-83"><a href="#lst:py-source-83"></a>        <span class="cf">return</span> <span class="va">self</span>.__num_of_cells_y</span>
+<span id="lst:py-source-84"><a href="#lst:py-source-84"></a></span>
+<span id="lst:py-source-85"><a href="#lst:py-source-85"></a>    <span class="kw">def</span> log_odds_miss(<span class="va">self</span>) <span class="op">-&gt;</span> <span class="bu">float</span>:</span>
+<span id="lst:py-source-86"><a href="#lst:py-source-86"></a>        <span class="cf">return</span> <span class="va">self</span>.__log_odds_miss</span>
+<span id="lst:py-source-87"><a href="#lst:py-source-87"></a></span>
+<span id="lst:py-source-88"><a href="#lst:py-source-88"></a>    <span class="kw">def</span> log_odds_hit(<span class="va">self</span>) <span class="op">-&gt;</span> <span class="bu">float</span>:</span>
+<span id="lst:py-source-89"><a href="#lst:py-source-89"></a>        <span class="cf">return</span> <span class="va">self</span>.__log_odds_hit</span>
+<span id="lst:py-source-90"><a href="#lst:py-source-90"></a></span>
+<span id="lst:py-source-91"><a href="#lst:py-source-91"></a>    <span class="kw">def</span> shape(<span class="va">self</span>) <span class="op">-&gt;</span> Tuple[<span class="bu">int</span>, <span class="bu">int</span>]:</span>
+<span id="lst:py-source-92"><a href="#lst:py-source-92"></a>        <span class="cf">return</span> <span class="va">self</span>.__num_of_cells_x, <span class="va">self</span>.__num_of_cells_y</span>
+<span id="lst:py-source-93"><a href="#lst:py-source-93"></a></span>
+<span id="lst:py-source-94"><a href="#lst:py-source-94"></a>    <span class="kw">def</span> min_pos(<span class="va">self</span>) <span class="op">-&gt;</span> Tuple[<span class="bu">float</span>, <span class="bu">float</span>]:</span>
+<span id="lst:py-source-95"><a href="#lst:py-source-95"></a>        <span class="cf">return</span> <span class="va">self</span>.__min_x, <span class="va">self</span>.__min_y</span>
+<span id="lst:py-source-96"><a href="#lst:py-source-96"></a></span>
+<span id="lst:py-source-97"><a href="#lst:py-source-97"></a>    <span class="kw">def</span> center_pos(<span class="va">self</span>) <span class="op">-&gt;</span> Tuple[<span class="bu">float</span>, <span class="bu">float</span>]:</span>
+<span id="lst:py-source-98"><a href="#lst:py-source-98"></a>        <span class="cf">return</span> <span class="va">self</span>.__center_x, <span class="va">self</span>.__center_y</span>
+<span id="lst:py-source-99"><a href="#lst:py-source-99"></a></span>
+<span id="lst:py-source-100"><a href="#lst:py-source-100"></a>    <span class="kw">def</span> flat_index(<span class="va">self</span>, x: <span class="bu">int</span>, y: <span class="bu">int</span>) <span class="op">-&gt;</span> <span class="bu">int</span>:</span>
+<span id="lst:py-source-101"><a href="#lst:py-source-101"></a>        <span class="cf">return</span> y <span class="op">*</span> <span class="va">self</span>.__num_of_cells_x <span class="op">+</span> x</span>
+<span id="lst:py-source-102"><a href="#lst:py-source-102"></a></span>
+<span id="lst:py-source-103"><a href="#lst:py-source-103"></a>    <span class="kw">def</span> is_index_inside(<span class="va">self</span>, x: <span class="bu">int</span>, y: <span class="bu">int</span>) <span class="op">-&gt;</span> <span class="bu">bool</span>:</span>
+<span id="lst:py-source-104"><a href="#lst:py-source-104"></a>        <span class="cf">return</span> <span class="dv">0</span> <span class="op">&lt;=</span> x <span class="op">&lt;</span> <span class="va">self</span>.__num_of_cells_x <span class="kw">and</span> <span class="op">\</span></span>
+<span id="lst:py-source-105"><a href="#lst:py-source-105"></a>               <span class="dv">0</span> <span class="op">&lt;=</span> y <span class="op">&lt;</span> <span class="va">self</span>.__num_of_cells_y</span>
+<span id="lst:py-source-106"><a href="#lst:py-source-106"></a></span>
+<span id="lst:py-source-107"><a href="#lst:py-source-107"></a>    <span class="kw">def</span> is_point_inside(<span class="va">self</span>, p: Point2D) <span class="op">-&gt;</span> <span class="bu">bool</span>:</span>
+<span id="lst:py-source-108"><a href="#lst:py-source-108"></a>        <span class="cf">return</span> <span class="va">self</span>.is_index_inside(<span class="op">*</span><span class="va">self</span>.point_to_index(p))</span>
+<span id="lst:py-source-109"><a href="#lst:py-source-109"></a></span>
+<span id="lst:py-source-110"><a href="#lst:py-source-110"></a>    <span class="kw">def</span> index_to_point(<span class="va">self</span>, x: <span class="bu">int</span>, y: <span class="bu">int</span>) <span class="op">-&gt;</span> Point2D:</span>
+<span id="lst:py-source-111"><a href="#lst:py-source-111"></a>        <span class="co">&quot;&quot;&quot;Compute the minimum coordinates in the map frame&quot;&quot;&quot;</span></span>
+<span id="lst:py-source-112"><a href="#lst:py-source-112"></a>        <span class="cf">return</span> Point2D(<span class="va">self</span>.__min_x <span class="op">+</span> x <span class="op">*</span> <span class="va">self</span>.__resolution,</span>
+<span id="lst:py-source-113"><a href="#lst:py-source-113"></a>                       <span class="va">self</span>.__min_y <span class="op">+</span> y <span class="op">*</span> <span class="va">self</span>.__resolution)</span>
+<span id="lst:py-source-114"><a href="#lst:py-source-114"></a></span>
+<span id="lst:py-source-115"><a href="#lst:py-source-115"></a>    <span class="kw">def</span> point_to_index(<span class="va">self</span>, p: Point2D) <span class="op">-&gt;</span> Tuple[<span class="bu">int</span>, <span class="bu">int</span>]:</span>
+<span id="lst:py-source-116"><a href="#lst:py-source-116"></a>        <span class="co">&quot;&quot;&quot;Compute the index from the coordinates in the map frame&quot;&quot;&quot;</span></span>
+<span id="lst:py-source-117"><a href="#lst:py-source-117"></a>        idx_x <span class="op">=</span> <span class="bu">int</span>((p.x <span class="op">-</span> <span class="va">self</span>.__min_x) <span class="op">//</span> <span class="va">self</span>.__resolution)</span>
+<span id="lst:py-source-118"><a href="#lst:py-source-118"></a>        idx_y <span class="op">=</span> <span class="bu">int</span>((p.y <span class="op">-</span> <span class="va">self</span>.__min_y) <span class="op">//</span> <span class="va">self</span>.__resolution)</span>
+<span id="lst:py-source-119"><a href="#lst:py-source-119"></a>        <span class="cf">return</span> idx_x <span class="cf">if</span> p.x <span class="op">&gt;=</span> <span class="va">self</span>.__min_x <span class="cf">else</span> idx_x <span class="op">-</span> <span class="dv">1</span>, <span class="op">\</span></span>
+<span id="lst:py-source-120"><a href="#lst:py-source-120"></a>               idx_y <span class="cf">if</span> p.y <span class="op">&gt;=</span> <span class="va">self</span>.__min_y <span class="cf">else</span> idx_y <span class="op">-</span> <span class="dv">1</span></span>
+<span id="lst:py-source-121"><a href="#lst:py-source-121"></a></span>
+<span id="lst:py-source-122"><a href="#lst:py-source-122"></a>    <span class="kw">def</span> point_to_index_float(<span class="va">self</span>, p: Point2D) <span class="op">-&gt;</span> Tuple[<span class="bu">float</span>, <span class="bu">float</span>]:</span>
+<span id="lst:py-source-123"><a href="#lst:py-source-123"></a>        <span class="co">&quot;&quot;&quot;Compute the index in the floating point in the map frame&quot;&quot;&quot;</span></span>
+<span id="lst:py-source-124"><a href="#lst:py-source-124"></a>        idx_x <span class="op">=</span> (p.x <span class="op">-</span> <span class="va">self</span>.__min_x) <span class="op">/</span> <span class="va">self</span>.__resolution</span>
+<span id="lst:py-source-125"><a href="#lst:py-source-125"></a>        idx_y <span class="op">=</span> (p.y <span class="op">-</span> <span class="va">self</span>.__min_y) <span class="op">/</span> <span class="va">self</span>.__resolution</span>
+<span id="lst:py-source-126"><a href="#lst:py-source-126"></a>        <span class="cf">return</span> idx_x, idx_y</span>
+<span id="lst:py-source-127"><a href="#lst:py-source-127"></a></span>
+<span id="lst:py-source-128"><a href="#lst:py-source-128"></a>    <span class="kw">def</span> get_index_value(<span class="va">self</span>, x: <span class="bu">int</span>, y: <span class="bu">int</span>) <span class="op">-&gt;</span> <span class="bu">int</span>:</span>
+<span id="lst:py-source-129"><a href="#lst:py-source-129"></a>        <span class="cf">assert</span> <span class="va">self</span>.is_index_inside(x, y)</span>
+<span id="lst:py-source-130"><a href="#lst:py-source-130"></a>        <span class="cf">return</span> <span class="va">self</span>.__values[<span class="va">self</span>.flat_index(x, y)]</span>
+<span id="lst:py-source-131"><a href="#lst:py-source-131"></a></span>
+<span id="lst:py-source-132"><a href="#lst:py-source-132"></a>    <span class="kw">def</span> get_index_probability(<span class="va">self</span>, x: <span class="bu">int</span>, y: <span class="bu">int</span>) <span class="op">-&gt;</span> <span class="bu">float</span>:</span>
+<span id="lst:py-source-133"><a href="#lst:py-source-133"></a>        <span class="cf">assert</span> <span class="va">self</span>.is_index_inside(x, y)</span>
+<span id="lst:py-source-134"><a href="#lst:py-source-134"></a>        <span class="cf">return</span> value_to_probability(<span class="va">self</span>.__values[<span class="va">self</span>.flat_index(x, y)])</span>
+<span id="lst:py-source-135"><a href="#lst:py-source-135"></a></span>
+<span id="lst:py-source-136"><a href="#lst:py-source-136"></a>    <span class="kw">def</span> get_point_value(<span class="va">self</span>, p: Point2D) <span class="op">-&gt;</span> <span class="bu">int</span>:</span>
+<span id="lst:py-source-137"><a href="#lst:py-source-137"></a>        <span class="cf">return</span> <span class="va">self</span>.get_index_value(<span class="op">*</span><span class="va">self</span>.point_to_index(p))</span>
+<span id="lst:py-source-138"><a href="#lst:py-source-138"></a></span>
+<span id="lst:py-source-139"><a href="#lst:py-source-139"></a>    <span class="kw">def</span> get_point_probability(<span class="va">self</span>, p: Point2D) <span class="op">-&gt;</span> <span class="bu">float</span>:</span>
+<span id="lst:py-source-140"><a href="#lst:py-source-140"></a>        <span class="cf">return</span> <span class="va">self</span>.get_index_probability(<span class="op">*</span><span class="va">self</span>.point_to_index(p))</span>
+<span id="lst:py-source-141"><a href="#lst:py-source-141"></a></span>
+<span id="lst:py-source-142"><a href="#lst:py-source-142"></a>    <span class="kw">def</span> get_neighbor_probabilities(<span class="va">self</span>, p: Point2D):</span>
+<span id="lst:py-source-143"><a href="#lst:py-source-143"></a>        x, y <span class="op">=</span> <span class="va">self</span>.point_to_index_float(p)</span>
+<span id="lst:py-source-144"><a href="#lst:py-source-144"></a>        x0, y0 <span class="op">=</span> <span class="bu">int</span>(x), <span class="bu">int</span>(y)</span>
+<span id="lst:py-source-145"><a href="#lst:py-source-145"></a>        x1, y1 <span class="op">=</span> x0 <span class="op">+</span> <span class="dv">1</span>, y0 <span class="op">+</span> <span class="dv">1</span></span>
+<span id="lst:py-source-146"><a href="#lst:py-source-146"></a>        dx, dy <span class="op">=</span> x <span class="op">-</span> x0, y <span class="op">-</span> y0</span>
+<span id="lst:py-source-147"><a href="#lst:py-source-147"></a></span>
+<span id="lst:py-source-148"><a href="#lst:py-source-148"></a>        x0_valid <span class="op">=</span> <span class="dv">0</span> <span class="op">&lt;=</span> x0 <span class="op">&lt;</span> <span class="va">self</span>.__num_of_cells_x</span>
+<span id="lst:py-source-149"><a href="#lst:py-source-149"></a>        x1_valid <span class="op">=</span> <span class="dv">0</span> <span class="op">&lt;=</span> x1 <span class="op">&lt;</span> <span class="va">self</span>.__num_of_cells_x</span>
+<span id="lst:py-source-150"><a href="#lst:py-source-150"></a>        y0_valid <span class="op">=</span> <span class="dv">0</span> <span class="op">&lt;=</span> y0 <span class="op">&lt;</span> <span class="va">self</span>.__num_of_cells_y</span>
+<span id="lst:py-source-151"><a href="#lst:py-source-151"></a>        y1_valid <span class="op">=</span> <span class="dv">0</span> <span class="op">&lt;=</span> y1 <span class="op">&lt;</span> <span class="va">self</span>.__num_of_cells_y</span>
+<span id="lst:py-source-152"><a href="#lst:py-source-152"></a></span>
+<span id="lst:py-source-153"><a href="#lst:py-source-153"></a>        m00 <span class="op">=</span> <span class="va">self</span>.get_index_probability(x0, y0) <span class="op">\</span></span>
+<span id="lst:py-source-154"><a href="#lst:py-source-154"></a>              <span class="cf">if</span> x0_valid <span class="kw">and</span> y0_valid <span class="cf">else</span> <span class="fl">0.5</span></span>
+<span id="lst:py-source-155"><a href="#lst:py-source-155"></a>        m01 <span class="op">=</span> <span class="va">self</span>.get_index_probability(x0, y1) <span class="op">\</span></span>
+<span id="lst:py-source-156"><a href="#lst:py-source-156"></a>              <span class="cf">if</span> x0_valid <span class="kw">and</span> y1_valid <span class="cf">else</span> <span class="fl">0.5</span></span>
+<span id="lst:py-source-157"><a href="#lst:py-source-157"></a>        m10 <span class="op">=</span> <span class="va">self</span>.get_index_probability(x1, y0) <span class="op">\</span></span>
+<span id="lst:py-source-158"><a href="#lst:py-source-158"></a>              <span class="cf">if</span> x1_valid <span class="kw">and</span> y0_valid <span class="cf">else</span> <span class="fl">0.5</span></span>
+<span id="lst:py-source-159"><a href="#lst:py-source-159"></a>        m11 <span class="op">=</span> <span class="va">self</span>.get_index_probability(x1, y1) <span class="op">\</span></span>
+<span id="lst:py-source-160"><a href="#lst:py-source-160"></a>              <span class="cf">if</span> x1_valid <span class="kw">and</span> y1_valid <span class="cf">else</span> <span class="fl">0.5</span></span>
+<span id="lst:py-source-161"><a href="#lst:py-source-161"></a></span>
+<span id="lst:py-source-162"><a href="#lst:py-source-162"></a>        interpolated <span class="op">=</span> dy <span class="op">*</span> (dx <span class="op">*</span> m11 <span class="op">+</span> (<span class="fl">1.0</span> <span class="op">-</span> dx) <span class="op">*</span> m01) <span class="op">+</span> <span class="op">\</span></span>
+<span id="lst:py-source-163"><a href="#lst:py-source-163"></a>                       (<span class="fl">1.0</span> <span class="op">-</span> dy) <span class="op">*</span> (dx <span class="op">*</span> m10 <span class="op">+</span> (<span class="fl">1.0</span> <span class="op">-</span> dx) <span class="op">*</span> m00)</span>
+<span id="lst:py-source-164"><a href="#lst:py-source-164"></a></span>
+<span id="lst:py-source-165"><a href="#lst:py-source-165"></a>        <span class="cf">return</span> (x0, y0), (dx, dy), (m00, m01, m10, m11), interpolated</span>
+<span id="lst:py-source-166"><a href="#lst:py-source-166"></a></span>
+<span id="lst:py-source-167"><a href="#lst:py-source-167"></a>    <span class="kw">def</span> get_interpolated_probability(<span class="va">self</span>, p: Point2D) <span class="op">-&gt;</span> <span class="bu">float</span>:</span>
+<span id="lst:py-source-168"><a href="#lst:py-source-168"></a>        <span class="cf">return</span> <span class="va">self</span>.get_neighbor_probabilities(p)[<span class="dv">3</span>]</span>
+<span id="lst:py-source-169"><a href="#lst:py-source-169"></a></span>
+<span id="lst:py-source-170"><a href="#lst:py-source-170"></a>    <span class="kw">def</span> set_index_value(<span class="va">self</span>, x: <span class="bu">int</span>, y: <span class="bu">int</span>, value: <span class="bu">int</span>) <span class="op">-&gt;</span> <span class="va">None</span>:</span>
+<span id="lst:py-source-171"><a href="#lst:py-source-171"></a>        <span class="cf">assert</span> <span class="va">self</span>.is_index_inside(x, y)</span>
+<span id="lst:py-source-172"><a href="#lst:py-source-172"></a>        <span class="va">self</span>.__values[<span class="va">self</span>.flat_index(x, y)] <span class="op">=</span> <span class="va">self</span>.__clamp_value(value)</span>
+<span id="lst:py-source-173"><a href="#lst:py-source-173"></a></span>
+<span id="lst:py-source-174"><a href="#lst:py-source-174"></a>    <span class="kw">def</span> set_index_probability(<span class="va">self</span>, x: <span class="bu">int</span>, y: <span class="bu">int</span>, value: <span class="bu">float</span>) <span class="op">-&gt;</span> <span class="va">None</span>:</span>
+<span id="lst:py-source-175"><a href="#lst:py-source-175"></a>        <span class="cf">assert</span> <span class="va">self</span>.is_index_inside(x, y)</span>
+<span id="lst:py-source-176"><a href="#lst:py-source-176"></a>        <span class="va">self</span>.__values[<span class="va">self</span>.flat_index(x, y)] <span class="op">=</span> <span class="op">\</span></span>
+<span id="lst:py-source-177"><a href="#lst:py-source-177"></a>             <span class="va">self</span>.__clamp_value(probability_to_value(value))</span>
+<span id="lst:py-source-178"><a href="#lst:py-source-178"></a></span>
+<span id="lst:py-source-179"><a href="#lst:py-source-179"></a>    <span class="kw">def</span> set_point_value(<span class="va">self</span>, p: Point2D, value: <span class="bu">int</span>) <span class="op">-&gt;</span> <span class="va">None</span>:</span>
+<span id="lst:py-source-180"><a href="#lst:py-source-180"></a>        <span class="va">self</span>.set_index_value(<span class="op">*</span><span class="va">self</span>.point_to_index(p), value)</span>
+<span id="lst:py-source-181"><a href="#lst:py-source-181"></a></span>
+<span id="lst:py-source-182"><a href="#lst:py-source-182"></a>    <span class="kw">def</span> set_point_probability(<span class="va">self</span>, p: Point2D, value: <span class="bu">float</span>) <span class="op">-&gt;</span> <span class="va">None</span>:</span>
+<span id="lst:py-source-183"><a href="#lst:py-source-183"></a>        <span class="va">self</span>.set_index_probability(<span class="op">*</span><span class="va">self</span>.point_to_index(p), value)</span>
+<span id="lst:py-source-184"><a href="#lst:py-source-184"></a></span>
+<span id="lst:py-source-185"><a href="#lst:py-source-185"></a>    <span class="kw">def</span> __update_index_log_odds(<span class="va">self</span>, x: <span class="bu">int</span>, y: <span class="bu">int</span>, value: <span class="bu">float</span>) <span class="op">-&gt;</span> <span class="va">None</span>:</span>
+<span id="lst:py-source-186"><a href="#lst:py-source-186"></a>        <span class="cf">assert</span> <span class="va">self</span>.is_index_inside(x, y)</span>
+<span id="lst:py-source-187"><a href="#lst:py-source-187"></a>        idx <span class="op">=</span> <span class="va">self</span>.flat_index(x, y)</span>
+<span id="lst:py-source-188"><a href="#lst:py-source-188"></a>        log_odds <span class="op">=</span> value_to_log_odds(<span class="va">self</span>.__values[idx]) <span class="op">+</span> value</span>
+<span id="lst:py-source-189"><a href="#lst:py-source-189"></a>        <span class="va">self</span>.__values[idx] <span class="op">=</span> <span class="va">self</span>.__clamp_value(log_odds_to_value(log_odds))</span>
+<span id="lst:py-source-190"><a href="#lst:py-source-190"></a></span>
+<span id="lst:py-source-191"><a href="#lst:py-source-191"></a>    <span class="kw">def</span> update_index_hit(<span class="va">self</span>, x: <span class="bu">int</span>, y: <span class="bu">int</span>) <span class="op">-&gt;</span> <span class="va">None</span>:</span>
+<span id="lst:py-source-192"><a href="#lst:py-source-192"></a>        <span class="va">self</span>.__update_index_log_odds(x, y, <span class="va">self</span>.__log_odds_hit)</span>
+<span id="lst:py-source-193"><a href="#lst:py-source-193"></a></span>
+<span id="lst:py-source-194"><a href="#lst:py-source-194"></a>    <span class="kw">def</span> update_index_miss(<span class="va">self</span>, x: <span class="bu">int</span>, y: <span class="bu">int</span>) <span class="op">-&gt;</span> <span class="va">None</span>:</span>
+<span id="lst:py-source-195"><a href="#lst:py-source-195"></a>        <span class="va">self</span>.__update_index_log_odds(x, y, <span class="va">self</span>.__log_odds_miss)</span>
+<span id="lst:py-source-196"><a href="#lst:py-source-196"></a></span>
+<span id="lst:py-source-197"><a href="#lst:py-source-197"></a>    <span class="kw">def</span> update_point_hit(<span class="va">self</span>, p: Point2D) <span class="op">-&gt;</span> <span class="va">None</span>:</span>
+<span id="lst:py-source-198"><a href="#lst:py-source-198"></a>        <span class="va">self</span>.update_index_hit(<span class="op">*</span><span class="va">self</span>.point_to_index(p))</span>
+<span id="lst:py-source-199"><a href="#lst:py-source-199"></a></span>
+<span id="lst:py-source-200"><a href="#lst:py-source-200"></a>    <span class="kw">def</span> update_point_miss(<span class="va">self</span>, p: Point2D) <span class="op">-&gt;</span> <span class="va">None</span>:</span>
+<span id="lst:py-source-201"><a href="#lst:py-source-201"></a>        <span class="va">self</span>.update_index_miss(<span class="op">*</span><span class="va">self</span>.point_to_index(p))</span>
+<span id="lst:py-source-202"><a href="#lst:py-source-202"></a></span>
+<span id="lst:py-source-203"><a href="#lst:py-source-203"></a>    <span class="kw">def</span> update_from_scans(<span class="va">self</span>, pose: Pose2D, scan: List[Point2D]) <span class="op">-&gt;</span> <span class="va">None</span>:</span>
+<span id="lst:py-source-204"><a href="#lst:py-source-204"></a>        pose_idx <span class="op">=</span> <span class="va">self</span>.point_to_index(Point2D(pose.x, pose.y))</span>
+<span id="lst:py-source-205"><a href="#lst:py-source-205"></a>        points <span class="op">=</span> [project_point_2d(pose, p) <span class="cf">for</span> p <span class="kw">in</span> scan]</span>
+<span id="lst:py-source-206"><a href="#lst:py-source-206"></a>        scan_indices <span class="op">=</span> [<span class="va">self</span>.point_to_index(p) <span class="cf">for</span> p <span class="kw">in</span> points]</span>
+<span id="lst:py-source-207"><a href="#lst:py-source-207"></a>        ray_indices <span class="op">=</span> [bresenham(<span class="op">*</span>pose_idx, <span class="op">*</span>idx) <span class="cf">for</span> idx <span class="kw">in</span> scan_indices]</span>
+<span id="lst:py-source-208"><a href="#lst:py-source-208"></a>        <span class="co"># hit_indices = [indices[-1] for indices in ray_indices]</span></span>
+<span id="lst:py-source-209"><a href="#lst:py-source-209"></a></span>
+<span id="lst:py-source-210"><a href="#lst:py-source-210"></a>        <span class="cf">for</span> indices <span class="kw">in</span> ray_indices:</span>
+<span id="lst:py-source-211"><a href="#lst:py-source-211"></a>            <span class="cf">for</span> missed_idx <span class="kw">in</span> indices[:<span class="op">-</span><span class="dv">1</span>]:</span>
+<span id="lst:py-source-212"><a href="#lst:py-source-212"></a>                <span class="cf">if</span> <span class="va">self</span>.is_index_inside(<span class="op">*</span>missed_idx):</span>
+<span id="lst:py-source-213"><a href="#lst:py-source-213"></a>                    <span class="va">self</span>.update_index_miss(<span class="op">*</span>missed_idx)</span>
+<span id="lst:py-source-214"><a href="#lst:py-source-214"></a></span>
+<span id="lst:py-source-215"><a href="#lst:py-source-215"></a>            <span class="cf">if</span> <span class="va">self</span>.is_index_inside(<span class="op">*</span>indices[<span class="op">-</span><span class="dv">1</span>]):</span>
+<span id="lst:py-source-216"><a href="#lst:py-source-216"></a>                <span class="va">self</span>.update_index_hit(<span class="op">*</span>indices[<span class="op">-</span><span class="dv">1</span>])</span>
+<span id="lst:py-source-217"><a href="#lst:py-source-217"></a></span>
+<span id="lst:py-source-218"><a href="#lst:py-source-218"></a>    <span class="kw">def</span> __clamp_value(<span class="va">self</span>, x: <span class="bu">int</span>) <span class="op">-&gt;</span> <span class="bu">int</span>:</span>
+<span id="lst:py-source-219"><a href="#lst:py-source-219"></a>        <span class="cf">return</span> <span class="bu">max</span>(Grid2D.VALUE_MIN, <span class="bu">min</span>(Grid2D.VALUE_MAX, x))</span>
+<span id="lst:py-source-220"><a href="#lst:py-source-220"></a></span>
+<span id="lst:py-source-221"><a href="#lst:py-source-221"></a>    <span class="kw">def</span> to_bytes(<span class="va">self</span>) <span class="op">-&gt;</span> <span class="bu">bytes</span>:</span>
+<span id="lst:py-source-222"><a href="#lst:py-source-222"></a>        <span class="cf">return</span> <span class="bu">bytes</span>([value_to_grayscale(x) <span class="cf">for</span> x <span class="kw">in</span> <span class="va">self</span>.__values])</span>
+<span id="lst:py-source-223"><a href="#lst:py-source-223"></a></span>
+<span id="lst:py-source-224"><a href="#lst:py-source-224"></a><span class="kw">def</span> sliding_window_max(in_func: Callable[[<span class="bu">int</span>], <span class="bu">int</span>],</span>
+<span id="lst:py-source-225"><a href="#lst:py-source-225"></a>                       out_func: Callable[[<span class="bu">int</span>, <span class="bu">int</span>], <span class="va">None</span>],</span>
+<span id="lst:py-source-226"><a href="#lst:py-source-226"></a>                       num_of_elements: <span class="bu">int</span>, win_size: <span class="bu">int</span>) <span class="op">-&gt;</span> <span class="va">None</span>:</span>
+<span id="lst:py-source-227"><a href="#lst:py-source-227"></a>    idx_queue, idx_in, idx_out <span class="op">=</span> deque(), <span class="dv">0</span>, <span class="dv">0</span></span>
+<span id="lst:py-source-228"><a href="#lst:py-source-228"></a></span>
+<span id="lst:py-source-229"><a href="#lst:py-source-229"></a>    <span class="co"># Process the first `win_size` elements (first window)</span></span>
+<span id="lst:py-source-230"><a href="#lst:py-source-230"></a>    <span class="cf">while</span> idx_in <span class="op">&lt;</span> win_size:</span>
+<span id="lst:py-source-231"><a href="#lst:py-source-231"></a>        <span class="co"># Previous smaller elements are useless so remove them from `idx_queue`</span></span>
+<span id="lst:py-source-232"><a href="#lst:py-source-232"></a>        <span class="cf">while</span> idx_queue <span class="kw">and</span> in_func(idx_in) <span class="op">&gt;=</span> in_func(idx_queue[<span class="op">-</span><span class="dv">1</span>]):</span>
+<span id="lst:py-source-233"><a href="#lst:py-source-233"></a>            idx_queue.pop()</span>
+<span id="lst:py-source-234"><a href="#lst:py-source-234"></a>        idx_queue.append(idx_in)</span>
+<span id="lst:py-source-235"><a href="#lst:py-source-235"></a>        idx_in <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="lst:py-source-236"><a href="#lst:py-source-236"></a></span>
+<span id="lst:py-source-237"><a href="#lst:py-source-237"></a>    <span class="co"># `idx_queue[0]` contains index of the maximum element in the first window</span></span>
+<span id="lst:py-source-238"><a href="#lst:py-source-238"></a>    <span class="co"># Process the rest of the elements here</span></span>
+<span id="lst:py-source-239"><a href="#lst:py-source-239"></a>    <span class="cf">while</span> idx_in <span class="op">&lt;</span> num_of_elements:</span>
+<span id="lst:py-source-240"><a href="#lst:py-source-240"></a>        <span class="co"># The element pointed by the `idx_queue[0]` is the maximum element of</span></span>
+<span id="lst:py-source-241"><a href="#lst:py-source-241"></a>        <span class="co"># the previous window</span></span>
+<span id="lst:py-source-242"><a href="#lst:py-source-242"></a>        out_func(idx_out, in_func(idx_queue[<span class="dv">0</span>]))</span>
+<span id="lst:py-source-243"><a href="#lst:py-source-243"></a>        idx_out <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="lst:py-source-244"><a href="#lst:py-source-244"></a></span>
+<span id="lst:py-source-245"><a href="#lst:py-source-245"></a>        <span class="co"># Remove the elements that are out of the current window</span></span>
+<span id="lst:py-source-246"><a href="#lst:py-source-246"></a>        <span class="cf">while</span> idx_queue <span class="kw">and</span> idx_queue[<span class="dv">0</span>] <span class="op">&lt;=</span> idx_in <span class="op">-</span> win_size:</span>
+<span id="lst:py-source-247"><a href="#lst:py-source-247"></a>            idx_queue.popleft()</span>
+<span id="lst:py-source-248"><a href="#lst:py-source-248"></a></span>
+<span id="lst:py-source-249"><a href="#lst:py-source-249"></a>        <span class="co"># Remove all elements smaller than the current element</span></span>
+<span id="lst:py-source-250"><a href="#lst:py-source-250"></a>        <span class="cf">while</span> idx_queue <span class="kw">and</span> in_func(idx_in) <span class="op">&gt;=</span> in_func(idx_queue[<span class="op">-</span><span class="dv">1</span>]):</span>
+<span id="lst:py-source-251"><a href="#lst:py-source-251"></a>            idx_queue.pop()</span>
+<span id="lst:py-source-252"><a href="#lst:py-source-252"></a></span>
+<span id="lst:py-source-253"><a href="#lst:py-source-253"></a>        <span class="co"># Append the current element to `idx_queue`</span></span>
+<span id="lst:py-source-254"><a href="#lst:py-source-254"></a>        idx_queue.append(idx_in)</span>
+<span id="lst:py-source-255"><a href="#lst:py-source-255"></a>        idx_in <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="lst:py-source-256"><a href="#lst:py-source-256"></a></span>
+<span id="lst:py-source-257"><a href="#lst:py-source-257"></a>    <span class="co"># Repeat the last elements</span></span>
+<span id="lst:py-source-258"><a href="#lst:py-source-258"></a>    <span class="cf">while</span> idx_out <span class="op">&lt;</span> num_of_elements:</span>
+<span id="lst:py-source-259"><a href="#lst:py-source-259"></a>        out_func(idx_out, in_func(idx_queue[<span class="dv">0</span>]))</span>
+<span id="lst:py-source-260"><a href="#lst:py-source-260"></a>        idx_out <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="lst:py-source-261"><a href="#lst:py-source-261"></a></span>
+<span id="lst:py-source-262"><a href="#lst:py-source-262"></a><span class="kw">def</span> compute_coarse_map_slow(grid_map: Grid2D, win_size: <span class="bu">int</span>) <span class="op">-&gt;</span> Grid2D:</span>
+<span id="lst:py-source-263"><a href="#lst:py-source-263"></a>    num_of_cells <span class="op">=</span> grid_map.num_of_cells_x() <span class="op">*</span> grid_map.num_of_cells_y()</span>
+<span id="lst:py-source-264"><a href="#lst:py-source-264"></a>    <span class="bu">buffer</span> <span class="op">=</span> [<span class="dv">0</span> <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(num_of_cells)]</span>
+<span id="lst:py-source-265"><a href="#lst:py-source-265"></a>    coarse_map <span class="op">=</span> Grid2D(grid_map.resolution(), <span class="op">*</span>grid_map.center_pos(),</span>
+<span id="lst:py-source-266"><a href="#lst:py-source-266"></a>                        grid_map.num_of_cells_x(), grid_map.num_of_cells_y(),</span>
+<span id="lst:py-source-267"><a href="#lst:py-source-267"></a>                        grid_map.log_odds_hit(), grid_map.log_odds_miss())</span>
+<span id="lst:py-source-268"><a href="#lst:py-source-268"></a></span>
+<span id="lst:py-source-269"><a href="#lst:py-source-269"></a>    <span class="kw">def</span> get_buffer(idx_x: <span class="bu">int</span>, idx_y: <span class="bu">int</span>) <span class="op">-&gt;</span> <span class="bu">int</span>:</span>
+<span id="lst:py-source-270"><a href="#lst:py-source-270"></a>        <span class="cf">return</span> <span class="bu">buffer</span>[idx_y <span class="op">*</span> grid_map.num_of_cells_x() <span class="op">+</span> idx_x]</span>
+<span id="lst:py-source-271"><a href="#lst:py-source-271"></a></span>
+<span id="lst:py-source-272"><a href="#lst:py-source-272"></a>    <span class="kw">def</span> set_buffer(idx_x: <span class="bu">int</span>, idx_y: <span class="bu">int</span>, value: <span class="bu">int</span>) <span class="op">-&gt;</span> <span class="va">None</span>:</span>
+<span id="lst:py-source-273"><a href="#lst:py-source-273"></a>        <span class="bu">buffer</span>[idx_y <span class="op">*</span> grid_map.num_of_cells_x() <span class="op">+</span> idx_x] <span class="op">=</span> value</span>
+<span id="lst:py-source-274"><a href="#lst:py-source-274"></a></span>
+<span id="lst:py-source-275"><a href="#lst:py-source-275"></a>    <span class="kw">def</span> set_coarse_map(idx_x: <span class="bu">int</span>, idx_y: <span class="bu">int</span>, value: <span class="bu">int</span>) <span class="op">-&gt;</span> <span class="va">None</span>:</span>
+<span id="lst:py-source-276"><a href="#lst:py-source-276"></a>        coarse_map.set_index_value(idx_x, idx_y, value)</span>
+<span id="lst:py-source-277"><a href="#lst:py-source-277"></a></span>
+<span id="lst:py-source-278"><a href="#lst:py-source-278"></a>    <span class="co"># Sliding window maximum for y-axis</span></span>
+<span id="lst:py-source-279"><a href="#lst:py-source-279"></a>    <span class="cf">for</span> x <span class="kw">in</span> <span class="bu">range</span>(grid_map.num_of_cells_x()):</span>
+<span id="lst:py-source-280"><a href="#lst:py-source-280"></a>        in_func_row <span class="op">=</span> <span class="kw">lambda</span> y: grid_map.get_index_value(x, y)</span>
+<span id="lst:py-source-281"><a href="#lst:py-source-281"></a>        out_func_row <span class="op">=</span> <span class="kw">lambda</span> y, max_value: set_buffer(x, y, max_value)</span>
+<span id="lst:py-source-282"><a href="#lst:py-source-282"></a>        sliding_window_max(in_func_row, out_func_row, <span class="op">\</span></span>
+<span id="lst:py-source-283"><a href="#lst:py-source-283"></a>                           grid_map.num_of_cells_y(), win_size)</span>
+<span id="lst:py-source-284"><a href="#lst:py-source-284"></a></span>
+<span id="lst:py-source-285"><a href="#lst:py-source-285"></a>    <span class="co"># Sliding window maximum for x-axis</span></span>
+<span id="lst:py-source-286"><a href="#lst:py-source-286"></a>    <span class="cf">for</span> y <span class="kw">in</span> <span class="bu">range</span>(grid_map.num_of_cells_y()):</span>
+<span id="lst:py-source-287"><a href="#lst:py-source-287"></a>        in_func_col <span class="op">=</span> <span class="kw">lambda</span> x: get_buffer(x, y)</span>
+<span id="lst:py-source-288"><a href="#lst:py-source-288"></a>        out_func_col <span class="op">=</span> <span class="kw">lambda</span> x, max_value: set_coarse_map(x, y, max_value)</span>
+<span id="lst:py-source-289"><a href="#lst:py-source-289"></a>        sliding_window_max(in_func_col, out_func_col, <span class="op">\</span></span>
+<span id="lst:py-source-290"><a href="#lst:py-source-290"></a>                           grid_map.num_of_cells_x(), win_size)</span>
+<span id="lst:py-source-291"><a href="#lst:py-source-291"></a></span>
+<span id="lst:py-source-292"><a href="#lst:py-source-292"></a>    <span class="cf">return</span> coarse_map</span>
+<span id="lst:py-source-293"><a href="#lst:py-source-293"></a></span>
+<span id="lst:py-source-294"><a href="#lst:py-source-294"></a><span class="kw">def</span> compute_coarse_map_fast(grid_map: Grid2D, win_size: <span class="bu">int</span>) <span class="op">-&gt;</span> Grid2D:</span>
+<span id="lst:py-source-295"><a href="#lst:py-source-295"></a>    num_of_cells_x <span class="op">=</span> grid_map.num_of_cells_x()</span>
+<span id="lst:py-source-296"><a href="#lst:py-source-296"></a>    num_of_cells_y <span class="op">=</span> grid_map.num_of_cells_y()</span>
+<span id="lst:py-source-297"><a href="#lst:py-source-297"></a>    num_of_cells <span class="op">=</span> num_of_cells_x <span class="op">*</span> num_of_cells_y</span>
+<span id="lst:py-source-298"><a href="#lst:py-source-298"></a>    <span class="bu">buffer</span> <span class="op">=</span> [<span class="dv">0</span> <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(num_of_cells)]</span>
+<span id="lst:py-source-299"><a href="#lst:py-source-299"></a>    coarse_map <span class="op">=</span> Grid2D(grid_map.resolution(), <span class="op">*</span>grid_map.center_pos(),</span>
+<span id="lst:py-source-300"><a href="#lst:py-source-300"></a>                        grid_map.num_of_cells_x(), grid_map.num_of_cells_y(),</span>
+<span id="lst:py-source-301"><a href="#lst:py-source-301"></a>                        grid_map.log_odds_hit(), grid_map.log_odds_miss())</span>
+<span id="lst:py-source-302"><a href="#lst:py-source-302"></a></span>
+<span id="lst:py-source-303"><a href="#lst:py-source-303"></a>    <span class="co"># Sliding window maximum for y-axis</span></span>
+<span id="lst:py-source-304"><a href="#lst:py-source-304"></a>    <span class="cf">for</span> x <span class="kw">in</span> <span class="bu">range</span>(num_of_cells_x):</span>
+<span id="lst:py-source-305"><a href="#lst:py-source-305"></a>        idx_queue, idx_in, idx_out <span class="op">=</span> deque(), <span class="dv">0</span>, <span class="dv">0</span></span>
+<span id="lst:py-source-306"><a href="#lst:py-source-306"></a></span>
+<span id="lst:py-source-307"><a href="#lst:py-source-307"></a>        <span class="cf">while</span> idx_in <span class="op">&lt;</span> win_size:</span>
+<span id="lst:py-source-308"><a href="#lst:py-source-308"></a>            <span class="cf">while</span> idx_queue <span class="kw">and</span> grid_map.get_index_value(x, idx_in) <span class="op">&gt;=</span> <span class="op">\</span></span>
+<span id="lst:py-source-309"><a href="#lst:py-source-309"></a>                grid_map.get_index_value(x, idx_queue[<span class="op">-</span><span class="dv">1</span>]):</span>
+<span id="lst:py-source-310"><a href="#lst:py-source-310"></a>                idx_queue.pop()</span>
+<span id="lst:py-source-311"><a href="#lst:py-source-311"></a>            idx_queue.append(idx_in)</span>
+<span id="lst:py-source-312"><a href="#lst:py-source-312"></a>            idx_in <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="lst:py-source-313"><a href="#lst:py-source-313"></a></span>
+<span id="lst:py-source-314"><a href="#lst:py-source-314"></a>        <span class="cf">while</span> idx_in <span class="op">&lt;</span> num_of_cells_y:</span>
+<span id="lst:py-source-315"><a href="#lst:py-source-315"></a>            <span class="bu">buffer</span>[idx_out <span class="op">*</span> num_of_cells_x <span class="op">+</span> x] <span class="op">=</span> <span class="op">\</span></span>
+<span id="lst:py-source-316"><a href="#lst:py-source-316"></a>                grid_map.get_index_value(x, idx_queue[<span class="dv">0</span>])</span>
+<span id="lst:py-source-317"><a href="#lst:py-source-317"></a>            idx_out <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="lst:py-source-318"><a href="#lst:py-source-318"></a></span>
+<span id="lst:py-source-319"><a href="#lst:py-source-319"></a>            <span class="cf">while</span> idx_queue <span class="kw">and</span> idx_queue[<span class="dv">0</span>] <span class="op">&lt;=</span> idx_in <span class="op">-</span> win_size:</span>
+<span id="lst:py-source-320"><a href="#lst:py-source-320"></a>                idx_queue.popleft()</span>
+<span id="lst:py-source-321"><a href="#lst:py-source-321"></a>            <span class="cf">while</span> idx_queue <span class="kw">and</span> grid_map.get_index_value(x, idx_in) <span class="op">&gt;=</span> <span class="op">\</span></span>
+<span id="lst:py-source-322"><a href="#lst:py-source-322"></a>                grid_map.get_index_value(x, idx_queue[<span class="op">-</span><span class="dv">1</span>]):</span>
+<span id="lst:py-source-323"><a href="#lst:py-source-323"></a>                idx_queue.pop()</span>
+<span id="lst:py-source-324"><a href="#lst:py-source-324"></a></span>
+<span id="lst:py-source-325"><a href="#lst:py-source-325"></a>            idx_queue.append(idx_in)</span>
+<span id="lst:py-source-326"><a href="#lst:py-source-326"></a>            idx_in <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="lst:py-source-327"><a href="#lst:py-source-327"></a></span>
+<span id="lst:py-source-328"><a href="#lst:py-source-328"></a>        <span class="cf">while</span> idx_out <span class="op">&lt;</span> num_of_cells_y:</span>
+<span id="lst:py-source-329"><a href="#lst:py-source-329"></a>            <span class="bu">buffer</span>[idx_out <span class="op">*</span> num_of_cells_x <span class="op">+</span> x] <span class="op">=</span> <span class="op">\</span></span>
+<span id="lst:py-source-330"><a href="#lst:py-source-330"></a>                grid_map.get_index_value(x, idx_queue[<span class="dv">0</span>])</span>
+<span id="lst:py-source-331"><a href="#lst:py-source-331"></a>            idx_out <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="lst:py-source-332"><a href="#lst:py-source-332"></a></span>
+<span id="lst:py-source-333"><a href="#lst:py-source-333"></a>    <span class="co"># Sliding window maximum for x-axis</span></span>
+<span id="lst:py-source-334"><a href="#lst:py-source-334"></a>    <span class="cf">for</span> y <span class="kw">in</span> <span class="bu">range</span>(num_of_cells_y):</span>
+<span id="lst:py-source-335"><a href="#lst:py-source-335"></a>        idx_queue, idx_in, idx_out <span class="op">=</span> deque(), <span class="dv">0</span>, <span class="dv">0</span></span>
+<span id="lst:py-source-336"><a href="#lst:py-source-336"></a>        idx_offset <span class="op">=</span> y <span class="op">*</span> num_of_cells_x</span>
+<span id="lst:py-source-337"><a href="#lst:py-source-337"></a></span>
+<span id="lst:py-source-338"><a href="#lst:py-source-338"></a>        <span class="cf">while</span> idx_in <span class="op">&lt;</span> win_size:</span>
+<span id="lst:py-source-339"><a href="#lst:py-source-339"></a>            <span class="cf">while</span> idx_queue <span class="kw">and</span> <span class="bu">buffer</span>[idx_offset <span class="op">+</span> idx_in] <span class="op">&gt;=</span> <span class="op">\</span></span>
+<span id="lst:py-source-340"><a href="#lst:py-source-340"></a>                <span class="bu">buffer</span>[idx_offset <span class="op">+</span> idx_queue[<span class="op">-</span><span class="dv">1</span>]]:</span>
+<span id="lst:py-source-341"><a href="#lst:py-source-341"></a>                idx_queue.pop()</span>
+<span id="lst:py-source-342"><a href="#lst:py-source-342"></a>            idx_queue.append(idx_in)</span>
+<span id="lst:py-source-343"><a href="#lst:py-source-343"></a>            idx_in <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="lst:py-source-344"><a href="#lst:py-source-344"></a></span>
+<span id="lst:py-source-345"><a href="#lst:py-source-345"></a>        <span class="cf">while</span> idx_in <span class="op">&lt;</span> num_of_cells_x:</span>
+<span id="lst:py-source-346"><a href="#lst:py-source-346"></a>            coarse_map.set_index_value(</span>
+<span id="lst:py-source-347"><a href="#lst:py-source-347"></a>                idx_out, y, <span class="bu">buffer</span>[idx_offset <span class="op">+</span> idx_queue[<span class="dv">0</span>]])</span>
+<span id="lst:py-source-348"><a href="#lst:py-source-348"></a>            idx_out <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="lst:py-source-349"><a href="#lst:py-source-349"></a></span>
+<span id="lst:py-source-350"><a href="#lst:py-source-350"></a>            <span class="cf">while</span> idx_queue <span class="kw">and</span> idx_queue[<span class="dv">0</span>] <span class="op">&lt;=</span> idx_in <span class="op">-</span> win_size:</span>
+<span id="lst:py-source-351"><a href="#lst:py-source-351"></a>                idx_queue.popleft()</span>
+<span id="lst:py-source-352"><a href="#lst:py-source-352"></a>            <span class="cf">while</span> idx_queue <span class="kw">and</span> <span class="bu">buffer</span>[idx_offset <span class="op">+</span> idx_in] <span class="op">&gt;=</span> <span class="op">\</span></span>
+<span id="lst:py-source-353"><a href="#lst:py-source-353"></a>                <span class="bu">buffer</span>[idx_offset <span class="op">+</span> idx_queue[<span class="op">-</span><span class="dv">1</span>]]:</span>
+<span id="lst:py-source-354"><a href="#lst:py-source-354"></a>                idx_queue.pop()</span>
+<span id="lst:py-source-355"><a href="#lst:py-source-355"></a></span>
+<span id="lst:py-source-356"><a href="#lst:py-source-356"></a>            idx_queue.append(idx_in)</span>
+<span id="lst:py-source-357"><a href="#lst:py-source-357"></a>            idx_in <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="lst:py-source-358"><a href="#lst:py-source-358"></a></span>
+<span id="lst:py-source-359"><a href="#lst:py-source-359"></a>        <span class="cf">while</span> idx_out <span class="op">&lt;</span> num_of_cells_x:</span>
+<span id="lst:py-source-360"><a href="#lst:py-source-360"></a>            coarse_map.set_index_value(</span>
+<span id="lst:py-source-361"><a href="#lst:py-source-361"></a>                idx_out, y, <span class="bu">buffer</span>[idx_offset <span class="op">+</span> idx_queue[<span class="dv">0</span>]])</span>
+<span id="lst:py-source-362"><a href="#lst:py-source-362"></a>            idx_out <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="lst:py-source-363"><a href="#lst:py-source-363"></a></span>
+<span id="lst:py-source-364"><a href="#lst:py-source-364"></a>    <span class="cf">return</span> coarse_map</span>
+<span id="lst:py-source-365"><a href="#lst:py-source-365"></a></span>
+<span id="lst:py-source-366"><a href="#lst:py-source-366"></a><span class="kw">def</span> compute_coarse_map(grid_map: Grid2D, win_size: <span class="bu">int</span>) <span class="op">-&gt;</span> Grid2D:</span>
+<span id="lst:py-source-367"><a href="#lst:py-source-367"></a>    <span class="cf">return</span> compute_coarse_map_fast(grid_map, win_size)</span></code></pre></div>
+<h2 id="分枝限定法によるスキャンマッチングの実装">分枝限定法によるスキャンマッチングの実装</h2>
+<p>続いて、分枝限定法によるスキャンマッチングの実装(<code>ScanMatcherBranchBound</code>クラス)を示します。 <code>ScanMatcherBranchBound</code>クラスのソースコードは<a href="https://github.com/sterngerlach/scan_matcher_2d_python/blob/master/scan_matcher_branch_bound.py">こちら</a>を参照してください。 アルゴリズムの説明は大変でしたが、実装自体は100行程度で済みます。</p>
+<ul>
+<li>コンストラクタでは、アルゴリズムの各種パラメータを初期化します。 探索領域のサイズ<span class="math inline">\(2W_x, 2W_y, 2W_\theta\)</span>を<code>window_size_x</code>、<code>window_size_y</code>、<code>window_size_theta</code>の3つのメンバ、<span class="math inline">\(\theta\)</span>方向のステップサイズの最小値<span class="math inline">\(\delta_{\theta, \mathrm{min}}\)</span>を<code>min_step_theta</code>メンバ、ノードの最大の高さ<span class="math inline">\(h_0\)</span>を<code>max_node_height</code>メンバ、<span class="math inline">\(2^{h_0}\)</span>を<code>max_stride</code>メンバに格納します。</li>
+<li><code>compute_step()</code>メソッドは、占有格子地図の解像度<span class="math inline">\(r\)</span>と、スキャンデータ<span class="math inline">\(\mathcal{S}\)</span>を基に、<span class="math inline">\(x\)</span>、<span class="math inline">\(y\)</span>、<span class="math inline">\(\theta\)</span>方向のステップサイズ(<span class="math inline">\(r\)</span>および<span class="math inline">\(\delta_\theta\)</span>)を計算します。 <span class="math display">\[
+\delta_\theta = \max \left( \delta_{\theta, \mathrm{min}}, \arccos \left( 1 - \frac{r^2}{2 d_\mathrm{max}^2} \right) \right)
+\]</span> <span class="math inline">\(d_\mathrm{max}\)</span>は、LiDARセンサの中心から、スキャン点までの距離の最大値です。 スキャンデータ<span class="math inline">\(\mathcal{S} = \left\{ (r_1, \theta_1), \ldots, (r_N, \theta_N) \right\}\)</span>について、<span class="math inline">\(d_\mathrm{max} = \max_i r_i\)</span>となります。</li>
+<li><code>compute_window()</code>メソッドは、探索領域のサイズ<span class="math inline">\(W_x, W_y, W_\theta\)</span>とステップサイズ<span class="math inline">\(r, \delta_\theta\)</span>を基に、各軸方向の解の候補数<span class="math inline">\(w_x, w_y, w_\theta\)</span>を計算します。 <span class="math display">\[
+w_x = \left\lceil \frac{W_x}{r} \right\rceil, \
+w_y = \left\lceil \frac{W_y}{r} \right\rceil, \
+w_\theta = \left\lceil \frac{W_\theta}{\delta_\theta} \right\rceil
+\]</span></li>
+<li><code>compute_score()</code>メソッドは、指定されたインデックスの格子がもつ占有確率を足し合わせて、スコアを計算します(詳細は後ほど説明します)。</li>
+</ul>
+<p><code>match_scan()</code>メソッドは、分枝限定法によるスキャンマッチングの本体です。 <a href="./scan-matching-branch-and-bound.html">以前のページ</a>の末尾に示したアルゴリズムと照らし合わせて、ソースコードを詳しくみてみましょう。</p>
+<ul>
+<li><p>引数<code>initial_pose</code>、<code>grid_map</code>、<code>scan</code>から、探索領域の中心に対応する姿勢<span class="math inline">\(\mathbf{\xi}_0 = \left[ \xi_{0, x}, \xi_{0, y}, \xi_{0, \theta} \right]^\top\)</span>、占有格子地図<span class="math inline">\(\mathcal{M}\)</span>(解像度<span class="math inline">\(r\)</span>)、スキャンデータ<span class="math inline">\(\mathcal{S}\)</span>を受け取ります。 <a href="./scan-matching-branch-and-bound.html">以前のページ</a>では、スキャンデータは極座標形式(距離<span class="math inline">\(r_i\)</span>と方向<span class="math inline">\(\theta_i\)</span>)で表現していましたが、この実装では直交座標(<span class="math inline">\(x, y\)</span>)を用いています。 あるスキャンが極座標で<span class="math inline">\(\mathbf{z}_i = (r_i, \theta_i)\)</span>のように表されるとき、<span class="math inline">\((r_i \cos \theta_i, r_i \sin \theta_i)\)</span>とすれば直交座標に変換できます。 また、直交座標で<span class="math inline">\(\mathbf{z}_i = (x_i, y_i)\)</span>のように表されるとき、<span class="math inline">\((\sqrt{x_i^2 + y_i^2}, \arctan \cfrac{y_i}{x_i})\)</span>とすれば極座標に変換できます。</p></li>
+<li><p>最初に、<code>compute_step()</code>メソッドと<code>compute_window()</code>メソッドを使って、ステップサイズ<span class="math inline">\(r, \delta_\theta\)</span>と探索領域のサイズ<span class="math inline">\(w_x, w_y, w_\theta\)</span>を計算します。 変数<code>step_x</code>、<code>step_y</code>、<code>step_theta</code>は、<span class="math inline">\(r\)</span>, <span class="math inline">\(r\)</span>, <span class="math inline">\(\delta_\theta\)</span>に対応します。 また変数<code>win_x</code>、<code>win_y</code>、<code>win_theta</code>は、<span class="math inline">\(w_x\)</span>、<span class="math inline">\(w_y\)</span>、<span class="math inline">\(w_\theta\)</span>に対応します。 スコアの最大値<span class="math inline">\(s^*\)</span>と最適解<span class="math inline">\((j_x^*, j_y^*, j_\theta^*) \in \overline{\mathcal{W}}\)</span>は、変数<code>best_score</code>、<code>best_x</code>、<code>best_y</code>、<code>best_theta</code>にそれぞれ保持します。 <a href="./scan-matching-branch-and-bound.html">以前のページ</a>では、次のように探索領域<span class="math inline">\(\overline{\mathcal{W}}\)</span>を定義していました。 <span class="math display">\[
+\overline{\mathcal{W}} = \left\{ 0, \ldots, 2w_x \right\}
+\times \left\{ 0, \ldots, 2w_y \right\}
+\times \left\{ 0, \ldots, 2w_\theta \right\}
+\]</span> <span class="math display">\[
+\mathcal{W} = \left\{ \mathcal{\xi}_0
++ \left[ r \left( -w_x + j_x \right), r \left( -w_y + j_y \right),
+\delta_\theta \left( -w_\theta + j_\theta \right) \right]^\top \mid
+\left( j_x, j_y, j_\theta \right) \in \overline{\mathcal{W}} \right\}
+\]</span> このメソッド内では、以下の定義を採用しています(上記の<span class="math inline">\(j_x, j_y, j_\theta\)</span>を、<span class="math inline">\(j_x - w_x, j_y - w_y, j_\theta - w_\theta\)</span>に置き換えただけです)。 <span class="math display">\[
+\overline{\mathcal{W}} = \left\{ -w_x, \ldots, w_x - 1\right\}
+\times \left\{ -w_y, \ldots, w_y - 1\right\}
+\times \left\{ -w_\theta, \ldots, w_\theta - 1\right\}
+\]</span> <span class="math display">\[
+\mathcal{W} = \left\{ \mathcal{\xi}_0
++ \left[ r j_x, r j_y, \delta_\theta j_\theta \right]^\top \mid
+\left( j_x, j_y, j_\theta \right) \in \overline{\mathcal{W}} \right\}
+\]</span></p></li>
+<li><p>続いて、<code>compute_coarse_map()</code>メソッドを使って、与えられた地図<span class="math inline">\(\mathcal{M}\)</span>から、<span class="math inline">\(h_0\)</span>個の地図<span class="math inline">\(\mathcal{M}_\mathrm{precomp}^1, \ldots, \mathcal{M}_\mathrm{precomp}^{h_0}\)</span>を計算します。 元々の地図<span class="math inline">\(\mathcal{M}\)</span>と、計算した地図<span class="math inline">\(\mathcal{M}_\mathrm{precomp}^h\)</span>をまとめて、変数<code>grid_maps</code>に格納します。 <span class="math display">\[
+\mathcal{M}_\mathrm{precomp}^h(i, j)
+= \max_{\substack{i \le i&#39; &lt; i + 2^h \\ j \le j&#39; &lt; j + 2^h}} \mathcal{M}(i&#39;, j&#39;)
+\]</span></p></li>
+<li><p>その後、優先度付きキュー<span class="math inline">\(\mathcal{C}\)</span>を作成します(ここでは優先度付きキューを用いましたが、単なるスタックで良いと思います)。 これは変数<code>node_queue</code>に対応します。 優先度付きキュー<span class="math inline">\(\mathcal{C}\)</span>を、高さ<span class="math inline">\(h_0\)</span>の一連のノード<span class="math inline">\(\mathcal{C}_0\)</span>で初期化します(探索領域の定義が少し異なるので、それに応じて<span class="math inline">\(\overline{\mathcal{W}}_0\)</span>と<span class="math inline">\(\mathcal{C}_0\)</span>の定義も変えています)。 ソースコードは変数<code>x</code>、<code>y</code>、<code>t</code>の3重ループになっていますが、<span class="math inline">\(\overline{\mathcal{W}}_{0, x}\)</span>、<span class="math inline">\(\overline{\mathcal{W}}_{0, y}\)</span>、<span class="math inline">\(\overline{\mathcal{W}}_{0, \theta}\)</span>の各要素を順に辿っているわけです。 <span class="math display">\[
+\begin{eqnarray}
+  \overline{\mathcal{W}}_{0, x} &amp;=&amp; \left\{ -w_x + 2^{h_0} j_x \mid
+  j_x \in \mathbb{Z}, 0 \le 2^{h_0} j_x &lt; 2 w_x \right\} \\
+  \overline{\mathcal{W}}_{0, y} &amp;=&amp; \left\{ -w_y + 2^{h_0} j_y \mid
+  j_y \in \mathbb{Z}, 0 \le 2^{h_0} j_y &lt; 2 w_y \right\} \\
+  \overline{\mathcal{W}}_{0, \theta} &amp;=&amp; \left\{ j_\theta \mid
+  j_\theta \in \mathbb{Z}, -w_\theta \le j_\theta &lt; w_\theta \right\} \\
+  \mathcal{C}_0 &amp;=&amp; \overline{\mathcal{W}}_{0, x}
+  \times \overline{\mathcal{W}}_{0, y}
+  \times \overline{\mathcal{W}}_{0, \theta}
+  \times \left\{ h_0 \right\}
+\end{eqnarray}
+\]</span> 各ノード<span class="math inline">\(\mathbf{c} = \left( -w_x + 2^{h_0} j_x, -w_y + 2^{h_0} j_y, j_\theta, h_0 \right) \in \mathcal{C}_0\)</span>について、<code>append_node()</code>関数を呼び出します。 引数<code>x</code>、<code>y</code>、<code>t</code>は、<span class="math inline">\(-w_x + 2^{h_0} j_x\)</span>、<span class="math inline">\(-w_y + 2^{h_0} j_y\)</span>、<span class="math inline">\(j_\theta\)</span>に対応します。 また引数<code>height</code>は<span class="math inline">\(h_0\)</span>、引数<code>indices</code>は以下で定義するインデックス<span class="math inline">\(\{ (I_{i, x}^0, I_{i, y}^0) \}\)</span>に対応します。 <code>append_node()</code>関数内では、スコアの上界<span class="math inline">\(\overline{s}(\mathbf{c})\)</span>を次のような手順で計算し、変数<code>score</code>に格納します。 最初に、解の候補<span class="math inline">\((0, 0, j_\theta)\)</span>に対応する姿勢<span class="math inline">\(\mathbf{\xi}(0, 0, j_\theta)\)</span>を計算し、変数<code>pose</code>に格納します。 <span class="math display">\[
+\mathbf{\xi}(0, 0, j_\theta)
+= \mathbf{\xi}_0 + \left[ 0, 0, \delta_\theta j_\theta \right]^\top
+= \left[ \xi_{0, x}, \xi_{0, y},
+\xi_{0, \theta} + \delta_\theta j_\theta \right]^\top
+\]</span> この姿勢<span class="math inline">\(\mathbf{\xi}(0, 0, j_\theta)\)</span>を基に、スキャン点<span class="math inline">\(\mathbf{z}_i = (r_i, \theta_i)\)</span>に対応する地図上の格子のインデックス<span class="math inline">\((I_{i, x}^0, I_{i, y}^0)\)</span>を計算し、変数<code>indices</code>に格納します。 <span class="math display">\[
+\begin{eqnarray}
+  I_{i, x}^0 &amp;=&amp; \left\lfloor \frac{\xi_{0, x} + r_i \cos \left(
+  \xi_{0, \theta} + \delta_\theta j_\theta
+  + \theta_i \right)}{r} \right\rfloor \\
+  I_{i, y}^0 &amp;=&amp; \left\lfloor \frac{\xi_{0, y} + r_i \sin \left(
+  \xi_{0, \theta} + \delta_\theta j_\theta
+  + \theta_i \right)}{r} \right\rfloor
+\end{eqnarray}
+\]</span> その後<code>compute_score()</code>メソッドを用いて、スコアの上界<span class="math inline">\(\overline{s}(\mathbf{c})\)</span>を計算します。 <code>compute_score()</code>メソッドの引数<code>grid_map</code>は<span class="math inline">\(\mathcal{M}_\mathrm{precomp}^{h_0}\)</span>、<code>indices</code>はインデックス<span class="math inline">\(\{ (I_{i, x}^0, I_{i, y}^0) \}\)</span>、また<code>offset</code>は<span class="math inline">\((-w_x + 2^{h_0} j_x, -w_y + 2^{h_0} j_y)\)</span>にそれぞれ対応しています。 <span class="math display">\[
+\overline{s}(\mathbf{c}) = \sum_{i = 1}^N
+\mathcal{M}_\mathrm{precomp}^{h_0}(I_{i, x}^0 - w_x + 2^{h_0} j_x,
+I_{i, y}^0 - w_y + 2^{h_0} j_y)
+\]</span> スコアの上界<span class="math inline">\(\overline{s}(\mathbf{c})\)</span>が最も高いノード<span class="math inline">\(\mathbf{c} \in \mathcal{C}_0\)</span>が先頭に来るように、<span class="math inline">\(\mathcal{C}_0\)</span>に含まれる全てのノードを優先度付きキュー<span class="math inline">\(\mathcal{C}\)</span>に追加していきます。 優先度付きキューには、ノード<span class="math inline">\(\mathbf{c}\)</span>の4つのパラメータ<span class="math inline">\((-w_x + 2^{h_0} j_x, -w_y + 2^{h_0} j_y, j_\theta, h_0)\)</span>(変数<code>x</code>、<code>y</code>、<code>theta</code>、<code>height</code>)のほかに、スコアの上界<span class="math inline">\(\overline{s}(\mathbf{c})\)</span>(変数<code>score</code>)、そしてインデックス<span class="math inline">\(\{ (I_{i, x}^0, I_{i, y}^0) \}\)</span>(変数<code>indices</code>)も追加しておきます。</p></li>
+<li><p>優先度付きキュー<span class="math inline">\(\mathcal{C}\)</span>(変数<code>node_queue</code>)が空になるまで、以下の処理を繰り返します。</p>
+<ul>
+<li><p><span class="math inline">\(\mathcal{C}\)</span>の先頭から、ノード<span class="math inline">\(\mathbf{c} = (c_x, c_y, c_\theta, h) \in \overline{\mathcal{W}}\)</span>とスコアの上界<span class="math inline">\(\overline{s}(\mathbf{c})\)</span>、そしてインデックス<span class="math inline">\(\{ (I_{i, x}^0, I_{i, y}^0) \}\)</span>を取得します。 <span class="math inline">\((I_{i, x}^0, I_{i, y}^0)\)</span>は、姿勢<span class="math inline">\(\mathbf{\xi}(0, 0, c_\theta)\)</span>のもとで計算した、スキャン点<span class="math inline">\(\mathbf{z}_i = (r_i, \theta_i)\)</span>に対応する格子のインデックスです(上記の説明を確認してください)。 <span class="math inline">\(c_x, c_y, c_\theta, h\)</span>は変数<code>x</code>、<code>y</code>、<code>t</code>、<code>height</code>、上界<span class="math inline">\(\overline{s}(\mathbf{c})\)</span>は変数<code>score</code>、またインデックス<span class="math inline">\(\{ (I_{i, x}^0, I_{i, y}^0) \}\)</span>は変数<code>indices</code>に格納されます。</p></li>
+<li><p>スコアの上界<span class="math inline">\(\overline{s}(\mathbf{c})\)</span>が、現在の最大スコア<span class="math inline">\(s^*\)</span>(変数<code>best_score</code>)以下であれば、現在のノード<span class="math inline">\(\mathbf{c}\)</span>と、その子ノードの探索は不要です(<strong>枝刈り</strong>)。</p></li>
+<li><p>現在のノード<span class="math inline">\(\mathbf{c}\)</span>が葉ノードである場合(高さ<span class="math inline">\(h = 0\)</span>)は、現在の最大スコア<span class="math inline">\(s^*\)</span>(変数<code>best_score</code>)を<span class="math inline">\(\overline{s}(\mathbf{c})\)</span>、また最適解<span class="math inline">\((j_x^*, j_y^*, j_\theta^*)\)</span>(変数<code>best_x</code>、<code>best_y</code>、<code>best_theta</code>)を<span class="math inline">\((c_x, c_y, c_\theta)\)</span>で更新します。</p></li>
+<li><p>現在のノード<span class="math inline">\(\mathbf{c}\)</span>が葉ノードでなければ、4つの子ノード<span class="math inline">\(\mathbf{c}_1, \mathbf{c}_2, \mathbf{c}_3, \mathbf{c}_4\)</span>に分割します。 <span class="math display">\[
+\begin{eqnarray}
+  \mathbf{c}_1 &amp;=&amp; (c_x, c_y, c_\theta, h - 1) \\
+  \mathbf{c}_2 &amp;=&amp; (c_x + 2^{h - 1}, c_y, c_\theta, h - 1) \\
+  \mathbf{c}_3 &amp;=&amp; (c_x, c_y + 2^{h - 1}, c_\theta, h - 1) \\
+  \mathbf{c}_4 &amp;=&amp; (c_x + 2^{h - 1}, c_y + 2^{h - 1}, c_\theta, h - 1)
+\end{eqnarray}
+\]</span> 変数<code>new_x</code>、<code>new_y</code>、<code>new_height</code>、<code>s</code>は、<span class="math inline">\(c_x, c_y, h - 1, 2^{h - 1}\)</span>にそれぞれ対応します。 4つの子ノードに対して<code>append_node()</code>関数が順に呼び出されます。 <code>append_node()</code>関数内では、スコアの上界<span class="math inline">\(\overline{s}(\mathbf{c}_1), \overline{s}(\mathbf{c}_2), \overline{s}(\mathbf{c}_3), \overline{s}(\mathbf{c}_4)\)</span>を計算します。 <span class="math display">\[
+\begin{eqnarray}
+  \overline{s}(\mathbf{c}_1)
+  &amp;=&amp; \sum_{i = 1}^N \mathcal{M}_\mathrm{precomp}^{h - 1}(
+  I_{i, x}^0 + c_x, I_{i, y}^0 + c_y) \\
+  \overline{s}(\mathbf{c}_2)
+  &amp;=&amp; \sum_{i = 1}^N \mathcal{M}_\mathrm{precomp}^{h - 1}(
+  I_{i, x}^0 + c_x + 2^{h - 1}, I_{i, y}^0 + c_y) \\
+  \overline{s}(\mathbf{c}_3)
+  &amp;=&amp; \sum_{i = 1}^N \mathcal{M}_\mathrm{precomp}^{h - 1}(
+  I_{i, x}^0 + c_x, I_{i, y}^0 + c_y + 2^{h - 1}) \\
+  \overline{s}(\mathbf{c}_4)
+  &amp;=&amp; \sum_{i = 1}^N \mathcal{M}_\mathrm{precomp}^{h - 1}(
+  I_{i, x}^0 + c_x + 2^{h - 1}, I_{i, y}^0 + c_y + 2^{h - 1}) \\
+  I_{i, x}^0 &amp;=&amp; \left\lfloor \frac{\xi_{0, x} + r_i \cos \left(
+  \xi_{0, \theta} + \delta_\theta c_\theta
+  + \theta_i \right)}{r} \right\rfloor \\
+  I_{i, y}^0 &amp;=&amp; \left\lfloor \frac{\xi_{0, y} + r_i \sin \left(
+  \xi_{0, \theta} + \delta_\theta c_\theta
+  + \theta_i \right)}{r} \right\rfloor
+\end{eqnarray}
+\]</span> 4つの子ノードは、親ノード<span class="math inline">\(\mathbf{c}\)</span>と同様の回転<span class="math inline">\(c_\theta\)</span>を表しています。 従って、スコアの上界の計算時にインデックス<span class="math inline">\(\{ (I_{i, x}^0, I_{i, y}^0) \}\)</span>を再利用できます。 LiDAR座標系から地図座標系への座標変換と、地図座標から格子のインデックスへの変換の2つを省略できます。 上界の最も大きな子ノードが先頭に来るように、4つの子ノードを優先度付きキューに追加していきます(ノードの4つのパラメータに加えて、上界とインデックスも一緒に追加)。</p></li>
+</ul></li>
+<li><p>上記の手続きによって最適解<span class="math inline">\((j_x^*, j_y^*, j_\theta^*) \in \overline{\mathcal{W}}\)</span>が得られたので、最適な姿勢<span class="math inline">\(\mathbf{\xi}^* \in \mathcal{W}\)</span>を計算します(変数<code>best_pose</code>)。 <span class="math display">\[
+\mathbf{\xi}^* = \left[ \xi_{0, x} + r j_x^*, \xi_{0, y} + r j_y^*,
+\xi_{0, \theta} + \delta_\theta j_\theta^* \right]^\top \in \mathcal{W}
+\]</span></p></li>
+<li><p>スコアの最大値<span class="math inline">\(s^*\)</span>、最適解<span class="math inline">\((j_x^*, j_y^*, j_\theta^*) \in \overline{\mathcal{W}}\)</span>、最適な姿勢<span class="math inline">\(\mathbf{\xi}^* \in \mathcal{W}\)</span>などをまとめて返します。</p></li>
+</ul>
+<div class="sourceCode" id="lst:py-source" data-startFrom="1"><pre class="sourceCode numberSource py numberLines"><code class="sourceCode python"><span id="lst:py-source-1"><a href="#lst:py-source-1"></a><span class="co"># coding: utf-8</span></span>
+<span id="lst:py-source-2"><a href="#lst:py-source-2"></a><span class="co"># scan_matcher_branch_bound.py</span></span>
+<span id="lst:py-source-3"><a href="#lst:py-source-3"></a></span>
+<span id="lst:py-source-4"><a href="#lst:py-source-4"></a><span class="im">import</span> heapq</span>
+<span id="lst:py-source-5"><a href="#lst:py-source-5"></a><span class="im">import</span> math</span>
+<span id="lst:py-source-6"><a href="#lst:py-source-6"></a></span>
+<span id="lst:py-source-7"><a href="#lst:py-source-7"></a><span class="im">from</span> typing <span class="im">import</span> Any, List, Tuple</span>
+<span id="lst:py-source-8"><a href="#lst:py-source-8"></a></span>
+<span id="lst:py-source-9"><a href="#lst:py-source-9"></a><span class="im">from</span> grid_2d <span class="im">import</span> Grid2D, compute_coarse_map</span>
+<span id="lst:py-source-10"><a href="#lst:py-source-10"></a><span class="im">from</span> point_2d <span class="im">import</span> Point2D</span>
+<span id="lst:py-source-11"><a href="#lst:py-source-11"></a><span class="im">from</span> pose_2d <span class="im">import</span> Pose2D, project_point_2d, wrap_angle</span>
+<span id="lst:py-source-12"><a href="#lst:py-source-12"></a></span>
+<span id="lst:py-source-13"><a href="#lst:py-source-13"></a><span class="kw">class</span> ScanMatcherBranchBound(<span class="bu">object</span>):</span>
+<span id="lst:py-source-14"><a href="#lst:py-source-14"></a>    <span class="co">&quot;&quot;&quot;`ScanMatcherBranchBound` class implements branch-and-bound scan matching,</span></span>
+<span id="lst:py-source-15"><a href="#lst:py-source-15"></a><span class="co">    which aligns a LiDAR scan and a 2D occupancy grid map. </span><span class="ch">\n</span></span>
+<span id="lst:py-source-16"><a href="#lst:py-source-16"></a><span class="co">    For more details, please refer to the following paper: </span><span class="ch">\n</span></span>
+<span id="lst:py-source-17"><a href="#lst:py-source-17"></a><span class="co">    Wolfgang Hess, Damon Kohler, Holger Rapp, and Daniel Andor.</span></span>
+<span id="lst:py-source-18"><a href="#lst:py-source-18"></a><span class="co">    &quot;Real-time Loop Closure in 2D LiDAR SLAM,&quot; in Proceedings of the IEEE</span></span>
+<span id="lst:py-source-19"><a href="#lst:py-source-19"></a><span class="co">    International Conference on Robotics and Automation (ICRA), 2016.</span></span>
+<span id="lst:py-source-20"><a href="#lst:py-source-20"></a><span class="co">    &quot;&quot;&quot;</span></span>
+<span id="lst:py-source-21"><a href="#lst:py-source-21"></a></span>
+<span id="lst:py-source-22"><a href="#lst:py-source-22"></a>    <span class="kw">class</span> Result(<span class="bu">object</span>):</span>
+<span id="lst:py-source-23"><a href="#lst:py-source-23"></a>        <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, win: Tuple[<span class="bu">int</span>, <span class="bu">int</span>, <span class="bu">int</span>],</span>
+<span id="lst:py-source-24"><a href="#lst:py-source-24"></a>                     step: Tuple[<span class="bu">float</span>, <span class="bu">float</span>, <span class="bu">float</span>],</span>
+<span id="lst:py-source-25"><a href="#lst:py-source-25"></a>                     best: Tuple[<span class="bu">int</span>, <span class="bu">int</span>, <span class="bu">int</span>], best_score: <span class="bu">float</span>,</span>
+<span id="lst:py-source-26"><a href="#lst:py-source-26"></a>                     initial_pose: Pose2D, best_pose: Pose2D,</span>
+<span id="lst:py-source-27"><a href="#lst:py-source-27"></a>                     num_solutions: <span class="bu">int</span>, num_processed: <span class="bu">int</span>) <span class="op">-&gt;</span> <span class="va">None</span>:</span>
+<span id="lst:py-source-28"><a href="#lst:py-source-28"></a>            <span class="va">self</span>.win_x, <span class="va">self</span>.win_y, <span class="va">self</span>.win_theta <span class="op">=</span> win</span>
+<span id="lst:py-source-29"><a href="#lst:py-source-29"></a>            <span class="va">self</span>.step_x, <span class="va">self</span>.step_y, <span class="va">self</span>.step_theta <span class="op">=</span> step</span>
+<span id="lst:py-source-30"><a href="#lst:py-source-30"></a>            <span class="va">self</span>.best_x, <span class="va">self</span>.best_y, <span class="va">self</span>.best_theta <span class="op">=</span> best</span>
+<span id="lst:py-source-31"><a href="#lst:py-source-31"></a>            <span class="va">self</span>.best_score <span class="op">=</span> best_score</span>
+<span id="lst:py-source-32"><a href="#lst:py-source-32"></a>            <span class="va">self</span>.initial_pose <span class="op">=</span> initial_pose</span>
+<span id="lst:py-source-33"><a href="#lst:py-source-33"></a>            <span class="va">self</span>.best_pose <span class="op">=</span> best_pose</span>
+<span id="lst:py-source-34"><a href="#lst:py-source-34"></a>            <span class="va">self</span>.num_solutions <span class="op">=</span> num_solutions</span>
+<span id="lst:py-source-35"><a href="#lst:py-source-35"></a>            <span class="va">self</span>.num_processed <span class="op">=</span> num_processed</span>
+<span id="lst:py-source-36"><a href="#lst:py-source-36"></a></span>
+<span id="lst:py-source-37"><a href="#lst:py-source-37"></a>        <span class="kw">def</span> dump(<span class="va">self</span>) <span class="op">-&gt;</span> <span class="va">None</span>:</span>
+<span id="lst:py-source-38"><a href="#lst:py-source-38"></a>            msg <span class="op">=</span> <span class="st">&quot;Statistics for branch-and-bound scan matcher</span><span class="ch">\n</span><span class="st">&quot;</span> \</span>
+<span id="lst:py-source-39"><a href="#lst:py-source-39"></a>                  <span class="st">&quot;Window size: (</span><span class="sc">{}</span><span class="st">, </span><span class="sc">{}</span><span class="st">, </span><span class="sc">{}</span><span class="st">)</span><span class="ch">\n</span><span class="st">&quot;</span> \</span>
+<span id="lst:py-source-40"><a href="#lst:py-source-40"></a>                  <span class="st">&quot;Step size: (</span><span class="sc">{:.6f}</span><span class="st"> m, </span><span class="sc">{:.6f}</span><span class="st"> m, </span><span class="sc">{:.6f}</span><span class="st"> rad)</span><span class="ch">\n</span><span class="st">&quot;</span> \</span>
+<span id="lst:py-source-41"><a href="#lst:py-source-41"></a>                  <span class="st">&quot;Best solution: (</span><span class="sc">{}</span><span class="st">, </span><span class="sc">{}</span><span class="st">, </span><span class="sc">{}</span><span class="st">)</span><span class="ch">\n</span><span class="st">&quot;</span> \</span>
+<span id="lst:py-source-42"><a href="#lst:py-source-42"></a>                  <span class="st">&quot;Best score: </span><span class="sc">{}</span><span class="ch">\n</span><span class="st">&quot;</span> \</span>
+<span id="lst:py-source-43"><a href="#lst:py-source-43"></a>                  <span class="st">&quot;Initial pose: (</span><span class="sc">{:.6f}</span><span class="st"> m, </span><span class="sc">{:.6f}</span><span class="st"> m, </span><span class="sc">{:.6f}</span><span class="st"> rad)</span><span class="ch">\n</span><span class="st">&quot;</span> \</span>
+<span id="lst:py-source-44"><a href="#lst:py-source-44"></a>                  <span class="st">&quot;Final pose: (</span><span class="sc">{:.6f}</span><span class="st"> m, </span><span class="sc">{:.6f}</span><span class="st"> m, </span><span class="sc">{:.6f}</span><span class="st"> rad)</span><span class="ch">\n</span><span class="st">&quot;</span> \</span>
+<span id="lst:py-source-45"><a href="#lst:py-source-45"></a>                  <span class="st">&quot;# of possible solutions: </span><span class="sc">{}</span><span class="ch">\n</span><span class="st">&quot;</span> \</span>
+<span id="lst:py-source-46"><a href="#lst:py-source-46"></a>                  <span class="st">&quot;# of solutions processed: </span><span class="sc">{}</span><span class="ch">\n</span><span class="st">&quot;</span></span>
+<span id="lst:py-source-47"><a href="#lst:py-source-47"></a>            <span class="bu">print</span>(msg.<span class="bu">format</span>(<span class="va">self</span>.win_x <span class="op">*</span> <span class="dv">2</span>, <span class="va">self</span>.win_y <span class="op">*</span> <span class="dv">2</span>, <span class="va">self</span>.win_theta <span class="op">*</span> <span class="dv">2</span>,</span>
+<span id="lst:py-source-48"><a href="#lst:py-source-48"></a>                             <span class="va">self</span>.step_x, <span class="va">self</span>.step_y, <span class="va">self</span>.step_theta,</span>
+<span id="lst:py-source-49"><a href="#lst:py-source-49"></a>                             <span class="va">self</span>.best_x, <span class="va">self</span>.best_y, <span class="va">self</span>.best_theta,</span>
+<span id="lst:py-source-50"><a href="#lst:py-source-50"></a>                             <span class="va">self</span>.best_score,</span>
+<span id="lst:py-source-51"><a href="#lst:py-source-51"></a>                             <span class="va">self</span>.initial_pose.x, <span class="va">self</span>.initial_pose.y,</span>
+<span id="lst:py-source-52"><a href="#lst:py-source-52"></a>                             <span class="va">self</span>.initial_pose.theta,</span>
+<span id="lst:py-source-53"><a href="#lst:py-source-53"></a>                             <span class="va">self</span>.best_pose.x, <span class="va">self</span>.best_pose.y,</span>
+<span id="lst:py-source-54"><a href="#lst:py-source-54"></a>                             <span class="va">self</span>.best_pose.theta,</span>
+<span id="lst:py-source-55"><a href="#lst:py-source-55"></a>                             <span class="va">self</span>.num_solutions, <span class="va">self</span>.num_processed))</span>
+<span id="lst:py-source-56"><a href="#lst:py-source-56"></a></span>
+<span id="lst:py-source-57"><a href="#lst:py-source-57"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, window_size_x: <span class="bu">float</span>, window_size_y: <span class="bu">float</span>,</span>
+<span id="lst:py-source-58"><a href="#lst:py-source-58"></a>                 window_size_theta: <span class="bu">float</span>, min_step_theta: <span class="bu">float</span>,</span>
+<span id="lst:py-source-59"><a href="#lst:py-source-59"></a>                 max_node_height: <span class="bu">int</span>) <span class="op">-&gt;</span> <span class="va">None</span>:</span>
+<span id="lst:py-source-60"><a href="#lst:py-source-60"></a>        <span class="va">self</span>.window_size_x <span class="op">=</span> window_size_x</span>
+<span id="lst:py-source-61"><a href="#lst:py-source-61"></a>        <span class="va">self</span>.window_size_y <span class="op">=</span> window_size_y</span>
+<span id="lst:py-source-62"><a href="#lst:py-source-62"></a>        <span class="va">self</span>.window_size_theta <span class="op">=</span> window_size_theta</span>
+<span id="lst:py-source-63"><a href="#lst:py-source-63"></a>        <span class="va">self</span>.min_step_theta <span class="op">=</span> min_step_theta</span>
+<span id="lst:py-source-64"><a href="#lst:py-source-64"></a>        <span class="va">self</span>.max_node_height <span class="op">=</span> max_node_height</span>
+<span id="lst:py-source-65"><a href="#lst:py-source-65"></a>        <span class="va">self</span>.max_stride <span class="op">=</span> <span class="dv">1</span> <span class="op">&lt;&lt;</span> <span class="va">self</span>.max_node_height</span>
+<span id="lst:py-source-66"><a href="#lst:py-source-66"></a></span>
+<span id="lst:py-source-67"><a href="#lst:py-source-67"></a>    <span class="kw">def</span> compute_step(<span class="va">self</span>, grid_map: Grid2D, scan: List[Point2D]):</span>
+<span id="lst:py-source-68"><a href="#lst:py-source-68"></a>        ranges <span class="op">=</span> [(p.x <span class="op">**</span> <span class="dv">2</span> <span class="op">+</span> p.y <span class="op">**</span> <span class="dv">2</span>) <span class="cf">for</span> p <span class="kw">in</span> scan]</span>
+<span id="lst:py-source-69"><a href="#lst:py-source-69"></a>        theta <span class="op">=</span> grid_map.resolution() <span class="op">/</span> <span class="bu">max</span>(ranges)</span>
+<span id="lst:py-source-70"><a href="#lst:py-source-70"></a></span>
+<span id="lst:py-source-71"><a href="#lst:py-source-71"></a>        step_x <span class="op">=</span> grid_map.resolution()</span>
+<span id="lst:py-source-72"><a href="#lst:py-source-72"></a>        step_y <span class="op">=</span> grid_map.resolution()</span>
+<span id="lst:py-source-73"><a href="#lst:py-source-73"></a>        step_theta <span class="op">=</span> math.acos(<span class="fl">1.0</span> <span class="op">-</span> <span class="fl">0.5</span> <span class="op">*</span> (theta <span class="op">**</span> <span class="dv">2</span>))</span>
+<span id="lst:py-source-74"><a href="#lst:py-source-74"></a>        step_theta <span class="op">=</span> <span class="bu">max</span>(step_theta, <span class="va">self</span>.min_step_theta)</span>
+<span id="lst:py-source-75"><a href="#lst:py-source-75"></a></span>
+<span id="lst:py-source-76"><a href="#lst:py-source-76"></a>        <span class="cf">return</span> step_x, step_y, step_theta</span>
+<span id="lst:py-source-77"><a href="#lst:py-source-77"></a></span>
+<span id="lst:py-source-78"><a href="#lst:py-source-78"></a>    <span class="kw">def</span> compute_window(<span class="va">self</span>, step_x: <span class="bu">float</span>, step_y: <span class="bu">float</span>, step_theta: <span class="bu">float</span>):</span>
+<span id="lst:py-source-79"><a href="#lst:py-source-79"></a>        <span class="cf">return</span> <span class="bu">int</span>(math.ceil(<span class="fl">0.5</span> <span class="op">*</span> <span class="va">self</span>.window_size_x <span class="op">/</span> step_x)), <span class="op">\</span></span>
+<span id="lst:py-source-80"><a href="#lst:py-source-80"></a>               <span class="bu">int</span>(math.ceil(<span class="fl">0.5</span> <span class="op">*</span> <span class="va">self</span>.window_size_y <span class="op">/</span> step_y)), <span class="op">\</span></span>
+<span id="lst:py-source-81"><a href="#lst:py-source-81"></a>               <span class="bu">int</span>(math.ceil(<span class="fl">0.5</span> <span class="op">*</span> <span class="va">self</span>.window_size_theta <span class="op">/</span> step_theta))</span>
+<span id="lst:py-source-82"><a href="#lst:py-source-82"></a></span>
+<span id="lst:py-source-83"><a href="#lst:py-source-83"></a>    <span class="kw">def</span> compute_score(<span class="va">self</span>, grid_map: Grid2D, indices: List[Tuple[<span class="bu">int</span>, <span class="bu">int</span>]],</span>
+<span id="lst:py-source-84"><a href="#lst:py-source-84"></a>                      offset: Tuple[<span class="bu">int</span>, <span class="bu">int</span>]) <span class="op">-&gt;</span> <span class="bu">int</span>:</span>
+<span id="lst:py-source-85"><a href="#lst:py-source-85"></a>        score <span class="op">=</span> <span class="dv">0</span></span>
+<span id="lst:py-source-86"><a href="#lst:py-source-86"></a>        <span class="cf">for</span> idx_base <span class="kw">in</span> indices:</span>
+<span id="lst:py-source-87"><a href="#lst:py-source-87"></a>            idx <span class="op">=</span> (idx_base[<span class="dv">0</span>] <span class="op">+</span> offset[<span class="dv">0</span>], idx_base[<span class="dv">1</span>] <span class="op">+</span> offset[<span class="dv">1</span>])</span>
+<span id="lst:py-source-88"><a href="#lst:py-source-88"></a>            <span class="cf">if</span> grid_map.is_index_inside(<span class="op">*</span>idx):</span>
+<span id="lst:py-source-89"><a href="#lst:py-source-89"></a>                score <span class="op">+=</span> grid_map.get_index_value(<span class="op">*</span>idx)</span>
+<span id="lst:py-source-90"><a href="#lst:py-source-90"></a>        <span class="cf">return</span> score</span>
+<span id="lst:py-source-91"><a href="#lst:py-source-91"></a></span>
+<span id="lst:py-source-92"><a href="#lst:py-source-92"></a>    <span class="kw">def</span> match_scan(<span class="va">self</span>, initial_pose: Pose2D, grid_map: Grid2D,</span>
+<span id="lst:py-source-93"><a href="#lst:py-source-93"></a>                   scan: List[Point2D]) <span class="op">-&gt;</span> Tuple[Pose2D, Any]:</span>
+<span id="lst:py-source-94"><a href="#lst:py-source-94"></a>        <span class="co"># Determine the search step and window size</span></span>
+<span id="lst:py-source-95"><a href="#lst:py-source-95"></a>        step <span class="op">=</span> <span class="va">self</span>.compute_step(grid_map, scan)</span>
+<span id="lst:py-source-96"><a href="#lst:py-source-96"></a>        win <span class="op">=</span> <span class="va">self</span>.compute_window(<span class="op">*</span>step)</span>
+<span id="lst:py-source-97"><a href="#lst:py-source-97"></a>        step_x, step_y, step_theta <span class="op">=</span> step</span>
+<span id="lst:py-source-98"><a href="#lst:py-source-98"></a>        win_x, win_y, win_theta <span class="op">=</span> win</span>
+<span id="lst:py-source-99"><a href="#lst:py-source-99"></a>        best_x, best_y, best_theta, best_score <span class="op">=</span> <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span></span>
+<span id="lst:py-source-100"><a href="#lst:py-source-100"></a></span>
+<span id="lst:py-source-101"><a href="#lst:py-source-101"></a>        num_solutions <span class="op">=</span> (<span class="dv">2</span> <span class="op">*</span> win_x) <span class="op">*</span> (<span class="dv">2</span> <span class="op">*</span> win_y) <span class="op">*</span> (<span class="dv">2</span> <span class="op">*</span> win_theta)</span>
+<span id="lst:py-source-102"><a href="#lst:py-source-102"></a>        num_processed <span class="op">=</span> <span class="dv">0</span></span>
+<span id="lst:py-source-103"><a href="#lst:py-source-103"></a></span>
+<span id="lst:py-source-104"><a href="#lst:py-source-104"></a>        <span class="co"># Compute coarse grid maps, which are analogous to image pyramids</span></span>
+<span id="lst:py-source-105"><a href="#lst:py-source-105"></a>        grid_maps <span class="op">=</span> [grid_map]</span>
+<span id="lst:py-source-106"><a href="#lst:py-source-106"></a></span>
+<span id="lst:py-source-107"><a href="#lst:py-source-107"></a>        <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="va">self</span>.max_node_height):</span>
+<span id="lst:py-source-108"><a href="#lst:py-source-108"></a>            grid_maps.append(compute_coarse_map(grid_map, <span class="dv">2</span> <span class="op">&lt;&lt;</span> i))</span>
+<span id="lst:py-source-109"><a href="#lst:py-source-109"></a></span>
+<span id="lst:py-source-110"><a href="#lst:py-source-110"></a>        <span class="co"># `node_queue` is a priority queue of nodes, where each node represents</span></span>
+<span id="lst:py-source-111"><a href="#lst:py-source-111"></a>        <span class="co"># a subregion in the 3D search window along x, y, and theta axes</span></span>
+<span id="lst:py-source-112"><a href="#lst:py-source-112"></a>        node_queue <span class="op">=</span> []</span>
+<span id="lst:py-source-113"><a href="#lst:py-source-113"></a></span>
+<span id="lst:py-source-114"><a href="#lst:py-source-114"></a>        <span class="kw">def</span> append_node(x: <span class="bu">int</span>, y: <span class="bu">int</span>, theta: <span class="bu">int</span>,</span>
+<span id="lst:py-source-115"><a href="#lst:py-source-115"></a>                        height: <span class="bu">int</span>, indices: List[Tuple[<span class="bu">int</span>, <span class="bu">int</span>]]):</span>
+<span id="lst:py-source-116"><a href="#lst:py-source-116"></a>            score <span class="op">=</span> <span class="va">self</span>.compute_score(grid_maps[height], indices, (x, y))</span>
+<span id="lst:py-source-117"><a href="#lst:py-source-117"></a></span>
+<span id="lst:py-source-118"><a href="#lst:py-source-118"></a>            <span class="cf">if</span> score <span class="op">&gt;</span> best_score:</span>
+<span id="lst:py-source-119"><a href="#lst:py-source-119"></a>                <span class="co"># Store the negative score as a key, since `heapq.heappop()`</span></span>
+<span id="lst:py-source-120"><a href="#lst:py-source-120"></a>                <span class="co"># returns a node with the smallest key</span></span>
+<span id="lst:py-source-121"><a href="#lst:py-source-121"></a>                heapq.heappush(node_queue,</span>
+<span id="lst:py-source-122"><a href="#lst:py-source-122"></a>                    (<span class="op">-</span>score, (x, y, theta, height, indices, score)))</span>
+<span id="lst:py-source-123"><a href="#lst:py-source-123"></a></span>
+<span id="lst:py-source-124"><a href="#lst:py-source-124"></a>        <span class="co"># Initialize a priority queue</span></span>
+<span id="lst:py-source-125"><a href="#lst:py-source-125"></a>        <span class="cf">for</span> t <span class="kw">in</span> <span class="bu">range</span>(<span class="op">-</span>win_theta, win_theta):</span>
+<span id="lst:py-source-126"><a href="#lst:py-source-126"></a>            pose <span class="op">=</span> Pose2D(initial_pose.x, initial_pose.y,</span>
+<span id="lst:py-source-127"><a href="#lst:py-source-127"></a>                          initial_pose.theta <span class="op">+</span> t <span class="op">*</span> step_theta)</span>
+<span id="lst:py-source-128"><a href="#lst:py-source-128"></a>            points <span class="op">=</span> [project_point_2d(pose, p) <span class="cf">for</span> p <span class="kw">in</span> scan]</span>
+<span id="lst:py-source-129"><a href="#lst:py-source-129"></a>            indices <span class="op">=</span> [grid_map.point_to_index(p) <span class="cf">for</span> p <span class="kw">in</span> points]</span>
+<span id="lst:py-source-130"><a href="#lst:py-source-130"></a></span>
+<span id="lst:py-source-131"><a href="#lst:py-source-131"></a>            <span class="cf">for</span> y <span class="kw">in</span> <span class="bu">range</span>(<span class="op">-</span>win_y, win_y, <span class="va">self</span>.max_stride):</span>
+<span id="lst:py-source-132"><a href="#lst:py-source-132"></a>                <span class="cf">for</span> x <span class="kw">in</span> <span class="bu">range</span>(<span class="op">-</span>win_x, win_x, <span class="va">self</span>.max_stride):</span>
+<span id="lst:py-source-133"><a href="#lst:py-source-133"></a>                    append_node(x, y, t, <span class="va">self</span>.max_node_height, indices)</span>
+<span id="lst:py-source-134"><a href="#lst:py-source-134"></a></span>
+<span id="lst:py-source-135"><a href="#lst:py-source-135"></a>        <span class="cf">while</span> node_queue:</span>
+<span id="lst:py-source-136"><a href="#lst:py-source-136"></a>            <span class="co"># Get the node from the priority queue</span></span>
+<span id="lst:py-source-137"><a href="#lst:py-source-137"></a>            _, (x, y, t, height, indices, score) <span class="op">=</span> heapq.heappop(node_queue)</span>
+<span id="lst:py-source-138"><a href="#lst:py-source-138"></a>            num_processed <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="lst:py-source-139"><a href="#lst:py-source-139"></a></span>
+<span id="lst:py-source-140"><a href="#lst:py-source-140"></a>            <span class="cf">if</span> score <span class="op">&lt;=</span> best_score:</span>
+<span id="lst:py-source-141"><a href="#lst:py-source-141"></a>                <span class="co"># Skip the node if the score is below the best score so far</span></span>
+<span id="lst:py-source-142"><a href="#lst:py-source-142"></a>                <span class="cf">continue</span></span>
+<span id="lst:py-source-143"><a href="#lst:py-source-143"></a></span>
+<span id="lst:py-source-144"><a href="#lst:py-source-144"></a>            <span class="cf">if</span> height <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="lst:py-source-145"><a href="#lst:py-source-145"></a>                <span class="co"># If the current node is a left, then update the solution</span></span>
+<span id="lst:py-source-146"><a href="#lst:py-source-146"></a>                best_x, best_y, best_theta, best_score <span class="op">=</span> x, y, t, score</span>
+<span id="lst:py-source-147"><a href="#lst:py-source-147"></a>            <span class="cf">else</span>:</span>
+<span id="lst:py-source-148"><a href="#lst:py-source-148"></a>                <span class="co"># Otherwise, split the current node into four new nodes</span></span>
+<span id="lst:py-source-149"><a href="#lst:py-source-149"></a>                new_x, new_y, new_height <span class="op">=</span> x, y, height <span class="op">-</span> <span class="dv">1</span></span>
+<span id="lst:py-source-150"><a href="#lst:py-source-150"></a>                <span class="co"># Compute a new stride</span></span>
+<span id="lst:py-source-151"><a href="#lst:py-source-151"></a>                s <span class="op">=</span> <span class="dv">1</span> <span class="op">&lt;&lt;</span> new_height</span>
+<span id="lst:py-source-152"><a href="#lst:py-source-152"></a>                append_node(new_x, new_y, t, new_height, indices)</span>
+<span id="lst:py-source-153"><a href="#lst:py-source-153"></a>                append_node(new_x <span class="op">+</span> s, new_y, t, new_height, indices)</span>
+<span id="lst:py-source-154"><a href="#lst:py-source-154"></a>                append_node(new_x, new_y <span class="op">+</span> s, t, new_height, indices)</span>
+<span id="lst:py-source-155"><a href="#lst:py-source-155"></a>                append_node(new_x <span class="op">+</span> s, new_y <span class="op">+</span> s, t, new_height, indices)</span>
+<span id="lst:py-source-156"><a href="#lst:py-source-156"></a></span>
+<span id="lst:py-source-157"><a href="#lst:py-source-157"></a>        best_pose <span class="op">=</span> Pose2D(initial_pose.x <span class="op">+</span> best_x <span class="op">*</span> step_x,</span>
+<span id="lst:py-source-158"><a href="#lst:py-source-158"></a>                           initial_pose.y <span class="op">+</span> best_y <span class="op">*</span> step_y,</span>
+<span id="lst:py-source-159"><a href="#lst:py-source-159"></a>                           initial_pose.theta <span class="op">+</span> best_theta <span class="op">*</span> step_theta)</span>
+<span id="lst:py-source-160"><a href="#lst:py-source-160"></a>        best_pose.theta <span class="op">=</span> wrap_angle(best_pose.theta)</span>
+<span id="lst:py-source-161"><a href="#lst:py-source-161"></a></span>
+<span id="lst:py-source-162"><a href="#lst:py-source-162"></a>        result <span class="op">=</span> ScanMatcherBranchBound.Result(</span>
+<span id="lst:py-source-163"><a href="#lst:py-source-163"></a>            win, step, (best_x, best_y, best_theta), best_score,</span>
+<span id="lst:py-source-164"><a href="#lst:py-source-164"></a>            initial_pose, best_pose, num_solutions, num_processed)</span>
+<span id="lst:py-source-165"><a href="#lst:py-source-165"></a></span>
+<span id="lst:py-source-166"><a href="#lst:py-source-166"></a>        <span class="cf">return</span> best_pose, result</span></code></pre></div>
+<h2 id="分枝限定法によるスキャンマッチングの動作例">分枝限定法によるスキャンマッチングの動作例</h2>
+<p>その他の実装は<a href="https://github.com/sterngerlach/scan_matcher_2d_python">GitHubのリポジトリ</a>を参照してください。 ここでは幾つかのデータセットを使った動作例を示します。 青色で示したスキャンは、姿勢の初期値を使って地図上に投影したものです(<code>match_scan()</code>メソッドの引数<code>initial_pose</code>)。 また赤色で示したスキャンは、姿勢の解を使って描画しています(<code>match_scan()</code>メソッドの変数<code>best_pose</code>)。</p>
+<p>初期値と最適解がかなり大きく離れていますが、正しく動作していることが分かります。 ガウス・ニュートン法やレーベンバーグ・マーカート法などの、勾配を基にした逐次的なマッチング手法では、最適解への収束は期待できないでしょう。</p>
+<ul>
+<li>データセット7</li>
+</ul>
+<p><a href="slam-images/scan-matching-branch-and-bound/before-7.png"><img src="slam-images/scan-matching-branch-and-bound/before-7.png" width="320" /></a> <a href="slam-images/scan-matching-branch-and-bound/after-7.png"><img src="slam-images/scan-matching-branch-and-bound/after-7.png" width="320" /></a></p>
+<ul>
+<li>データセット8</li>
+</ul>
+<p><a href="slam-images/scan-matching-branch-and-bound/before-8.png"><img src="slam-images/scan-matching-branch-and-bound/before-8.png" width="320" /></a> <a href="slam-images/scan-matching-branch-and-bound/after-8.png"><img src="slam-images/scan-matching-branch-and-bound/after-8.png" width="320" /></a></p>
+<ul>
+<li>データセット18</li>
+</ul>
+<p><a href="slam-images/scan-matching-branch-and-bound/before-18.png"><img src="slam-images/scan-matching-branch-and-bound/before-18.png" width="320" /></a> <a href="slam-images/scan-matching-branch-and-bound/after-18.png"><img src="slam-images/scan-matching-branch-and-bound/after-18.png" width="320" /></a></p>
+<ul>
+<li>データセット25</li>
+</ul>
+<p><a href="slam-images/scan-matching-branch-and-bound/before-25.png"><img src="slam-images/scan-matching-branch-and-bound/before-25.png" width="320" /></a> <a href="slam-images/scan-matching-branch-and-bound/after-25.png"><img src="slam-images/scan-matching-branch-and-bound/after-25.png" width="320" /></a></p>
+<ul>
+<li>データセット32</li>
+</ul>
+<p><a href="slam-images/scan-matching-branch-and-bound/before-32.png"><img src="slam-images/scan-matching-branch-and-bound/before-32.png" width="320" /></a> <a href="slam-images/scan-matching-branch-and-bound/after-32.png"><img src="slam-images/scan-matching-branch-and-bound/after-32.png" width="320" /></a></p>
+<p>データセット18の例では、探索範囲のサイズを<span class="math inline">\(25 \mathrm{m} \times 25 \mathrm{m} \times 0.2 \mathrm{rad}\)</span>、ステップサイズを<span class="math inline">\(0.05 \mathrm{m}, 0.0025 \mathrm{rad}\)</span>に設定しているので、20,000,000個もの解の候補が存在します。 しかし、分枝限定法で調べたノード数は11,252だったので(ノードの高さは最大6に設定)、解の候補のうちたったの0.056%を探索するだけで済んでいます。 言い換えると、全ての解の候補をしらみつぶしに調べる場合と比べて、1,777倍高速化されているということです。</p>
+<p>これらを試すには、リポジトリ内の<code>main.py</code>を実行してください。 <code>main()</code>関数の先頭に書かれている変数<code>data_idx</code>は、データセットの番号(7、8、18、25、32のいずれか)を表します。 また変数<code>perturb_x</code>、<code>perturb_y</code>、<code>perturb_theta</code>は、初期値を最適解からどれだけ移動させるかを決定します。</p>
+</body>
+</html>
