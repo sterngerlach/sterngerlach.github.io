@@ -1,0 +1,10 @@
+Statistics for branch-and-bound scan matcher
+Window size: (500, 500, 80)
+Step size: (0.050000 m, 0.050000 m, 0.002500 rad)
+Best solution: (-185, 199, 25)
+Best score: 11153038
+Initial pose: (11.116482 m, -10.438328 m, 2.375956 rad)
+Final pose: (1.866482 m, -0.488328 m, 2.438456 rad)
+# of possible solutions: 20000000
+# of solutions processed: 11252
+

@@ -1,0 +1,19 @@
+Statistics for branch-and-bound scan matcher
+Window size: (400, 400, 80)
+Step size: (0.050000 m, 0.050000 m, 0.002500 rad)
+Best solution: (-137, -136, 4)
+Best score: 10726192
+Initial pose: (8.295952 m, 6.781900 m, 2.587528 rad)
+Final pose: (1.445952 m, -0.018100 m, 2.597528 rad)
+# of possible solutions: 12800000
+# of solutions processed: 47417
+
+Statistics for correlative scan matcher
+Window size: (400, 400, 80)
+Step size: (0.050000 m, 0.050000 m, 0.002500 rad)
+Best solution: (-137, -136, 4)
+Best score: 10726192
+Initial pose: (8.295952 m, 6.781900 m, 2.587528 rad)
+Final pose: (1.445952 m, -0.018100 m, 2.597528 rad)
+# of possible solutions: 12800000
+# of solutions processed: 1132160
