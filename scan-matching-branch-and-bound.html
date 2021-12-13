@@ -5,7 +5,7 @@
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <meta name="author" content="SternGerlach" />
-  <title>分枝限定法によるスキャンマッチング</title>
+  <title>分枝限定法によるスキャンマッチング(アルゴリズム編)</title>
   <style>
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
@@ -22,7 +22,7 @@
 </head>
 <body>
 <header id="title-block-header">
-<h1 class="title">分枝限定法によるスキャンマッチング</h1>
+<h1 class="title">分枝限定法によるスキャンマッチング(アルゴリズム編)</h1>
 <p class="author">SternGerlach</p>
 </header>
 <!--
@@ -31,11 +31,13 @@
 <p><a href="./index.html">ホームに戻る</a></p>
 <h1 id="このページについて">このページについて</h1>
 <p>このページは、慶應理工アドベントカレンダー2021の15日目の記事です。</p>
+<p>分枝限定法によるスキャンマッチングのアルゴリズムと、Pythonによる実装を示します。 アルゴリズムの説明は、<a href="https://ieeexplore.ieee.org/document/7487258">Google Cartographerの論文</a>に概ね沿っています。 恐らく、日本語での解説はあまりないと思います。 Google Cartographerは2次元LiDAR SLAMにおける最先端の手法で、2016年に提案されたものです。 Pythonの実装は<a href="https://github.com/sterngerlach/scan_matcher_2d_python">GitHubのリポジトリ</a>に置かれています(中の人が1から作っています)。</p>
 <h2 id="スキャンマッチングとslam">スキャンマッチングとSLAM</h2>
 <p>皆さんは、2Dの占有格子地図(Occupancy Grid Map)と、2D LiDARから取得したスキャンデータを重ね合わせて、ロボットの現在の自己位置を推定したいと思ったことがあると思います。 このような重ね合わせ処理のことを、<strong>スキャンマッチング</strong>(Scan Matching)といいます。</p>
-<ul>
-<li>占有格子地図とは、環境(2次元の平面)を格子状に区切って、それぞれの格子に障害物が存在する確率(占有確率)を割り当てるものです。 またLiDAR(Light Detection And Ranging)は、センサから周囲の環境に向けてレーザ光を照射し、その反射光を受光素子で検出することで、センサからみた障害物までの距離(Range, Distance)と方向(Angle, Bearing)を取得します。 レーザ光が障害物に当たって跳ね返り、センサの中心まで戻ってくるまでの時間(Time of Flight)を計測することで、障害物までの距離を計算できます。 LiDARセンサが回転しながら、あらゆる方向に対してレーザ光を照射するので、周囲の様々な障害物までの、距離と方向のペアが幾つも得られます。 LiDARセンサ1周分のデータをスキャンといい、周囲360度にある障害物(家具や壁など)の形状を反映した<strong>点群</strong>(Point Cloud)となります。</li>
-</ul>
+<p>例えば以下の図のように、青色で示したスキャンデータを、占有格子地図と重ね合わせるわけです。 重ね合わせた後のスキャンデータを赤色で示しています。 以下の図の1ピクセルは<span class="math inline">\(5 \mathrm{cm}\)</span>で、当初の位置から横方向に<span class="math inline">\(6.85 \mathrm{m}\)</span>(137ピクセル)、縦方向に<span class="math inline">\(6.8 \mathrm{m}\)</span>(136ピクセル)だけ移動させています。</p>
+<p><a href="slam-images/scan-matching-branch-and-bound/before-8.png"><img src="slam-images/scan-matching-branch-and-bound/before-8.png" width="320" /></a> <a href="slam-images/scan-matching-branch-and-bound/after-8.png"><img src="slam-images/scan-matching-branch-and-bound/after-8.png" width="320" /></a></p>
+<p>占有格子地図とは、環境(2次元の平面)を格子状に区切って、それぞれの格子に障害物が存在する確率(占有確率)を割り当てるものです。 例えば先程の図では、黒い格子ほど占有確率が1に近く、白い格子ほど占有確率が0に近くなります。</p>
+<p>またLiDAR(Light Detection And Ranging)は、センサから周囲の環境に向けてレーザ光を照射し、その反射光を受光素子で検出することで、センサからみた障害物までの距離(Range, Distance)と方向(Angle, Bearing)を取得します。 レーザ光が障害物に当たって跳ね返り、センサの中心まで戻ってくるまでの時間(Time of Flight)を計測することで、障害物までの距離を計算できます。 LiDARセンサが回転しながら、あらゆる方向に対してレーザ光を照射するので、周囲の様々な障害物までの、距離と方向のペアが幾つも得られます。 LiDARセンサ1周分のデータをスキャンといい、周囲360度にある障害物(家具や壁など)の形状を反映した<strong>点群</strong>(Point Cloud)となります。</p>
 <p>スキャン同士、スキャンと地図、地図同士など、重ね合わせの対象には幾つかの種類がありますが、Scan-to-scan Matching、Scan-to-map Matching、Map-to-map Matchingなどと呼んで区別します。 ここでは、<strong>スキャンと占有格子地図の重ね合わせ</strong>(Scan-to-map)を扱いますが、スキャン同士(Scan-to-scan)の場合と比べると誤差が小さいとされています。 ICP(Iterative Closest Point)とその派生は、スキャン同士のマッチング手法、NDT(Normal Distributions Transform)は、スキャンと地図のマッチング手法に分類できます(NDTは占有格子地図ではなく、各格子が正規分布を表す格子地図を使います)。</p>
 <p>スキャンマッチングは、自己位置推定と地図構築、言い換えるとSLAM(Simultaneous Localization And Mapping)の核となる極めて重要な処理です。 SLAMでは、ロボットの自己位置(ロボットが辿った軌跡)と、環境地図(占有格子地図)の2つを推定しますが、これらの精度は、どのようなスキャンマッチングの手法を採用するかによって大きく左右されます。 各手法には長所と短所があるので、計算量、メモリ消費、精度などの様々な観点から、最適なものを1つ選んで用いたり、あるいは複数の手法を組み合わせて用いたりすることが重要です。</p>
 <h2 id="分枝限定法によるスキャンマッチング---概要">分枝限定法によるスキャンマッチング - 概要</h2>
@@ -43,7 +45,7 @@
 <ul>
 <li>SLAMでは通常、直近の幾つかのLiDARスキャンをもとに占有格子地図を作成し、最新のLiDARスキャンをこの地図とマッチングすることで、ロボットの現在位置を更新していきます。 しかし、上記のような、<strong>直近の観測データ</strong>と最新の観測データとのマッチングだけを繰り返していくと、ロボットの現在位置には誤差が累積していき、本来の正しい位置から大きく外れてしまいます。 ループ検出では、<strong>古い観測データ</strong>と最新の観測データとのマッチングを行います。 これによって、ある場所を訪れてから、再びそこを訪れるまでの間に溜まった誤差を一気に解消し、ロボットの現在位置を本来の正しい位置に戻すことができます。</li>
 </ul>
-<p>ループ検出では、(以前その場所を訪れたときに取得した)古いスキャンを含む地図と、最新のスキャンとのマッチングを行います。 直近のスキャンと、最新のスキャンとのマッチングによって、ロボットの現在位置は一応得られています。 しかし、本来の位置からは大きくずれているので、ループ検出によって大幅に修正されるでしょう。 大幅に修正されるということは、初期値と最適解とが離れているということです。</p>
+<p>ループ検出では、(以前その場所を訪れたときに取得した)古いスキャンを含む地図と、最新のスキャンとのマッチングを行います。 直近のスキャンと、最新のスキャンとのマッチングによって、ロボットの現在位置は一応得られています。 しかし、本来の位置からは大きくずれているので、ループ検出によって大幅に修正されるでしょう(上に示した図が良い例です)。 大幅に修正されるということは、初期値(図の青色のスキャン)と最適解(図の赤色のスキャン)とが離れているということです。</p>
 <p>ガウス・ニュートン法(Gauss-Newton)やレーベンバーグ・マーカート法(Levenberg-Marquardt)、山登り法(Hill-Climbing)のような逐次的なマッチング手法では、初期値が最適解にある程度近いことが要求されます。 言い換えると、ロボットの現在位置が真値とかなり近く、誤差が少ない状態である(地図とスキャンとが既にある程度重なり合っている)ことが求められますが、ループ検出での前提とは異なります。 従って、逐次的なマッチング手法は利用できず、初期値に依存しない頑健な手法が求められます。 分枝限定法によるスキャンマッチングは、効率が良く、しかも頑健な手法であるため、ループ検出に利用できます。</p>
 <h2 id="分枝限定法によるスキャンマッチング---下準備">分枝限定法によるスキャンマッチング - 下準備</h2>
 <p>今まではロボットの位置と書きましたが、平面上の位置(<span class="math inline">\(x\)</span>座標と<span class="math inline">\(y\)</span>座標)に加えて、実際にはロボットの向き(回転角<span class="math inline">\(\theta\)</span>)も考慮しなければなりません。 並進成分(<span class="math inline">\(x\)</span>、<span class="math inline">\(y\)</span>)と回転成分(<span class="math inline">\(\theta\)</span>)とがセットになったものを、位置とは区別して<strong>姿勢</strong>(Pose)とよびます。 2次元の姿勢は、<span class="math inline">\(x\)</span>、<span class="math inline">\(y\)</span>、<span class="math inline">\(\theta\)</span>(ヨー角)の3成分で表されますが、3次元の場合は、<span class="math inline">\(x\)</span>、<span class="math inline">\(y\)</span>、<span class="math inline">\(z\)</span>、<span class="math inline">\(\phi\)</span>(ロール角)、<span class="math inline">\(\theta\)</span>(ピッチ角)、<span class="math inline">\(\psi\)</span>(ヨー角)の6成分で表されます。 2次元の姿勢を、ここでは<span class="math inline">\(\mathbf{\xi} = \left[ \xi_x, \xi_y, \xi_\theta \right]^\top\)</span>と表記します。</p>
@@ -59,6 +61,7 @@
   (i, j) = \left( \left\lfloor \frac{p_{i, x}}{r} \right\rfloor, \
   \left\lfloor \frac{p_{i, y}}{r} \right\rfloor \right) \in \mathbb{Z}^2
 \]</span> この<span class="math inline">\((i, j)\)</span>を用いれば、地図上の点<span class="math inline">\(\mathbf{p}_i\)</span>における占有確率は<span class="math inline">\(\mathcal{M}(i, j)\)</span>と書けます。 ここでは簡潔さのために、<span class="math inline">\(\mathbf{p}_i\)</span>における占有確率を単に<span class="math inline">\(\mathcal{M}(\mathbf{p}_i)\)</span>で表しましょう。</p>
+<p><a href="slam-images/map-and-scan.png"><img src="slam-images/map-and-scan.png" width="480" /></a></p>
 <h2 id="分枝限定法によるスキャンマッチング---定式化">分枝限定法によるスキャンマッチング - 定式化</h2>
 <p>スキャンマッチングでは、スコア関数<span class="math inline">\(s(\mathbf{\xi}; \mathcal{M}, \mathcal{S})\)</span>を、ロボットの姿勢<span class="math inline">\(\mathbf{\xi}\)</span>について最大化することで、最適な姿勢<span class="math inline">\(\mathbf{\xi}^*\)</span>を求めます。 <span class="math display">\[
   \mathbf{\xi}^* = \arg \max_{\mathbf{\xi}} s(\mathbf{\xi}; \mathcal{M}, \mathcal{S})
@@ -142,7 +145,7 @@
   \forall (j_x, j_y, j_\theta) \in \overline{\mathcal{W}}(\mathbf{c}) \quad
   s(\mathbf{\xi}(j_x, j_y, j_\theta); \mathcal{M}, \mathcal{S}) \le \overline{s}
 \]</span> スコアの上界<span class="math inline">\(\overline{s}\)</span>が、現在判明している最大値<span class="math inline">\(s^*\)</span>以下である場合は、このノードを探索する必要はありません。 なぜなら、このノード内の全ての候補を調べても、<span class="math inline">\(s^*\)</span>より良いスコアを持つ候補はみつからず、徒労に終わるからです。 あるノードのスコアの上界を計算することを<strong>限定</strong>(Bounding)、ノードを切り捨てる操作を<strong>枝刈り</strong>(Pruning)とよびます。 広い探索領域に対応するノードを枝刈りすれば、探索するノード数を大きく削減でき、アルゴリズムの効率化につながります。</p>
-<p>ノードの探索は、<strong>深さ優先探索</strong>(Depth-first Search)の方針で進めていきます。 分枝操作によって子ノードを作成したら、各ノードに対してスコアの上界を計算し、最大の上界をもつ子ノードから順に探索していくわけです。 上界の大きなノードから探索することで、余計なノードの探索を省き、最適解に素早く到達できます。</p>
+<p>ノードの探索は、<strong>深さ優先探索</strong>(Depth-first Search)の方針で進めていきます。 分枝操作によって子ノードを作成したら、各ノードに対してスコアの上界を計算し、最大の上界をもつ子ノードから順に探索していくわけです。 上界の大きなノードから探索することで、余計なノードの探索を省き、最適解に素早く到達できます。 ここで重要なのは、分枝限定法によって得られる解は、力ずくな方法によって得られる解と全く同一であることです。</p>
 <hr />
 <p>さて、話が前後していますが、分枝はどのように行えばよいでしょうか。 高さ<span class="math inline">\(h\)</span>のノード<span class="math inline">\(\mathbf{c}\)</span>が、上式のような探索領域<span class="math inline">\(\overline{\mathcal{W}}(\mathbf{c})\)</span>をもつとき、分枝によって新たに高さ<span class="math inline">\(h - 1\)</span>のノードが作成されます。 探索領域<span class="math inline">\(\overline{\mathcal{W}}(\mathbf{c})\)</span>は、<span class="math inline">\((c_x, c_y, c_\theta)\)</span>から<span class="math inline">\((c_x + 2^h - 1, c_y + 2^h - 1, c_\theta)\)</span>までの、<span class="math inline">\(2^h \times 2^h\)</span>個の解の集合を表します。 子ノードは<span class="math inline">\(2^{h - 1} \times 2^{h - 1}\)</span>個の解の集合を表し、親ノードの4分の1の探索領域をカバーするので、1つのノードから4つの子ノードが作成されることが分かります。 4つの子ノードの探索領域は次のように書けます。 <span class="math display">\[
   \begin{eqnarray}
@@ -359,7 +362,7 @@ w_\theta = \left\lceil \frac{W_\theta}{\delta_\theta} \right\rceil
 <ul>
 <li><span class="math inline">\(\mathcal{C}\)</span>の先頭から、ノード<span class="math inline">\(\mathbf{c} = (c_x, c_y, c_\theta, h)\)</span>と上界<span class="math inline">\(\overline{s}(\mathbf{c})\)</span>を取り出す。</li>
 <li><strong>枝刈り</strong>: 上界<span class="math inline">\(\overline{s}(\mathbf{c})\)</span>が、現在の最大値<span class="math inline">\(s^*\)</span>以下であれば、ノード<span class="math inline">\(\mathbf{c}\)</span>と、その子ノードの探索は不要であるから、上に戻って次のノードを試す。</li>
-<li>ノード<span class="math inline">\(\mathbf{c}\)</span>の高さが<span class="math inline">\(h = 0\)</span>、言い換えると葉ノードである場合は、現在の最大値<span class="math inline">\(s^*\)</span>を<span class="math inline">\(\overline{s}(\mathbf{c})\)</span>、また最適解<span class="math inline">\((j_x^*, j_y^*, j_\theta^*)\)</span>を<span class="math inline">\((c_x, c_y, c_\theta)\)</span>で更新し、上に戻る。</li>
+<li>ノード<span class="math inline">\(\mathbf{c}\)</span>の高さが<span class="math inline">\(h = 0\)</span>、言い換えると葉ノードである場合は、現在の最大スコア<span class="math inline">\(s^*\)</span>を<span class="math inline">\(\overline{s}(\mathbf{c})\)</span>、また最適解<span class="math inline">\((j_x^*, j_y^*, j_\theta^*)\)</span>を<span class="math inline">\((c_x, c_y, c_\theta)\)</span>で更新し、上に戻る。</li>
 <li><strong>分枝</strong>: ノードが葉ノードでなければ、4つの子ノード<span class="math inline">\(\mathbf{c}_1, \mathbf{c}_2, \mathbf{c}_3, \mathbf{c}_4\)</span>に分割する。 <span class="math display">\[
 \begin{eqnarray}
   \mathbf{c}_1 &amp;=&amp; (c_x, c_y, c_\theta, h - 1) \\
@@ -379,7 +382,7 @@ w_\theta = \left\lceil \frac{W_\theta}{\delta_\theta} \right\rceil
   \xi_{0, \theta} + \delta_\theta \left( -w_\theta + c_\theta \right)
   + \theta_i \right)}{r} \right\rfloor - w_y
 \end{eqnarray}
-\]</span> 上界の最も大きな子ノードが先頭に来るように、4つの子ノードを<span class="math inline">\(\mathcal{C}\)</span>に追加していく。</li>
+\]</span> 上界の最も大きな子ノードが先頭に来るように、4つの子ノードを<span class="math inline">\(\mathcal{C}\)</span>に追加していく(上界も一緒に追加)。</li>
 </ul></li>
 <li><p>上記の手続きによって最適解<span class="math inline">\((j_x^*, j_y^*, j_\theta^*) \in \overline{\mathcal{W}}\)</span>が得られたので、最適な姿勢<span class="math inline">\(\mathbf{\xi}^*\)</span>を次のように計算する。 <span class="math display">\[
 \mathbf{\xi}^* = \left[
@@ -389,6 +392,6 @@ w_\theta = \left\lceil \frac{W_\theta}{\delta_\theta} \right\rceil
 \]</span></p></li>
 <li><p>最大のスコア<span class="math inline">\(s^*\)</span>と、最適な姿勢<span class="math inline">\(\mathbf{\xi}^*\)</span>を返す。</p></li>
 </ul>
-<p>上記のアルゴリズムだけではイメージが湧かないと思うので、Pythonによる実装を示します。</p>
+<p>上記のアルゴリズムだけではイメージが湧かないと思うので、<a href="./scan-matching-branch-and-bound-impl.html">次のページ</a>でPythonによる実装を示します。</p>
 </body>
 </html>
