@@ -53,6 +53,8 @@ sterngerlachのGitHubページにようこそ。
 
 - [ガウス・ニュートン法とレーベンバーグ・マーカート法](./doc/gauss-newton.pdf)
 - [スキャンマッチング (ガウス・ニュートン法; Hector SLAM)](./doc/scan-matching-gauss-newton.pdf)
+- [分枝限定法によるスキャンマッチング(アルゴリズム編)](./scan-matching-branch-and-bound.html)
+- [分枝限定法によるスキャンマッチング(実装編)](./scan-matching-branch-and-bound-impl.html)
 
 <!-- -->
 
