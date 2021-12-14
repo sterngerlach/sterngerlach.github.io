@@ -23,7 +23,7 @@ Pythonの実装は[GitHubのリポジトリ](https://github.com/sterngerlach/sca
 2次元の姿勢を`Pose2D`クラス、2次元の位置を`Point2D`クラスとして次のように定義します。
 `Pose2D`クラスのソースコードは[こちら](https://github.com/sterngerlach/scan_matcher_2d_python/blob/master/pose_2d.py)、`Point2D`クラスのソースコードは[こちら](https://github.com/sterngerlach/scan_matcher_2d_python/blob/master/point_2d.py)を参照してください。
 
-```{#lst:py-source .py .numberLines startFrom="1"}
+```py
 class Point2D(object):
     def __init__(self) -> None:
         self.x = 0.0
@@ -38,7 +38,7 @@ class Point2D(object):
 姿勢は引数`pose`、点の座標は引数`point`にそれぞれ指定します。
 例えば、`pose`がロボットの姿勢(地図座標系からLiDAR座標系への座標変換)、`point`がLiDAR座標系におけるスキャン点の座標(直交座標)であれば、地図座標系におけるスキャン点の座標が返されます。
 
-```{#lst:py-source .py .numberLines startFrom="1"}
+```py
 class Pose2D(object):
     def __init__(self) -> None:
         self.x = 0.0
@@ -88,7 +88,7 @@ $$
 格子がもつ占有確率の更新には、バイナリベイズフィルタを利用します。
 また、LiDARセンサの中心と各スキャン点を結ぶ直線を考え、その直線上を通過する格子のインデックスを計算するために、ブレゼンハムのアルゴリズムを利用します。
 
-```{#lst:py-source .py .numberLines startFrom="1"}
+```py
 # coding: utf-8
 # grid_2d.py
 
@@ -627,7 +627,7 @@ $$
 
 - スコアの最大値$s^*$、最適解$(j_x^*, j_y^*, j_\theta^*) \in \overline{\mathcal{W}}$、最適な姿勢$\mathbf{\xi}^* \in \mathcal{W}$などをまとめて返します。
 
-```{#lst:py-source .py .numberLines startFrom="1"}
+```py
 # coding: utf-8
 # scan_matcher_branch_bound.py
 
