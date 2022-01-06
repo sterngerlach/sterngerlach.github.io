@@ -635,3 +635,17 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
 * King Crimson (キング・クリムゾン)
   * Larks' Tongues in Aspic (太陽と戦慄) (1973年) (VJD28003)
   * Discipline (ディシプリン) (1981年) (DGM0508)
+
+---
+
+* The Caretaker (James Leyland Kirby)
+  * Selected Memories From The Haunted Ballroom (1999年) (デジタル音源; Bandcamp)
+  * A Stairway To The Stars (2001年) (デジタル音源; Bandcamp)
+  * We'll All Go Riding On A Rainbow (2003年) (デジタル音源; Bandcamp)
+  * Deleted Scenes, Forgotten Dreams (2007年) (デジタル音源; Bandcamp)
+  * Persistent Repetition Of Phrases (2008年) (デジタル音源; Bandcamp)
+  * An Empty Bliss Beyond This World (2011年) (デジタル音源; Bandcamp)
+  * Patience (After Sebald) (2012年) (デジタル音源; Bandcamp)
+  * Everywhere At The End Of Time (2016年) (デジタル音源; Bandcamp)
+  * Everywhere, An Empty Bliss (2019年) (デジタル音源; Bandcamp)
+
