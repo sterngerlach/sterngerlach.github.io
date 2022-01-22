@@ -73,6 +73,8 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
   * SuperNatural (1989年)
   * Wica (1992年)
 * 中原めいこ
+  * ココナッツ・ハウス (1982年) (CA35-1086)
+  * 2時までのシンデレラ -Friday Magic- (1982年) (CA35-1020)
   * 2時までのシンデレラ -Friday Magic- (1982年) (TOCT-12008)
   * ミ・ン・ト (Mint) (1983年) (TOCT-12009)
   * Lotos -ロートスの果実- (1984年) (TOCT-12010)
@@ -250,6 +252,7 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
 * 遊佐未森
   * 瞳水晶 (1988年)
 * 彩恵津子
+  * Reach Out (1984年) (35CH-10)
   * Delication (デリケーション) (1986年) (30CH-164)
   * Passiō (パシオ) (1986年) (30CH-199)
   * ベスト・コレクション (1988年) (25CH-1)
@@ -356,6 +359,7 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
 * 山本達彦
   * メディテラネ (Mediterranee) (1985年) (CA32-1105)
 * 佐藤隆
+  * I've Been Walking (1980年) (CA32-1234)
   * 男と女 (Un Homme Et Une Femme) (1984年) (CA35-1082)
   * 土曜の夜と日曜の朝 (Nuit Du Samedi Et Matin Du Dimanche) (1985年) (CA32-1109)
   * コムシ、コムサ (Comme Ci, Comme Ça) (1985年) (CA32-1152)
@@ -365,6 +369,8 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
   * 甘い生活 (La Dolce Vita) (1988年) (CT32-5322)
   * 十六夜曲 '80～'90 (1990年) (TOCT-5924)
   * ゴールデン・ベスト (2004年) (TOCT-10978)
+* 高中正義, 佐藤隆, 鈴木康博, 安部恭弘
+  * シティ・ポップス・ビッグ4 (1986年) (CA32-1223)
 * 三宅純
   * 永遠乃掌 (1988年) (32WD-0003)
 * 池田聡
@@ -491,6 +497,8 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
   * Selection 1978-81 (1981年) (CA35-1007)
   * Over (1981年) (CA35-1021)
   * Yes-Yes-Yes -オフコースA面コレクション- (1983年) (CA35-1063)
+* 鈴木康博
+  * Hello Again (1984年) (CA35-1092)
 * アストゥーリアス (Asturias)
   * Cryptogam Illusion (1993年) (NKCD 3856)
 * アイン・ソフ (Ain Soph)

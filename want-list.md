@@ -360,7 +360,6 @@ auhtor: SternGerlach
   * 稲村ジェーン (1990年)
   * 世に万葉の花が咲くなり (1992年)
 * 中原めいこ
-  * ココナッツ・ハウス (Coconuts House) (1982年)
   * Meiko's Best Selection 10+1 (1984年)
   * High Energy -Remixed in N.Y.- (1991年)
 * 和田加奈子
@@ -428,7 +427,6 @@ auhtor: SternGerlach
 * Flat Face (フラット・フェイス)
   * Face (1986年)
 * 彩恵津子
-  * Reach Out (1984年)
   * All I Need (1985年)
   * College Life (1986年)
   * Unknown Things (1987年)
