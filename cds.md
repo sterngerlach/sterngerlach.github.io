@@ -495,7 +495,9 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
 * オフコース
   * Selection 1973-78 (1978年) (CA35-1006)
   * Selection 1978-81 (1981年) (CA35-1007)
+  * We Are (1980年) (CA35-1015)
   * Over (1981年) (CA35-1021)
+  * I Love You (1982年) (CA35-1002)
   * Yes-Yes-Yes -オフコースA面コレクション- (1983年) (CA35-1063)
 * 鈴木康博
   * Hello Again (1984年) (CA35-1092)
