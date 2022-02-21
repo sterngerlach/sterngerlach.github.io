@@ -241,11 +241,6 @@ auhtor: SternGerlach
   * Next Door (1986年)
   * Schmatz (1987年)
   * Tears of Joy (1990年)
-* 薬師丸ひろ子
-  * 夢十話 (1985年)
-  * 花図鑑 (1986年)
-  * 星紀行 (1987年)
-  * Sincerely Yours (1988年)
 * 遊佐未森
   * 空耳の丘 (1988年)
   * ハルモニオデオン (1989年)
