@@ -360,6 +360,8 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
   * Tokyo Installation (1986年) (50DH 441-2 / 32DH 441 + 18DH 442)
   * System Overload (システム・オーバーロード) (1988年) (32WD-0004)
   * Head, Hands And Feet (ヘッド・ハンズ・アンド・フィート) (1989年) (PCCR-00014)
+* 寺尾聰
+  * Reflections (1981年) (CA35-1003)
 * 安部恭弘
   * Summertime In Blue ~さよならの共犯者 (1988年) (CT32-5195)
 * 山本達彦
@@ -500,14 +502,17 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
 * アリス
   * ベスト10 (1983年) (CA35-1008)
 * オフコース
+  * ワインの匂い (1975年) (CA32-1158)
   * Selection 1973-78 (1978年) (CA35-1006)
   * Three And Two (1979年) (CA35-1057)
   * We Are (1980年) (CA35-1015)
   * Selection 1978-81 (1981年) (CA35-1007)
   * Over (1981年) (CA35-1021)
   * I Love You (1982年) (CA35-1002)
+  * Next Sound Track (1982年) (CA35-1058)
   * Yes-Yes-Yes -オフコースA面コレクション- (1983年) (CA35-1063)
 * 鈴木康博
+  * Sincerely (1983年) (CA35-1043)
   * Hello Again (1984年) (CA35-1092)
 * アストゥーリアス (Asturias)
   * Cryptogam Illusion (1993年) (NKCD 3856)
