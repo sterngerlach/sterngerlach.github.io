@@ -319,6 +319,7 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
 
 * 大瀧詠一
   * A Long Vacation (1981年) (35DH 1 131A3)
+  * Each Time (1984年) (SRCL 8005-6) (2014年再発盤)
 * 山下達郎
   * Ride On Time (1980年)
   * Greatest Hits! Of Tatsuro Yamashita (1982年)
@@ -358,6 +359,8 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
   * 架空庭園論 (1985年) (CA32-1108)
   * アンジュレーション (Undulation) (1986年) (CA32-1239)
   * Tokyo Installation (1986年) (50DH 441-2 / 32DH 441 + 18DH 442)
+  * Tokyo Installation (1986年) (MHCL 30712) (2022年再発盤)
+  * Tokyo Installation (1986年) (MHCL 30712) (2022年再発盤) (2枚所持)
   * System Overload (システム・オーバーロード) (1988年) (32WD-0004)
   * Head, Hands And Feet (ヘッド・ハンズ・アンド・フィート) (1989年) (PCCR-00014)
 * 寺尾聰
@@ -535,6 +538,8 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
 * 米米CLUB
   * Komeguny (1987年) (SRCL-2039)
   * Go Funk (1988年) (SRCL-2040)
+* The Square (ザ・スクェア)
+  * All About Us -Best Selection- (1984年) (30DH 163)
 
 ---
 
