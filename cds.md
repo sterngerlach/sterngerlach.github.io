@@ -395,6 +395,7 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
   * はらいそ (Paraiso) (1978年) (MHCL-509)
   * フィルハーモニー (1982年) (MHCL-510)
   * S・F・X (1984年)
+  * 紫式部・源氏物語 (1987年) (32・8H-148)
   * Omni Sight Seeing (オムニ・サイトシーング) (1989年) (MHCL 10136)
 * 坂本龍一
   * 千のナイフ (1978年)
@@ -515,9 +516,18 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
   * I Love You (1982年) (CA35-1002)
   * Next Sound Track (1982年) (CA35-1058)
   * Yes-Yes-Yes -オフコースA面コレクション- (1983年) (CA35-1063)
+  * ベスト・コレクション (1985年) (CA32-1155)
+  * New Best Now Vol. I (1987年) (CA32-1363)
+  * New Best Now Vol. II (1987年) (CA32-1364)
+* 小田和正
+  * Oh! Yeah! (1991年) (FHCL-1002)
 * 鈴木康博
   * Sincerely (1983年) (CA35-1043)
   * Hello Again (1984年) (CA35-1092)
+* チューリップ
+  * シングルス Vol. 1 (1990年) (TOCT-5972)
+  * シングルス Vol. 2 (1990年) (TOCT-5973)
+  * シングルス Vol. 3 (1990年) (TOCT-5974)
 * アストゥーリアス (Asturias)
   * Cryptogam Illusion (1993年) (NKCD 3856)
 * アイン・ソフ (Ain Soph)
@@ -530,6 +540,7 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
   * Nova Carmina (ノヴァ・カルミナ) (1986年) (35MD-1021) (2枚所持)
   * Songs From A Eurasian Journey (ユーラシアン・ジャーニー) (1997年) (VICG 60011)
 * 土屋昌巳
+  * Tokyo Ballet (1985年) (32・8H-37)
   * Life In Mirrors (1987年) (32・8H-141)
   * Time Passenger (1989年) (32・8H-5113)
 * TM Network
@@ -541,6 +552,11 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
   * Go Funk (1988年) (SRCL-2040)
 * The Square (ザ・スクェア)
   * All About Us -Best Selection- (1984年) (30DH 163)
+* ゴンチチ (Gontiti)
+  * Physics (フィジクス) (1985年) (32・8H-36)
+* 長渕剛
+  * Heavy Gauge (1983年) (CA35-1044)
+  * Hold Your Last Chance (1984年) (CA35-1088)
 
 ---
 
