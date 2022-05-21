@@ -35,7 +35,6 @@ auhtor: SternGerlach
   * 撫子純情 (1984年) (30DH 202)
 * ハイ・ファイ・セット
   * 3 Notes (1981年) (CT32-5204)
-  * 1 & 2 (1982年) (CA35-1018)
   * I miss you (1983年) (CA35-1028)
 * 稲垣潤一 / 安部恭弘 / 井上鑑 / 鈴木雄大
   * Modern Wave II (1983年) (CA35-1045)
@@ -107,7 +106,6 @@ auhtor: SternGerlach
   * アレンジメント (The Arrangement) (1982年)
   * コーダ (Coda) (1983年)
   * サラセンの夢 (Chanconette Tedesche) (1983年)
-  * 戦場のメリークリスマス (Merry Christmas Mr. Lawrence) (1983年)
   * 子猫物語 (Adventures of Chatran) (1986年)
   * メディア・バーン・ライヴ (Media Bahn Live) (1986年)
   * ラストエンペラー (1987年)
@@ -129,7 +127,6 @@ auhtor: SternGerlach
   * Modern Wave II (1983年) (CA35-1045)
 * 佐藤博
   * Awakening (1982年)
-  * Sailing Blaster (1984年)
   * This Boy (1985年)
   * Sound Of Science (1986年)
   * Future File (1987年)
@@ -320,8 +317,6 @@ auhtor: SternGerlach
   * Only Yesterday (1985年)
   * I Will... (1986年)
   * Étranger (エトランジェ) (1987年)
-* 大瀧詠一
-  * Each Time (1984年)
 * ハイ・ファイ・セット
   * Fashionable Lover (ファッショナブル・ラヴァー) (1976年)
   * Love Collection (ラブ・コレクション) (1977年)
@@ -333,7 +328,6 @@ auhtor: SternGerlach
   * 3 Notes (1981年)
   * I Miss You (1983年)
   * Sweet Locomotion (1986年)
-  * Gibraltar (1987年)
   * Eyebrow (1988年)
   * White Moon (1990年)
 * ブレッド & バター
