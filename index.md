@@ -61,6 +61,10 @@ sterngerlachのGitHubページにようこそ。
 
 <!-- -->
 
+- [SO(3)とSE(3)についてのメモ書き (その1)](./lie-1.html)
+
+<!-- -->
+
 - [LOAMのソースコードに関するノート](./loam-velodyne.pdf)  
 Velodyne社製のLiDAR(VLP-16、HDL-32、HDL-64E)を対象とした、リファクタリング済みのLOAM(LiDAR Odometry And Mapping)のソースコード([GitHub](https://github.com/laboshinl/loam_velodyne))を読みながら作ったノートです。最初の方はちょっと理解が怪しいので、そのうち修正します。誰かのお役に立てれば幸いです。
 
