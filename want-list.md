@@ -104,7 +104,6 @@ auhtor: SternGerlach
   * サマー・ナーヴス (Summer Nerves) (1979年)
   * エンド・オブ・エイジア (The End of Asia) (1982年)
   * アレンジメント (The Arrangement) (1982年)
-  * コーダ (Coda) (1983年)
   * サラセンの夢 (Chanconette Tedesche) (1983年)
   * 子猫物語 (Adventures of Chatran) (1986年)
   * メディア・バーン・ライヴ (Media Bahn Live) (1986年)
@@ -155,8 +154,6 @@ auhtor: SternGerlach
   * Avec (1986年)
   * 1234 (1988年)
   * Apollo (1990年)
-* 日向敏文
-  * 夏の猫 (Chat D'Ete) (1986年)
 * Rajie(ラジ)
   * Quatre (キャトル) (1979年)
   * 真昼の舗道 (1980年)
@@ -327,7 +324,6 @@ auhtor: SternGerlach
   * Quarter Rest (1979年)
   * 3 Notes (1981年)
   * I Miss You (1983年)
-  * Sweet Locomotion (1986年)
   * Eyebrow (1988年)
   * White Moon (1990年)
 * ブレッド & バター
