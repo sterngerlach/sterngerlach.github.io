@@ -15,9 +15,7 @@
     ul.task-list{list-style: none;}
   </style>
   <link rel="stylesheet" href="style.css" />
-  <script
-  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
-  type="text/javascript"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
   <!--[if lt IE 9]>
     <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
   <![endif]-->
@@ -32,41 +30,19 @@
 -->
 <p><a href="./index.html">ホームに戻る</a></p>
 <h1 id="このページについて">このページについて</h1>
-<p>3次元の回転を表すリー群<span
-class="math inline">\(\mathrm{SO}(3)\)</span>と、リー代数<span
-class="math inline">\(\mathfrak{so}(3)\)</span>に関する、自分用のメモ書きです。</p>
-<h2 id="mathfrakso3からmathrmso3への変換"><span
-class="math inline">\(\mathfrak{so}(3)\)</span>から<span
-class="math inline">\(\mathrm{SO}(3)\)</span>への変換</h2>
-<p>リー代数<span class="math inline">\(\boldsymbol{\phi} \in
-\mathfrak{so}(3)\)</span>と、それに対応するリー群(回転行列)<span
-class="math inline">\(\mathbf{C} = \exp(\boldsymbol{\phi}^\wedge) \in
-\mathrm{SO}(3)\)</span>を考える。 <span
-class="math inline">\(\boldsymbol{\phi}\)</span>のノルムを<span
-class="math inline">\(\phi = | \boldsymbol{\phi} |\)</span>,
-ノルム1に正規化されたベクトルを<span class="math inline">\(\mathbf{a}
-\in \mathbb{R}^3 = \boldsymbol{\phi} / \phi\)</span>と定めると、<span
-class="math inline">\(\boldsymbol{\phi} = \phi
-\mathbf{a}\)</span>と記述できる。 このとき、<span
-class="math inline">\(\mathbf{a}\)</span>は回転軸、<span
-class="math inline">\(\phi\)</span>は回転軸まわりの回転角を表すので、<span
-class="math inline">\(\boldsymbol{\phi}\)</span>は回転ベクトルとして捉えられる。
-<span class="math inline">\(\boldsymbol{\phi}\)</span>と<span
-class="math inline">\(\mathbf{C}\)</span>との間には、次の関係が成り立つ。この関係はロドリゲスの公式とよばれる。</p>
+<p>3次元の回転を表すリー群<span class="math inline">\(\mathrm{SO}(3)\)</span>と、リー代数<span class="math inline">\(\mathfrak{so}(3)\)</span>に関する、自分用のメモ書きです。</p>
+<h2 id="mathfrakso3からmathrmso3への変換"><span class="math inline">\(\mathfrak{so}(3)\)</span>から<span class="math inline">\(\mathrm{SO}(3)\)</span>への変換</h2>
+<p>リー代数<span class="math inline">\(\boldsymbol{\phi} \in \mathfrak{so}(3)\)</span>と、それに対応するリー群(回転行列)<span class="math inline">\(\mathbf{C} = \exp(\boldsymbol{\phi}^\wedge) \in \mathrm{SO}(3)\)</span>を考える。 <span class="math inline">\(\boldsymbol{\phi}\)</span>のノルムを<span class="math inline">\(\phi = | \boldsymbol{\phi} |\)</span>, ノルム1に正規化されたベクトルを<span class="math inline">\(\mathbf{a} \in \mathbb{R}^3 = \boldsymbol{\phi} / \phi\)</span>と定めると、<span class="math inline">\(\boldsymbol{\phi} = \phi \mathbf{a}\)</span>と記述できる。 このとき、<span class="math inline">\(\mathbf{a}\)</span>は回転軸、<span class="math inline">\(\phi\)</span>は回転軸まわりの回転角を表すので、<span class="math inline">\(\boldsymbol{\phi}\)</span>は回転ベクトルとして捉えられる。 <span class="math inline">\(\boldsymbol{\phi}\)</span>と<span class="math inline">\(\mathbf{C}\)</span>との間には、次の関係が成り立つ。この関係はロドリゲスの公式とよばれる。</p>
 <p><span class="math display">\[
   \begin{eqnarray}
-    \mathbf{C} &amp;=&amp; \cos \phi \mathbf{I} + \left( 1 - \cos \phi
-\right) \mathbf{a} \mathbf{a}^\top
+    \mathbf{C} &amp;=&amp; \cos \phi \mathbf{I} + \left( 1 - \cos \phi \right) \mathbf{a} \mathbf{a}^\top
       + \sin \phi \mathbf{a}^\wedge
   \end{eqnarray}
 \]</span></p>
-<p><span class="math inline">\(\mathbf{a} \mathbf{a}^\top = \mathbf{I} +
-\mathbf{a}^\wedge
-\mathbf{a}^\wedge\)</span>の関係が成り立つので、上式に代入して変形すれば、次の関係も得られる。</p>
+<p><span class="math inline">\(\mathbf{a} \mathbf{a}^\top = \mathbf{I} + \mathbf{a}^\wedge \mathbf{a}^\wedge\)</span>の関係が成り立つので、上式に代入して変形すれば、次の関係も得られる。</p>
 <p><span class="math display">\[
   \begin{eqnarray}
-    \mathbf{C} &amp;=&amp; \cos \phi \mathbf{I} + \left( 1 - \cos \phi
-\right)
+    \mathbf{C} &amp;=&amp; \cos \phi \mathbf{I} + \left( 1 - \cos \phi \right)
       \left( \mathbf{I} + \mathbf{a}^\wedge \mathbf{a}^\wedge \right)
       + \sin \phi \mathbf{a}^\wedge \\
     &amp;=&amp; \mathbf{I} + \left( 1 - \cos \phi \right)
@@ -74,8 +50,7 @@ class="math inline">\(\mathbf{C}\)</span>との間には、次の関係が成り
       + \sin \phi \mathbf{a}^\wedge \\
   \end{eqnarray}
 \]</span></p>
-<p><span class="math inline">\(\boldsymbol{\phi} = \phi
-\mathbf{a}\)</span>を再度代入すると、次のようになる。</p>
+<p><span class="math inline">\(\boldsymbol{\phi} = \phi \mathbf{a}\)</span>を再度代入すると、次のようになる。</p>
 <p><span class="math display">\[
   \mathbf{C} = \cos \phi \mathbf{I} + \frac{1 - \cos \phi}{\phi^2}
     \boldsymbol{\phi} \boldsymbol{\phi}^\top
@@ -85,24 +60,15 @@ class="math inline">\(\mathbf{C}\)</span>との間には、次の関係が成り
     \boldsymbol{\phi}^\wedge \boldsymbol{\phi}^\wedge
     + \frac{\sin \phi}{\phi} \boldsymbol{\phi}^\wedge
 \]</span></p>
-<p>以後、<span class="math inline">\(\mathrm{sinc1}(\phi) = \cfrac{\sin
-\phi}{\phi}\)</span>、<span class="math inline">\(\mathrm{sinc2}(\phi) =
-\cfrac{1 - \cos \phi}{\phi^2}\)</span>とおく。</p>
-<h2 id="sinc関数mathrmsinc1phiとmathrmsinc2phiの計算">Sinc関数<span
-class="math inline">\(\mathrm{sinc1}(\phi)\)</span>と<span
-class="math inline">\(\mathrm{sinc2}(\phi)\)</span>の計算</h2>
-<p><span class="math inline">\(\phi\)</span>が小さい値のとき、<span
-class="math inline">\(\mathrm{sinc1}(\phi)\)</span>と<span
-class="math inline">\(\mathrm{sinc2}(\phi)\)</span>の計算は不安定になるので、テイラー展開による近似で対処する。
-<span class="math inline">\(\mathrm{sinc1}(\phi)\)</span>と<span
-class="math inline">\(\mathrm{sinc2}(\phi)\)</span>をテイラー展開すると、次のようになる。</p>
+<p>以後、<span class="math inline">\(\mathrm{sinc1}(\phi) = \cfrac{\sin \phi}{\phi}\)</span>、<span class="math inline">\(\mathrm{sinc2}(\phi) = \cfrac{1 - \cos \phi}{\phi^2}\)</span>とおく。</p>
+<h2 id="sinc関数mathrmsinc1phiとmathrmsinc2phiの計算">Sinc関数<span class="math inline">\(\mathrm{sinc1}(\phi)\)</span>と<span class="math inline">\(\mathrm{sinc2}(\phi)\)</span>の計算</h2>
+<p><span class="math inline">\(\phi\)</span>が小さい値のとき、<span class="math inline">\(\mathrm{sinc1}(\phi)\)</span>と<span class="math inline">\(\mathrm{sinc2}(\phi)\)</span>の計算は不安定になるので、テイラー展開による近似で対処する。 <span class="math inline">\(\mathrm{sinc1}(\phi)\)</span>と<span class="math inline">\(\mathrm{sinc2}(\phi)\)</span>をテイラー展開すると、次のようになる。</p>
 <p><span class="math display">\[
   \begin{eqnarray}
     \mathrm{sinc1}(\phi) &amp;=&amp; \frac{\sin \phi}{\phi} \\
     &amp;=&amp; \frac{1}{\phi} \left( \phi - \frac{1}{3!} \phi^3
       + \frac{1}{5!} \phi^5 - \frac{1}{7!} \phi^7 + \cdots \right) \\
-    &amp;=&amp; 1 - \frac{1}{3!} \phi^2 + \frac{1}{5!} \phi^4 -
-\frac{1}{7!} \phi^6 + \cdots \\
+    &amp;=&amp; 1 - \frac{1}{3!} \phi^2 + \frac{1}{5!} \phi^4 - \frac{1}{7!} \phi^6 + \cdots \\
     &amp;=&amp; 1 - \frac{1}{6} \phi^2 \left( 1 - \frac{1}{20} \phi^2
       \left( 1 - \frac{1}{42} \phi^2 \right) \right) + \cdots
   \end{eqnarray}
@@ -110,106 +76,66 @@ class="math inline">\(\mathrm{sinc2}(\phi)\)</span>をテイラー展開する�
 <p><span class="math display">\[
   \begin{eqnarray}
     \mathrm{sinc2}(\phi) &amp;=&amp; \frac{1 - \cos \phi}{\phi^2} \\
-    &amp;=&amp; \frac{1}{\phi^2} \left( 1 - 1 + \frac{1}{2!} \phi^2 -
-\frac{1}{4!} \phi^4
+    &amp;=&amp; \frac{1}{\phi^2} \left( 1 - 1 + \frac{1}{2!} \phi^2 - \frac{1}{4!} \phi^4
       + \frac{1}{6!} \phi^6 - \frac{1}{8!} \phi^8 + \cdots \right) \\
     &amp;=&amp; \frac{1}{2!} - \frac{1}{4!} \phi^2
       + \frac{1}{6!} \phi^4 - \frac{1}{8!} \phi^6 + \cdots \\
-    &amp;=&amp; \frac{1}{2} \left( 1 - \frac{1}{12} \phi^2 \left( 1 -
-\frac{1}{30} \phi^2
+    &amp;=&amp; \frac{1}{2} \left( 1 - \frac{1}{12} \phi^2 \left( 1 - \frac{1}{30} \phi^2
       \left( 1 - \frac{1}{56} \phi^2 \right) \right) \right) + \cdots
   \end{eqnarray}
 \]</span></p>
-<h2 id="mathrmso3からmathfrakso3への変換"><span
-class="math inline">\(\mathrm{SO}(3)\)</span>から<span
-class="math inline">\(\mathfrak{so}(3)\)</span>への変換</h2>
-<p><span class="math inline">\(\mathbf{C}\)</span>から<span
-class="math inline">\(\boldsymbol{\phi} = \phi
-\mathbf{a}\)</span>への変換を考える。 <span
-class="math inline">\(\mathbf{C}\)</span>のトレース<span
-class="math inline">\(\mathrm{tr}(\mathbf{C})\)</span>は、次のようになる。</p>
+<h2 id="mathrmso3からmathfrakso3への変換"><span class="math inline">\(\mathrm{SO}(3)\)</span>から<span class="math inline">\(\mathfrak{so}(3)\)</span>への変換</h2>
+<p><span class="math inline">\(\mathbf{C}\)</span>から<span class="math inline">\(\boldsymbol{\phi} = \phi \mathbf{a}\)</span>への変換を考える。 <span class="math inline">\(\mathbf{C}\)</span>のトレース<span class="math inline">\(\mathrm{tr}(\mathbf{C})\)</span>は、次のようになる。</p>
 <p><span class="math display">\[
   \begin{eqnarray}
     \mathrm{tr}(\mathbf{C}) &amp;=&amp; \mathrm{tr} \left(
-      \cos \phi \mathbf{I} + \left( 1 - \cos \phi \right) \mathbf{a}
-\mathbf{a}^\top
+      \cos \phi \mathbf{I} + \left( 1 - \cos \phi \right) \mathbf{a} \mathbf{a}^\top
       + \sin \phi \mathbf{a}^\wedge \right) \\
     &amp;=&amp; \cos \phi \mathrm{tr}(\mathbf{I})
-      + \left( 1 - \cos \phi \right) \mathrm{tr}(\mathbf{a}
-\mathbf{a}^\top)
+      + \left( 1 - \cos \phi \right) \mathrm{tr}(\mathbf{a} \mathbf{a}^\top)
       + \sin \phi \mathrm{tr}(\mathbf{a}^\wedge) \\
-    &amp;=&amp; 3 \cos \phi + \left( 1 - \cos \phi \right) = 2 \cos \phi
-- 1
+    &amp;=&amp; 3 \cos \phi + \left( 1 - \cos \phi \right) = 2 \cos \phi - 1
   \end{eqnarray}
 \]</span></p>
-<p><span class="math inline">\(\mathrm{tr}(\mathbf{a} \mathbf{a}^\top) =
-\mathrm{tr}(\mathbf{a}^\top \mathbf{a}) = \mathrm{tr}(1) =
-1\)</span>であることに注意。 上式を変形すれば、回転角<span
-class="math inline">\(\phi\)</span>は次のように得られる。</p>
+<p><span class="math inline">\(\mathrm{tr}(\mathbf{a} \mathbf{a}^\top) = \mathrm{tr}(\mathbf{a}^\top \mathbf{a}) = \mathrm{tr}(1) = 1\)</span>であることに注意。 上式を変形すれば、回転角<span class="math inline">\(\phi\)</span>は次のように得られる。</p>
 <p><span class="math display">\[
   \phi = \arccos \frac{\mathrm{tr}(\mathbf{C}) + 1}{2}
 \]</span></p>
-<p>続いて、<span class="math inline">\(\mathbf{C} -
-\mathbf{C}^\top\)</span>は、次のようになる。</p>
+<p>続いて、<span class="math inline">\(\mathbf{C} - \mathbf{C}^\top\)</span>は、次のようになる。</p>
 <p><span class="math display">\[
   \begin{eqnarray}
     \mathbf{C} - \mathbf{C}^\top &amp;=&amp; \left(
-      \cos \phi \mathbf{I} + \left( 1 - \cos \phi \right) \mathbf{a}
-\mathbf{a}^\top
+      \cos \phi \mathbf{I} + \left( 1 - \cos \phi \right) \mathbf{a} \mathbf{a}^\top
       + \sin \phi \mathbf{a}^\wedge \right)
-      - \left( \cos \phi \mathbf{I} + \left( 1 - \cos \phi \right)
-\mathbf{a} \mathbf{a}^\top
+      - \left( \cos \phi \mathbf{I} + \left( 1 - \cos \phi \right) \mathbf{a} \mathbf{a}^\top
       - \sin \phi \mathbf{a}^\wedge \right) \\
-    &amp;=&amp; 2 \sin \phi \mathbf{a}^\wedge = 2 \frac{\sin \phi}{\phi}
-\boldsymbol{\phi}^\wedge
+    &amp;=&amp; 2 \sin \phi \mathbf{a}^\wedge = 2 \frac{\sin \phi}{\phi} \boldsymbol{\phi}^\wedge
   \end{eqnarray}
 \]</span></p>
-<p><span
-class="math inline">\(\mathbf{a}^\wedge\)</span>は歪対称行列であり、<span
-class="math inline">\(\left( \mathbf{a}^\wedge \right)^\top =
--\mathbf{a}^\wedge\)</span>が成り立つことに注意。
-上式を変形すると、<span class="math inline">\(\boldsymbol{\phi}^\wedge
-\in \mathbb{R}^{3 \times 3}\)</span>は次のようになる。</p>
+<p><span class="math inline">\(\mathbf{a}^\wedge\)</span>は歪対称行列であり、<span class="math inline">\(\left( \mathbf{a}^\wedge \right)^\top = -\mathbf{a}^\wedge\)</span>が成り立つことに注意。 上式を変形すると、<span class="math inline">\(\boldsymbol{\phi}^\wedge \in \mathbb{R}^{3 \times 3}\)</span>は次のようになる。</p>
 <p><span class="math display">\[
   \boldsymbol{\phi}^\wedge = \frac{1}{2 \mathrm{sinc1}(\phi)}
     \left( \mathbf{C} - \mathbf{C}^\top \right)
 \]</span></p>
-<p>3次ベクトル<span class="math inline">\(\mathbf{x} = \left[ x_0, x_1,
-x_2 \right]^\top \in \mathbb{R}^3\)</span>について、演算子<span
-class="math inline">\(\wedge\)</span>は以下のように定義される(Wedge演算子)。</p>
+<p>3次ベクトル<span class="math inline">\(\mathbf{x} = \left[ x_0, x_1, x_2 \right]^\top \in \mathbb{R}^3\)</span>について、演算子<span class="math inline">\(\wedge\)</span>は以下のように定義される(Wedge演算子)。</p>
 <p><span class="math display">\[
   \mathbf{x}^\wedge = \left[ \begin{array}{ccc}
-    0 &amp; -x_2 &amp; x_1 \\ x_2 &amp; 0 &amp; -x_0 \\ -x_1 &amp; x_0
-&amp; 0 \end{array} \right]
+    0 &amp; -x_2 &amp; x_1 \\ x_2 &amp; 0 &amp; -x_0 \\ -x_1 &amp; x_0 &amp; 0 \end{array} \right]
 \]</span></p>
-<p>従って、<span
-class="math inline">\(\boldsymbol{\phi}^\wedge\)</span>の<span
-class="math inline">\((2, 1)\)</span>要素、<span
-class="math inline">\((0, 2)\)</span>要素、<span
-class="math inline">\((1, 0)\)</span>要素を順に取り出せば、リー代数<span
-class="math inline">\(\boldsymbol{\phi}\)</span>が得られる。</p>
-<h2 id="mathrmsinc1phiが小さい値をとるときの対処"><span
-class="math inline">\(\mathrm{sinc1}(\phi)\)</span>が小さい値をとるときの対処</h2>
-<p><span class="math inline">\(\mathrm{sinc1}(\phi)\)</span>が<span
-class="math inline">\(0\)</span>に近いときは、上記の方法では<span
-class="math inline">\(\boldsymbol{\phi}^\wedge\)</span>の値が不安定になるので、別の方法を考える。
-<span
-class="math inline">\(\mathbf{C}\)</span>の各要素を順に書き下すと、次のようになる。</p>
+<p>従って、<span class="math inline">\(\boldsymbol{\phi}^\wedge\)</span>の<span class="math inline">\((2, 1)\)</span>要素、<span class="math inline">\((0, 2)\)</span>要素、<span class="math inline">\((1, 0)\)</span>要素を順に取り出せば、リー代数<span class="math inline">\(\boldsymbol{\phi}\)</span>が得られる。</p>
+<h2 id="mathrmsinc1phiが小さい値をとるときの対処"><span class="math inline">\(\mathrm{sinc1}(\phi)\)</span>が小さい値をとるときの対処</h2>
+<p><span class="math inline">\(\mathrm{sinc1}(\phi)\)</span>が<span class="math inline">\(0\)</span>に近いときは、上記の方法では<span class="math inline">\(\boldsymbol{\phi}^\wedge\)</span>の値が不安定になるので、別の方法を考える。 <span class="math inline">\(\mathbf{C}\)</span>の各要素を順に書き下すと、次のようになる。</p>
 <p><span class="math display">\[
   \begin{eqnarray}
-    \mathbf{C} &amp;=&amp; \cos \phi \mathbf{I} + \left( 1 - \cos \phi
-\right) \mathbf{a} \mathbf{a}^\top
+    \mathbf{C} &amp;=&amp; \cos \phi \mathbf{I} + \left( 1 - \cos \phi \right) \mathbf{a} \mathbf{a}^\top
       + \sin \phi \mathbf{a}^\wedge \\
     &amp;=&amp; \left[ \begin{array}{ccc}
-      \cos \phi &amp; 0 &amp; 0 \\ 0 &amp; \cos \phi &amp; 0 \\ 0 &amp;
-0 &amp; \cos \phi \end{array} \right]
+      \cos \phi &amp; 0 &amp; 0 \\ 0 &amp; \cos \phi &amp; 0 \\ 0 &amp; 0 &amp; \cos \phi \end{array} \right]
       + \left( 1 - \cos \phi \right) \left[ \begin{array}{ccc}
-      a_0^2 &amp; a_0 a_1 &amp; a_0 a_2 \\ a_1 a_0 &amp; a_1^2 &amp; a_1
-a_2 \\
+      a_0^2 &amp; a_0 a_1 &amp; a_0 a_2 \\ a_1 a_0 &amp; a_1^2 &amp; a_1 a_2 \\
       a_2 a_0 &amp; a_2 a_1 &amp; a_2^2 \end{array} \right]
       + \sin \phi \left[ \begin{array}{ccc}
-      0 &amp; -a_2 &amp; a_1 \\ a_2 &amp; 0 &amp; -a_0 \\ -a_1 &amp; a_0
-&amp; 0 \end{array} \right] \\
+      0 &amp; -a_2 &amp; a_1 \\ a_2 &amp; 0 &amp; -a_0 \\ -a_1 &amp; a_0 &amp; 0 \end{array} \right] \\
     &amp;=&amp; \left[ \begin{array}{ccc}
       \cos \phi + \left( 1 - \cos \phi \right) a_0^2
       &amp; \left( 1 - \cos \phi \right) a_0 a_1 - a_2 \sin \phi
@@ -219,87 +145,30 @@ a_2 \\
       &amp; \left( 1 - \cos \phi \right) a_1 a_2 - a_0 \sin \phi \\
       \left( 1 - \cos \phi \right) a_2 a_0 - a_1 \sin \phi
       &amp; \left( 1 - \cos \phi \right) a_2 a_1 + a_0 \sin \phi
-      &amp; \cos \phi + \left( 1 - \cos \phi \right) a_2^2 \end{array}
-\right]
+      &amp; \cos \phi + \left( 1 - \cos \phi \right) a_2^2 \end{array} \right]
   \end{eqnarray}
 \]</span></p>
-<p><span class="math inline">\(\mathbf{A} = \cfrac{\phi^2}{2} \left(
-\mathbf{C} + \mathbf{I} \right)\)</span>の幾つかの要素を考える。</p>
+<p><span class="math inline">\(\mathbf{A} = \cfrac{\phi^2}{2} \left( \mathbf{C} + \mathbf{I} \right)\)</span>の幾つかの要素を考える。</p>
 <p><span class="math display">\[
   \begin{eqnarray}
-    A_{00} &amp;=&amp; \frac{\phi^2}{2} \left( 1 + \cos \phi + \left( 1
-- \cos \phi \right) a_0^2 \right) \\
-    &amp;=&amp; \frac{\phi^2}{2} \left( 2 \cos^2 \frac{\phi}{2} + 2
-\sin^2 \frac{\phi}{2} a_0^2 \right) \\
-    &amp;=&amp; \phi^2 \left( \cos^2 \frac{\phi}{2} + \sin^2
-\frac{\phi}{2} a_0^2 \right) \\
-    A_{11} &amp;=&amp; \phi^2 \left( \cos^2 \frac{\phi}{2} + \sin^2
-\frac{\phi}{2} a_1^2 \right) \\
-    A_{22} &amp;=&amp; \phi^2 \left( \cos^2 \frac{\phi}{2} + \sin^2
-\frac{\phi}{2} a_2^2 \right) \\
-    A_{02} &amp;=&amp; \frac{\phi^2}{2} \left( \left( 1 - \cos \phi
-\right) a_0 a_2 + a_1 \sin \phi \right) \\
-    &amp;=&amp; \frac{\phi^2}{2} \left( 2 \sin^2 \frac{\phi}{2} a_0 a_2
-+ a_1 \sin \phi \right) \\
-    A_{12} &amp;=&amp; \frac{\phi^2}{2} \left( \left( 1 - \cos \phi
-\right) a_1 a_2 - a_0 \sin \phi \right) \\
-    &amp;=&amp; \frac{\phi^2}{2} \left( 2 \sin^2 \frac{\phi}{2} a_1 a_2
-- a_0 \sin \phi \right)
+    A_{00} &amp;=&amp; \frac{\phi^2}{2} \left( 1 + \cos \phi + \left( 1 - \cos \phi \right) a_0^2 \right) \\
+    &amp;=&amp; \frac{\phi^2}{2} \left( 2 \cos^2 \frac{\phi}{2} + 2 \sin^2 \frac{\phi}{2} a_0^2 \right) \\
+    &amp;=&amp; \phi^2 \left( \cos^2 \frac{\phi}{2} + \sin^2 \frac{\phi}{2} a_0^2 \right) \\
+    A_{11} &amp;=&amp; \phi^2 \left( \cos^2 \frac{\phi}{2} + \sin^2 \frac{\phi}{2} a_1^2 \right) \\
+    A_{22} &amp;=&amp; \phi^2 \left( \cos^2 \frac{\phi}{2} + \sin^2 \frac{\phi}{2} a_2^2 \right) \\
+    A_{02} &amp;=&amp; \frac{\phi^2}{2} \left( \left( 1 - \cos \phi \right) a_0 a_2 + a_1 \sin \phi \right) \\
+    &amp;=&amp; \frac{\phi^2}{2} \left( 2 \sin^2 \frac{\phi}{2} a_0 a_2 + a_1 \sin \phi \right) \\
+    A_{12} &amp;=&amp; \frac{\phi^2}{2} \left( \left( 1 - \cos \phi \right) a_1 a_2 - a_0 \sin \phi \right) \\
+    &amp;=&amp; \frac{\phi^2}{2} \left( 2 \sin^2 \frac{\phi}{2} a_1 a_2 - a_0 \sin \phi \right)
   \end{eqnarray}
 \]</span></p>
-<p>ここでは、<span class="math inline">\(-\pi \le \phi \le
-\pi\)</span>であるとする。 <span
-class="math inline">\(\mathrm{sinc1}(\phi) \approx
-0\)</span>のとき、<span class="math inline">\(\phi \approx \pm
-\pi\)</span>である。 また、<span class="math inline">\(\cos^2
-\cfrac{\phi}{2} \approx 0\)</span>、<span class="math inline">\(\sin^2
-\cfrac{\phi}{2} \approx 1\)</span>であるから、<span
-class="math inline">\(A_{00} \approx \phi^2 a_0^2 =
-\phi_0^2\)</span>、<span class="math inline">\(A_{11} \approx \phi^2
-a_1^2 = \phi_1^2\)</span>、<span class="math inline">\(A_{22} \approx
-\phi^2 a_2^2 = \phi_2^2\)</span>、<span class="math inline">\(A_{02}
-\approx \phi^2 a_0 a_2 = \phi_0 \phi_2\)</span>、<span
-class="math inline">\(A_{12} \approx \phi^2 a_1 a_2 = \phi_1
-\phi_2\)</span>である。</p>
-<p>従って、<span class="math inline">\(A_{00}\)</span>、<span
-class="math inline">\(A_{11}\)</span>、<span
-class="math inline">\(A_{22}\)</span>の平方根をとると、<span
-class="math inline">\(\boldsymbol{\phi}\)</span>の各要素の絶対値<span
-class="math inline">\(| \phi_0 |\)</span>、<span class="math inline">\(|
-\phi_1 |\)</span>、<span class="math inline">\(| \phi_2
-|\)</span>が得られる。 続いて、<span
-class="math inline">\(\phi_0\)</span>の符号が正であると仮定すると、<span
-class="math inline">\(A_{02} = \phi_0 \phi_2\)</span>から<span
-class="math inline">\(\phi_2\)</span>の符号、<span
-class="math inline">\(A_{02} A_{12} \approx \phi_0 \phi_1
-\phi_2^2\)</span>から<span
-class="math inline">\(\phi_1\)</span>の符号が得られる(<span
-class="math inline">\(\phi_0 = 0\)</span>のときは正として扱う)。
-各要素の絶対値と符号を基に、<span
-class="math inline">\(\boldsymbol{\phi}\)</span>が得られる。</p>
-<p><span
-class="math inline">\(\phi_0\)</span>の符号が負であると仮定すれば、<span
-class="math inline">\(\phi_1\)</span>と<span
-class="math inline">\(\phi_2\)</span>の符号も逆になるので、<span
-class="math inline">\(-\boldsymbol{\phi} = -\phi
-\mathbf{a}\)</span>が得られる。 <span
-class="math inline">\(-\boldsymbol{\phi}\)</span>は、<span
-class="math inline">\(\boldsymbol{\phi}\)</span>と同じ回転軸<span
-class="math inline">\(\mathbf{a}\)</span>について、反対方向に同じ角度だけ(<span
-class="math inline">\(-\phi\)</span>だけ)回転させることを意味する。
-ここでは、<span class="math inline">\(\phi \approx \pm
-\pi\)</span>の状況を想定している。 同じ回転軸に対して<span
-class="math inline">\(\pi\)</span>だけ回転させても、あるいは反対方向に<span
-class="math inline">\(\pi\)</span>だけ回転させても、結果は全く同じになる。
-従って、<span
-class="math inline">\(\phi_0\)</span>の符号は正と負のどちらに仮定してもよいと考えられる。</p>
+<p>ここでは、<span class="math inline">\(-\pi \le \phi \le \pi\)</span>であるとする。 <span class="math inline">\(\mathrm{sinc1}(\phi) \approx 0\)</span>のとき、<span class="math inline">\(\phi \approx \pm \pi\)</span>である。 また、<span class="math inline">\(\cos^2 \cfrac{\phi}{2} \approx 0\)</span>、<span class="math inline">\(\sin^2 \cfrac{\phi}{2} \approx 1\)</span>であるから、<span class="math inline">\(A_{00} \approx \phi^2 a_0^2 = \phi_0^2\)</span>、<span class="math inline">\(A_{11} \approx \phi^2 a_1^2 = \phi_1^2\)</span>、<span class="math inline">\(A_{22} \approx \phi^2 a_2^2 = \phi_2^2\)</span>、<span class="math inline">\(A_{02} \approx \phi^2 a_0 a_2 = \phi_0 \phi_2\)</span>、<span class="math inline">\(A_{12} \approx \phi^2 a_1 a_2 = \phi_1 \phi_2\)</span>である。</p>
+<p>従って、<span class="math inline">\(A_{00}\)</span>、<span class="math inline">\(A_{11}\)</span>、<span class="math inline">\(A_{22}\)</span>の平方根をとると、<span class="math inline">\(\boldsymbol{\phi}\)</span>の各要素の絶対値<span class="math inline">\(| \phi_0 |\)</span>、<span class="math inline">\(| \phi_1 |\)</span>、<span class="math inline">\(| \phi_2 |\)</span>が得られる。 続いて、<span class="math inline">\(\phi_0\)</span>の符号が正であると仮定すると、<span class="math inline">\(A_{02} = \phi_0 \phi_2\)</span>から<span class="math inline">\(\phi_2\)</span>の符号、<span class="math inline">\(A_{02} A_{12} \approx \phi_0 \phi_1 \phi_2^2\)</span>から<span class="math inline">\(\phi_1\)</span>の符号が得られる。 <span class="math inline">\(A_{02} = 0\)</span>のときは単に正と考えて、<span class="math inline">\(\phi_2\)</span>を正とする。 同様に、<span class="math inline">\(A_{12} = 0\)</span>であれば正として扱い、<span class="math inline">\(\phi_1\)</span>の符号を<span class="math inline">\(\phi_2\)</span>の符号と等しくする。 このように、各要素の絶対値と符号を基に、<span class="math inline">\(\boldsymbol{\phi}\)</span>が得られる。</p>
+<p><span class="math inline">\(\phi_0\)</span>の符号が負であると仮定すれば、<span class="math inline">\(\phi_1\)</span>と<span class="math inline">\(\phi_2\)</span>の符号も逆になるので、<span class="math inline">\(-\boldsymbol{\phi} = -\phi \mathbf{a}\)</span>が得られる。 <span class="math inline">\(-\boldsymbol{\phi}\)</span>は、<span class="math inline">\(\boldsymbol{\phi}\)</span>と同じ回転軸<span class="math inline">\(\mathbf{a}\)</span>について、反対方向に同じ角度だけ(<span class="math inline">\(-\phi\)</span>だけ)回転させることを意味する。 ここでは、<span class="math inline">\(\phi \approx \pm \pi\)</span>の状況を想定している。 同じ回転軸に対して<span class="math inline">\(\pi\)</span>だけ回転させても、あるいは反対方向に<span class="math inline">\(\pi\)</span>だけ回転させても、結果は全く同じになる。 従って、<span class="math inline">\(\phi_0\)</span>の符号は正と負のどちらに仮定してもよいと考えられる。</p>
 <h2 id="参考文献">参考文献</h2>
 <ul>
-<li><a
-href="http://asrl.utias.utoronto.ca/~tdb/bib/barfoot_ser17.pdf">State
-Estimation for Robotics</a></li>
-<li><a href="https://github.com/gaoxiang12/slambook-en">Introduction to
-Visual SLAM From Theory to Practice</a></li>
+<li><a href="http://asrl.utias.utoronto.ca/~tdb/bib/barfoot_ser17.pdf">State Estimation for Robotics</a></li>
+<li><a href="https://github.com/gaoxiang12/slambook-en">Introduction to Visual SLAM From Theory to Practice</a></li>
 </ul>
 </body>
 </html>

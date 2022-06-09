@@ -188,8 +188,10 @@ $\mathrm{sinc1}(\phi) \approx 0$のとき、$\phi \approx \pm \pi$である。
 また、$\cos^2 \cfrac{\phi}{2} \approx 0$、$\sin^2 \cfrac{\phi}{2} \approx 1$であるから、$A_{00} \approx \phi^2 a_0^2 = \phi_0^2$、$A_{11} \approx \phi^2 a_1^2 = \phi_1^2$、$A_{22} \approx \phi^2 a_2^2 = \phi_2^2$、$A_{02} \approx \phi^2 a_0 a_2 = \phi_0 \phi_2$、$A_{12} \approx \phi^2 a_1 a_2 = \phi_1 \phi_2$である。
 
 従って、$A_{00}$、$A_{11}$、$A_{22}$の平方根をとると、$\boldsymbol{\phi}$の各要素の絶対値$| \phi_0 |$、$| \phi_1 |$、$| \phi_2 |$が得られる。
-続いて、$\phi_0$の符号が正であると仮定すると、$A_{02} = \phi_0 \phi_2$から$\phi_2$の符号、$A_{02} A_{12} \approx \phi_0 \phi_1 \phi_2^2$から$\phi_1$の符号が得られる($\phi_0 = 0$のときは正として扱う)。
-各要素の絶対値と符号を基に、$\boldsymbol{\phi}$が得られる。
+続いて、$\phi_0$の符号が正であると仮定すると、$A_{02} = \phi_0 \phi_2$から$\phi_2$の符号、$A_{02} A_{12} \approx \phi_0 \phi_1 \phi_2^2$から$\phi_1$の符号が得られる。
+$A_{02} = 0$のときは単に正と考えて、$\phi_2$を正とする。
+同様に、$A_{12} = 0$であれば正として扱い、$\phi_1$の符号を$\phi_2$の符号と等しくする。
+このように、各要素の絶対値と符号を基に、$\boldsymbol{\phi}$が得られる。
 
 $\phi_0$の符号が負であると仮定すれば、$\phi_1$と$\phi_2$の符号も逆になるので、$-\boldsymbol{\phi} = -\phi \mathbf{a}$が得られる。
 $-\boldsymbol{\phi}$は、$\boldsymbol{\phi}$と同じ回転軸$\mathbf{a}$について、反対方向に同じ角度だけ($-\phi$だけ)回転させることを意味する。
