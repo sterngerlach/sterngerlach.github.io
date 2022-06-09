@@ -14,10 +14,10 @@ author: SternGerlach
 
 3次元の回転を表すリー群$\mathrm{SO}(3)$と、リー代数$\mathfrak{so}(3)$に関する、自分用のメモ書きです。
 
-## $\mathfrak{so}^3$から$\mathrm{SO}(3)$への変換
+## $\mathfrak{so}(3)$から$\mathrm{SO}(3)$への変換
 
-リー代数$\boldsymbol{\phi} \in \mathfrak{so}^3$と、それに対応するリー群(回転行列)$\mathbf{C} = \exp(\boldsymbol{\phi}^\wedge) \in \mathrm{SO}(3)$を考える。
-$\boldsymbol{\phi}$のノルムを$\phi$, ノルム1に正規化されたベクトルを$\mathbf{a} \in \mathbb{R}^3$と定めると、$\boldsymbol{\phi} = \phi \mathbf{a}$と記述できる。
+リー代数$\boldsymbol{\phi} \in \mathfrak{so}(3)$と、それに対応するリー群(回転行列)$\mathbf{C} = \exp(\boldsymbol{\phi}^\wedge) \in \mathrm{SO}(3)$を考える。
+$\boldsymbol{\phi}$のノルムを$\phi = | \boldsymbol{\phi} |$, ノルム1に正規化されたベクトルを$\mathbf{a} \in \mathbb{R}^3 = \boldsymbol{\phi} / \phi$と定めると、$\boldsymbol{\phi} = \phi \mathbf{a}$と記述できる。
 このとき、$\mathbf{a}$は回転軸、$\phi$は回転軸まわりの回転角を表すので、$\boldsymbol{\phi}$は回転ベクトルとして捉えられる。
 $\boldsymbol{\phi}$と$\mathbf{C}$との間には、次の関係が成り立つ。この関係はロドリゲスの公式とよばれる。
 
@@ -196,4 +196,9 @@ $-\boldsymbol{\phi}$は、$\boldsymbol{\phi}$と同じ回転軸$\mathbf{a}$に�
 ここでは、$\phi \approx \pm \pi$の状況を想定している。
 同じ回転軸に対して$\pi$だけ回転させても、あるいは反対方向に$\pi$だけ回転させても、結果は全く同じになる。
 従って、$\phi_0$の符号は正と負のどちらに仮定してもよいと考えられる。
+
+## 参考文献
+
+- [State Estimation for Robotics](http://asrl.utias.utoronto.ca/~tdb/bib/barfoot_ser17.pdf)
+- [Introduction to Visual SLAM From Theory to Practice](https://github.com/gaoxiang12/slambook-en)
 
