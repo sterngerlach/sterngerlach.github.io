@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="SternGerlach" />
+  <title>SO(3)とSE(3)についてのメモ書き (その3)</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">SO(3)とSE(3)についてのメモ書き (その3)</h1>
+<p class="author">SternGerlach</p>
+</header>
+<!--
+ pandoc -s --filter pandoc-crossref -M "crossrefYaml=./crossref_config.yaml" -f markdown -t html5 --mathjax --css style.css lie-3.md > lie-3.html
+-->
+<p><a href="./index.html">ホームに戻る</a></p>
+<h1 id="このページについて">このページについて</h1>
+<p>3次元の回転を表すリー群<span class="math inline">\(\mathrm{SO}(3)\)</span>と、リー代数<span class="math inline">\(\mathfrak{so}(3)\)</span>に関する、自分用のメモ書きです。</p>
+<h2 id="mathrmso3のヤコビ行列の計算"><span class="math inline">\(\mathrm{SO}(3)\)</span>のヤコビ行列の計算</h2>
+<p>リー代数<span class="math inline">\(\boldsymbol{\phi} \in \mathfrak{so}(3)\)</span>と、それに対応する回転行列<span class="math inline">\(\mathbf{C} = \exp(\boldsymbol{\phi}^\wedge) \in \mathrm{SO}(3)\)</span>を考える。 <a href="./lie-2.html">前回のメモ</a>では、<span class="math inline">\(\boldsymbol{\phi}\)</span>に対するヤコビ行列<span class="math inline">\(\mathbf{J}_l(\boldsymbol{\phi})\)</span>、<span class="math inline">\(\mathbf{J}_r(\boldsymbol{\phi})\)</span>をみた。 これらのヤコビ行列は、<span class="math inline">\(\mathbf{C}\)</span>の<span class="math inline">\(\boldsymbol{\phi}\)</span>に関する偏微分を求める際に必要であった(必要としない計算方法もあった)。</p>
+<p><span class="math display">\[
+  \begin{eqnarray}
+    \mathbf{J}_l(\boldsymbol{\phi}) &amp;=&amp; \frac{\sin \phi}{\phi} \mathbf{I}
+      + \left( 1 - \frac{\sin \phi}{\phi} \right) \mathbf{a} \mathbf{a}^\top
+      + \frac{1 - \cos \phi}{\phi} \mathbf{a}^\wedge \\
+    \mathbf{J}_r(\boldsymbol{\phi}) &amp;=&amp; \frac{\sin \phi}{\phi} \mathbf{I}
+      + \left( 1 - \frac{\sin \phi}{\phi} \right) \mathbf{a} \mathbf{a}^\top
+      - \frac{1 - \cos \phi}{\phi} \mathbf{a}^\wedge
+  \end{eqnarray}
+\]</span></p>
+<p>これらの式において、<span class="math inline">\(\boldsymbol{\phi} = \phi \mathbf{a}\)</span>、<span class="math inline">\(\phi = | \boldsymbol{\phi} |\)</span>、<span class="math inline">\(\mathbf{a} = \boldsymbol{\phi} / \phi\)</span>である。 <span class="math inline">\(\phi\)</span>は<span class="math inline">\(\boldsymbol{\phi}\)</span>のノルム、<span class="math inline">\(\mathbf{a}\)</span>はノルム1に正規化されたベクトルである(<a href="./lie-1.html">こちらのメモ</a>を参照)。</p>
+<p>逆行列<span class="math inline">\(\mathbf{J}_l^{-1}\)</span>、<span class="math inline">\(\mathbf{J}_r^{-1}\)</span>は、次のように表された。 <span class="math inline">\(\cot \theta = \cfrac{1}{\tan \theta} = \cfrac{\cos \theta}{\sin \theta}\)</span>である。</p>
+<p><span class="math display">\[
+  \begin{eqnarray}
+    \mathbf{J}_l(\boldsymbol{\phi})^{-1} &amp;=&amp; \frac{\phi}{2} \cot \frac{\phi}{2} \mathbf{I}
+      + \left( 1 - \frac{\phi}{2} \cot \frac{\phi}{2} \right) \mathbf{a} \mathbf{a}^\top
+      - \frac{\phi}{2} \mathbf{a}^\wedge \\
+    \mathbf{J}_r(\boldsymbol{\phi})^{-1} &amp;=&amp; \frac{\phi}{2} \cot \frac{\phi}{2} \mathbf{I}
+      + \left( 1 - \frac{\phi}{2} \cot \frac{\phi}{2} \right) \mathbf{a} \mathbf{a}^\top
+      + \frac{\phi}{2} \mathbf{a}^\wedge
+  \end{eqnarray}
+\]</span></p>
+<p>ここでは、これらの具体的な計算方法を考える。</p>
+<h2 id="ヤコビ行列mathbfj_lmathbfj_rの計算">ヤコビ行列<span class="math inline">\(\mathbf{J}_l\)</span>、<span class="math inline">\(\mathbf{J}_r\)</span>の計算</h2>
+<p><span class="math inline">\(\mathbf{J}_l\)</span>と<span class="math inline">\(\mathbf{J}_r\)</span>を、<span class="math inline">\(\mathbf{a} \mathbf{a}^\top = \mathbf{I} + \mathbf{a}^\wedge \mathbf{a}^\wedge\)</span>の関係を使って、次のように書き直す。</p>
+<p><span class="math display">\[
+  \begin{eqnarray}
+    \mathbf{J}_l(\boldsymbol{\phi}) &amp;=&amp; \frac{\sin \phi}{\phi} \mathbf{I}
+      + \left( 1 - \frac{\sin \phi}{\phi} \right)
+      \left( \mathbf{I} + \mathbf{a}^\wedge \mathbf{a}^\wedge \right)
+      + \frac{1 - \cos \phi}{\phi} \mathbf{a}^\wedge \\
+    &amp;=&amp; \mathbf{I} + \left( 1 - \frac{\sin \phi}{\phi} \right)
+      \mathbf{a}^\wedge \mathbf{a}^\wedge
+      + \frac{1 - \cos \phi}{\phi} \mathbf{a}^\wedge \\
+    \mathbf{J}_r(\boldsymbol{\phi}) &amp;=&amp; \frac{\sin \phi}{\phi} \mathbf{I}
+      + \left( 1 - \frac{\sin \phi}{\phi} \right)
+      \left( \mathbf{I} + \mathbf{a}^\wedge \mathbf{a}^\wedge \right)
+      - \frac{1 - \cos \phi}{\phi} \mathbf{a}^\wedge \\
+    &amp;=&amp; \mathbf{I} + \left( 1 - \frac{\sin \phi}{\phi} \right)
+      \mathbf{a}^\wedge \mathbf{a}^\wedge
+      - \frac{1 - \cos \phi}{\phi} \mathbf{a}^\wedge
+  \end{eqnarray}
+\]</span></p>
+<p>さらに、<span class="math inline">\(\mathbf{a} = \boldsymbol{\phi} / \phi\)</span>を代入して、次のように表す。</p>
+<p><span class="math display">\[
+  \begin{eqnarray}
+    \mathbf{J}_l(\boldsymbol{\phi}) &amp;=&amp;
+      \mathbf{I} + \frac{1}{\phi^2} \left( 1 - \frac{\sin \phi}{\phi} \right)
+      \boldsymbol{\phi}^\wedge \boldsymbol{\phi}^\wedge
+      + \frac{1 - \cos \phi}{\phi^2} \boldsymbol{\phi}^\wedge \\
+    \mathbf{J}_r(\boldsymbol{\phi}) &amp;=&amp;
+      \mathbf{I} + \frac{1}{\phi^2} \left( 1 - \frac{\sin \phi}{\phi} \right)
+      \boldsymbol{\phi}^\wedge \boldsymbol{\phi}^\wedge
+      - \frac{1 - \cos \phi}{\phi^2} \boldsymbol{\phi}^\wedge
+  \end{eqnarray}
+\]</span></p>
+<p><span class="math inline">\(\mathbf{J}_l\)</span>と<span class="math inline">\(\mathbf{J}_r\)</span>は、<a href="./lie-1.html">こちらのメモ</a>で定義した<span class="math inline">\(\mathrm{sinc2}(\phi)\)</span>と、<span class="math inline">\(\mathrm{sinc3}(\phi) = \cfrac{\phi - \sin \phi}{\phi^3}\)</span>を使って、次のように書ける。</p>
+<p><span class="math display">\[
+  \begin{eqnarray}
+    \mathbf{J}_l(\boldsymbol{\phi}) &amp;=&amp; \mathbf{I}
+      + \mathrm{sinc3}(\phi) \boldsymbol{\phi}^\wedge \boldsymbol{\phi}^\wedge
+      + \mathrm{sinc2}(\phi) \boldsymbol{\phi}^\wedge \\
+    \mathbf{J}_r(\boldsymbol{\phi}) &amp;=&amp; \mathbf{I}
+      + \mathrm{sinc3}(\phi) \boldsymbol{\phi}^\wedge \boldsymbol{\phi}^\wedge
+      - \mathrm{sinc2}(\phi) \boldsymbol{\phi}^\wedge
+  \end{eqnarray}
+\]</span></p>
+<p><a href="./lie-1.html">こちらのメモ</a>に書いたように、<span class="math inline">\(\phi\)</span>が小さい値のとき、<span class="math inline">\(\mathrm{sinc2}(\phi)\)</span>、<span class="math inline">\(\mathrm{sinc3}(\phi)\)</span>の計算は不安定になるので、テイラー展開による近似で対処する。 これらの近似は、次のようになる。</p>
+<p><span class="math display">\[
+  \begin{eqnarray}
+    \mathrm{sinc2}(\phi) &amp;=&amp; \frac{1 - \cos \phi}{\phi^2} \\
+    &amp;=&amp; \frac{1}{2} \left( 1 - \frac{1}{12} \phi^2 \left( 1 - \frac{1}{30} \phi^2
+      \left( 1 - \frac{1}{56} \phi^2 \right) \right) \right) + \cdots
+  \end{eqnarray}
+\]</span></p>
+<p><span class="math display">\[
+  \begin{eqnarray}
+    \mathrm{sinc3}(\phi) &amp;=&amp; \frac{\phi - \sin \phi}{\phi^3} \\
+    &amp;=&amp; \frac{1}{\phi^3} \left( \phi - \phi + \frac{1}{3!} \phi^3 - \frac{1}{5!} \phi^5
+      + \frac{1}{7!} \phi^7 - \frac{1}{9!} \phi^9 + \cdots \right) \\
+    &amp;=&amp; \frac{1}{3!} - \frac{1}{5!} \phi^2 + \frac{1}{7!} \phi^4 - \frac{1}{9!} \phi^6 + \cdots \\
+    &amp;=&amp; \frac{1}{6} \left( 1 - \frac{1}{24} \phi^2 \left(
+      1 - \frac{1}{42} \phi^2 \left( 1 - \frac{1}{72} \phi^2 \right) \right) \right) + \cdots
+  \end{eqnarray}
+\]</span></p>
+<p><span class="math inline">\(\phi\)</span>がある程度大きな値であれば、上式を素直に計算できる。</p>
+<h2 id="ヤコビ行列の逆行列mathbfj_l-1mathbfj_r-1の計算">ヤコビ行列の逆行列<span class="math inline">\(\mathbf{J}_l^{-1}\)</span>、<span class="math inline">\(\mathbf{J}_r^{-1}\)</span>の計算</h2>
+<p><span class="math inline">\(\mathbf{J}_l^{-1}\)</span>と<span class="math inline">\(\mathbf{J}_r^{-1}\)</span>を、<span class="math inline">\(\mathbf{a} \mathbf{a}^\top = \mathbf{I} + \mathbf{a}^\wedge \mathbf{a}^\wedge\)</span>の関係を使って、次のように書き直す。</p>
+<p><span class="math display">\[
+  \begin{eqnarray}
+    \mathbf{J}_l(\boldsymbol{\phi})^{-1} &amp;=&amp; \frac{\phi}{2} \cot \frac{\phi}{2} \mathbf{I}
+      + \left( 1 - \frac{\phi}{2} \cot \frac{\phi}{2} \right)
+      \left( \mathbf{I} + \mathbf{a}^\wedge \mathbf{a}^\wedge \right)
+      - \frac{\phi}{2} \mathbf{a}^\wedge \\
+    &amp;=&amp; \mathbf{I} + \left( 1 - \frac{\phi}{2} \cot \frac{\phi}{2} \right)
+      \mathbf{a}^\wedge \mathbf{a}^\wedge
+      - \frac{\phi}{2} \mathbf{a}^\wedge \\
+    \mathbf{J}_r(\boldsymbol{\phi})^{-1} &amp;=&amp; \frac{\phi}{2} \cot \frac{\phi}{2} \mathbf{I}
+      + \left( 1 - \frac{\phi}{2} \cot \frac{\phi}{2} \right)
+      \left( \mathbf{I} + \mathbf{a}^\wedge \mathbf{a}^\wedge \right)
+      - \frac{\phi}{2} \mathbf{a}^\wedge \\
+    &amp;=&amp; \mathbf{I} + \left( 1 - \frac{\phi}{2} \cot \frac{\phi}{2} \right)
+      \mathbf{a}^\wedge \mathbf{a}^\wedge
+      + \frac{\phi}{2} \mathbf{a}^\wedge
+  \end{eqnarray}
+\]</span></p>
+<p>さらに、<span class="math inline">\(\mathbf{a} = \boldsymbol{\phi} / \phi\)</span>を代入して、次のように表す。</p>
+<p><span class="math display">\[
+  \begin{eqnarray}
+    \mathbf{J}_l(\boldsymbol{\phi})^{-1} &amp;=&amp;
+      \mathbf{I} + \frac{1}{\phi^2} \left( 1 - \frac{\phi}{2} \cot \frac{\phi}{2} \right)
+      \boldsymbol{\phi}^\wedge \boldsymbol{\phi}^\wedge
+      - \frac{1}{2} \mathbf{a}^\wedge \\
+    \mathbf{J}_r(\boldsymbol{\phi})^{-1} &amp;=&amp;
+      \mathbf{I} + \frac{1}{\phi^2} \left( 1 - \frac{\phi}{2} \cot \frac{\phi}{2} \right)
+      \boldsymbol{\phi}^\wedge \boldsymbol{\phi}^\wedge
+      + \frac{1}{2} \mathbf{a}^\wedge
+  \end{eqnarray}
+\]</span></p>
+<p><span class="math inline">\(\phi\)</span>が小さい値のとき、上式の<span class="math inline">\(\cfrac{1}{\phi^2} \left( 1 - \cfrac{\phi}{2} \cot \cfrac{\phi}{2} \right)\)</span>の計算は不安定になるので、テイラー展開による近似で対処する。 この近似を求めるのは、少々面倒である。</p>
+<p><span class="math inline">\(\cot\)</span>の定義から、<span class="math inline">\((\phi \cot \phi) \sin \phi = \phi \cos \phi\)</span>である。 これに<span class="math inline">\(\sin \phi\)</span>と<span class="math inline">\(\cos \phi\)</span>のテイラー展開を代入すれば、以下のようになる。</p>
+<p><span class="math display">\[
+  \phi \cot \phi \left( \phi - \frac{1}{3!} \phi^3 + \frac{1}{5!} \phi^5
+    - \frac{1}{7!} \phi^7 + \frac{1}{9!} \phi^9 + \cdots \right)
+  = \phi - \frac{1}{2!} \phi^3 + \frac{1}{4!} \phi^5
+    - \frac{1}{6!} \phi^7 + \frac{1}{8!} \phi^9 + \cdots
+\]</span></p>
+<p><span class="math inline">\(\cot \phi = \cfrac{1}{\tan \phi}\)</span>は奇関数であるから、<span class="math inline">\(\phi \cot \phi\)</span>は偶関数となる。 テイラー展開すれば、<span class="math inline">\(\phi^0\)</span>、<span class="math inline">\(\phi^2\)</span>、<span class="math inline">\(\phi^4\)</span>、<span class="math inline">\(\phi^6\)</span>のように、<span class="math inline">\(\phi\)</span>の偶数乗の項だけが並ぶはずである。 従って、<span class="math inline">\(\phi \cot \phi\)</span>を次のように定めて、係数<span class="math inline">\(a_0\)</span>、<span class="math inline">\(a_2\)</span>、<span class="math inline">\(a_4\)</span>、<span class="math inline">\(a_6\)</span>、<span class="math inline">\(a_8\)</span>の値を順に求める。</p>
+<p><span class="math display">\[
+  \phi \cot \phi = a_0 + a_2 \phi^2 + a_4 \phi^4 + a_6 \phi^6 + a_8 \phi^8 + \cdots
+\]</span></p>
+<p>これを代入すれば、次のようになる。</p>
+<p><span class="math display">\[
+  \begin{eqnarray}
+    &amp;&amp; \left( a_0 + a_2 \phi^2 + a_4 \phi^4 + a_6 \phi^6 + a_8 \phi^8 + \cdots \right)
+    \left( \phi - \frac{1}{3!} \phi^3 + \frac{1}{5!} \phi^5
+      - \frac{1}{7!} \phi^7 + \frac{1}{9!} \phi^9 + \cdots \right) \\
+    &amp;=&amp; \phi - \frac{1}{2!} \phi^3 + \frac{1}{4!} \phi^5
+      - \frac{1}{6!} \phi^7 + \frac{1}{8!} \phi^9 + \cdots
+  \end{eqnarray}
+\]</span></p>
+<p>左辺と右辺の係数の比較から、次の方程式が得られる。</p>
+<p><span class="math display">\[
+  \begin{eqnarray}
+    a_0 &amp;=&amp; 1 \\
+    -\frac{a_0}{3!} + a_2 &amp;=&amp; -\frac{1}{2!} \\
+    \frac{a_0}{5!} - \frac{a_2}{3!} + a_4 &amp;=&amp; \frac{1}{4!} \\
+    -\frac{a_0}{7!} + \frac{a_2}{5!} - \frac{a_4}{3!} + a_6 &amp;=&amp; -\frac{1}{6!} \\
+    \frac{a_0}{9!} - \frac{a_2}{7!} + \frac{a_4}{5!} - \frac{a_6}{3!} + a_8 &amp;=&amp; \frac{1}{8!}
+  \end{eqnarray}
+\]</span></p>
+<p>各係数は次のように求まる。</p>
+<p><span class="math display">\[
+  \begin{eqnarray}
+    a_0 &amp;=&amp; 1 \\
+    a_2 &amp;=&amp; -\frac{1}{2} + \frac{1}{6} = -\frac{1}{3} \\
+    a_4 &amp;=&amp; \frac{1}{24} - \frac{1}{6} \cdot \frac{1}{3} - \frac{1}{120}
+      = \frac{15 - 20 - 3}{360} = -\frac{1}{45} \\
+    a_6 &amp;=&amp; -\frac{1}{720} - \frac{1}{6} \cdot \frac{1}{45}
+      + \frac{1}{120} \cdot \frac{1}{3} + \frac{1}{5040} \\
+    &amp;=&amp; \frac{-21 - 56 + 42 + 3}{15120} = -\frac{2}{945} \\
+    a_8 &amp;=&amp; \frac{1}{40320} - \frac{1}{6} \cdot \frac{2}{945} + \frac{1}{120} \cdot \frac{1}{45}
+      - \frac{1}{5040} \cdot \frac{1}{3} - \frac{1}{362880} \\
+    &amp;=&amp; \frac{45 - 640 + 336 - 120 - 5}{1814400} = -\frac{1}{4725}
+  \end{eqnarray}
+\]</span></p>
+<p><span class="math inline">\(\phi \cot \phi\)</span>は次のようになる。</p>
+<p><span class="math display">\[
+  \phi \cot \phi = 1 - \frac{1}{3} \phi^2 - \frac{1}{45} \phi^4
+    - \frac{2}{945} \phi^6 - \frac{1}{4725} \phi^8 + \cdots
+\]</span></p>
+<p>上記より、<span class="math inline">\(\cfrac{1}{\phi^2} \left( 1 - \cfrac{\phi}{2} \cot \cfrac{\phi}{2} \right)\)</span>は次のようになる。</p>
+<p><span class="math display">\[
+  \begin{eqnarray}
+    &amp;&amp; \frac{1}{\phi^2} \left( 1 - \frac{\phi}{2} \cot \frac{\phi}{2} \right) \\
+    &amp;=&amp; \frac{1}{\phi^2} \left( 1 - 1
+      + \frac{1}{3} \cdot \frac{1}{2^2} \phi^2
+      + \frac{1}{45} \cdot \frac{1}{2^4} \phi^4
+      + \frac{2}{945} \cdot \frac{1}{2^6} \phi^6
+      + \frac{1}{4725} \cdot \frac{1}{2^8} \phi^8 + \cdots \right) \\
+    &amp;=&amp; \frac{1}{\phi^2} \left( 1 - 1 + \frac{1}{12} \phi^2
+      + \frac{1}{720} \phi^4 + \frac{1}{30240} \phi^6
+      + \frac{1}{1209600} \phi^8 + \cdots \right) \\
+    &amp;=&amp; \frac{1}{12} + \frac{1}{720} \phi^2 + \frac{1}{30240} \phi^4
+      + \frac{1}{1209600} \phi^6 + \cdots \\
+    &amp;=&amp; \frac{1}{12} + \frac{1}{720} \phi^2 \left( 1 + \frac{1}{42} \phi^2
+      \left( 1 + \frac{1}{40} \phi^2 \right) \right) + \cdots
+  \end{eqnarray}
+\]</span></p>
+<p><span class="math inline">\(\phi\)</span>がある程度大きな値であれば、<span class="math inline">\(\mathbf{J}_l^{-1}\)</span>、<span class="math inline">\(\mathbf{J}_r^{-1}\)</span>の定義に沿って、素直に計算できる。</p>
+<h2 id="参考文献">参考文献</h2>
+<ul>
+<li><a href="http://asrl.utias.utoronto.ca/~tdb/bib/barfoot_ser17.pdf">State Estimation for Robotics</a></li>
+<li><a href="https://github.com/gaoxiang12/slambook-en">Introduction to Visual SLAM From Theory to Practice</a></li>
+</ul>
+</body>
+</html>
