@@ -353,7 +353,7 @@ $$
 $L(\mathbf{C})$は、例えば、ニューラルネットにおける誤差関数となる。
 このとき、リー代数$\boldsymbol{\phi}$を入力にとって、回転行列$\mathbf{C} = \exp(\boldsymbol{\phi}^\wedge)$を出力するレイヤー(ここでは$\mathrm{SO}(3)$レイヤーとする)が、ニューラルネットのなかに組み込まれているとする。
 誤差逆伝播法を実施するとき、$\mathrm{SO}(3)$レイヤーは後ろの層から、出力に関する残差関数の勾配$\cfrac{\partial L(\mathbf{C})}{\partial \mathbf{C}}$を受け取って、入力に関する勾配$\cfrac{\partial L(\mathbf{C})}{\partial \boldsymbol{\phi}}$の各要素を上記のように計算し、前の層に引き渡すことができる。
-$\mathrm{SO}(3)$レイヤーは、計算結果$\mathbf{C}$をどこかに保持しておく必要がある。
+$\mathrm{SO}(3)$レイヤーは、順伝播のときの計算結果$\mathbf{C}$をどこかに保持しておく必要がある。
 
 あるいは、$\mathbf{u} = \mathbf{C} \mathbf{p}$の関数$L(\mathbf{u})$を考える。
 スカラー関数$L(\mathbf{u})$の$\boldsymbol{\phi}$に関する微分は、連鎖律から次のようになる。
