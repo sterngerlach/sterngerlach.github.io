@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="SternGerlach" />
+  <title>SO(3)とSE(3)についてのメモ書き (その4)</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+  <link rel="stylesheet" href="style.css" />
+  <script
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+  type="text/javascript"></script>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">SO(3)とSE(3)についてのメモ書き (その4)</h1>
+<p class="author">SternGerlach</p>
+</header>
+<!--
+ pandoc -s --filter pandoc-crossref -M "crossrefYaml=./crossref_config.yaml" -f markdown -t html5 --mathjax --css style.css lie-4.md > lie-4.html
+-->
+<p><a href="./index.html">ホームに戻る</a></p>
+<h1 id="このページについて">このページについて</h1>
+<p>3次元の剛体変換を表すリー群<span
+class="math inline">\(\mathrm{SE}(3)\)</span>と、リー代数<span
+class="math inline">\(\mathfrak{se}(3)\)</span>に関する、自分用のメモ書きです。</p>
+<h2 id="mathfrakse3からmathrmse3への変換"><span
+class="math inline">\(\mathfrak{se}(3)\)</span>から<span
+class="math inline">\(\mathrm{SE}(3)\)</span>への変換</h2>
+<p>リー代数<span class="math inline">\(\boldsymbol{\xi} = \left[
+\begin{array}{c} \boldsymbol{\phi} \\ \boldsymbol{\rho} \end{array}
+\right] \in
+\mathfrak{se}(3)\)</span>と、それに対応するリー群(剛体変換)<span
+class="math inline">\(\mathbf{T} = \exp(\boldsymbol{\xi}^\wedge) \in
+\mathrm{SE}(3)\)</span>を考える。 <span
+class="math inline">\(\boldsymbol{\phi} \in
+\mathfrak{so}(3)\)</span>、<span class="math inline">\(\boldsymbol{\rho}
+\in \mathbb{R}^3\)</span>である。 <span
+class="math inline">\(\boldsymbol{\xi}\)</span>と<span
+class="math inline">\(\mathbf{T}\)</span>との間には、次の関係が成立する。</p>
+<p><span class="math display">\[
+  \mathbf{T} = \exp(\boldsymbol{\xi}^\wedge)
+  = \left[ \begin{array}{cc} \mathbf{C} &amp;
+\mathbf{J}(\boldsymbol{\phi}) \boldsymbol{\rho} \\
+    \mathbf{0}^\top &amp; 1 \end{array} \right]
+\]</span></p>
+<p>ここで、<span class="math inline">\(\mathbf{C} =
+\exp(\boldsymbol{\phi}^\wedge) \in \mathrm{SO}(3)\)</span>は、<span
+class="math inline">\(\boldsymbol{\phi}\)</span>から得た回転行列である。
+またヤコビ行列<span class="math inline">\(\mathbf{J}\)</span>は、<a
+href="./lie-2.html">こちらのメモ</a>で定義された<span
+class="math inline">\(\mathbf{J}_l\)</span>と同じものである(左側バージョン)。
+<span class="math inline">\(\boldsymbol{\phi} = \phi
+\mathbf{a}\)</span>、<span class="math inline">\(\phi = |
+\boldsymbol{\phi} |\)</span>、<span class="math inline">\(\mathbf{a} =
+\boldsymbol{\phi} / \phi\)</span>である。</p>
+<p><span class="math display">\[
+  \mathbf{J}(\boldsymbol{\phi}) = \frac{\sin \phi}{\phi} \mathbf{I}
+    + \left( 1 - \frac{\sin \phi}{\phi} \right) \mathbf{a}
+\mathbf{a}^\top
+    + \frac{1 - \cos \phi}{\phi} \mathbf{a}^\wedge
+\]</span></p>
+<p><span class="math inline">\(\boldsymbol{\xi} = \left[
+\begin{array}{c} \boldsymbol{\phi} \\ \boldsymbol{\rho} \end{array}
+\right] \in \mathfrak{se}(3)\)</span>に対して、<span
+class="math inline">\(\wedge\)</span>演算子は次のように定義される(Wedge演算子)。
+<span class="math inline">\(\boldsymbol{\phi} \in
+\mathfrak{so}(3)\)</span>に対する<span
+class="math inline">\(\wedge\)</span>演算子は、<a
+href="./lie-1.html">こちらのメモ</a>を参照する。 <span
+class="math inline">\(\vee\)</span>演算子は、<span
+class="math inline">\(\wedge\)</span>とは真逆の操作を行う(Vee演算子)。</p>
+<p><span class="math display">\[
+  \boldsymbol{\xi}^\wedge = \left[ \begin{array}{cc}
+    \boldsymbol{\phi}^\wedge &amp; \boldsymbol{\rho} \\
+    \mathbf{0}^\top &amp; 0 \end{array} \right] \in \mathbb{R}^{4 \times
+4}
+\]</span></p>
+<p><span class="math inline">\(\boldsymbol{\xi}\)</span>から<span
+class="math inline">\(\mathbf{T}\)</span>を計算するためには、次のようにする。</p>
+<ul>
+<li><span
+class="math inline">\(\boldsymbol{\xi}\)</span>から回転を表す成分<span
+class="math inline">\(\boldsymbol{\phi} \in
+\mathfrak{so}(3)\)</span>を取り出して、回転行列<span
+class="math inline">\(\mathbf{C} = \exp(\boldsymbol{\phi}^\wedge) \in
+\mathrm{SO}(3)\)</span>を計算する。 計算方法は、<a
+href="./lie-1.html">こちらのメモ</a>を参照する。</li>
+<li><span class="math inline">\(\boldsymbol{\phi} \in
+\mathfrak{so}(3)\)</span>から、(左側バージョンの)ヤコビ行列<span
+class="math inline">\(\mathbf{J}(\boldsymbol{\phi})\)</span>を計算する。
+計算方法は、<a href="./lie-3.html">こちらのメモ</a>を参照する。</li>
+<li><span class="math inline">\(\boldsymbol{\xi}\)</span>から<span
+class="math inline">\(\boldsymbol{\rho}\)</span>を取り出して、<span
+class="math inline">\(\mathbf{J}(\boldsymbol{\phi})
+\boldsymbol{\rho}\)</span>を計算する。</li>
+<li><span class="math inline">\(\mathbf{C}\)</span>、<span
+class="math inline">\(\mathbf{J}(\boldsymbol{\phi})
+\boldsymbol{\rho}\)</span>が揃ったので、それらをまとめて<span
+class="math inline">\(\mathbf{T}\)</span>とする。</li>
+</ul>
+<p><span class="math inline">\(\mathbf{T}\)</span>の逆行列<span
+class="math inline">\(\mathbf{T}^{-1}\)</span>は、次のように表される(<span
+class="math inline">\(\mathbf{r} = \mathbf{J}(\boldsymbol{\phi})
+\boldsymbol{\rho}\)</span>)。</p>
+<p><span class="math display">\[
+  \mathbf{T}^{-1} = \left[ \begin{array}{cc}
+    \mathbf{C}^\top &amp; -\mathbf{C}^\top \mathbf{r} \\
+    \mathbf{0}^\top &amp; 1 \end{array} \right]
+\]</span></p>
+<p><span class="math inline">\(\mathbf{T}\)</span>から<span
+class="math inline">\(\mathbf{T}^{-1}\)</span>、あるいは<span
+class="math inline">\(\boldsymbol{\xi}\)</span>から<span
+class="math inline">\(\mathbf{T}^{-1}\)</span>は、容易に求められる。</p>
+<h2 id="mathrmse3からmathfrakse3への変換"><span
+class="math inline">\(\mathrm{SE}(3)\)</span>から<span
+class="math inline">\(\mathfrak{se}(3)\)</span>への変換</h2>
+<p><span class="math inline">\(\mathbf{T}\)</span>から<span
+class="math inline">\(\boldsymbol{\xi} = \left[ \begin{array}{c}
+\boldsymbol{\phi} \\ \boldsymbol{\rho} \end{array}
+\right]\)</span>への変換は、次のように行う。</p>
+<ul>
+<li><span
+class="math inline">\(\mathbf{T}\)</span>の左上のブロック(回転行列)<span
+class="math inline">\(\mathbf{C}\)</span>を取り出して、<span
+class="math inline">\(\mathbf{C}\)</span>に対応するリー代数<span
+class="math inline">\(\boldsymbol{\phi}\)</span>を計算する。 <span
+class="math inline">\(\mathbf{C}\)</span>から<span
+class="math inline">\(\boldsymbol{\phi}\)</span>への変換は、<a
+href="./lie-1.html">こちらのメモ</a>を参照する。</li>
+<li><span class="math inline">\(\mathbf{T}\)</span>の右上のブロック<span
+class="math inline">\(\mathbf{J}(\boldsymbol{\phi})
+\boldsymbol{\rho}\)</span>を取り出して、ヤコビ行列の逆行列<span
+class="math inline">\(\mathbf{J}(\boldsymbol{\phi})^{-1}\)</span>を掛けることで、<span
+class="math inline">\(\boldsymbol{\rho}\)</span>を計算する。 <span
+class="math inline">\(\mathbf{J}(\boldsymbol{\phi})^{-1}\)</span>は、次のように定義される。
+計算方法は、<a href="./lie-3.html">こちらのメモ</a>を参照する。 <span
+class="math display">\[
+\mathbf{J}(\boldsymbol{\phi})^{-1} = \frac{\phi}{2} \cot \frac{\phi}{2}
+\mathbf{I}
+  + \left( 1 - \frac{\phi}{2} \cot \frac{\phi}{2} \right) \mathbf{a}
+\mathbf{a}^\top
+  - \frac{\phi}{2} \mathbf{a}^\wedge
+\]</span></li>
+<li><span class="math inline">\(\boldsymbol{\phi}\)</span>と<span
+class="math inline">\(\boldsymbol{\rho}\)</span>を結合して、<span
+class="math inline">\(\boldsymbol{\xi}\)</span>を得る。</li>
+</ul>
+<h2 id="参考文献">参考文献</h2>
+<ul>
+<li><a
+href="http://asrl.utias.utoronto.ca/~tdb/bib/barfoot_ser17.pdf">State
+Estimation for Robotics</a></li>
+<li><a href="https://github.com/gaoxiang12/slambook-en">Introduction to
+Visual SLAM: From Theory to Practice</a></li>
+</ul>
+</body>
+</html>
