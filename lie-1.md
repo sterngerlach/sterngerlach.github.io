@@ -202,5 +202,5 @@ $-\boldsymbol{\phi}$は、$\boldsymbol{\phi}$と同じ回転軸$\mathbf{a}$に�
 ## 参考文献
 
 - [State Estimation for Robotics](http://asrl.utias.utoronto.ca/~tdb/bib/barfoot_ser17.pdf)
-- [Introduction to Visual SLAM From Theory to Practice](https://github.com/gaoxiang12/slambook-en)
+- [Introduction to Visual SLAM: From Theory to Practice](https://github.com/gaoxiang12/slambook-en)
 
