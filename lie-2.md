@@ -150,7 +150,7 @@ $\mathbf{1}_i$は$\boldsymbol{\phi}$と同様に3次ベクトルであり、$i$�
   この近似を偏微分の定義に代入すれば、次が得られる。
 
   $$
-    \frac{\left( \mathbf{I} + h (\mathbf{J}_l(\boldsymbol{\phi}) \mathbf{1}_i)^\wedge \right)
+    \lim_{h \to 0} \frac{\left( \mathbf{I} + h (\mathbf{J}_l(\boldsymbol{\phi}) \mathbf{1}_i)^\wedge \right)
       \exp(\boldsymbol{\phi}^\wedge) - \exp(\boldsymbol{\phi}^\wedge)}{h}
     = (\mathbf{J}_l(\boldsymbol{\phi}) \mathbf{1}_i)^\wedge \exp(\boldsymbol{\phi}^\wedge)
   $$
@@ -173,7 +173,7 @@ $\mathbf{1}_i$は$\boldsymbol{\phi}$と同様に3次ベクトルであり、$i$�
   この近似を偏微分の定義に代入すれば、次が得られる。
 
   $$
-    \frac{\exp(\boldsymbol{\phi}^\wedge)
+    \lim_{h \to 0} \frac{\exp(\boldsymbol{\phi}^\wedge)
       \left( \mathbf{I} + (h \mathbf{J}_r(\boldsymbol{\phi}) \mathbf{1}_i)^\wedge \right)
       - \exp(\boldsymbol{\phi}^\wedge)}{h}
     = \exp(\boldsymbol{\phi}^\wedge) (\mathbf{J}_r(\boldsymbol{\phi}) \mathbf{1}_i)^\wedge
@@ -240,7 +240,7 @@ $$
 
 そこで、上記とは別のアプローチで、偏微分$\cfrac{\partial \mathbf{C}}{\partial \phi_i}$、あるいは$\cfrac{\partial (\mathbf{C} \mathbf{p})}{\partial \boldsymbol{\phi}}$を求めてみる。
 
-先ほどは、$\phi_i$の方向に$\boldsymbol{\phi}$を摂動したときの回転行列を、$\exp((\boldsymbol{\phi} + h \mathbf{1}_i)^\wedge)$で表現したが、ここでは$\exp((h \mathbf{1}_i)^\wedge) \exp(\mathbf{C})$、あるいは$\exp(\mathbf{C}) \exp((h \mathbf{1}_i)^\wedge)$と表すことにする。
+先ほどは、$\phi_i$の方向に$\boldsymbol{\phi}$を摂動したときの回転行列を、$\exp((\boldsymbol{\phi} + h \mathbf{1}_i)^\wedge)$で表現したが、ここでは$\exp((h \mathbf{1}_i)^\wedge) \mathbf{C}$、あるいは$\mathbf{C} \exp((h \mathbf{1}_i)^\wedge)$と表すことにする。
 前者は**左側から**、後者は**右側から**、$h \mathbf{1}_i$に対応する微小な回転行列$\exp((h \mathbf{1}_i)^\wedge)$を適用する。
 先ほどと異なるのは、次のような点である。
 
