@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="SternGerlach" />
+  <title>SO(3)とSE(3)についてのメモ書き (その5)</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+  <link rel="stylesheet" href="style.css" />
+  <script
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+  type="text/javascript"></script>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">SO(3)とSE(3)についてのメモ書き (その5)</h1>
+<p class="author">SternGerlach</p>
+</header>
+<!--
+ pandoc -s --filter pandoc-crossref -M "crossrefYaml=./crossref_config.yaml" -f markdown -t html5 --mathjax --css style.css lie-5.md > lie-5.html
+-->
+<p><a href="./index.html">ホームに戻る</a></p>
+<h1 id="このページについて">このページについて</h1>
+<p>3次元の剛体変換を表すリー群<span
+class="math inline">\(\mathrm{SE}(3)\)</span>と、リー代数<span
+class="math inline">\(\mathfrak{se}(3)\)</span>に関する、自分用のメモ書きです。</p>
+<h2 id="mathrmse3の微分"><span
+class="math inline">\(\mathrm{SE}(3)\)</span>の微分</h2>
+<p>リー代数<span class="math inline">\(\boldsymbol{\xi} = \left[
+\begin{array}{c} \boldsymbol{\phi} \\ \boldsymbol{\rho} \end{array}
+\right] \in
+\mathfrak{se}(3)\)</span>と、それに対応するリー群(剛体変換)<span
+class="math inline">\(\mathbf{T} = \exp(\boldsymbol{\xi}^\wedge) \in
+\mathrm{SE}(3)\)</span>を考える。 <span
+class="math inline">\(\boldsymbol{\phi} \in
+\mathfrak{so}(3)\)</span>、<span class="math inline">\(\boldsymbol{\rho}
+\in \mathbb{R}^3\)</span>である。 <span
+class="math inline">\(\mathrm{SO}(3)\)</span>のとき(<a
+href="./lie-2.html">こちらのメモ</a>)と同じように、<span
+class="math inline">\(\mathbf{T}\)</span>の<span
+class="math inline">\(\boldsymbol{\xi}\)</span>に関する偏微分も、2通りの方法で計算できる。</p>
+<p><span class="math inline">\(\boldsymbol{\phi}\)</span>、<span
+class="math inline">\(\boldsymbol{\rho}\)</span>の各要素を<span
+class="math inline">\(\phi_i\)</span>、<span
+class="math inline">\(\rho_i\)</span>(<span class="math inline">\(0 \le
+i \le 2\)</span>)とする。 また、<span
+class="math inline">\(\boldsymbol{\xi}\)</span>の各要素を<span
+class="math inline">\(\xi_i\)</span>(<span class="math inline">\(0 \le i
+\le 5\)</span>)とする。 <span
+class="math inline">\(\mathbf{T}\)</span>は<span class="math inline">\(4
+\times 4\)</span>行列であるため、<span
+class="math inline">\(\phi_i\)</span>、<span
+class="math inline">\(\rho_i\)</span>、あるいは<span
+class="math inline">\(\xi_i\)</span>に関する<span
+class="math inline">\(\mathbf{T}\)</span>の偏微分<span
+class="math inline">\(\cfrac{\partial \mathbf{T}}{\partial
+\phi_i}\)</span>、<span class="math inline">\(\cfrac{\partial
+\mathbf{T}}{\partial \rho_i}\)</span>、<span
+class="math inline">\(\cfrac{\partial \mathbf{T}}{\partial
+\xi_i}\)</span>も<span class="math inline">\(4 \times
+4\)</span>行列になる。</p>
+<p>ある3次実ベクトル<span class="math inline">\(\mathbf{p} \in
+\mathbb{R}^3\)</span>について、<span class="math inline">\(\mathbf{T}
+\mathbf{p}\)</span>の<span
+class="math inline">\(\boldsymbol{\xi}\)</span>に関する偏微分<span
+class="math inline">\(\cfrac{\partial (\mathbf{T} \mathbf{p})}{\partial
+\boldsymbol{\xi}}\)</span>を考えることもできる。 <span
+class="math inline">\(\mathbf{T}
+\mathbf{p}\)</span>を計算する際は、<span
+class="math inline">\(\mathbf{p}\)</span>を同次座標<span
+class="math inline">\(\left[ \begin{array}{c} \mathbf{p} \\ 1
+\end{array} \right]\)</span>に直すものとする。 従って、<span
+class="math inline">\(\mathbf{T}
+\mathbf{p}\)</span>は4次ベクトルとなり、その最後の要素は<span
+class="math inline">\(1\)</span>である(最初の3要素は、<span
+class="math inline">\(\mathbf{p}\)</span>を<span
+class="math inline">\(\mathbf{T}\)</span>で剛体変換した結果)。
+ここでは、<span
+class="math inline">\(\mathbf{p}\)</span>とその同次座標を特に区別せず、必要に応じて適宜変換されるとする。
+<span class="math inline">\(\boldsymbol{\xi}\)</span>は6次、<span
+class="math inline">\(\mathbf{T}
+\mathbf{p}\)</span>は4次ベクトルであるから、偏微分<span
+class="math inline">\(\cfrac{\partial (\mathbf{T} \mathbf{p})}{\partial
+\boldsymbol{\xi}}\)</span>は<span class="math inline">\(4 \times
+6\)</span>行列となる。</p>
+<h2 id="下準備-mathrmse3に摂動を加える">下準備: <span
+class="math inline">\(\mathrm{SE}(3)\)</span>に摂動を加える</h2>
+<p>2つのリー代数<span class="math inline">\(\boldsymbol{\xi}_1,
+\boldsymbol{\xi}_2 \in
+\mathfrak{se}(3)\)</span>について、以下の近似式が得られる。
+これは、<span
+class="math inline">\(\mathrm{SO}(3)\)</span>のときと同様である。</p>
+<p><span class="math display">\[
+  \ln(\exp(\boldsymbol{\xi}_1^\wedge)
+\exp(\boldsymbol{\xi}_2^\wedge))^\vee
+  \approx \left\{ \begin{array}{cc}
+    \boldsymbol{\mathcal{J}}_l(\boldsymbol{\xi}_2)^{-1}
+\boldsymbol{\xi}_1 + \boldsymbol{\xi}_2
+    &amp; \text{$\boldsymbol{\xi}_1$が小さいとき} \\
+    \boldsymbol{\mathcal{J}}_r(\boldsymbol{\xi}_1)^{-1}
+\boldsymbol{\xi}_2 + \boldsymbol{\xi}_1
+    &amp; \text{$\boldsymbol{\xi}_2$が小さいとき}
+    \end{array} \right.
+\]</span></p>
+<p><span class="math inline">\(6 \times 6\)</span>のヤコビ行列<span
+class="math inline">\(\boldsymbol{\mathcal{J}}_l(\boldsymbol{\xi})\)</span>、<span
+class="math inline">\(\boldsymbol{\mathcal{J}}_r(\boldsymbol{\xi})\)</span>は次のように定義される(<span
+class="math inline">\(\boldsymbol{\xi} = \left[ \begin{array}{c}
+\boldsymbol{\phi} \\ \boldsymbol{\rho} \end{array}
+\right]\)</span>)。</p>
+<p><span class="math display">\[
+  \begin{eqnarray}
+    \boldsymbol{\mathcal{J}}_l(\boldsymbol{\xi}) &amp;=&amp; \left[
+\begin{array}{cc}
+      \mathbf{J}_l(\boldsymbol{\phi}) &amp;
+\mathbf{Q}_l(\boldsymbol{\xi}) \\
+      \mathbf{0} &amp; \mathbf{J}_l(\boldsymbol{\phi}) \end{array}
+\right] \\
+    \boldsymbol{\mathcal{J}}_r(\boldsymbol{\xi}) &amp;=&amp; \left[
+\begin{array}{cc}
+      \mathbf{J}_r(\boldsymbol{\phi}) &amp;
+\mathbf{Q}_r(\boldsymbol{\xi}) \\
+      \mathbf{0} &amp; \mathbf{J}_r(\boldsymbol{\phi}) \end{array}
+\right]
+  \end{eqnarray}
+\]</span></p>
+<p><span
+class="math inline">\(\mathbf{Q}_l(\boldsymbol{\xi})\)</span>、<span
+class="math inline">\(\mathbf{Q}_r(\boldsymbol{\xi})\)</span>は以下のように定義される。</p>
+<p><span class="math display">\[
+  \begin{eqnarray}
+    \mathbf{Q}_l(\boldsymbol{\xi}) &amp;=&amp; \frac{1}{2}
+\boldsymbol{\rho}^\wedge
+      + \frac{\phi - \sin \phi}{\phi^3} \left(
+      \boldsymbol{\phi}^\wedge \boldsymbol{\rho}^\wedge
+      + \boldsymbol{\rho}^\wedge \boldsymbol{\phi}^\wedge
+      + \boldsymbol{\phi}^\wedge \boldsymbol{\rho}^\wedge
+\boldsymbol{\phi}^\wedge \right) \\
+      &amp;&amp; + \frac{\phi^2 + 2 \cos \phi - 2}{2 \phi^4}
+      \left( \boldsymbol{\phi}^\wedge \boldsymbol{\phi}^\wedge
+\boldsymbol{\rho}^\wedge
+      + \boldsymbol{\rho}^\wedge \boldsymbol{\phi}^\wedge
+\boldsymbol{\phi}^\wedge
+      - 3 \boldsymbol{\phi}^\wedge \boldsymbol{\rho}^\wedge
+\boldsymbol{\phi}^\wedge \right) \\
+      &amp;&amp; + \frac{2 \phi - 3 \sin \phi + \phi \cos \phi}{2
+\phi^5}
+      \left( \boldsymbol{\phi}^\wedge \boldsymbol{\rho}^\wedge
+      \boldsymbol{\phi}^\wedge \boldsymbol{\phi}^\wedge
+      + \boldsymbol{\phi}^\wedge \boldsymbol{\phi}^\wedge
+      \boldsymbol{\rho}^\wedge \boldsymbol{\phi}^\wedge \right) \\
+    \mathbf{Q}_r(\boldsymbol{\xi}) &amp;=&amp;
+\mathbf{Q}_l(-\boldsymbol{\xi})
+  \end{eqnarray}
+\]</span></p>
+<p>上式において、<span class="math inline">\(\phi = | \boldsymbol{\phi}
+|\)</span>である。</p>
+<p>ヤコビ行列の逆行列<span
+class="math inline">\(\boldsymbol{\mathcal{J}}_l^{-1}(\boldsymbol{\xi})\)</span>、<span
+class="math inline">\(\boldsymbol{\mathcal{J}}_r^{-1}(\boldsymbol{\xi})\)</span>は、次のように表される。</p>
+<p><span class="math display">\[
+  \begin{eqnarray}
+    \boldsymbol{\mathcal{J}}_l^{-1}(\boldsymbol{\xi})
+    &amp;=&amp; \left[ \begin{array}{cc}
+\mathbf{J}_l(\boldsymbol{\phi})^{-1}
+      &amp; -\mathbf{J}_l(\boldsymbol{\phi})^{-1}
+\mathbf{Q}_l(\boldsymbol{\xi})
+      \mathbf{J}_l(\boldsymbol{\phi})^{-1} \\
+      \mathbf{0} &amp; \mathbf{J}_l(\boldsymbol{\phi})^{-1} \end{array}
+\right] \\
+    \boldsymbol{\mathcal{J}}_r^{-1}(\boldsymbol{\xi})
+    &amp;=&amp; \left[ \begin{array}{cc}
+\mathbf{J}_r(\boldsymbol{\phi})^{-1}
+      &amp; -\mathbf{J}_r(\boldsymbol{\phi})^{-1}
+\mathbf{Q}_r(\boldsymbol{\xi})
+      \mathbf{J}_r(\boldsymbol{\phi})^{-1} \\
+      \mathbf{0} &amp; \mathbf{J}_r(\boldsymbol{\phi})^{-1} \end{array}
+\right]
+  \end{eqnarray}
+\]</span></p>
+<p>これを使うと、<span
+class="math inline">\(\boldsymbol{\xi}\)</span>に摂動<span
+class="math inline">\(\Delta
+\boldsymbol{\xi}\)</span>を加えたときに、剛体変換<span
+class="math inline">\(\mathbf{T} =
+\exp(\boldsymbol{\xi}^\wedge)\)</span>がどのように変化するのかが分かる。
+<span
+class="math inline">\(\mathbf{T}\)</span>に対して<strong>左側から</strong>摂動<span
+class="math inline">\(\exp(\Delta
+\boldsymbol{\xi})\)</span>を加えると、新たな剛体変換は次のようになる。</p>
+<p><span class="math display">\[
+  \ln(\exp(\Delta \boldsymbol{\xi}^\wedge)
+\exp(\boldsymbol{\xi}^\wedge))^\vee
+  \approx \boldsymbol{\mathcal{J}}_l(\boldsymbol{\xi})^{-1}
+    \Delta \boldsymbol{\xi} + \boldsymbol{\xi}
+\]</span></p>
+<p>また、<span
+class="math inline">\(\mathbf{T}\)</span>に対して<strong>右側から</strong>摂動<span
+class="math inline">\(\exp(\Delta
+\boldsymbol{\xi})\)</span>を加えると、新たな剛体変換は次のようになる。</p>
+<p><span class="math display">\[
+  \ln(\exp(\boldsymbol{\xi}^\wedge) \exp(\Delta
+\boldsymbol{\xi}^\wedge))^\vee
+  \approx \boldsymbol{\mathcal{J}}_r(\boldsymbol{\xi})^{-1}
+    \Delta \boldsymbol{\xi} + \boldsymbol{\xi}
+\]</span></p>
+<p>次のようにも書ける。</p>
+<p><span class="math display">\[
+  \begin{eqnarray}
+    \exp(\Delta \boldsymbol{\xi}^\wedge) \exp(\boldsymbol{\xi}^\wedge)
+    &amp;\approx&amp;
+\exp((\boldsymbol{\mathcal{J}}_l(\boldsymbol{\xi})^{-1}
+      \Delta \boldsymbol{\xi} + \boldsymbol{\xi})^\wedge) \\
+    \exp(\boldsymbol{\xi}^\wedge) \exp(\Delta \boldsymbol{\xi}^\wedge)
+    &amp;\approx&amp;
+\exp((\boldsymbol{\mathcal{J}}_r(\boldsymbol{\xi})^{-1}
+      \Delta \boldsymbol{\xi} + \boldsymbol{\xi})^\wedge)
+  \end{eqnarray}
+\]</span></p>
+<h2 id="偏微分の計算-その1">偏微分の計算 (その1)</h2>
+<p><span class="math inline">\(\mathbf{T} =
+\exp(\boldsymbol{\xi}^\wedge)\)</span>の<span
+class="math inline">\(\xi_i\)</span>に関する偏微分は、次のように書ける。</p>
+<p><span class="math display">\[
+  \frac{\partial \mathbf{T}}{\partial \xi_i}
+  = \frac{\partial \exp(\boldsymbol{\xi}^\wedge)}{\partial \xi_i}
+  = \lim_{h \to 0} \frac{\exp((\boldsymbol{\xi} + h
+\mathbf{1}_i)^\wedge)
+    - \exp(\boldsymbol{\xi}^\wedge)}{h}
+\]</span></p>
+<p><span
+class="math inline">\(\mathbf{1}_i\)</span>は6次元ベクトルである。 <a
+href="./lie-2.html">こちらのメモ</a>で示されるように、<span
+class="math inline">\(\mathbf{1}_i\)</span>は、<span
+class="math inline">\(i\)</span>番目の要素が<span
+class="math inline">\(1\)</span>で、それ以外は<span
+class="math inline">\(0\)</span>のOne-Hotベクトルである。 <span
+class="math inline">\(\boldsymbol{\xi} + h
+\mathbf{1}_i\)</span>は、<span
+class="math inline">\(\boldsymbol{\xi}\)</span>の<span
+class="math inline">\(i\)</span>番目の要素に、微小な変動<span
+class="math inline">\(h\)</span>を加えたものである。 さて、<span
+class="math inline">\(\mathrm{SO}(3)\)</span>のときと同じように、2種類のヤコビ行列を使って、この偏微分を求めてみる。</p>
+<ul>
+<li><p>ヤコビ行列の左側バージョン<span
+class="math inline">\(\boldsymbol{\mathcal{J}}_l(\boldsymbol{\xi})\)</span>を使うと、<span
+class="math inline">\(\exp(\boldsymbol{\xi}^\wedge)\)</span>の項は次のように近似できる。</p>
+<p><span class="math display">\[
+  \begin{eqnarray}
+    \exp(\boldsymbol{\xi}^\wedge)
+    &amp;=&amp; \exp((\boldsymbol{\xi} +
+\boldsymbol{\mathcal{J}}_l(\boldsymbol{\xi})^{-1}
+      \underbrace{h \boldsymbol{\mathcal{J}}_l(\boldsymbol{\xi})
+      \mathbf{1}_i}_{\boldsymbol{\Delta \xi}})^\wedge) \\
+    &amp;\approx&amp; \exp((h
+\boldsymbol{\mathcal{J}}_l(\boldsymbol{\xi}) \mathbf{1}_i)^\wedge)
+      \exp(\boldsymbol{\xi}^\wedge) \\
+    &amp;\approx&amp; \left( \mathbf{I} + (h
+\boldsymbol{\mathcal{J}}_l(\boldsymbol{\xi})
+      \mathbf{1}_i)^\wedge \right) \exp(\boldsymbol{\xi}^\wedge)
+  \end{eqnarray}
+\]</span></p>
+<p>最後の式変形は、行列指数関数の定義による(<a
+href="./lie-2.html">こちらのメモ</a>を参照)。
+この近似を偏微分の式に代入すれば、次が得られる。</p>
+<p><span class="math display">\[
+  \lim_{h \to 0} \frac{\left( \mathbf{I} + (h
+\boldsymbol{\mathcal{J}}_l(\boldsymbol{\xi})
+    \mathbf{1}_i)^\wedge \right) \exp(\boldsymbol{\xi}^\wedge)
+    - \exp(\boldsymbol{\xi}^\wedge)}{h}
+  = (\boldsymbol{\mathcal{J}}_l(\boldsymbol{\xi}) \mathbf{1}_i)^\wedge
+\exp(\boldsymbol{\xi}^\wedge)
+\]</span></p></li>
+<li><p>ヤコビ行列の右側バージョン<span
+class="math inline">\(\boldsymbol{\mathcal{J}}_r(\boldsymbol{\xi}))\)</span>を使うと、<span
+class="math inline">\(\exp(\boldsymbol{\xi}^\wedge)\)</span>の項は次のように近似できる。</p>
+<p><span class="math display">\[
+  \begin{eqnarray}
+    \exp(\boldsymbol{\xi}^\wedge)
+    &amp;=&amp; \exp((\boldsymbol{\xi} +
+\boldsymbol{\mathcal{J}}_r(\boldsymbol{\xi})^{-1}
+      \underbrace{h \boldsymbol{\mathcal{J}}_r(\boldsymbol{\xi})
+      \mathbf{1}_i}_{\boldsymbol{\Delta \xi}})^\wedge) \\
+    &amp;\approx&amp; \exp(\boldsymbol{\xi}^\wedge)
+      \exp((h \boldsymbol{\mathcal{J}}_r(\boldsymbol{\xi})
+\mathbf{1}_i)^\wedge) \\
+    &amp;\approx&amp; \exp(\boldsymbol{\xi}^\wedge)
+      \left( \mathbf{I} + (h
+\boldsymbol{\mathcal{J}}_r(\boldsymbol{\xi})
+      \mathbf{1}_i)^\wedge \right)
+  \end{eqnarray}
+\]</span></p>
+<p>この近似を偏微分の式に代入すれば、次が得られる。</p>
+<p><span class="math display">\[
+  \lim_{h \to 0} \frac{\exp(\boldsymbol{\xi}^\wedge)
+    \left( \mathbf{I} + (h \boldsymbol{\mathcal{J}}_r(\boldsymbol{\xi})
+    \mathbf{1}_i)^\wedge \right) - \exp(\boldsymbol{\xi}^\wedge)}{h}
+  = \exp(\boldsymbol{\xi}^\wedge)
+(\boldsymbol{\mathcal{J}}_r(\boldsymbol{\xi}) \mathbf{1}_i)^\wedge
+\]</span></p></li>
+</ul>
+<p>以上より、<span class="math inline">\(\mathbf{T} =
+\exp(\boldsymbol{\xi}^\wedge)\)</span>の<span
+class="math inline">\(\xi_i\)</span>に関する偏微分は、次のようになる。</p>
+<p><span class="math display">\[
+  \frac{\partial \mathbf{T}}{\partial \xi_i}
+  = \left\{ \begin{array}{cc}
+    (\boldsymbol{\mathcal{J}}_l(\boldsymbol{\xi}) \mathbf{1}_i)^\wedge
+    \mathbf{T} &amp; \text{$\boldsymbol{\mathcal{J}}_l$を使うとき} \\
+    \mathbf{T} (\boldsymbol{\mathcal{J}}_r(\boldsymbol{\xi})
+\mathbf{1}_i)^\wedge
+    &amp; \text{$\boldsymbol{\mathcal{J}}_r$を使うとき} \end{array}
+\right.
+\]</span></p>
+<p>これを使えば、ある3次実ベクトル<span
+class="math inline">\(\mathbf{p}\)</span>について、偏微分<span
+class="math inline">\(\cfrac{\partial (\mathbf{T} \mathbf{p})}{\partial
+\boldsymbol{\xi}}\)</span>が求められる。 <span
+class="math inline">\(\mathbf{T} \mathbf{p}\)</span>の<span
+class="math inline">\(\xi_i\)</span>に関する偏微分は、右端に<span
+class="math inline">\(\mathbf{p}\)</span>を足せば、次のようになる。</p>
+<p><span class="math display">\[
+  \frac{\partial (\mathbf{T} \mathbf{p})}{\partial \xi_i}
+  = \left\{ \begin{array}{cc}
+    (\boldsymbol{\mathcal{J}}_l(\boldsymbol{\xi}) \mathbf{1}_i)^\wedge
+    \mathbf{T} \mathbf{p} &amp;
+\text{$\boldsymbol{\mathcal{J}}_l$を使うとき} \\
+    \mathbf{T} (\boldsymbol{\mathcal{J}}_r(\boldsymbol{\xi})
+\mathbf{1}_i)^\wedge \mathbf{p}
+    &amp; \text{$\boldsymbol{\mathcal{J}}_r$を使うとき} \end{array}
+\right.
+\]</span></p>
+<p><span class="math inline">\(\mathbf{a}^\wedge \mathbf{b} =
+\mathbf{b}^\odot
+\mathbf{a}\)</span>であるから、次のように書き直す(マイナスはつかない)。</p>
+<p><span class="math display">\[
+  \frac{\partial (\mathbf{T} \mathbf{p})}{\partial \xi_i}
+  = \left\{ \begin{array}{cc}
+    (\mathbf{T} \mathbf{p})^\odot
+    \boldsymbol{\mathcal{J}}_l(\boldsymbol{\xi}) \mathbf{1}_i
+    &amp; \text{$\boldsymbol{\mathcal{J}}_l$を使うとき} \\
+    \mathbf{T} \mathbf{p}^\odot
+    \boldsymbol{\mathcal{J}}_r(\boldsymbol{\xi}) \mathbf{1}_i
+    &amp; \text{$\boldsymbol{\mathcal{J}}_r$を使うとき} \end{array}
+\right.
+\]</span></p>
+<p>同次座標を表す4次ベクトル<span class="math inline">\(\mathbf{a} =
+\left[ \begin{array}{c} \boldsymbol{\varepsilon} \\ \eta \end{array}
+\right]\)</span>について、<span
+class="math inline">\(\odot\)</span>演算子は次のように定義される。 <span
+class="math inline">\(\boldsymbol{\varepsilon}\)</span>は3次ベクトルであり、<span
+class="math inline">\(\boldsymbol{\varepsilon}^\wedge\)</span>における<span
+class="math inline">\(\wedge\)</span>演算子は、<a
+href="./lie-1.html">こちらのメモ</a>で定義されている。 <span
+class="math inline">\(\mathbf{a}^\odot\)</span>は<span
+class="math inline">\(4 \times 6\)</span>行列となる。</p>
+<p><span class="math display">\[
+  \mathbf{a}^\odot = \left[ \begin{array}{c} \boldsymbol{\varepsilon} \\
+\eta \end{array} \right]^\odot
+  = \left[ \begin{array}{cc} \eta \mathbf{I} &amp;
+-\boldsymbol{\varepsilon}^\wedge \\
+    \mathbf{0}^\top &amp; \mathbf{0}^\top \end{array} \right] \in
+\mathbb{R}^{4 \times 6}
+\]</span></p>
+<p><span class="math inline">\((\mathbf{T} \mathbf{p})^\odot
+\boldsymbol{\mathcal{J}}_l(\boldsymbol{\xi})
+\mathbf{1}_i\)</span>と<span class="math inline">\(\mathbf{T}
+\mathbf{p}^\odot \boldsymbol{\mathcal{J}}_r(\boldsymbol{\xi})
+\mathbf{1}_i\)</span>はそれぞれ、<span class="math inline">\(4 \times
+6\)</span>行列<span class="math inline">\((\mathbf{T} \mathbf{p})^\odot
+\boldsymbol{\mathcal{J}}_l(\boldsymbol{\xi})\)</span>および<span
+class="math inline">\(\mathbf{T} \mathbf{p}^\odot
+\boldsymbol{\mathcal{J}}_r(\boldsymbol{\xi})\)</span>の、<span
+class="math inline">\(i\)</span>列目のベクトルである。</p>
+<p>以上より、全ての<span
+class="math inline">\(i\)</span>について、上記の4次ベクトルを<strong>列方向に</strong>並べれば、<span
+class="math inline">\(4 \times 6\)</span>行列の偏微分<span
+class="math inline">\(\cfrac{\partial (\mathbf{T} \mathbf{p})}{\partial
+\boldsymbol{\xi}}\)</span>が得られる。</p>
+<p><span class="math display">\[
+  \frac{\partial (\mathbf{T} \mathbf{p})}{\partial \boldsymbol{\xi}}
+  = \left\{ \begin{array}{cc}
+    (\mathbf{T} \mathbf{p})^\odot
+    \boldsymbol{\mathcal{J}}_l(\boldsymbol{\xi})
+    &amp; \text{$\boldsymbol{\mathcal{J}}_l$を使うとき} \\
+    \mathbf{T} \mathbf{p}^\odot
+    \boldsymbol{\mathcal{J}}_r(\boldsymbol{\xi})
+    &amp; \text{$\boldsymbol{\mathcal{J}}_r$を使うとき} \end{array}
+\right.
+\]</span></p>
+<h2 id="偏微分の計算-その2">偏微分の計算 (その2)</h2>
+<p>上記の方法で偏微分<span class="math inline">\(\cfrac{\partial
+\mathbf{T}}{\partial \xi_i}\)</span>あるいは<span
+class="math inline">\(\cfrac{\partial (\mathbf{T} \mathbf{p})}{\partial
+\boldsymbol{\xi}}\)</span>を求めるためには、ヤコビ行列<span
+class="math inline">\(\boldsymbol{\mathcal{J}}_l\)</span>、<span
+class="math inline">\(\boldsymbol{\mathcal{J}}_r\)</span>の計算が必要であり、非常に面倒である。
+そこで、ヤコビ行列を計算せずに、これらの偏微分を求める方法を考える。</p>
+<p><span
+class="math inline">\(\xi_i\)</span>について摂動を加えたときに得られる剛体変換を、先ほどは<span
+class="math inline">\(\exp((\boldsymbol{\xi} + h
+\mathbf{1}_i)^\wedge)\)</span>のように表現したが、ここでは、<span
+class="math inline">\(\exp((h \mathbf{1}_i)^\wedge)
+\mathbf{T}\)</span>、あるいは<span class="math inline">\(\mathbf{T}
+\exp((h \mathbf{1}_i)^\wedge)\)</span>と表すことにする。
+前者は<strong>左側から</strong>、後者は<strong>右側から</strong>、<span
+class="math inline">\(h
+\mathbf{1}_i\)</span>に対応する微小な剛体変換<span
+class="math inline">\(\exp((h
+\mathbf{1}_i)^\wedge)\)</span>を適用している。</p>
+<ul>
+<li><p><strong>左側から</strong>適用する場合、偏微分<span
+class="math inline">\(\cfrac{\partial \mathbf{T}}{\partial
+\xi_i}\)</span>、<span class="math inline">\(\cfrac{\partial (\mathbf{T}
+\mathbf{p})}{\partial \boldsymbol{\xi}}\)</span>は次のようになる。</p>
+<p><span class="math display">\[
+  \begin{eqnarray}
+    \frac{\partial \mathbf{T}}{\partial \xi_i}
+    &amp;=&amp; \lim_{h \to 0} \frac{\exp((h \mathbf{1}_i)^\wedge)
+\mathbf{T} - \mathbf{T}}{h} \\
+    &amp;\approx&amp; \lim_{h \to 0} \frac{\left( \mathbf{I}
+      + (h \mathbf{1}_i)^\wedge \right) \mathbf{T} - \mathbf{T}}{h} \\
+    &amp;=&amp; (\mathbf{1}_i)^\wedge \mathbf{T}
+  \end{eqnarray}
+\]</span></p>
+<p>これに右側から<span
+class="math inline">\(\mathbf{p}\)</span>を付け足せば、偏微分<span
+class="math inline">\(\cfrac{\partial (\mathbf{T} \mathbf{p})}{\partial
+\xi_i}\)</span>は次のようになる。</p>
+<p><span class="math display">\[
+  \frac{\partial (\mathbf{T} \mathbf{p})}{\partial \xi_i}
+  = (\mathbf{1}_i)^\wedge \mathbf{T} \mathbf{p}
+  = \left( \mathbf{T} \mathbf{p} \right)^\odot \mathbf{1}_i
+\]</span></p>
+<p><span class="math inline">\((\mathbf{T}
+\mathbf{p})^\odot\)</span>は<span class="math inline">\(4 \times
+6\)</span>行列、<span
+class="math inline">\(\mathbf{1}_i\)</span>は6次ベクトルであるから、上記の計算結果は確かに4次ベクトルとなる。
+<span class="math inline">\((\mathbf{T} \mathbf{p})^\odot
+\mathbf{1}_i\)</span>は、行列<span class="math inline">\((\mathbf{T}
+\mathbf{p})^\odot\)</span>の<span
+class="math inline">\(i\)</span>列目のベクトルである。 全ての<span
+class="math inline">\(i\)</span>について、上記の4次ベクトルを列方向に並べれば、次のように<span
+class="math inline">\(4 \times 6\)</span>の偏微分<span
+class="math inline">\(\cfrac{\partial (\mathbf{T} \mathbf{p})}{\partial
+\boldsymbol{\xi}}\)</span>が求まる。</p>
+<p><span class="math display">\[
+  \frac{\partial (\mathbf{T} \mathbf{p})}{\partial \boldsymbol{\xi}}
+  = (\mathbf{T} \mathbf{p})^\odot
+\]</span></p>
+<p>ここでは<span
+class="math inline">\(\mathbf{p}\)</span>は、正確には同次座標<span
+class="math inline">\(\left[ \begin{array}{c} \mathbf{p} \\ 1
+\end{array} \right]\)</span>となっている。
+上記を計算してみると、次のようになる。</p>
+<p><span class="math display">\[
+  \begin{eqnarray}
+    \frac{\partial (\mathbf{T} \mathbf{p})}{\partial \boldsymbol{\xi}}
+    = (\mathbf{T} \mathbf{p})^\odot
+    = \left( \left[ \begin{array}{cc} \mathbf{C} &amp; \mathbf{r} \\
+      \mathbf{0}^\top &amp; 1 \end{array} \right]
+      \left[ \begin{array}{c} \mathbf{p} \\ 1 \end{array} \right]
+\right)^\odot
+    = \left[ \begin{array}{c} \mathbf{C} \mathbf{p} + \mathbf{r} \\ 1
+\end{array} \right]^\odot
+    = \left[ \begin{array}{c} \mathbf{I} &amp; -(\mathbf{C} \mathbf{p} +
+\mathbf{r})^\wedge \\
+      \mathbf{0}^\top &amp; \mathbf{0}^\top \end{array} \right]
+  \end{eqnarray}
+\]</span></p>
+<p>上記の計算において、剛体変換は<span class="math inline">\(\mathbf{T}
+= \exp(\boldsymbol{\xi}^\wedge)\)</span>、<span
+class="math inline">\(\mathbf{T}\)</span>に対応するリー代数は<span
+class="math inline">\(\boldsymbol{\xi} = \left[ \begin{array}{c}
+\boldsymbol{\phi} \\ \boldsymbol{\rho} \end{array}
+\right]\)</span>、<span
+class="math inline">\(\mathbf{T}\)</span>の右上ブロックは<span
+class="math inline">\(\mathbf{r} = \mathbf{J}_l(\boldsymbol{\phi})
+\boldsymbol{\rho}\)</span>と表す。 <span
+class="math inline">\(\mathbf{C}\)</span>は剛体変換<span
+class="math inline">\(\mathbf{T}\)</span>における回転行列、<span
+class="math inline">\(\mathbf{r}\)</span>は<span
+class="math inline">\(\mathbf{T}\)</span>における並進ベクトルとなる。
+<span
+class="math inline">\(\mathbf{J}_l(\boldsymbol{\phi})\)</span>は、<a
+href="./lie-2.html">こちらのメモ</a>で定義された、<span
+class="math inline">\(\mathrm{SO}(3)\)</span>における左側バージョンのヤコビ行列である。</p></li>
+<li><p><strong>右側から</strong>適用する場合、偏微分<span
+class="math inline">\(\cfrac{\partial \mathbf{T}}{\partial
+\xi_i}\)</span>、<span class="math inline">\(\cfrac{\partial (\mathbf{T}
+\mathbf{p})}{\partial \boldsymbol{\xi}}\)</span>は次のようになる。</p>
+<p><span class="math display">\[
+  \begin{eqnarray}
+    \frac{\partial \mathbf{T}}{\partial \xi_i}
+    &amp;=&amp; \lim_{h \to 0} \frac{\mathbf{T} \exp((h
+\mathbf{1}_i)^\wedge) - \mathbf{T}}{h} \\
+    &amp;\approx&amp; \lim_{h \to 0} \frac{\mathbf{T} \left(
+      \mathbf{I} + (h \mathbf{1}_i)^\wedge \right) - \mathbf{T}}{h} \\
+    &amp;=&amp; \mathbf{T} (\mathbf{1}_i)^\wedge
+  \end{eqnarray}
+\]</span></p>
+<p>従って、偏微分<span class="math inline">\(\cfrac{\partial (\mathbf{T}
+\mathbf{p})}{\partial \xi_i}\)</span>は、右側から<span
+class="math inline">\(\mathbf{p}\)</span>を付け足せば次のようになる。</p>
+<p><span class="math display">\[
+  \frac{\partial (\mathbf{T} \mathbf{p})}{\partial \xi_i}
+  = \mathbf{T} (\mathbf{1}_i)^\wedge \mathbf{p}
+  = \mathbf{T} \mathbf{p}^\odot \mathbf{1}_i
+\]</span></p>
+<p><span class="math inline">\(\mathbf{T} \mathbf{p}^\odot
+\mathbf{1}_i\)</span>は、<span class="math inline">\(4 \times
+6\)</span>行列<span class="math inline">\(\mathbf{T}
+\mathbf{p}^\odot\)</span>の<span
+class="math inline">\(i\)</span>列目のベクトルである。 全ての<span
+class="math inline">\(i\)</span>について、上記の4次ベクトルを列方向に並べれば、次のように<span
+class="math inline">\(4 \times 6\)</span>の偏微分<span
+class="math inline">\(\cfrac{\partial (\mathbf{T} \mathbf{p})}{\partial
+\boldsymbol{\xi}}\)</span>が求まる。</p>
+<p><span class="math display">\[
+  \frac{\partial (\mathbf{T} \mathbf{p})}{\partial \boldsymbol{\xi}}
+  = \mathbf{T} \mathbf{p}^\odot
+\]</span></p>
+<p>上記を実際に計算してみると、次のようになる。</p>
+<p><span class="math display">\[
+  \frac{\partial (\mathbf{T} \mathbf{p})}{\partial \boldsymbol{\xi}}
+  = \mathbf{T} \mathbf{p}^\odot
+  = \left[ \begin{array}{cc} \mathbf{C} &amp; \mathbf{r} \\
+\mathbf{0}^\top &amp; 1 \end{array} \right]
+  \left[ \begin{array}{c} \mathbf{I} &amp; -\mathbf{p}^\wedge \\
+    \mathbf{0}^\top &amp; \mathbf{0}^\top \end{array} \right]
+  = \left[ \begin{array}{c} \mathbf{C} &amp; -\mathbf{C}
+\mathbf{p}^\wedge \\
+    \mathbf{0}^\top &amp; \mathbf{0}^\top \end{array} \right]
+\]</span></p>
+<p>左側のときとは異なり、<span
+class="math inline">\(\mathbf{r}\)</span>が含まれていない。</p></li>
+</ul>
+<p>以上より、<span class="math inline">\(\mathbf{T} =
+\exp(\boldsymbol{\xi}^\wedge)\)</span>の<span
+class="math inline">\(\xi_i\)</span>に関する偏微分は、次のようになる。</p>
+<p><span class="math display">\[
+  \frac{\partial \mathbf{T}}{\partial \xi_i}
+  = \left\{ \begin{array}{cc}
+    (\mathbf{1}_i)^\wedge \mathbf{T} &amp; \text{左側バージョン} \\
+    \mathbf{T} (\mathbf{1}_i)^\wedge &amp; \text{右側バージョン}
+\end{array} \right.
+\]</span></p>
+<p>また、<span class="math inline">\(\mathbf{T}
+\mathbf{p}\)</span>の<span
+class="math inline">\(\boldsymbol{\xi}\)</span>に関する偏微分は、次のようになる(<span
+class="math inline">\(\mathbf{T} = \left[ \begin{array}{cc} \mathbf{C}
+&amp; \mathbf{r} \\ \mathbf{0}^\top &amp; 1 \end{array}
+\right]\)</span>)。</p>
+<p><span class="math display">\[
+  \frac{\partial (\mathbf{T} \mathbf{p})}{\partial \boldsymbol{\xi}}
+  = \left\{ \begin{array}{ll}
+    (\mathbf{T} \mathbf{p})^\odot
+    = \left[ \begin{array}{c} \mathbf{I} &amp; -(\mathbf{C} \mathbf{p} +
+\mathbf{r})^\wedge \\
+    \mathbf{0}^\top &amp; \mathbf{0}^\top \end{array} \right]
+    &amp; \text{左側バージョン} \\
+    \mathbf{T} \mathbf{p}^\odot
+    = \left[ \begin{array}{c} \mathbf{C} &amp; -\mathbf{C}
+\mathbf{p}^\wedge \\
+    \mathbf{0}^\top &amp; \mathbf{0}^\top \end{array} \right]
+    &amp; \text{右側バージョン} \end{array} \right.
+\]</span></p>
+<p>最初の方法と比較すると、ヤコビ行列<span
+class="math inline">\(\boldsymbol{\mathcal{J}}_l\)</span>、<span
+class="math inline">\(\boldsymbol{\mathcal{J}}_r\)</span>が消えているので、計算が楽になる。</p>
+<h2 id="mathbft-1-mathbfpのboldsymbolxiに関する偏微分"><span
+class="math inline">\(\mathbf{T}^{-1} \mathbf{p}\)</span>の<span
+class="math inline">\(\boldsymbol{\xi}\)</span>に関する偏微分</h2>
+<p>ここでは、2つ目の方法を使って、<span
+class="math inline">\(\mathbf{T}^{-1} \mathbf{p}\)</span>の<span
+class="math inline">\(\boldsymbol{\xi}\)</span>に関する偏微分を求める(自分が使うため)。
+ただし、<span class="math inline">\(\mathbf{T} =
+\exp(\boldsymbol{\xi}^\wedge)\)</span>、<span
+class="math inline">\(\mathbf{T}^{-1} =
+\exp(-\boldsymbol{\xi}^\wedge)\)</span>である。
+上記と同じように、左側バージョンと、右側バージョンの2種類を考える。</p>
+<ul>
+<li><p><strong>左側から</strong>摂動を加えるときは、偏微分<span
+class="math inline">\(\cfrac{\partial (\mathbf{T}^{-1}
+\mathbf{p})}{\partial \boldsymbol{\xi}}\)</span>は次のようになる。</p>
+<p>最初に、<span
+class="math inline">\(\xi_i\)</span>についての偏微分を計算する。</p>
+<p><span class="math display">\[
+  \begin{eqnarray}
+    \frac{\partial (\mathbf{T}^{-1} \mathbf{p})}{\partial \xi_i}
+    &amp;=&amp; \lim_{h \to 0} \frac{\exp(-(h \mathbf{1}_i)^\wedge)
+      \exp(-\boldsymbol{\xi}^\wedge) \mathbf{p}
+      - \exp(-\boldsymbol{\xi}^\wedge) \mathbf{p}}{h} \\
+    &amp;\approx&amp; \lim_{h \to 0} \frac{\left( \mathbf{I} - (h
+\mathbf{1}_i)^\wedge \right)
+      \exp(-\boldsymbol{\xi}^\wedge) \mathbf{p}
+      - \exp(-\boldsymbol{\xi}^\wedge) \mathbf{p}}{h} \\
+    &amp;=&amp; - (\mathbf{1}_i)^\wedge \exp(-\boldsymbol{\xi}^\wedge)
+\mathbf{p} \\
+    &amp;=&amp; - (\mathbf{1}_i)^\wedge \mathbf{T}^{-1} \mathbf{p} \\
+    &amp;=&amp; - \left( \mathbf{T}^{-1} \mathbf{p} \right)^\odot
+\mathbf{1}_i
+  \end{eqnarray}
+\]</span></p>
+<p>最初の式変形は、<span class="math inline">\(\exp(\mathbf{A}) \approx
+\mathbf{I} + \mathbf{A}\)</span>による。
+上記の4次ベクトルを、全ての<span
+class="math inline">\(i\)</span>について列方向に並べれば、次のように、<span
+class="math inline">\(4 \times 6\)</span>の偏微分を得る。</p>
+<p><span class="math display">\[
+  \frac{\partial (\mathbf{T}^{-1} \mathbf{p})}{\partial
+\boldsymbol{\xi}}
+  = - \left( \mathbf{T}^{-1} \mathbf{p} \right)^\odot
+\]</span></p>
+<p><span class="math inline">\(\mathbf{T} = \left[ \begin{array}{cc}
+\mathbf{C} &amp; \mathbf{r} \\ \mathbf{0}^\top &amp; 1 \end{array}
+\right]\)</span>のとき、<span class="math inline">\(\mathbf{T}^{-1} =
+\left[ \begin{array}{cc} \mathbf{C}^\top &amp; -\mathbf{C}^\top
+\mathbf{r} \\ \mathbf{0}^\top &amp; 1 \end{array}
+\right]\)</span>である。
+これを上式に代入して計算すれば、次のようになる。</p>
+<p><span class="math display">\[
+  \begin{eqnarray}
+    \frac{\partial (\mathbf{T}^{-1} \mathbf{p})}{\partial
+\boldsymbol{\xi}}
+    &amp;=&amp; - \left( \mathbf{T}^{-1} \mathbf{p} \right)^\odot \\
+    &amp;=&amp; - \left( \left[ \begin{array}{cc} \mathbf{C}^\top &amp;
+-\mathbf{C}^\top \mathbf{r} \\
+      \mathbf{0}^\top &amp; 1 \end{array} \right]
+      \left[ \begin{array}{c} \mathbf{p} \\ 1 \end{array} \right]
+\right)^\odot \\
+    &amp;=&amp; - \left[ \begin{array}{c} \mathbf{C}^\top \mathbf{p}
+      - \mathbf{C}^\top \mathbf{r} \\ 1 \end{array} \right]^\odot \\
+    &amp;=&amp; \left[ \begin{array}{cc} -\mathbf{I} &amp;
+      \left( \mathbf{C}^\top \mathbf{p} - \mathbf{C}^\top \mathbf{r}
+\right)^\wedge \\
+      \mathbf{0}^\top &amp; \mathbf{0}^\top \end{array} \right]
+  \end{eqnarray}
+\]</span></p></li>
+<li><p><strong>右側から</strong>摂動を加えるときは、偏微分<span
+class="math inline">\(\cfrac{\partial (\mathbf{T}^{-1}
+\mathbf{p})}{\partial \boldsymbol{\xi}}\)</span>は次のようになる。</p>
+<p>最初に、<span
+class="math inline">\(\xi_i\)</span>についての偏微分を計算する。</p>
+<p><span class="math display">\[
+  \begin{eqnarray}
+    \frac{\partial (\mathbf{T}^{-1} \mathbf{p})}{\partial \xi_i}
+    &amp;=&amp; \lim_{h \to 0} \frac{\exp(-\boldsymbol{\xi}^\wedge)
+      \exp(-(h \mathbf{1}_i)^\wedge) \mathbf{p}
+      - \exp(-\boldsymbol{\xi}^\wedge) \mathbf{p}}{h} \\
+    &amp;\approx&amp; \lim_{h \to 0}
+\frac{\exp(-\boldsymbol{\xi}^\wedge)
+      \left( \mathbf{I} - (h \mathbf{1}_i)^\wedge \right) \mathbf{p}
+      - \exp(-\boldsymbol{\xi}^\wedge) \mathbf{p}}{h} \\
+    &amp;=&amp; -\exp(-\boldsymbol{\xi}^\wedge) (\mathbf{1}_i)^\wedge
+\mathbf{p} \\
+    &amp;=&amp; -\mathbf{T}^{-1} (\mathbf{1}_i)^\wedge \mathbf{p} \\
+    &amp;=&amp; -\mathbf{T}^{-1} \mathbf{p}^\odot \mathbf{1}_i
+  \end{eqnarray}
+\]</span></p>
+<p>上記の4次ベクトルを、全ての<span
+class="math inline">\(i\)</span>について列方向に並べれば、次のように、<span
+class="math inline">\(4 \times 6\)</span>の偏微分が得られる。</p>
+<p><span class="math display">\[
+  \frac{\partial (\mathbf{T}^{-1} \mathbf{p})}{\partial
+\boldsymbol{\xi}}
+  = -\mathbf{T}^{-1} \mathbf{p}^\odot
+\]</span></p>
+<p>これを具体的に計算してみると、次のようになる。</p>
+<p><span class="math display">\[
+  \begin{eqnarray}
+    \frac{\partial (\mathbf{T}^{-1} \mathbf{p})}{\partial
+\boldsymbol{\xi}}
+    &amp;=&amp; -\mathbf{T}^{-1} \mathbf{p}^\odot \\
+    &amp;=&amp; -\left[ \begin{array}{cc} \mathbf{C}^\top &amp;
+-\mathbf{C}^\top \mathbf{r} \\
+      \mathbf{0}^\top &amp; 1 \end{array} \right]
+      \left[ \begin{array}{c} \mathbf{p} \\ 1 \end{array} \right]^\odot
+\\
+    &amp;=&amp; -\left[ \begin{array}{cc} \mathbf{C}^\top &amp;
+-\mathbf{C}^\top \mathbf{r} \\
+      \mathbf{0}^\top &amp; 1 \end{array} \right]
+      \left[ \begin{array}{cc} \mathbf{I} &amp; -\mathbf{p}^\wedge \\
+      \mathbf{0}^\top &amp; \mathbf{0}^\top \end{array} \right] \\
+    &amp;=&amp; \left[ \begin{array}{cc} -\mathbf{C}^\top &amp;
+\mathbf{C}^\top \mathbf{p}^\wedge \\
+      \mathbf{0}^\top &amp; \mathbf{0}^\top \end{array} \right]
+  \end{eqnarray}
+\]</span></p></li>
+</ul>
+<p>以上より、<span class="math inline">\(\mathbf{T}^{-1}
+\mathbf{p}\)</span>の<span
+class="math inline">\(\boldsymbol{\xi}\)</span>に関する偏微分は、次のようになる。</p>
+<p><span class="math display">\[
+  \frac{\partial (\mathbf{T}^{-1} \mathbf{p})}{\partial
+\boldsymbol{\xi}}
+  = \left\{ \begin{array}{ll}
+    - \left( \mathbf{T}^{-1} \mathbf{p} \right)^\odot
+    = \left[ \begin{array}{cc} -\mathbf{I} &amp;
+    \left( \mathbf{C}^\top \mathbf{p} - \mathbf{C}^\top \mathbf{r}
+\right)^\wedge \\
+    \mathbf{0}^\top &amp; \mathbf{0}^\top \end{array} \right]
+    &amp; \text{左側バージョン} \\
+    - \mathbf{T}^{-1} \mathbf{p}^\odot
+    = \left[ \begin{array}{cc} -\mathbf{C}^\top &amp; \mathbf{C}^\top
+\mathbf{p}^\wedge \\
+    \mathbf{0}^\top &amp; \mathbf{0}^\top \end{array} \right]
+    &amp; \text{右側バージョン} \end{array} \right.
+\]</span></p>
+<h2 id="参考文献">参考文献</h2>
+<ul>
+<li><a
+href="http://asrl.utias.utoronto.ca/~tdb/bib/barfoot_ser17.pdf">State
+Estimation for Robotics</a></li>
+<li><a href="https://github.com/gaoxiang12/slambook-en">Introduction to
+Visual SLAM: From Theory to Practice</a></li>
+</ul>
+</body>
+</html>
