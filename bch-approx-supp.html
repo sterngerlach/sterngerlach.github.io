@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="SternGerlach" />
+  <title>BCHの公式の一次近似 (補足)</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+  <link rel="stylesheet" href="style.css" />
+  <script
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+  type="text/javascript"></script>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">BCHの公式の一次近似 (補足)</h1>
+<p class="author">SternGerlach</p>
+</header>
+<!--
+ pandoc -s --filter pandoc-crossref -M "crossrefYaml=./crossref_config.yaml" -f markdown -t html5 --mathjax --css style.css bch-approx-supp.md > bch-approx-supp.html
+-->
+<p><a href="./index.html">ホームに戻る</a></p>
+<h1 id="このページについて">このページについて</h1>
+<p><a href="./bch-approx.html">こちらのメモ</a>の補足です。
+おまけとして、BCH (Baker-Campbell-Hausdorff)
+の公式の最初の部分を示します。</p>
+<h2 id="準備">準備</h2>
+<p>行列<span class="math inline">\(\mathbf{A}\)</span>、<span
+class="math inline">\(\mathbf{B}\)</span>があるとする。 <span
+class="math inline">\(\exp(\mathbf{A})\)</span>は行列指数関数であり、次のように定義される。</p>
+<p><span class="math display">\[
+  \exp(\mathbf{A}) = \mathbf{I} + \mathbf{A} + \frac{1}{2!} \mathbf{A}^2
+    + \frac{1}{3!} \mathbf{A}^3 + \cdots
+    = \sum_{n = 0}^\infty \frac{\mathbf{A}^n}{n!}
+\]</span></p>
+<p>また、<span class="math inline">\([\mathbf{A},
+\mathbf{B}]\)</span>はリー括弧積 (Lie
+bracket)であり、次のように定義される。</p>
+<p><span class="math display">\[
+  [\mathbf{A}, \mathbf{B}] = \mathbf{A} \mathbf{B} - \mathbf{B}
+\mathbf{A}
+\]</span></p>
+<p>スカラー<span class="math inline">\(t\)</span>の関数<span
+class="math inline">\(\mathbf{W}(t)\)</span>があり、以下の関係が成り立つとする。</p>
+<p><span class="math display">\[
+  \exp(\mathbf{W}(t)) = \exp(\mathbf{A}) \exp(t \mathbf{B})
+  \quad \Longrightarrow \quad
+  \mathbf{W}(t) = \ln(\exp(\mathbf{A}) \exp(t \mathbf{B}))
+\]</span></p>
+<p><span
+class="math inline">\(\mathbf{W}(t)\)</span>は次のように、項<span
+class="math inline">\(\mathbf{F}_n(\mathbf{A}, t
+\mathbf{B})\)</span>の総和として表されるとする。 <span
+class="math inline">\(\mathbf{F}_n(\mathbf{A}, t
+\mathbf{B})\)</span>は、<span
+class="math inline">\(\mathbf{A}\)</span>と<span
+class="math inline">\(\mathbf{B}\)</span>を合計で<span
+class="math inline">\(n\)</span>個含むような項を、まとめたものである。</p>
+<p><span class="math display">\[
+  \mathbf{W}(t) = \sum_{n = 0}^\infty \mathbf{F}_n(\mathbf{A}, t
+\mathbf{B})
+\]</span></p>
+<p>ただし、行列の対数<span
+class="math inline">\(\ln(\mathbf{X})\)</span>は以下のように定義される。</p>
+<p><span class="math display">\[
+  \ln(\mathbf{X}) = \left( \mathbf{X} - \mathbf{I} \right)
+    - \frac{1}{2} \left( \mathbf{X} - \mathbf{I} \right)^2
+    + \frac{1}{3} \left( \mathbf{X} - \mathbf{I} \right)^3 + \cdots
+  = \sum_{n = 1}^{\infty} \frac{(-1)^{n - 1}}{n} \left( \mathbf{X} -
+\mathbf{I} \right)^n
+\]</span></p>
+<p>よって</p>
+<p><span class="math display">\[
+  \begin{eqnarray}
+    \mathbf{W}(t) &amp;=&amp; \ln(\exp(\mathbf{A}) \exp(t \mathbf{B}))
+\\
+    &amp;=&amp; \left( \exp(\mathbf{A}) \exp(t \mathbf{B}) - \mathbf{I}
+\right) \\
+    &amp;&amp; - \frac{1}{2} \left( \exp(\mathbf{A}) \exp(t \mathbf{B})
+- \mathbf{I} \right)^2 \\
+    &amp;&amp; + \frac{1}{3} \left( \exp(\mathbf{A}) \exp(t \mathbf{B})
+- \mathbf{I} \right)^3 \\
+    &amp;&amp; - \frac{1}{4} \left( \exp(\mathbf{A}) \exp(t \mathbf{B})
+- \mathbf{I} \right)^4 + \cdots
+  \end{eqnarray}
+\]</span></p>
+<p>以下では、最初に<span class="math inline">\(\left( \exp(\mathbf{A})
+\exp(t \mathbf{B}) - \mathbf{I} \right)\)</span>から<span
+class="math inline">\(\left( \exp(\mathbf{A}) \exp(t \mathbf{B}) -
+\mathbf{I} \right)^4\)</span>までを計算する。 続いて、<span
+class="math inline">\(\ln(\exp(\mathbf{A}) \exp(t
+\mathbf{B}))\)</span>から4次までの項(<span
+class="math inline">\(\mathbf{A}\)</span>と<span
+class="math inline">\(\mathbf{B}\)</span>を最大4つまで含む項)を取り出して、<span
+class="math inline">\(\mathbf{F}_0(\mathbf{A}, t
+\mathbf{B})\)</span>から<span
+class="math inline">\(\mathbf{F}_4(\mathbf{A}, t
+\mathbf{B})\)</span>までを実際に計算する。</p>
+<h2 id="left-expmathbfa-expt-mathbfb---mathbfi-rightの計算"><span
+class="math inline">\(\left( \exp(\mathbf{A}) \exp(t \mathbf{B}) -
+\mathbf{I} \right)\)</span>の計算</h2>
+<p><span class="math inline">\(\exp(\mathbf{A}) \exp(t
+\mathbf{B})\)</span>は、4次の項まで展開すれば次のようになる。</p>
+<p><span class="math display">\[
+  \begin{eqnarray}
+    \exp(\mathbf{A}) \exp(t \mathbf{B})
+    &amp;=&amp; \left( \mathbf{I} + \mathbf{A} + \frac{1}{2!}
+\mathbf{A}^2
+      + \frac{1}{3!} \mathbf{A}^3 + \frac{1}{4!} \mathbf{A}^4 + \cdots
+\right) \\
+    &amp;&amp; \left( \mathbf{I} + t \mathbf{B} + \frac{1}{2!} t^2
+\mathbf{B}^2
+      + \frac{1}{3!} t^3 \mathbf{B}^3 + \frac{1}{4!} t^4 \mathbf{B}^4 +
+\cdots \right) \\
+    &amp;=&amp; \mathbf{I} + \mathbf{A} + \frac{1}{2} \mathbf{A}^2
+      + \frac{1}{6} \mathbf{A}^3 + \frac{1}{24} \mathbf{A}^4 \\
+    &amp;&amp; + t \mathbf{B} + t \mathbf{A} \mathbf{B} + \frac{1}{2} t
+\mathbf{A}^2 \mathbf{B}
+      + \frac{1}{6} t \mathbf{A}^3 \mathbf{B} \\
+    &amp;&amp; + \frac{1}{2} t^2 \mathbf{B}^2 + \frac{1}{2} t^2
+\mathbf{A} \mathbf{B}^2
+      + \frac{1}{4} t^2 \mathbf{A}^2 \mathbf{B}^2 \\
+    &amp;&amp; + \frac{1}{6} t^3 \mathbf{B}^3 + \frac{1}{6} t^3
+\mathbf{A} \mathbf{B}^3 \\
+    &amp;&amp; + \frac{1}{24} t^4 \mathbf{B}^4 + \cdots
+  \end{eqnarray}
+\]</span></p>
+<p>従って、<span class="math inline">\(\exp(\mathbf{A}) \exp(t
+\mathbf{B}) - \mathbf{I}\)</span>は、次のようになる。</p>
+<p><span class="math display">\[
+  \begin{eqnarray}
+    \exp(\mathbf{A}) \exp(t \mathbf{B}) - \mathbf{I}
+    &amp;=&amp; \mathbf{A} + \frac{1}{2} \mathbf{A}^2
+      + \frac{1}{6} \mathbf{A}^3 + \frac{1}{24} \mathbf{A}^4 \\
+    &amp;&amp; + t \mathbf{B} + t \mathbf{A} \mathbf{B} + \frac{1}{2} t
+\mathbf{A}^2 \mathbf{B}
+      + \frac{1}{6} t \mathbf{A}^3 \mathbf{B} \\
+    &amp;&amp; + \frac{1}{2} t^2 \mathbf{B}^2 + \frac{1}{2} t^2
+\mathbf{A} \mathbf{B}^2
+      + \frac{1}{4} t^2 \mathbf{A}^2 \mathbf{B}^2 \\
+    &amp;&amp; + \frac{1}{6} t^3 \mathbf{B}^3 + \frac{1}{6} t^3
+\mathbf{A} \mathbf{B}^3 \\
+    &amp;&amp; + \frac{1}{24} t^4 \mathbf{B}^4 + \cdots \\
+    &amp;=&amp; \mathbf{A} + t \mathbf{B} \\
+    &amp;&amp; + \frac{1}{2} \mathbf{A}^2 + t \mathbf{A} \mathbf{B}
+      + \frac{1}{2} t^2 \mathbf{B}^2 \\
+    &amp;&amp; + \frac{1}{6} \mathbf{A}^3 + \frac{1}{2} t \mathbf{A}^2
+\mathbf{B}
+      + \frac{1}{2} t^2 \mathbf{A} \mathbf{B}^2
+      + \frac{1}{6} t^3 \mathbf{B}^3 \\
+    &amp;&amp; + \frac{1}{24} \mathbf{A}^4 + \frac{1}{6} t \mathbf{A}^3
+\mathbf{B}
+      + \frac{1}{4} t^2 \mathbf{A}^2 \mathbf{B}^2
+      + \frac{1}{6} t^3 \mathbf{A} \mathbf{B}^3
+      + \frac{1}{24} t^4 \mathbf{B}^4 + \cdots \\
+    &amp;=&amp; \mathbf{U}_{11} + \mathbf{U}_{12} + \mathbf{U}_{13} +
+\mathbf{U}_{14} + \cdots
+  \end{eqnarray}
+\]</span></p>
+<p><span class="math inline">\(\mathbf{U}_{11}\)</span>、<span
+class="math inline">\(\mathbf{U}_{12}\)</span>、<span
+class="math inline">\(\mathbf{U}_{13}\)</span>、<span
+class="math inline">\(\mathbf{U}_{14}\)</span>はそれぞれ、<span
+class="math inline">\(\left( \exp(\mathbf{A}) \exp(t \mathbf{B}) -
+\mathbf{I} \right)\)</span>の1次、2次、3次、4次の項である。</p>
+<h2 id="left-expmathbfa-expt-mathbfb---mathbfi-right2の計算"><span
+class="math inline">\(\left( \exp(\mathbf{A}) \exp(t \mathbf{B}) -
+\mathbf{I} \right)^2\)</span>の計算</h2>
+<p><span class="math inline">\((\exp(\mathbf{A}) \exp(t \mathbf{B}) -
+\mathbf{I})^2\)</span>は、以下のように求められる(4次の項まで)。</p>
+<p><span class="math display">\[
+  \begin{eqnarray}
+    &amp;&amp; (\exp(\mathbf{A}) \exp(t \mathbf{B}) - \mathbf{I})^2 \\
+    &amp;=&amp; \left( \mathbf{U}_{11} + \mathbf{U}_{12} +
+\mathbf{U}_{13} + \mathbf{U}_{14} + \cdots \right)
+      \left( \mathbf{U}_{11} + \mathbf{U}_{12} + \mathbf{U}_{13} +
+\mathbf{U}_{14} + \cdots \right) \\
+    &amp;=&amp; \mathbf{U}_{11}^2
+      + \left( \mathbf{U}_{11} \mathbf{U}_{12} + \mathbf{U}_{12}
+\mathbf{U}_{11} \right)
+      + \left( \mathbf{U}_{11} \mathbf{U}_{13}
+        + \mathbf{U}_{12}^2 + \mathbf{U}_{13} \mathbf{U}_{11} \right) +
+\cdots \\
+    &amp;=&amp; \left( \mathbf{A} + t \mathbf{B} \right) \left(
+\mathbf{A} + t \mathbf{B} \right) \\
+    &amp;&amp; + \Bigg\{ \left( \mathbf{A} + t \mathbf{B} \right)
+      \left( \frac{1}{2} \mathbf{A}^2 + t \mathbf{A} \mathbf{B}
+      + \frac{1}{2} t^2 \mathbf{B}^2 \right) \\
+    &amp;&amp; + \left( \frac{1}{2} \mathbf{A}^2 + t \mathbf{A}
+\mathbf{B}
+      + \frac{1}{2} t^2 \mathbf{B}^2 \right)
+      \left( \mathbf{A} + t \mathbf{B} \right) \Bigg\} \\
+    &amp;&amp; + \Bigg\{ \left( \mathbf{A} + t \mathbf{B} \right)
+      \left( \frac{1}{6} \mathbf{A}^3
+      + \frac{1}{2} t \mathbf{A}^2 \mathbf{B}
+      + \frac{1}{2} t^2 \mathbf{A} \mathbf{B}^2
+      + \frac{1}{6} t^3 \mathbf{B}^3 \right) \\
+    &amp;&amp; + \left( \frac{1}{2} \mathbf{A}^2 + t \mathbf{A}
+\mathbf{B}
+      + \frac{1}{2} t^2 \mathbf{B}^2 \right)
+      \left( \frac{1}{2} \mathbf{A}^2 + t \mathbf{A} \mathbf{B}
+      + \frac{1}{2} t^2 \mathbf{B}^2 \right) \\
+    &amp;&amp; + \left( \frac{1}{6} \mathbf{A}^3
+      + \frac{1}{2} t \mathbf{A}^2 \mathbf{B}
+      + \frac{1}{2} t^2 \mathbf{A} \mathbf{B}^2
+      + \frac{1}{6} t^3 \mathbf{B}^3 \right)
+      \left( \mathbf{A} + t \mathbf{B} \right) \Bigg\} + \cdots
+  \end{eqnarray}
+\]</span></p>
+<p>これを順に計算すれば <span class="math display">\[
+  \begin{eqnarray}
+    &amp;&amp; (\exp(\mathbf{A}) \exp(t \mathbf{B}) - \mathbf{I})^2 \\
+    &amp;=&amp; \left( \mathbf{A}^2 + t \mathbf{A} \mathbf{B}
+      + t \mathbf{B} \mathbf{A} + t^2 \mathbf{B}^2 \right) \\
+    &amp;&amp; + \Bigg\{ \left( \frac{1}{2} \mathbf{A}^3 + t
+\mathbf{A}^2 \mathbf{B}
+      + \frac{1}{2} t^2 \mathbf{A} \mathbf{B}^2
+      + \frac{1}{2} t \mathbf{B} \mathbf{A}^2
+      + t^2 \mathbf{B} \mathbf{A} \mathbf{B}
+      + \frac{1}{2} t^3 \mathbf{B}^3 \right) \\
+    &amp;&amp; \quad + \left( \frac{1}{2} \mathbf{A}^3
+      + t \mathbf{A} \mathbf{B} \mathbf{A}
+      + \frac{1}{2} t^2 \mathbf{B}^2 \mathbf{A}
+      + \frac{1}{2} t \mathbf{A}^2 \mathbf{B}
+      + t^2 \mathbf{A} \mathbf{B}^2
+      + \frac{1}{2} t^3 \mathbf{B}^3 \right) \Bigg\} \\
+    &amp;&amp; + \Bigg\{ \Bigg( \frac{1}{6} \mathbf{A}^4
+      + \frac{1}{2} t \mathbf{A}^3 \mathbf{B}
+      + \frac{1}{2} t^2 \mathbf{A}^2 \mathbf{B}^2
+      + \frac{1}{6} t^3 \mathbf{A} \mathbf{B}^3 \\
+    &amp;&amp; \qquad + \frac{1}{6} t \mathbf{B} \mathbf{A}^3
+      + \frac{1}{2} t^2 \mathbf{B} \mathbf{A}^2 \mathbf{B}
+      + \frac{1}{2} t^3 \mathbf{B} \mathbf{A} \mathbf{B}^2
+      + \frac{1}{6} t^4 \mathbf{B}^4 \Bigg) \\
+    &amp;&amp; \quad + \Bigg( \frac{1}{4} \mathbf{A}^4
+      + \frac{1}{2} t \mathbf{A}^3 \mathbf{B} + \frac{1}{4} t^2
+\mathbf{A}^2 \mathbf{B}^2
+      + \frac{1}{2} t \mathbf{A} \mathbf{B} \mathbf{A}^2
+      + t^2 \mathbf{A} \mathbf{B} \mathbf{A} \mathbf{B}
+      + \frac{1}{2} t^3 \mathbf{A} \mathbf{B}^3 \\
+    &amp;&amp; \qquad + \frac{1}{4} t^2 \mathbf{B}^2 \mathbf{A}^2
+      + \frac{1}{2} t^3 \mathbf{B}^2 \mathbf{A} \mathbf{B}
+      + \frac{1}{4} t^4 \mathbf{B}^4 \Bigg) \\
+    &amp;&amp; \quad + \Bigg( \frac{1}{6} \mathbf{A}^4
+      + \frac{1}{2} t \mathbf{A}^2 \mathbf{B} \mathbf{A}
+      + \frac{1}{2} t^2 \mathbf{A} \mathbf{B}^2 \mathbf{A}
+      + \frac{1}{6} t^3 \mathbf{B}^3 \mathbf{A} \\
+    &amp;&amp; \qquad + \frac{1}{6} t \mathbf{A}^3 \mathbf{B}
+      + \frac{1}{2} t^2 \mathbf{A}^2 \mathbf{B}^2
+      + \frac{1}{2} t^3 \mathbf{A} \mathbf{B}^3
+      + \frac{1}{6} t^4 \mathbf{B}^4 \Bigg) \Bigg\} + \cdots
+  \end{eqnarray}
+\]</span></p>
+<p>項をまとめて</p>
+<p><span class="math display">\[
+  \begin{eqnarray}
+    &amp;&amp; (\exp(\mathbf{A}) \exp(t \mathbf{B}) - \mathbf{I})^2 \\
+    &amp;=&amp; \left( \mathbf{A}^2 + t \mathbf{A} \mathbf{B}
+      + t \mathbf{B} \mathbf{A} + t^2 \mathbf{B}^2 \right) \\
+    &amp;&amp; + \Bigg\{ \mathbf{A}^3 + \frac{3}{2} t \mathbf{A}^2
+\mathbf{B}
+      + t \mathbf{A} \mathbf{B} \mathbf{A}
+      + \frac{3}{2} t^2 \mathbf{A} \mathbf{B}^2 \\
+    &amp;&amp; \quad + \frac{1}{2} t \mathbf{B} \mathbf{A}^2
+      + t^2 \mathbf{B} \mathbf{A} \mathbf{B}
+      + \frac{1}{2} t^2 \mathbf{B}^2 \mathbf{A}
+      + t^3 \mathbf{B}^3 \Bigg\} \\
+    &amp;&amp; + \Bigg\{
+      \frac{7}{12} \mathbf{A}^4
+      + \frac{7}{6} t \mathbf{A}^3 \mathbf{B}
+      + \frac{1}{2} t \mathbf{A}^2 \mathbf{B} \mathbf{A}
+      + \frac{5}{4} t^2 \mathbf{A}^2 \mathbf{B}^2 \\
+    &amp;&amp; \quad + \frac{1}{2} t \mathbf{A} \mathbf{B} \mathbf{A}^2
+      + t^2 \mathbf{A} \mathbf{B} \mathbf{A} \mathbf{B}
+      + \frac{1}{2} t^2 \mathbf{A} \mathbf{B}^2 \mathbf{A}
+      + \frac{7}{6} t^3 \mathbf{A} \mathbf{B}^3 \\
+    &amp;&amp; \quad + \frac{1}{6} t \mathbf{B} \mathbf{A}^3
+      + \frac{1}{2} t^2 \mathbf{B} \mathbf{A}^2 \mathbf{B}
+      + \frac{1}{2} t^3 \mathbf{B} \mathbf{A} \mathbf{B}^2 \\
+    &amp;&amp; \quad + \frac{1}{4} t^2 \mathbf{B}^2 \mathbf{A}^2
+      + \frac{1}{2} t^2 \mathbf{B}^2 \mathbf{A} \mathbf{B}
+      + \frac{1}{6} t^3 \mathbf{B}^3 \mathbf{A}
+      + \frac{7}{12} t^4 \mathbf{B}^4 \Bigg\} + \cdots \\
+    &amp;=&amp; \mathbf{U}_{22} + \mathbf{U}_{23} + \mathbf{U}_{24} +
+\cdots
+  \end{eqnarray}
+\]</span></p>
+<p><span class="math inline">\(\mathbf{U}_{22}\)</span>、<span
+class="math inline">\(\mathbf{U}_{23}\)</span>、<span
+class="math inline">\(\mathbf{U}_{24}\)</span>はそれぞれ、<span
+class="math inline">\(\left( \exp(\mathbf{A}) \exp(t \mathbf{B}) -
+\mathbf{I} \right)^2\)</span>の2次、3次、4次の項である。</p>
+<h2 id="left-expmathbfa-expt-mathbfb---mathbfi-right3の計算"><span
+class="math inline">\(\left( \exp(\mathbf{A}) \exp(t \mathbf{B}) -
+\mathbf{I} \right)^3\)</span>の計算</h2>
+<p>続いて、<span class="math inline">\(\left( \exp(\mathbf{A}) \exp(t
+\mathbf{B}) - \mathbf{I}
+\right)^3\)</span>は、以下のようになる(4次の項まで)。</p>
+<p><span class="math display">\[
+  \begin{eqnarray}
+    &amp;&amp; \left( \exp(\mathbf{A}) \exp(t \mathbf{B}) - \mathbf{I}
+\right)^3 \\
+    &amp;=&amp; \left( \mathbf{U}_{22} + \mathbf{U}_{23} +
+\mathbf{U}_{24} + \cdots \right)
+      \left( \mathbf{U}_{11} + \mathbf{U}_{12} + \mathbf{U}_{13} +
+\mathbf{U}_{14} + \cdots \right) \\
+    &amp;=&amp; \mathbf{U}_{22} \mathbf{U}_{11}
+      + \left( \mathbf{U}_{22} \mathbf{U}_{12} + \mathbf{U}_{23}
+\mathbf{U}_{11} \right) + \cdots \\
+    &amp;=&amp; \left( \mathbf{A}^2 + t \mathbf{A} \mathbf{B}
+      + t \mathbf{B} \mathbf{A} + t^2 \mathbf{B}^2 \right)
+      \left( \mathbf{A} + t \mathbf{B} \right) \\
+    &amp;&amp; + \Bigg\{ \left( \mathbf{A}^2 + t \mathbf{A} \mathbf{B}
+      + t \mathbf{B} \mathbf{A} + t^2 \mathbf{B}^2 \right)
+      \left( \frac{1}{2} \mathbf{A}^2 + t \mathbf{A} \mathbf{B} +
+\frac{1}{2} t^2 \mathbf{B}^2 \right) \\
+    &amp;&amp; \quad + \Bigg( \mathbf{A}^3 + \frac{3}{2} t \mathbf{A}^2
+\mathbf{B}
+      + t \mathbf{A} \mathbf{B} \mathbf{A}
+      + \frac{3}{2} t^2 \mathbf{A} \mathbf{B}^2 \\
+    &amp;&amp; \qquad + \frac{1}{2} t \mathbf{B} \mathbf{A}^2
+      + t^2 \mathbf{B} \mathbf{A} \mathbf{B}
+      + \frac{1}{2} t^2 \mathbf{B}^2 \mathbf{A}
+      + t^3 \mathbf{B}^3 \Bigg)
+      \left( \mathbf{A} + t \mathbf{B} \right) \Bigg\} + \cdots
+  \end{eqnarray}
+\]</span></p>
+<p>これを順に計算すれば</p>
+<p><span class="math display">\[
+  \begin{eqnarray}
+    &amp;&amp; \left( \exp(\mathbf{A}) \exp(t \mathbf{B}) - \mathbf{I}
+\right)^3 \\
+    &amp;=&amp; \left( \mathbf{A}^3 + t \mathbf{A} \mathbf{B} \mathbf{A}
+      + t \mathbf{B} \mathbf{A}^2 + t^2 \mathbf{B}^2 \mathbf{A}
+      + t \mathbf{A}^2 \mathbf{B} + t^2 \mathbf{A} \mathbf{B}^2
+      + t^2 \mathbf{B} \mathbf{A} \mathbf{B} + t^3 \mathbf{B}^3 \right)
+\\
+    &amp;&amp; + \Bigg\{ \frac{1}{2} \mathbf{A}^4
+      + \frac{1}{2} t \mathbf{A} \mathbf{B} \mathbf{A}^2
+      + \frac{1}{2} t \mathbf{B} \mathbf{A}^3
+      + \frac{1}{2} t^2 \mathbf{B}^2 \mathbf{A}^2 \\
+    &amp;&amp; \quad + t \mathbf{A}^3 \mathbf{B}
+      + t^2 \mathbf{A} \mathbf{B} \mathbf{A} \mathbf{B}
+      + t^2 \mathbf{B} \mathbf{A}^2 \mathbf{B}
+      + t^3 \mathbf{B}^2 \mathbf{A} \mathbf{B} \\
+    &amp;&amp; \quad + \frac{1}{2} t^2 \mathbf{A}^2 \mathbf{B}^2
+      + \frac{1}{2} t^3 \mathbf{A} \mathbf{B}^3
+      + \frac{1}{2} t^3 \mathbf{B} \mathbf{A} \mathbf{B}^2
+      + \frac{1}{2} t^4 \mathbf{B}^4 \\
+    &amp;&amp; \quad + \mathbf{A}^4 + \frac{3}{2} t \mathbf{A}^2
+\mathbf{B} \mathbf{A}
+      + t \mathbf{A} \mathbf{B} \mathbf{A}^2
+      + \frac{3}{2} t^2 \mathbf{A} \mathbf{B}^2 \mathbf{A} \\
+    &amp;&amp; \quad + \frac{1}{2} t \mathbf{B} \mathbf{A}^3
+      + t^2 \mathbf{B} \mathbf{A} \mathbf{B} \mathbf{A}
+      + \frac{1}{2} t^2 \mathbf{B}^2 \mathbf{A}^2
+      + t^3 \mathbf{B}^3 \mathbf{A} \\
+    &amp;&amp; \quad + t \mathbf{A}^3 \mathbf{B}
+      + \frac{3}{2} t^2 \mathbf{A}^2 \mathbf{B}^2
+      + t^2 \mathbf{A} \mathbf{B} \mathbf{A} \mathbf{B}
+      + \frac{3}{2} t^3 \mathbf{A} \mathbf{B}^3 \\
+    &amp;&amp; \quad + \frac{1}{2} t^2 \mathbf{B} \mathbf{A}^2
+\mathbf{B}
+      + t^3 \mathbf{B} \mathbf{A} \mathbf{B}^2
+      + \frac{1}{2} t^3 \mathbf{B}^2 \mathbf{A} \mathbf{B}
+      + t^4 \mathbf{B}^4 \Bigg\} + \cdots
+  \end{eqnarray}
+\]</span></p>
+<p>項をまとめて</p>
+<p><span class="math display">\[
+  \begin{eqnarray}
+    &amp;&amp; \left( \exp(\mathbf{A}) \exp(t \mathbf{B}) - \mathbf{I}
+\right)^3 \\
+    &amp;=&amp; \left( \mathbf{A}^3 + t \mathbf{A}^2 \mathbf{B}
+      + t \mathbf{A} \mathbf{B} \mathbf{A} + t^2 \mathbf{A} \mathbf{B}^2
+      + t \mathbf{B} \mathbf{A}^2 + t^2 \mathbf{B} \mathbf{A} \mathbf{B}
+      + t^2 \mathbf{B}^2 \mathbf{A} + t^3 \mathbf{B}^3 \right) \\
+    &amp;&amp; + \Bigg\{ \frac{3}{2} \mathbf{A}^4 + 2 t \mathbf{A}^3
+\mathbf{B}
+      + \frac{3}{2} t \mathbf{A}^2 \mathbf{B} \mathbf{A}
+      + 2 t^2 \mathbf{A}^2 \mathbf{B}^2 \\
+    &amp;&amp; \quad + \frac{3}{2} t \mathbf{A} \mathbf{B} \mathbf{A}^2
+      + 2 t^2 \mathbf{A} \mathbf{B} \mathbf{A} \mathbf{B}
+      + \frac{3}{2} t^2 \mathbf{A} \mathbf{B}^2 \mathbf{A}
+      + 2 t^3 \mathbf{A} \mathbf{B}^3 \\
+    &amp;&amp; \quad + t \mathbf{B} \mathbf{A}^3
+      + \frac{3}{2} t^2 \mathbf{B} \mathbf{A}^2 \mathbf{B}
+      + t^2 \mathbf{B} \mathbf{A} \mathbf{B} \mathbf{A}
+      + \frac{3}{2} t^3 \mathbf{B} \mathbf{A} \mathbf{B}^2 \\
+    &amp;&amp; \quad + t^2 \mathbf{B}^2 \mathbf{A}^2
+      + \frac{3}{2} t^3 \mathbf{B}^2 \mathbf{A} \mathbf{B}
+      + t^3 \mathbf{B}^3 \mathbf{A}
+      + \frac{3}{2} t^4 \mathbf{B}^4 \Bigg\} + \cdots \\
+    &amp;=&amp; \mathbf{U}_{33} + \mathbf{U}_{34} + \cdots
+  \end{eqnarray}
+\]</span></p>
+<p><span class="math inline">\(\mathbf{U}_{33}\)</span>、<span
+class="math inline">\(\mathbf{U}_{34}\)</span>はそれぞれ、<span
+class="math inline">\(\left( \exp(\mathbf{A}) \exp(t \mathbf{B}) -
+\mathbf{I} \right)^3\)</span>の3次、4次の項である。</p>
+<h2 id="left-expmathbfa-expt-mathbfb---mathbfi-right4の計算"><span
+class="math inline">\(\left( \exp(\mathbf{A}) \exp(t \mathbf{B}) -
+\mathbf{I} \right)^4\)</span>の計算</h2>
+<p>最後に、<span class="math inline">\(\left( \exp(\mathbf{A}) \exp(t
+\mathbf{B}) - \mathbf{I}
+\right)^4\)</span>は、以下のようになる(4次の項まで)。</p>
+<p><span class="math display">\[
+  \begin{eqnarray}
+    &amp;&amp; \left( \exp(\mathbf{A}) \exp(t \mathbf{B}) - \mathbf{I}
+\right)^4 \\
+    &amp;=&amp; \left( \mathbf{U}_{33} + \mathbf{U}_{34} + \cdots
+\right)
+      \left( \mathbf{U}_{11} + \mathbf{U}_{12} + \mathbf{U}_{13} +
+\mathbf{U}_{14} + \cdots \right) \\
+    &amp;=&amp; \mathbf{U}_{33} \mathbf{U}_{11} + \cdots \\
+    &amp;=&amp; \big( \mathbf{A}^3 + t \mathbf{A}^2 \mathbf{B}
+      + t \mathbf{A} \mathbf{B} \mathbf{A} + t^2 \mathbf{A} \mathbf{B}^2
+\\
+    &amp;&amp; \quad + t \mathbf{B} \mathbf{A}^2 + t^2 \mathbf{B}
+\mathbf{A} \mathbf{B}
+      + t^2 \mathbf{B}^2 \mathbf{A} + t^3 \mathbf{B}^3 \big)
+      \left( \mathbf{A} + t \mathbf{B} \right) + \cdots \\
+    &amp;=&amp; \big( \mathbf{A}^4 + t \mathbf{A}^2 \mathbf{B}
+\mathbf{A}
+      + t \mathbf{A} \mathbf{B} \mathbf{A}^2 + t^2 \mathbf{A}
+\mathbf{B}^2 \mathbf{A} \\
+    &amp;&amp; \quad + t \mathbf{B} \mathbf{A}^3 + t^2 \mathbf{B}
+\mathbf{A} \mathbf{B} \mathbf{A}
+      + t^2 \mathbf{B}^2 \mathbf{A}^2 + t^3 \mathbf{B}^3 \mathbf{A}
+\big) \\
+    &amp;&amp; + \big( t \mathbf{A}^3 \mathbf{B} + t^2 \mathbf{A}^2
+\mathbf{B}^2
+      + t^2 \mathbf{A} \mathbf{B} \mathbf{A} \mathbf{B} + t^3 \mathbf{A}
+\mathbf{B}^3 \\
+    &amp;&amp; \quad + t^2 \mathbf{B} \mathbf{A}^2 \mathbf{B} + t^3
+\mathbf{B} \mathbf{A} \mathbf{B}^2
+      + t^3 \mathbf{B}^2 \mathbf{A} \mathbf{B} + t^4 \mathbf{B}^4 \big)
++ \cdots \\
+    &amp;=&amp; \mathbf{A}^4 + t \mathbf{A}^3 \mathbf{B}
+      + t \mathbf{A}^2 \mathbf{B} \mathbf{A} + t^2 \mathbf{A}^2
+\mathbf{B}^2 \\
+    &amp;&amp; + t \mathbf{A} \mathbf{B} \mathbf{A}^2 + t^2 \mathbf{A}
+\mathbf{B} \mathbf{A} \mathbf{B}
+      + t^2 \mathbf{A} \mathbf{B}^2 \mathbf{A} + t^3 \mathbf{A}
+\mathbf{B}^3 \\
+    &amp;&amp; + t \mathbf{B} \mathbf{A}^3 + t^2 \mathbf{B} \mathbf{A}^2
+\mathbf{B}
+      + t^2 \mathbf{B} \mathbf{A} \mathbf{B} \mathbf{A}
+      + t^3 \mathbf{B} \mathbf{A} \mathbf{B}^2 \\
+    &amp;&amp; + t^2 \mathbf{B}^2 \mathbf{A}^2 + t^3 \mathbf{B}^2
+\mathbf{A} \mathbf{B}
+      + t^3 \mathbf{B}^3 \mathbf{A} + t^4 \mathbf{B}^4 + \cdots \\
+    &amp;=&amp; \mathbf{U}_{44} + \cdots
+  \end{eqnarray}
+\]</span></p>
+<p><span class="math inline">\(\mathbf{U}_{44}\)</span>はそれぞれ、<span
+class="math inline">\(\left( \exp(\mathbf{A}) \exp(t \mathbf{B}) -
+\mathbf{I} \right)^4\)</span>の4次の項である。</p>
+<h2 id="mathbff_nmathbfa-t-mathbfbの計算-0-le-n-le-2"><span
+class="math inline">\(\mathbf{F}_n(\mathbf{A}, t
+\mathbf{B})\)</span>の計算 (<span class="math inline">\(0 \le n \le
+2\)</span>)</h2>
+<p>これらを<span class="math inline">\(\ln(\exp(\mathbf{A}) \exp(t
+\mathbf{B}))\)</span>に代入する。</p>
+<p><span class="math display">\[
+  \begin{eqnarray}
+    \ln(\exp(\mathbf{A}) \exp(t \mathbf{B}))
+    &amp;=&amp; \left( \exp(\mathbf{A}) \exp(t \mathbf{B}) - \mathbf{I}
+\right) \\
+    &amp;&amp; \quad - \frac{1}{2} \left( \exp(\mathbf{A}) \exp(t
+\mathbf{B}) - \mathbf{I} \right)^2 \\
+    &amp;&amp; \quad + \frac{1}{3} \left( \exp(\mathbf{A}) \exp(t
+\mathbf{B}) - \mathbf{I} \right)^3 \\
+    &amp;&amp; \quad - \frac{1}{4} \left( \exp(\mathbf{A}) \exp(t
+\mathbf{B}) - \mathbf{I} \right)^4 + \cdots \\
+    &amp;=&amp; \left( \mathbf{U}_{11} + \mathbf{U}_{12} +
+\mathbf{U}_{13} + \mathbf{U}_{14} + \cdots \right) \\
+    &amp;&amp; \quad - \frac{1}{2} \left( \mathbf{U}_{22} +
+\mathbf{U}_{23} + \mathbf{U}_{24} + \cdots \right) \\
+    &amp;&amp; \quad - \frac{1}{3} \left( \mathbf{U}_{33} +
+\mathbf{U}_{34} + \cdots \right) \\
+    &amp;&amp; \quad - \frac{1}{4} \left( \mathbf{U}_{44} + \cdots
+\right) + \cdots \\
+    &amp;=&amp; \sum_{n = 0}^\infty \mathbf{F}_n(\mathbf{A}, t
+\mathbf{B})
+  \end{eqnarray}
+\]</span></p>
+<p>0次から4次までの項を順に取り出して、<span
+class="math inline">\(\mathbf{F}_n(\mathbf{A}, t
+\mathbf{B})\)</span>を計算すると、次のようになる。</p>
+<p><span class="math display">\[
+  \mathbf{F}_0(\mathbf{A}, t \mathbf{B}) = 0
+\]</span></p>
+<p><span class="math display">\[
+  \mathbf{F}_1(\mathbf{A}, t \mathbf{B})
+  = \mathbf{U}_{11} = \mathbf{A} + t \mathbf{B}
+\]</span></p>
+<p><span class="math display">\[
+  \begin{eqnarray}
+    \mathbf{F}_2(\mathbf{A}, t \mathbf{B})
+    &amp;=&amp; \mathbf{U}_{12} - \frac{1}{2} \mathbf{U}_{22} \\
+    &amp;=&amp; \frac{1}{2} \mathbf{A}^2 + t \mathbf{A} \mathbf{B} +
+\frac{1}{2} t^2 \mathbf{B}^2
+      - \frac{1}{2} \left( \mathbf{A}^2 + t \mathbf{A} \mathbf{B}
+      + t \mathbf{B} \mathbf{A} + t^2 \mathbf{B}^2 \right) \\
+    &amp;=&amp; \frac{1}{2} t \mathbf{A} \mathbf{B} - \frac{1}{2} t
+\mathbf{B} \mathbf{A} \\
+    &amp;=&amp; \frac{1}{2} t \left( \mathbf{A} \mathbf{B} - \mathbf{B}
+\mathbf{A} \right) \\
+    &amp;=&amp; \frac{1}{2} t [\mathbf{A}, \mathbf{B}]
+  \end{eqnarray}
+\]</span></p>
+<h2 id="mathbff_3mathbfa-t-mathbfbの計算"><span
+class="math inline">\(\mathbf{F}_3(\mathbf{A}, t
+\mathbf{B})\)</span>の計算</h2>
+<p><span class="math display">\[
+  \begin{eqnarray}
+    &amp;&amp; \mathbf{F}_3(\mathbf{A}, t \mathbf{B}) \\
+    &amp;=&amp; \mathbf{U}_{13} - \frac{1}{2} \mathbf{U}_{23} +
+\frac{1}{3} \mathbf{U}_{33} \\
+    &amp;=&amp; \left( \frac{1}{6} \mathbf{A}^3 + \frac{1}{2} t
+\mathbf{A}^2 \mathbf{B}
+      + \frac{1}{2} t^2 \mathbf{A} \mathbf{B}^2
+      + \frac{1}{6} t^3 \mathbf{B}^3 \right) \\
+    &amp;&amp; - \frac{1}{2} \Bigg( \mathbf{A}^3 + \frac{3}{2} t
+\mathbf{A}^2 \mathbf{B}
+      + t \mathbf{A} \mathbf{B} \mathbf{A}
+      + \frac{3}{2} t^2 \mathbf{A} \mathbf{B}^2 \\
+    &amp;&amp; \quad + \frac{1}{2} t \mathbf{B} \mathbf{A}^2
+      + t^2 \mathbf{B} \mathbf{A} \mathbf{B}
+      + \frac{1}{2} t^2 \mathbf{B}^2 \mathbf{A}
+      + t^3 \mathbf{B}^3 \Bigg) \\
+    &amp;&amp; + \frac{1}{3} \big( \mathbf{A}^3 + t \mathbf{A}^2
+\mathbf{B}
+      + t \mathbf{A} \mathbf{B} \mathbf{A} + t^2 \mathbf{A} \mathbf{B}^2
+\\
+    &amp;&amp; \quad + t \mathbf{B} \mathbf{A}^2 + t^2 \mathbf{B}
+\mathbf{A} \mathbf{B}
+      + t^2 \mathbf{B}^2 \mathbf{A} + t^3 \mathbf{B}^3 \big)
+  \end{eqnarray}
+\]</span></p>
+<p>項をまとめて</p>
+<p><span class="math display">\[
+  \begin{eqnarray}
+    &amp;&amp; \mathbf{F}_3(\mathbf{A}, t \mathbf{B}) \\
+    &amp;=&amp; \left( \frac{1}{6} - \frac{1}{2} + \frac{1}{3} \right)
+\mathbf{A}^3
+      + t \left( \frac{1}{2} - \frac{3}{4} + \frac{1}{3} \right)
+\mathbf{A}^2 \mathbf{B} \\
+    &amp;&amp; + t \left( -\frac{1}{2} + \frac{1}{3} \right) \mathbf{A}
+\mathbf{B} \mathbf{A}
+      + t^2 \left( \frac{1}{2} - \frac{3}{4} + \frac{1}{3} \right)
+\mathbf{A} \mathbf{B}^2 \\
+    &amp;&amp; + t \left( -\frac{1}{4} + \frac{1}{3} \right) \mathbf{B}
+\mathbf{A}^2
+      + t^2 \left( -\frac{1}{2} + \frac{1}{3} \right) \mathbf{B}
+\mathbf{A} \mathbf{B} \\
+    &amp;&amp; + t^2 \left( -\frac{1}{4} + \frac{1}{3} \right)
+\mathbf{B}^2 \mathbf{A}
+      + t^3 \left( \frac{1}{6} - \frac{1}{2} + \frac{1}{3} \right)
+\mathbf{B}^3 \\
+    &amp;=&amp; \frac{1}{12} t \left( \mathbf{A}^2 \mathbf{B} - 2
+\mathbf{A} \mathbf{B} \mathbf{A}
+      + t \mathbf{A} \mathbf{B}^2 + \mathbf{B} \mathbf{A}^2
+      - 2 t \mathbf{B} \mathbf{A} \mathbf{B} + t \mathbf{B}^2 \mathbf{A}
+\right) \\
+    &amp;=&amp; \frac{1}{12} t \big( \left( \mathbf{A}
+      \left( \mathbf{A} \mathbf{B} - \mathbf{B} \mathbf{A} \right)
+      - \left( \mathbf{A} \mathbf{B} - \mathbf{B} \mathbf{A} \right)
+\mathbf{A} \right) \\
+    &amp;&amp; \quad - \left( t \mathbf{B} \left( \mathbf{A} \mathbf{B}
+- \mathbf{B} \mathbf{A} \right)
+      - \left( \mathbf{A} \mathbf{B} - \mathbf{B} \mathbf{A} \right) t
+\mathbf{B} \right) \big) \\
+    &amp;=&amp; \frac{1}{12} [\mathbf{A}, [\mathbf{A}, t \mathbf{B}]]
+      - \frac{1}{12} [t \mathbf{B}, [\mathbf{A}, t \mathbf{B}]] \\
+    &amp;=&amp; \frac{1}{12} t [\mathbf{A}, [\mathbf{A}, \mathbf{B}]]
+      - \frac{1}{12} t^2 [\mathbf{B}, [\mathbf{A}, \mathbf{B}]]
+  \end{eqnarray}
+\]</span></p>
+<h2 id="mathbff_4mathbfa-t-mathbfbの計算"><span
+class="math inline">\(\mathbf{F}_4(\mathbf{A}, t
+\mathbf{B})\)</span>の計算</h2>
+<p><span class="math display">\[
+  \begin{eqnarray}
+    &amp;&amp; \mathbf{F}_4(\mathbf{A}, t \mathbf{B}) \\
+    &amp;=&amp; \mathbf{U}_{14} - \frac{1}{2} \mathbf{U}_{24}
+      + \frac{1}{3} \mathbf{U}_{34} - \frac{1}{4} \mathbf{U}_{44} \\
+    &amp;=&amp; \left( \frac{1}{24} \mathbf{A}^4 + \frac{1}{6} t
+\mathbf{A}^3 \mathbf{B}
+      + \frac{1}{4} t^2 \mathbf{A}^2 \mathbf{B}^2
+      + \frac{1}{6} t^3 \mathbf{A} \mathbf{B}^3
+      + \frac{1}{24} t^4 \mathbf{B}^4 \right) \\
+    &amp;&amp; \quad - \frac{1}{2} \Bigg\{
+      \frac{7}{12} \mathbf{A}^4
+      + \frac{7}{6} t \mathbf{A}^3 \mathbf{B}
+      + \frac{1}{2} t \mathbf{A}^2 \mathbf{B} \mathbf{A}
+      + \frac{5}{4} t^2 \mathbf{A}^2 \mathbf{B}^2 \\
+    &amp;&amp; \qquad + \frac{1}{2} t \mathbf{A} \mathbf{B} \mathbf{A}^2
+      + t^2 \mathbf{A} \mathbf{B} \mathbf{A} \mathbf{B}
+      + \frac{1}{2} t^2 \mathbf{A} \mathbf{B}^2 \mathbf{A}
+      + \frac{7}{6} t^3 \mathbf{A} \mathbf{B}^3 \\
+    &amp;&amp; \qquad + \frac{1}{6} t \mathbf{B} \mathbf{A}^3
+      + \frac{1}{2} t^2 \mathbf{B} \mathbf{A}^2 \mathbf{B}
+      + \frac{1}{2} t^3 \mathbf{B} \mathbf{A} \mathbf{B}^2 \\
+    &amp;&amp; \qquad + \frac{1}{4} t^2 \mathbf{B}^2 \mathbf{A}^2
+      + \frac{1}{2} t^2 \mathbf{B}^2 \mathbf{A} \mathbf{B}
+      + \frac{1}{6} t^3 \mathbf{B}^3 \mathbf{A}
+      + \frac{7}{12} t^4 \mathbf{B}^4 \Bigg\} \\
+    &amp;&amp; \quad + \frac{1}{3} \Bigg\{ \frac{3}{2} \mathbf{A}^4
+      + 2 t \mathbf{A}^3 \mathbf{B}
+      + \frac{3}{2} t \mathbf{A}^2 \mathbf{B} \mathbf{A}
+      + 2 t^2 \mathbf{A}^2 \mathbf{B}^2 \\
+    &amp;&amp; \qquad + \frac{3}{2} t \mathbf{A} \mathbf{B} \mathbf{A}^2
+      + 2 t^2 \mathbf{A} \mathbf{B} \mathbf{A} \mathbf{B}
+      + \frac{3}{2} t^2 \mathbf{A} \mathbf{B}^2 \mathbf{A}
+      + 2 t^3 \mathbf{A} \mathbf{B}^3 \\
+    &amp;&amp; \qquad + t \mathbf{B} \mathbf{A}^3
+      + \frac{3}{2} t^2 \mathbf{B} \mathbf{A}^2 \mathbf{B}
+      + t^2 \mathbf{B} \mathbf{A} \mathbf{B} \mathbf{A}
+      + \frac{3}{2} t^3 \mathbf{B} \mathbf{A} \mathbf{B}^2 \\
+    &amp;&amp; \qquad + t^2 \mathbf{B}^2 \mathbf{A}^2
+      + \frac{3}{2} t^3 \mathbf{B}^2 \mathbf{A} \mathbf{B}
+      + t^3 \mathbf{B}^3 \mathbf{A}
+      + \frac{3}{2} t^4 \mathbf{B}^4 \Bigg\} \\
+    &amp;&amp; \quad - \frac{1}{4} \Bigg\{ \mathbf{A}^4 + t \mathbf{A}^3
+\mathbf{B}
+      + t \mathbf{A}^2 \mathbf{B} \mathbf{A} + t^2 \mathbf{A}^2
+\mathbf{B}^2 \\
+    &amp;&amp; \qquad + t \mathbf{A} \mathbf{B} \mathbf{A}^2 + t^2
+\mathbf{A} \mathbf{B} \mathbf{A} \mathbf{B}
+      + t^2 \mathbf{A} \mathbf{B}^2 \mathbf{A} + t^3 \mathbf{A}
+\mathbf{B}^3 \\
+    &amp;&amp; \qquad + t \mathbf{B} \mathbf{A}^3 + t^2 \mathbf{B}
+\mathbf{A}^2 \mathbf{B}
+      + t^2 \mathbf{B} \mathbf{A} \mathbf{B} \mathbf{A} \\
+    &amp;&amp; \qquad + t^3 \mathbf{B} \mathbf{A} \mathbf{B}^2
+      + t^2 \mathbf{B}^2 \mathbf{A}^2 + t^3 \mathbf{B}^2 \mathbf{A}
+\mathbf{B}
+      + t^3 \mathbf{B}^3 \mathbf{A} + t^4 \mathbf{B}^4 \Bigg\}
+  \end{eqnarray}
+\]</span></p>
+<p>これほど長大な足し算は人生で初めてかもしれない。 項をまとめて</p>
+<p><span class="math display">\[
+  \begin{eqnarray}
+    &amp;&amp; \mathbf{F}_4(\mathbf{A}, t \mathbf{B}) \\
+    &amp;=&amp; \left( \frac{1}{24} - \frac{7}{24} + \frac{1}{2} -
+\frac{1}{4} \right) \mathbf{A}^4
+      + t \left( \frac{1}{6} - \frac{7}{12} + \frac{2}{3} - \frac{1}{4}
+\right) \mathbf{A}^3 \mathbf{B} \\
+    &amp;&amp; \quad + t \left( -\frac{1}{4} + \frac{1}{2} - \frac{1}{4}
+\right) \mathbf{A}^2 \mathbf{B} \mathbf{A}
+      + t^2 \left( \frac{1}{4} - \frac{5}{8} + \frac{2}{3} - \frac{1}{4}
+\right) \mathbf{A}^2 \mathbf{B}^2 \\
+    &amp;&amp; \quad + t \left( -\frac{1}{4} + \frac{1}{2} - \frac{1}{4}
+\right) \mathbf{A} \mathbf{B} \mathbf{A}^2
+      + t^2 \left( -\frac{1}{2} + \frac{2}{3} - \frac{1}{4} \right)
+\mathbf{A} \mathbf{B} \mathbf{A} \mathbf{B} \\
+    &amp;&amp; \quad + t^2 \left( -\frac{1}{4} + \frac{1}{2} -
+\frac{1}{4} \right) \mathbf{A} \mathbf{B}^2 \mathbf{A}
+      + t^3 \left( \frac{1}{6} - \frac{7}{12} + \frac{2}{3} -
+\frac{1}{4} \right) \mathbf{A} \mathbf{B}^3 \\
+    &amp;&amp; \quad + t \left( -\frac{1}{12} + \frac{1}{3} -
+\frac{1}{4} \right) \mathbf{B} \mathbf{A}^3
+      + t^2 \left( -\frac{1}{4} + \frac{1}{2} - \frac{1}{4} \right)
+\mathbf{B} \mathbf{A}^2 \mathbf{B} \\
+    &amp;&amp; \quad + t^2 \left( \frac{1}{3} - \frac{1}{4} \right)
+\mathbf{B} \mathbf{A} \mathbf{B} \mathbf{A}
+      + t^3 \left( -\frac{1}{4} + \frac{1}{2} - \frac{1}{4} \right)
+\mathbf{B} \mathbf{A} \mathbf{B}^2 \\
+    &amp;&amp; \quad + t^2 \left( -\frac{1}{8} + \frac{1}{3} -
+\frac{1}{4} \right) \mathbf{B}^2 \mathbf{A}^2
+      + t^3 \left( \frac{1}{4} + \frac{1}{2} - \frac{1}{4} \right)
+\mathbf{B}^2 \mathbf{A} \mathbf{B} \\
+    &amp;&amp; \quad + t^3 \left( -\frac{1}{12} + \frac{1}{3} -
+\frac{1}{4} \right) \mathbf{B}^3 \mathbf{A}
+      + t^4 \left( \frac{1}{24} - \frac{7}{24} + \frac{1}{2} -
+\frac{1}{4} \right) \mathbf{B}^4 \\
+    &amp;=&amp; \frac{1}{24} t^2 \left( \mathbf{A}^2 \mathbf{B}^2
+      - 2 \mathbf{A} \mathbf{B} \mathbf{A} \mathbf{B}
+      + 2 \mathbf{B} \mathbf{A} \mathbf{B} \mathbf{A}
+      - \mathbf{B}^2 \mathbf{A}^2 \right)
+  \end{eqnarray}
+\]</span></p>
+<p>これを次のように整理すれば</p>
+<p><span class="math display">\[
+  \begin{eqnarray}
+    &amp;&amp; \mathbf{F}_4(\mathbf{A}, t \mathbf{B}) \\
+    &amp;=&amp; -\frac{1}{24} t^2 \left( \mathbf{B} \mathbf{A}^2
+\mathbf{B}
+      - 2 \mathbf{B} \mathbf{A} \mathbf{B} \mathbf{A}
+      + \mathbf{B}^2 \mathbf{A}^2 - \mathbf{A}^2 \mathbf{B}^2
+      + 2 \mathbf{A} \mathbf{B} \mathbf{A} \mathbf{B}
+      - \mathbf{B} \mathbf{A}^2 \mathbf{B} \right) \\
+    &amp;=&amp; -\frac{1}{24} t^2 \left( \mathbf{B} \left( \mathbf{A}^2
+\mathbf{B}
+      - 2 \mathbf{A} \mathbf{B} \mathbf{A} + \mathbf{B} \mathbf{A}^2
+\right)
+      - \left( \mathbf{A}^2 \mathbf{B} - 2 \mathbf{A} \mathbf{B}
+\mathbf{A}
+      + \mathbf{B} \mathbf{A}^2 \right) \mathbf{B} \right) \\
+    &amp;=&amp; -\frac{1}{24} t^2 [\mathbf{B}, \mathbf{A}^2 \mathbf{B}
+      - 2 \mathbf{A} \mathbf{B} \mathbf{A} + \mathbf{B} \mathbf{A}^2] \\
+    &amp;=&amp; -\frac{1}{24} t^2 [\mathbf{B}, \mathbf{A} \left(
+\mathbf{A} \mathbf{B}
+      - \mathbf{B} \mathbf{A} \right) - \left( \mathbf{A} \mathbf{B}
+      - \mathbf{B} \mathbf{A} \right) \mathbf{A}] \\
+    &amp;=&amp; -\frac{1}{24} t^2 [\mathbf{B}, [\mathbf{A}, \left(
+\mathbf{A} \mathbf{B}
+      - \mathbf{B} \mathbf{A} \right)]] \\
+    &amp;=&amp; -\frac{1}{24} t^2 [\mathbf{B}, [\mathbf{A}, [\mathbf{A},
+\mathbf{B}]]]
+  \end{eqnarray}
+\]</span></p>
+<h2 id="bchの公式-一部">BCHの公式 (一部)</h2>
+<p>上記の<span class="math inline">\(\mathbf{F}_n(\mathbf{A}, t
+\mathbf{B})\)</span>を使うと、<span
+class="math inline">\(\mathbf{W}(t)\)</span>の最初の項は次のようになる。</p>
+<p><span class="math display">\[
+  \begin{eqnarray}
+    \ln(\exp(\mathbf{A}) \exp(t \mathbf{B})) &amp;=&amp; \mathbf{W}(t)
+\\
+    &amp;=&amp; \mathbf{F}_1(\mathbf{A}, t \mathbf{B})
+      + \mathbf{F}_2(\mathbf{A}, t \mathbf{B})
+      + \mathbf{F}_3(\mathbf{A}, t \mathbf{B})
+      + \mathbf{F}_4(\mathbf{A}, t \mathbf{B}) + \cdots \\
+    &amp;=&amp; \mathbf{A} + t \mathbf{B} + \frac{1}{2} t [\mathbf{A},
+\mathbf{B}]
+      + \frac{1}{12} t [\mathbf{A}, [\mathbf{A}, \mathbf{B}]]
+      - \frac{1}{12} t^2 [\mathbf{B}, [\mathbf{A}, \mathbf{B}]] \\
+    &amp;&amp; \quad - \frac{1}{24} t^2 [\mathbf{B}, [\mathbf{A},
+[\mathbf{A}, \mathbf{B}]]]
+      + \cdots
+  \end{eqnarray}
+\]</span></p>
+<p><span class="math inline">\(t = 1\)</span>とすれば次のように、BCH
+(Baker-Campbell-Hausdorff) の公式の最初の部分が得られる。</p>
+<p><span class="math display">\[
+  \begin{eqnarray}
+    \ln(\exp(\mathbf{A}) \exp(\mathbf{B}))
+    &amp;=&amp; \mathbf{A} + \mathbf{B} + \frac{1}{2} [\mathbf{A},
+\mathbf{B}]
+      + \frac{1}{12} [\mathbf{A}, [\mathbf{A}, \mathbf{B}]]
+      - \frac{1}{12} [\mathbf{B}, [\mathbf{A}, \mathbf{B}]] \\
+    &amp;&amp; \quad - \frac{1}{24} [\mathbf{B}, [\mathbf{A},
+[\mathbf{A}, \mathbf{B}]]]
+      + \cdots
+  \end{eqnarray}
+\]</span></p>
+</body>
+</html>

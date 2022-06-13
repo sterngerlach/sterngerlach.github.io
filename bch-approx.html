@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="SternGerlach" />
+  <title>BCHの公式の一次近似</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+  <link rel="stylesheet" href="style.css" />
+  <script
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+  type="text/javascript"></script>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">BCHの公式の一次近似</h1>
+<p class="author">SternGerlach</p>
+</header>
+<!--
+ pandoc -s --filter pandoc-crossref -M "crossrefYaml=./crossref_config.yaml" -f markdown -t html5 --mathjax --css style.css bch-approx.md > bch-approx.html
+-->
+<p><a href="./index.html">ホームに戻る</a></p>
+<h1 id="このページについて">このページについて</h1>
+<p>BCH (Baker-Campbell-Hausdorff)の公式の一次近似が、<a
+href="https://www.researchgate.net/publication/288975577">こちらの論文</a>で証明されていたので、順に追ってみます。</p>
+<h2 id="bchの公式">BCHの公式</h2>
+<p>ある行列<span class="math inline">\(\mathbf{A}\)</span>、<span
+class="math inline">\(\mathbf{B}\)</span>について、次のような関係が成り立つ。
+この関係は、BCH (Baker-Campbell-Hausdorff)の公式とよばれている。</p>
+<p><span class="math display">\[
+  \begin{eqnarray}
+    \ln(\exp(\mathbf{A}) \exp(\mathbf{B})) &amp;=&amp; \mathbf{A} +
+\mathbf{B}
+      + \frac{1}{2} [\mathbf{A}, \mathbf{B}]
+      + \frac{1}{12} [\mathbf{A}, [\mathbf{A}, \mathbf{B}]]
+      - \frac{1}{12} [\mathbf{B}, [\mathbf{A}, \mathbf{B}]]
+      + \cdots
+  \end{eqnarray}
+\]</span></p>
+<p><span
+class="math inline">\(\exp\)</span>は行列指数関数であり、次のように定義される。</p>
+<p><span class="math display">\[
+  \exp(\mathbf{A}) = \mathbf{I} + \mathbf{A} + \frac{1}{2!} \mathbf{A}^2
+    + \frac{1}{3!} \mathbf{A}^3 + \cdots
+    = \sum_{n = 0}^\infty \frac{\mathbf{A}^n}{n!}
+\]</span></p>
+<p>また、<span class="math inline">\([\mathbf{A},
+\mathbf{B}]\)</span>はリー括弧積 (Lie
+bracket)であり、次のように定義される。</p>
+<p><span class="math display">\[
+  [\mathbf{A}, \mathbf{B}] = \mathbf{A} \mathbf{B} - \mathbf{B}
+\mathbf{A}
+\]</span></p>
+<h2 id="bchの公式の一次近似">BCHの公式の一次近似</h2>
+<p>上式において、<span
+class="math inline">\(\mathbf{B}\)</span>に線形な項だけを考えると、以下の近似式が成り立つ。
+<a
+href="https://iopscience.iop.org/article/10.1088/0305-4470/22/21/018">こちらの論文</a>と、<a
+href="http://asrl.utias.utoronto.ca/~tdb/bib/barfoot_ser17.pdf">こちらのテキスト</a>を参照。</p>
+<p><span class="math display">\[
+  \ln(\exp(\mathbf{A}) \exp(\mathbf{B}))
+  \approx \mathbf{A} + \sum_{n = 0}^\infty (-1)^n \frac{B_n^-}{n!}
+    \underbrace{[\mathbf{A}, [\mathbf{A}, [\mathbf{A}, \cdots,
+[\mathbf{A},}_{n} \mathbf{B}] \cdots ]]]
+\]</span></p>
+<p>上式において、<span
+class="math inline">\(B_n^-\)</span>はベルヌーイ数であり、次のように定義される。</p>
+<p><span class="math display">\[
+  B_0^- = 1, B_1^- = -\frac{1}{2}, B_2^- = \frac{1}{6},
+  B_3^- = 0, B_4^- = -\frac{1}{30}, B_5^- = 0, \cdots
+\]</span></p>
+<p>これらは次のように、関数のテイラー展開の係数となっている。</p>
+<p><span class="math display">\[
+  \frac{z}{e^z - 1} = \sum_{n = 0}^\infty \frac{B_n^- z^n}{n!}
+\]</span></p>
+<p><a
+href="https://www.researchgate.net/publication/288975577">こちらの論文</a>では、上記の近似式が導出されており、それをいまから追ってみる。</p>
+<h2 id="下準備">下準備</h2>
+<p>最初に、スカラー<span class="math inline">\(t\)</span>の関数<span
+class="math inline">\(\mathbf{W}(t)\)</span>を考え、行列<span
+class="math inline">\(\mathbf{A}\)</span>、<span
+class="math inline">\(\mathbf{B}\)</span>について、次の関係が成り立っているとする。</p>
+<p><span class="math display">\[
+  \begin{eqnarray}
+    \exp(\mathbf{W}(t)) &amp;=&amp; \exp(\mathbf{A}) \exp(t \mathbf{B})
+\\
+    \mathbf{W}(t) &amp;=&amp; \ln(\exp(\mathbf{A}) \exp(t \mathbf{B}))
+  \end{eqnarray}
+\]</span></p>
+<p><span
+class="math inline">\(\mathbf{W}(t)\)</span>は次のように、項<span
+class="math inline">\(\mathbf{F}_n(\mathbf{A}, t
+\mathbf{B})\)</span>の総和として表されるとする。 <span
+class="math inline">\(\mathbf{F}_n(\mathbf{A}, t
+\mathbf{B})\)</span>は、<span
+class="math inline">\(\mathbf{A}\)</span>と<span
+class="math inline">\(\mathbf{B}\)</span>を合計で<span
+class="math inline">\(n\)</span>個含むような項を、まとめたものである。</p>
+<p><span class="math display">\[
+  \mathbf{W}(t) = \sum_{n = 0}^\infty \mathbf{F}_n(\mathbf{A}, t
+\mathbf{B})
+\]</span></p>
+<p>この定義から、次が得られる。</p>
+<p><span class="math display">\[
+  \begin{eqnarray}
+    \exp(\mathbf{A}) \exp(t \mathbf{B})
+    &amp;=&amp; \exp \left( \sum_{n = 0}^\infty \mathbf{F}_n(\mathbf{A},
+t \mathbf{B}) \right) \\
+    \ln(\exp(\mathbf{A}) \exp(t \mathbf{B}))
+    &amp;=&amp; \sum_{n = 0}^\infty \mathbf{F}_n(\mathbf{A}, t
+\mathbf{B})
+  \end{eqnarray}
+\]</span></p>
+<p>ただし、行列の対数<span
+class="math inline">\(\ln(\mathbf{X})\)</span>は以下のように定義される。</p>
+<p><span class="math display">\[
+  \ln(\mathbf{X}) = \left( \mathbf{X} - \mathbf{I} \right)
+    - \frac{1}{2} \left( \mathbf{X} - \mathbf{I} \right)^2
+    + \frac{1}{3} \left( \mathbf{X} - \mathbf{I} \right)^3 + \cdots
+  = \sum_{n = 1}^{\infty} \frac{(-1)^{n - 1}}{n} \left( \mathbf{X} -
+\mathbf{I} \right)^n
+\]</span></p>
+<p><span class="math inline">\(\mathbf{X}\)</span>に<span
+class="math inline">\(\exp(\mathbf{A})
+\exp(\mathbf{B})\)</span>を代入して、<span
+class="math inline">\(\mathbf{F}_n(\mathbf{A}, t
+\mathbf{B})\)</span>を計算してみると、次のようになる。</p>
+<p><span class="math display">\[
+  \begin{eqnarray}
+    \mathbf{F}_0(\mathbf{A}, t \mathbf{B}) &amp;=&amp; \mathbf{0} \\
+    \mathbf{F}_1(\mathbf{A}, t \mathbf{B}) &amp;=&amp; \mathbf{A} + t
+\mathbf{B} \\
+    \mathbf{F}_2(\mathbf{A}, t \mathbf{B})
+    &amp;=&amp; \frac{1}{2} t \left( \mathbf{A} \mathbf{B} - \mathbf{B}
+\mathbf{A} \right)
+    = \frac{1}{2} t [\mathbf{A}, \mathbf{B}] \\
+    \mathbf{F}_3(\mathbf{A}, t \mathbf{B})
+    &amp;=&amp; \frac{1}{12} t \left( \mathbf{A}^2 \mathbf{B} - 2
+\mathbf{A} \mathbf{B} \mathbf{A}
+      + t \mathbf{A} \mathbf{B}^2 + \mathbf{B} \mathbf{A}^2
+      - 2 t \mathbf{B} \mathbf{A} \mathbf{B} + t \mathbf{B}^2 \mathbf{A}
+\right) \\
+    &amp;=&amp; \frac{1}{12} t [\mathbf{A}, [\mathbf{A}, \mathbf{B}]]
+      - \frac{1}{12} t^2 [\mathbf{B}, [\mathbf{A}, \mathbf{B}]] \\
+    \mathbf{F}_4(\mathbf{A}, t \mathbf{B})
+    &amp;=&amp; \frac{1}{24} t^2 \left( \mathbf{A}^2 \mathbf{B}^2
+      - 2 \mathbf{A} \mathbf{B} \mathbf{A} \mathbf{B}
+      + 2 \mathbf{B} \mathbf{A} \mathbf{B} \mathbf{A}
+      - \mathbf{B}^2 \mathbf{A}^2 \right) \\
+    &amp;=&amp; -\frac{1}{24} t^2 [\mathbf{B}, [\mathbf{A}, [\mathbf{A},
+\mathbf{B}]]]
+  \end{eqnarray}
+\]</span></p>
+<p>この計算は非常に煩雑であるため、<a
+href="./bch-approx-supp.html">こちらのページ</a>にまとめた。</p>
+<p><span class="math inline">\(\mathbf{F}_0(\mathbf{A}, t \mathbf{B}) =
+\mathbf{0}\)</span>であったので、<span
+class="math inline">\(\mathbf{W}_t\)</span>は結局、<span
+class="math inline">\(\mathbf{F}_1(\mathbf{A}, t
+\mathbf{B})\)</span>以降の総和として書ける。</p>
+<p><span class="math display">\[
+  \mathbf{W}(t) = \sum_{n = 1}^\infty \mathbf{F}_n(\mathbf{A}, t
+\mathbf{B})
+\]</span></p>
+<h2 id="導出-その1">導出 (その1)</h2>
+<p>最初に、<span class="math inline">\(\mathbf{W}(0) =
+\mathbf{A}\)</span>であることを確認する(<span
+class="math inline">\(\exp(\mathbf{0}) = \mathbf{I}\)</span>)。</p>
+<p><span class="math display">\[
+  \mathbf{W}(0) = \ln(\exp(\mathbf{A}) \exp(\mathbf{0})) =
+\ln(\exp(\mathbf{A})) = \mathbf{A}
+\]</span></p>
+<p>続いて、<span class="math inline">\(\mathbf{W}(t)\)</span>の<span
+class="math inline">\(t = 0\)</span>における微分を考える。まず、</p>
+<p><span class="math display">\[
+  \left. \frac{d}{dt} \exp(\mathbf{W}(t)) \right|_{t = 0}
+  = \left. \frac{d}{dt} \exp(\mathbf{A}) \exp(t \mathbf{B}) \right|_{t =
+0}
+  = \left. \exp(\mathbf{A}) \mathbf{B} \exp(t \mathbf{B}) \right|_{t =
+0}
+  = \exp(\mathbf{A}) \mathbf{B}
+\]</span></p>
+<p>ここで、<span class="math inline">\(\cfrac{d}{dt} \exp(t \mathbf{X})
+= \mathbf{X} \exp(t \mathbf{X})\)</span>の関係を用いた。また同時に、</p>
+<p><span class="math display">\[
+  \left. \frac{d}{dt} \exp(\mathbf{W}(t)) \right|_{t = 0}
+  = \left. \sum_{n = 1}^\infty \frac{d}{dt} \mathbf{F}_n(\mathbf{A}, t
+\mathbf{B}) \right|_{t = 0}
+\]</span></p>
+<p>簡単のため、<span class="math inline">\(t =
+0\)</span>における微分を<span
+class="math inline">\(D_0\)</span>として表す。</p>
+<p><span class="math display">\[
+  \left. \frac{d}{dt} \mathbf{F}_n(\mathbf{A}, t \mathbf{B}) \right|_{t
+= 0}
+  = D_0(\mathbf{F}_n)
+\]</span></p>
+<p>試しに、上記の<span class="math inline">\(\mathbf{F}_1(\mathbf{A}, t
+\mathbf{B})\)</span>、<span
+class="math inline">\(\mathbf{F}_2(\mathbf{A}, t
+\mathbf{B})\)</span>、<span
+class="math inline">\(\mathbf{F}_3(\mathbf{A}, t
+\mathbf{B})\)</span>、<span
+class="math inline">\(\mathbf{F}_4(\mathbf{A}, t
+\mathbf{B})\)</span>を<span class="math inline">\(t =
+0\)</span>で微分してみると、次のようになる。</p>
+<p><span class="math display">\[
+  \begin{eqnarray}
+    D_0(\mathbf{F}_1) &amp;=&amp; \left. \frac{d}{dt}
+      \left( \mathbf{A} + t \mathbf{B} \right) \right|_{t = 0} =
+\mathbf{B} \\
+    D_0(\mathbf{F}_2) &amp;=&amp; \left. \frac{d}{dt}
+      \left( \frac{1}{2} t [\mathbf{A}, \mathbf{B}] \right) \right|_{t =
+0}
+    = \frac{1}{2} [\mathbf{A}, \mathbf{B}] \\
+    D_0(\mathbf{F}_3) &amp;=&amp; \left. \frac{d}{dt}
+      \left( \frac{1}{12} t [\mathbf{A}, [\mathbf{A}, \mathbf{B}]]
+      - \frac{1}{12} t^2 [\mathbf{B}, [\mathbf{A}, \mathbf{B}]] \right)
+\right|_{t = 0} \\
+    &amp;=&amp; \left. \frac{1}{12} [\mathbf{A}, [\mathbf{A},
+\mathbf{B}]]
+      - \frac{1}{6} t [\mathbf{B}, [\mathbf{A}, \mathbf{B}]] \right|_{t
+= 0}
+      = \frac{1}{12} [\mathbf{A}, [\mathbf{A}, \mathbf{B}]] \\
+    D_0(\mathbf{F}_4) &amp;=&amp; \left. \frac{d}{dt}
+      \left( -\frac{1}{24} t^2 [\mathbf{B}, [\mathbf{A},
+      [\mathbf{A}, \mathbf{B}]]] \right) \right|_{t = 0} \\
+    &amp;=&amp; \left. -\frac{1}{12} t [\mathbf{B}, [\mathbf{A},
+      [\mathbf{A}, \mathbf{B}]]] \right|_{t = 0} = 0
+  \end{eqnarray}
+\]</span></p>
+<p>これらの結果から、<span
+class="math inline">\(D_0(\mathbf{F}_n)\)</span>は、以下のような形をとることが推測される。</p>
+<p><span class="math display">\[
+  D_0(\mathbf{F}_n) \stackrel{?}{=} (-1)^{n - 1} \frac{B_{n - 1}^-}{(n -
+1)!}
+    \underbrace{[\mathbf{A}, [\mathbf{A}, [\mathbf{A}, \cdots,
+[\mathbf{A},}_{n - 1} \mathbf{B}] \cdots ]]]
+\]</span></p>
+<p><span
+class="math inline">\(\mathbf{W}(t)\)</span>の一次近似に上記の推測を代入すると、<span
+class="math inline">\(\mathbf{W}(t)\)</span>は以下のような形になる。</p>
+<p><span class="math display">\[
+  \begin{eqnarray}
+    \mathbf{W}(t) &amp;\approx&amp; \mathbf{W}(0) + t \left.
+\frac{d}{dt} \mathbf{W}(t) \right|_{t = 0} \\
+    &amp;=&amp; \mathbf{A} + t \left. \sum_{n = 1}^\infty \frac{d}{dt}
+      \mathbf{F}_n(\mathbf{A}, t \mathbf{B}) \right|_{t = 0} \\
+    &amp;=&amp; \mathbf{A} + t \sum_{n = 1}^\infty D_0(\mathbf{F}_n) \\
+    &amp;\stackrel{?}{=}&amp; \mathbf{A} + t \sum_{n = 1}^\infty (-1)^{n
+- 1} \frac{B_{n - 1}^-}{(n - 1)!}
+      \underbrace{[\mathbf{A}, [\mathbf{A}, [\mathbf{A}, \cdots,
+[\mathbf{A},}_{n - 1} \mathbf{B}] \cdots ]]] \\
+    &amp;=&amp; \mathbf{A} + t \sum_{n = 0}^\infty (-1)^n
+\frac{B_n^-}{n!}
+      \underbrace{[\mathbf{A}, [\mathbf{A}, [\mathbf{A}, \cdots,
+[\mathbf{A},}_n \mathbf{B}] \cdots ]]]
+  \end{eqnarray}
+\]</span></p>
+<p>ここで<span class="math inline">\(t =
+1\)</span>とすれば、いま示そうとしている一次近似の式となる。</p>
+<p><span class="math display">\[
+  \ln(\exp(\mathbf{A}) \exp(\mathbf{B})) = \mathbf{W}(1)
+  \stackrel{?}{\approx} \mathbf{A} + \sum_{n = 0}^\infty (-1)^n
+\frac{B_n^-}{n!}
+    \underbrace{[\mathbf{A}, [\mathbf{A}, [\mathbf{A}, \cdots,
+[\mathbf{A},}_{n} \mathbf{B}] \cdots ]]]
+\]</span></p>
+<p>従って、<span
+class="math inline">\(D_0(\mathbf{F}_n)\)</span>に関する上記の予想が、正しいことを確かめればよい。
+簡単のため、演算子<span
+class="math inline">\(\mathrm{ad}_\mathbf{A}\)</span>を次のように定める。</p>
+<p><span class="math display">\[
+  \mathrm{ad}_\mathbf{A}(\mathbf{B}) = \mathbf{A} \mathbf{B} -
+\mathbf{B} \mathbf{A}
+  = [\mathbf{A}, \mathbf{B}]
+\]</span></p>
+<p><span
+class="math inline">\((\mathrm{ad}_\mathbf{A})^2\)</span>、<span
+class="math inline">\((\mathrm{ad}_\mathbf{A})^3\)</span>は、次のことを意味する。</p>
+<p><span class="math display">\[
+  (\mathrm{ad}_\mathbf{A})^2(\mathbf{B}) = [\mathbf{A}, [\mathbf{A},
+\mathbf{B}]], \quad
+  (\mathrm{ad}_\mathbf{A})^3(\mathbf{B}) = [\mathbf{A}, [\mathbf{A},
+[\mathbf{A}, \mathbf{B}]]]
+\]</span></p>
+<p>この<span
+class="math inline">\(\mathrm{ad}_\mathbf{A}\)</span>を使うと、いま示そうとしているのは、次の式である。</p>
+<p><span class="math display">\[
+  D_0(\mathbf{F}_n) \stackrel{?}{=} (-1)^{n - 1} \frac{B_{n - 1}^-}{(n -
+1)!}
+    (\mathrm{ad}_\mathbf{A})^{n - 1}(\mathbf{B})
+\]</span></p>
+<h2 id="導出-その2">導出 (その2)</h2>
+<p>以下の式を考える。</p>
+<p><span class="math display">\[
+  \exp(\mathbf{W}(t)) = \mathbf{I} + \mathbf{W}(t) + \frac{1}{2!}
+(\mathbf{W}(t))^2
+  + \frac{1}{3!} (\mathbf{W}(t))^3 + \cdots
+  = \sum_{n = 0}^\infty \frac{(\mathbf{W}(t))^n}{n!}
+\]</span></p>
+<p>上式の<span class="math inline">\(t = 0\)</span>における微分は、</p>
+<p><span class="math display">\[
+  \begin{eqnarray}
+    \left. \frac{d}{dt} \exp(\mathbf{W}(t)) \right|_{t = 0}
+    &amp;=&amp; D_0(\mathbf{W}) + \frac{1}{2} \left( D_0(\mathbf{W})
+\mathbf{A}
+      + \mathbf{A} D_0(\mathbf{W}) \right) \\
+    &amp;&amp; + \frac{1}{3!} \left( D_0(\mathbf{W}) \mathbf{A}^2
+      + \mathbf{A} D_0(\mathbf{W}) \mathbf{A}
+      + \mathbf{A}^2 D_0(\mathbf{W}) \right) + \cdots \\
+    &amp;=&amp; \exp(\mathbf{A}) \mathbf{B} \\
+    &amp;=&amp; \left( \mathbf{I} + \mathbf{A} + \frac{1}{2!}
+\mathbf{A}^2
+      + \frac{1}{3!} \mathbf{A}^3 + \cdots \right) \mathbf{B}
+  \end{eqnarray}
+\]</span></p>
+<p>ただし、<span
+class="math inline">\(D_0(\mathbf{W})\)</span>は次のように定義される。
+また、<span class="math inline">\(\mathbf{W}(0) =
+\mathbf{A}\)</span>である。</p>
+<p><span class="math display">\[
+  D_0(\mathbf{W}) = \left. \frac{d}{dt} \mathbf{W}(t) \right|_{t = 0}
+\]</span></p>
+<p>上記から、以下が成り立つことが予想される。</p>
+<p><span class="math display">\[
+  \begin{eqnarray}
+    D_0(\mathbf{W}) &amp;=&amp; \left. \frac{d}{dt} \sum_{n = 1}^\infty
+      \mathbf{F}_n(\mathbf{A}, t \mathbf{B}) \right|_{t = 0} \\
+    &amp;=&amp; \sum_{n = 1}^\infty D_0(\mathbf{F}_n) \\
+    &amp;\stackrel{?}{=}&amp; \sum_{n = 1}^\infty (-1)^{n - 1}
+\frac{B_{n - 1}^-}{(n - 1)!}
+      (\mathrm{ad}_\mathbf{A})^{n - 1}(\mathbf{B}) \\
+    &amp;=&amp; \sum_{n = 0}^\infty (-1)^n \frac{B_n^-}{n!}
+      (\mathrm{ad}_\mathbf{A})^n(\mathbf{B})
+  \end{eqnarray}
+\]</span></p>
+<p>この予想を代入してみると、</p>
+<p><span class="math display">\[
+  \begin{eqnarray}
+    \left. \frac{d}{dt} \exp(\mathbf{W}(t)) \right|_{t = 0}
+    &amp;=&amp; \left( \mathbf{I} + \mathbf{A} + \frac{1}{2!}
+\mathbf{A}^2
+      + \frac{1}{3!} \mathbf{A}^3 + \cdots \right) \mathbf{B} \\
+    &amp;\stackrel{?}{=}&amp; \sum_{n = 0}^\infty \frac{(-1)^n
+B_n^-}{n!}
+      (\mathrm{ad}_\mathbf{A})^n(\mathbf{B}) \\
+    &amp;&amp; + \frac{1}{2!} \left( \sum_{n = 0}^\infty \frac{(-1)^n
+B_n^-}{n!}
+      (\mathrm{ad}_\mathbf{A})^n(\mathbf{B}) \mathbf{A}
+      + \mathbf{A} \sum_{n = 0}^\infty \frac{(-1)^n B_n^-}{n!}
+      (\mathrm{ad}_\mathbf{A})^n(\mathbf{B}) \right) \\
+    &amp;&amp; + \frac{1}{3!} \Bigg( \sum_{n = 0}^\infty (-1)^n
+\frac{B_n^-}{n!}
+      (\mathrm{ad}_\mathbf{A})^n(\mathbf{B}) \mathbf{A}^2
+      + \mathbf{A} \sum_{n = 0}^\infty (-1)^n \frac{B_n^-}{n!}
+      (\mathrm{ad}_\mathbf{A})^n(\mathbf{B}) \mathbf{A} \\
+    &amp;&amp; \quad + \mathbf{A}^2 \sum_{n = 0}^\infty (-1)^n
+\frac{B_n^-}{n!}
+      (\mathrm{ad}_\mathbf{A})^n(\mathbf{B}) \Bigg) + \cdots
+  \end{eqnarray}
+\]</span></p>
+<p>上式から、<span
+class="math inline">\(n\)</span>次の項、言い換えると、<span
+class="math inline">\(\mathbf{A}\)</span>と<span
+class="math inline">\(\mathbf{B}\)</span>を合計で<span
+class="math inline">\(n\)</span>個含んでいる項を取り出す。 <span
+class="math inline">\((\mathrm{ad}_\mathbf{A})^n(\mathbf{B})\)</span>は、<span
+class="math inline">\(n + 1\)</span>次の項となることに注意する。</p>
+<p><span class="math display">\[
+  \begin{eqnarray}
+    &amp;&amp; \frac{1}{(n - 1)!} \mathbf{A}^{n - 1} \mathbf{B} \\
+    &amp;\stackrel{?}{=}&amp; \frac{(-1)^{n - 1} B_{n - 1}^-}{(n - 1)!}
+      (\mathrm{ad}_\mathbf{A})^{n - 1}(\mathbf{B})
+      + \frac{(-1)^{n - 2} B_{n - 2}^-}{2! (n - 2)!}
+      \left( (\mathrm{ad}_\mathbf{A})^{n - 2}(\mathbf{B}) \mathbf{A}
+      + \mathbf{A} (\mathrm{ad}_\mathbf{A})^{n - 2}(\mathbf{B}) \right)
+\\
+    &amp;&amp; + \frac{(-1)^{n - 3} B_{n - 3}^-}{3! (n - 3)!}
+      \left( (\mathrm{ad}_\mathbf{A})^{n - 3}(\mathbf{B}) \mathbf{A}^2
+      + \mathbf{A} (\mathrm{ad}_\mathbf{A})^{n - 3}(\mathbf{B})
+\mathbf{A}
+      + \mathbf{A}^2 (\mathrm{ad}_\mathbf{A})^{n - 3}(\mathbf{B})
+\right) \\
+    &amp;&amp; + \cdots + \frac{B_0^-}{n!} \left(
+      \underbrace{\mathbf{B} \mathbf{A}^{n - 1} + \mathbf{A} \mathbf{B}
+\mathbf{A}^{n - 2}
+      + \cdots + \mathbf{A}^{n - 1} \mathbf{B}}_{n} \right)
+  \end{eqnarray}
+\]</span></p>
+<p>この予想が、全ての<span
+class="math inline">\(n\)</span>について成り立つことを示す。</p>
+<p>以下の関係を使って、上式を書き直す。</p>
+<p><span class="math display">\[
+  (\mathrm{ad}_\mathbf{A})^n(\mathbf{B})
+  = \sum_{k = 0}^n \frac{n!}{k! (n - k)!} (-1)^k \mathbf{A}^{n - k}
+\mathbf{B} \mathbf{A}^k
+\]</span></p>
+<p>上式は、<span class="math inline">\(n =
+0\)</span>のときは明らかに成立する。 <span class="math inline">\(n =
+k\)</span>のときに成立すると仮定して、<span class="math inline">\(n = k
++ 1\)</span>の場合を考えると</p>
+<p><span class="math display">\[
+  \begin{eqnarray}
+    &amp;&amp; (\mathrm{ad}_\mathbf{A})^{k + 1}(\mathbf{B}) \\
+    &amp;=&amp;
+(\mathrm{ad}_\mathbf{A})((\mathrm{ad}_\mathbf{A})^k(\mathbf{B})) \\
+    &amp;=&amp; (\mathrm{ad}_\mathbf{A})
+      \left( \sum_{m = 0}^k \frac{k!}{m! (k - m)!} (-1)^m \mathbf{A}^{k
+- m}
+      \mathbf{B} \mathbf{A}^m \right) \\
+    &amp;=&amp; \sum_{m = 0}^k \frac{k!}{m! (k - m)!} (-1)^m
+\mathbf{A}^{k + 1 - m}
+      \mathbf{B} \mathbf{A}^m
+      + \sum_{m = 0}^k \frac{k!}{m! (k - m)!} (-1)^{m + 1} \mathbf{A}^{k
+- m}
+      \mathbf{B} \mathbf{A}^{m + 1} \\
+    &amp;=&amp; \sum_{m = 0}^k \frac{k!}{m! (k - m)!} (-1)^m
+\mathbf{A}^{k + 1 - m}
+      \mathbf{B} \mathbf{A}^m
+      + \sum_{m = 1}^{k + 1} \frac{k!}{(m - 1)! (k + 1 - m)!} (-1)^m
+\mathbf{A}^{k + 1 - m}
+      \mathbf{B} \mathbf{A}^m \\
+    &amp;=&amp; \sum_{m = 1}^k \left( \frac{k!}{m! (k - m)!} +
+\frac{k!}{(m - 1)! (k + 1 - m)!} \right)
+      (-1)^m \mathbf{A}^{k + 1 - m} \mathbf{B} \mathbf{A}^m \\
+    &amp;&amp; \quad + \mathbf{A}^{k + 1} \mathbf{B}
+      + (-1)^{k + 1} \mathbf{B} \mathbf{A}^{k + 1} \\
+    &amp;=&amp; \sum_{m = 1}^k \frac{(k + 1)!}{m! (k + 1 - m)!}
+      (-1)^m \mathbf{A}^{k + 1 - m} \mathbf{B} \mathbf{A}^m
+      + \underbrace{\mathbf{A}^{k + 1} \mathbf{B}}_{m = 0}
+      + \underbrace{(-1)^{k + 1} \mathbf{B} \mathbf{A}^{k + 1}}_{m = k +
+1} \\
+    &amp;=&amp; \sum_{m = 0}^{k + 1} \frac{(k + 1)!}{m! (k + 1 - m)!}
+(-1)^m \mathbf{A}^{k + 1 - m}
+      \mathbf{B} \mathbf{A}^m
+  \end{eqnarray}
+\]</span></p>
+<p>となるから、上の関係が正しいことがわかる(途中では二項定理の公式を用いている)。
+これを使うと</p>
+<p><span class="math display">\[
+  \begin{eqnarray}
+    &amp;&amp; \frac{1}{(n - 1)!} \mathbf{A}^{n - 1} \mathbf{B} \\
+    &amp;\stackrel{?}{=}&amp; \frac{(-1)^{n - 1} B_{n - 1}^-}{(n - 1)!}
+      \sum_{k = 0}^{n - 1} \frac{(n - 1)!}{k! (n - 1 - k)!}
+      (-1)^k \mathbf{A}^{n - 1 - k} \mathbf{B} \mathbf{A}^k \\
+    &amp;&amp; + \frac{(-1)^{n - 2} B_{n - 2}^-}{(n - 2)!}
+      \sum_{k = 0}^{n - 2} \frac{(n - 2)!}{k! (n - 2 - k)!} (-1)^k
+      \left( \mathbf{A}^{n - 2 - k} \mathbf{B} \mathbf{A}^{k + 1}
+      + \mathbf{A}^{n - 1 - k} \mathbf{B} \mathbf{A}^k \right) \\
+    &amp;&amp; + \frac{(-1)^{n - 3} B_{n - 3}^-}{(n - 3)!}
+      \sum_{k = 0}^{n - 3} \frac{(n - 3)!}{k! (n - 3 - k)!} (-1)^k
+      \left( \mathbf{A}^{n - 3 - k} \mathbf{B} \mathbf{A}^{k + 2}
+      + \mathbf{A}^{n - 2 - k} \mathbf{B} \mathbf{A}^{k + 1}
+      + \mathbf{A}^{n - 1 - k} \mathbf{B} \mathbf{A}^k \right) \\
+    &amp;&amp; + \cdots + \frac{1}{n!} \left(
+      \underbrace{\mathbf{B} \mathbf{A}^{n - 1} + \mathbf{A} \mathbf{B}
+\mathbf{A}^{n - 2}
+      + \cdots + \mathbf{A}^{n - 1} \mathbf{B}}_{n} \right)
+  \end{eqnarray}
+\]</span></p>
+<p>上記が全ての<span
+class="math inline">\(n\)</span>について成り立つことを示せばよい。
+そのため、<a
+href="https://www.researchgate.net/publication/288975577">こちらの論文</a>では、シンボルというものを導入している。
+上式をみると、どの項も、<span class="math inline">\(s(\mathbf{A}^p
+\mathbf{B} \mathbf{A}^q)\)</span>の形をとることが分かる(<span
+class="math inline">\(p + q = n - 1\)</span>、<span
+class="math inline">\(s\)</span>は適当な係数)。 そこで、項<span
+class="math inline">\(\mathbf{A}^p \mathbf{B}
+\mathbf{A}^q\)</span>を、シンボル<span
+class="math inline">\(t^q\)</span>で置き換える(<span
+class="math inline">\(t\)</span>は適当な係数)。</p>
+<p>例えば、<span class="math inline">\(1 = \mathbf{A}^{n - 1}
+\mathbf{B}\)</span>、<span class="math inline">\(t = \mathbf{A}^{n - 2}
+\mathbf{B} \mathbf{A}\)</span>、<span class="math inline">\(t^2 =
+\mathbf{A}^{n - 3} \mathbf{B} \mathbf{A}^2\)</span>のようになる。
+シンボルと、元の項は、1対1で対応している。</p>
+<p>シンボルについて、次の関係が成り立つ。</p>
+<p><span class="math display">\[
+  \begin{eqnarray}
+    (\mathrm{ad}_\mathbf{A})^{n - 1}(\mathbf{B})
+    &amp;=&amp; \sum_{k = 0}^{n - 1} \frac{(n - 1)!}{k! (n - 1 - k)!}
+      (-1)^k \mathbf{A}^{n - 1 - k} \mathbf{B} \mathbf{A}^k \\
+    &amp;=&amp; \sum_{k = 0}^{n - 1} \frac{(n - 1)!}{k! (n - 1 - k)!}
+(-t)^k \\
+    &amp;=&amp; (1 - t)^{n - 1} \\
+    (\mathrm{ad}_\mathbf{A})^{n - m - 1}(\mathbf{B}) \mathbf{A}^m
+    &amp;=&amp; \sum_{k = 0}^{n - m - 1} \frac{(n - m - 1)!}{k! (n - m -
+1 - k)!}
+      (-1)^k \mathbf{A}^{n - m - 1 - k} \mathbf{B} \mathbf{A}^k
+\mathbf{A}^m \\
+    &amp;=&amp; (1 - t)^{n - m - 1} t^m \\
+    \mathbf{A}^m (\mathrm{ad}_\mathbf{A})^{n - m - 1}(\mathbf{B})
+    &amp;=&amp; \mathbf{A}^m \sum_{k = 0}^{n - m - 1} \frac{(n - m -
+1)!}{k! (n - m - 1 - k)!}
+      (-1)^k \mathbf{A}^{n - m - 1 - k} \mathbf{B} \mathbf{A}^k \\
+    &amp;=&amp; (1 - t)^{n - m - 1}
+  \end{eqnarray}
+\]</span></p>
+<p>これらを使うと、先ほどの式は</p>
+<p><span class="math display">\[
+  \begin{eqnarray}
+    &amp;&amp; \frac{1}{(n - 1)!} \\
+    &amp;\stackrel{?}{=}&amp; \frac{(-1)^{n - 1} B_{n - 1}^-}{(n - 1)!}
+(1 - t)^{n - 1}
+      + \frac{(-1)^{n - 2} B_{n - 2}^-}{2! (n - 2)!}
+      \left( (1 - t)^{n - 2} t + (1 - t)^{n - 2} \right) \\
+    &amp;&amp; + \frac{(-1)^{n - 3} B_{n - 3}^-}{3! (n - 3)!}
+      \left( (1 - t)^{n - 3} t^2 + (1 - t)^{n - 3} t + (1 - t)^{n - 3}
+\right) \\
+    &amp;&amp; + \cdots + \frac{1}{n!} \left( t^{n - 1} + t^{n - 2} +
+\cdots + t + 1 \right) \\
+    &amp;=&amp; \frac{(-1)^{n - 1} B_{n - 1}^-}{(n - 1)!} (1 - t)^{n -
+1}
+      + \frac{(-1)^{n - 2} B_{n - 2}^-}{2! (n - 2)!} (1 - t)^{n - 2} (1
++ t) \\
+    &amp;&amp; + \frac{(-1)^{n - 3} B_{n - 3}^-}{3! (n - 3)!}
+      (1 - t)^{n - 3} (1 + t + t^2) \\
+    &amp;&amp; + \cdots + \frac{1}{n!} (1 + t + t^2 + \cdots + t^{n -
+1}) \\
+    &amp;=&amp; \frac{(-1)^{n - 1} B_{n - 1}^-}{(n - 1)!} (1 - t)^{n -
+1}
+      + \frac{(-1)^{n - 2} B_{n - 2}^-}{2! (n - 2)!} (1 - t)^{n - 2}
+\frac{1 - t^2}{1 - t} \\
+    &amp;&amp; + \frac{(-1)^{n - 3} B_{n - 3}^-}{3! (n - 3)!}
+      (1 - t)^{n - 3} \frac{1 - t^3}{1 - t}
+      + \cdots + \frac{1}{n!} \frac{1 - t^n}{1 - t} \\
+    &amp;=&amp; \sum_{k = 0}^{n - 1} \frac{(1 - t^{n - k})}{(1 - t) (n -
+k)!}
+      \frac{B_k^- (-1)^k (1 - t)^k}{k!} \\
+  \end{eqnarray}
+\]</span></p>
+<p>従って</p>
+<p><span class="math display">\[
+  \frac{1}{(n - 1)!} \stackrel{?}{=} \sum_{k = 0}^{n - 1}
+    \frac{(1 - t^{n - k})}{(1 - t) (n - k)!} \frac{B_k^- (-1)^k (1 -
+t)^k}{k!}
+\]</span></p>
+<p>ここで、次の関数を考える。</p>
+<p><span class="math display">\[
+  \begin{eqnarray}
+    P(z, t) &amp;=&amp; \sum_{k = 0}^\infty \frac{(1 - t^{k + 1})
+z^k}{(1 - t) (k + 1)!} \\
+    Q(z, t) &amp;=&amp; \sum_{n = 0}^\infty \frac{B_n^-}{n!} (-z(1 -
+t))^n \\
+    R(z) &amp;=&amp; \sum_{n = 0}^\infty \frac{z^n}{n!} = e^z
+  \end{eqnarray}
+\]</span></p>
+<p><span class="math display">\[
+  \begin{eqnarray}
+    P(z, t) Q(z, t) &amp;=&amp; \left( \sum_{k = 0}^\infty
+      \underbrace{\frac{(1 - t^{k + 1})}{(1 - t) (k + 1)!}}_{\alpha_k}
+z^k \right)
+      \left( \sum_{n = 0}^\infty \underbrace{\frac{B_n^-}{n!} (-1)^n (1
+- t)^n}_{\beta_k} z^n \right) \\
+    &amp;=&amp; \sum_{n = 0}^\infty \left( \sum_{k = 0}^n \alpha_k
+\beta_{n - k} \right) z^n \\
+    &amp;=&amp; \sum_{n = 0}^\infty \left( \sum_{k = 0}^n \alpha_{n - k}
+\beta_k \right) z^n \\
+    &amp;=&amp; \sum_{n = 0}^\infty \left( \sum_{k = 0}^n
+      \frac{(1 - t^{n - k + 1})}{(1 - t) (n - k + 1)!}
+      \frac{B_k^-}{k!} (-1)^k (1 - t)^k \right) z^n \\
+    &amp;=&amp; \sum_{n = 1}^\infty \left( \sum_{k = 0}^{n - 1}
+      \frac{(1 - t^{n - k})}{(1 - t) (n - k)!}
+      \frac{B_k^-}{k!} (-1)^k (1 - t)^k \right) z^{n - 1}
+  \end{eqnarray}
+\]</span></p>
+<p>また</p>
+<p><span class="math display">\[
+  \begin{eqnarray}
+    R(z) = e^z = \sum_{n = 0}^\infty \frac{z^n}{n!}
+    = \sum_{n = 1}^\infty \frac{z^{n - 1}}{(n - 1)!}
+  \end{eqnarray}
+\]</span></p>
+<p>さて、<span class="math inline">\(P(z,
+t)\)</span>は、次のようにも書ける。</p>
+<p><span class="math display">\[
+  \begin{eqnarray}
+    P(z, t) &amp;=&amp; \sum_{k = 0}^\infty \frac{(1 - t^{k + 1})
+z^k}{(1 - t) (k + 1)!} \\
+    &amp;=&amp; \frac{1}{1 - t} \sum_{k = 1}^\infty \frac{(1 - t^k) z^{k
+- 1}}{k!} \\
+    &amp;=&amp; \frac{1}{1 - t} \sum_{k = 1}^\infty \frac{(1 - t^k)}{k!}
+\frac{z^k}{z} \\
+    &amp;=&amp; \frac{1}{1 - t} \sum_{k = 1}^\infty \frac{1}{k!}
+\frac{z^k - (tz)^k}{z} \\
+    &amp;=&amp; \frac{1}{1 - t} \left( \frac{1}{z} \sum_{k = 0}^\infty
+\frac{z^k}{k!} - \frac{1}{z} \right)
+      - \frac{1}{1 - t} \left( \frac{1}{z} \sum_{k = 0}^\infty
+\frac{(tz)^k}{k!} - \frac{1}{z} \right) \\
+    &amp;=&amp; \frac{1}{1 - t} \left( \frac{e^z - 1}{z} - \frac{e^{tz}
+- 1}{z} \right) \\
+    &amp;=&amp; \frac{e^z - e^{tz}}{(1 - t)z}
+  \end{eqnarray}
+\]</span></p>
+<p><span class="math inline">\(Q(z,
+t)\)</span>は、ベルヌーイ数について<span class="math inline">\(\sum_{n =
+0}^\infty \cfrac{B_n^-}{n!} z^n = \cfrac{z}{e^z -
+1}\)</span>であることを使えば、<span
+class="math inline">\(z\)</span>を<span class="math inline">\(-z(1 -
+t)\)</span>とみなすことにより</p>
+<p><span class="math display">\[
+  Q(z, t) = \sum_{n = 0}^\infty \frac{B_n^-}{n!} (-z (1 - t))^n \\
+  = \frac{-z (1 - t)}{e^{-z(1 - t)} - 1}
+\]</span></p>
+<p>以上より、<span class="math inline">\(P(z, t) Q(z, t)\)</span>は<span
+class="math inline">\(R(z)\)</span>に等しいことが分かる。</p>
+<p><span class="math display">\[
+  \begin{eqnarray}
+    P(z, t) Q(z, t) &amp;=&amp; \frac{e^z - e^{tz}}{(1 - t)z} \frac{-z(1
+- t)}{e^{-z(1 - t)} - 1} \\
+    &amp;=&amp; \frac{e^z - e^{tz}}{1 - e^{-z(1 - t)}} \\
+    &amp;=&amp; \frac{e^z - e^{tz}}{e^z - e^{tz}} e^z \\
+    &amp;=&amp; e^z = R(z)
+  \end{eqnarray}
+\]</span></p>
+<p><span class="math inline">\(R(z) = P(z, t) Q(z,
+t)\)</span>であるから、両辺をテイラー展開したとき、全ての<span
+class="math inline">\(n \ge 0\)</span>について、<span
+class="math inline">\(z^n\)</span>の係数も等しい。 これは、全ての<span
+class="math inline">\(n \ge
+1\)</span>について、次が成り立つことを意味する(<span
+class="math inline">\(z^{n - 1}\)</span>の項に着目する)。</p>
+<p><span class="math display">\[
+  \frac{1}{(n - 1)!} = \sum_{k = 0}^{n - 1}
+    \frac{(1 - t^{n - k})}{(1 - t) (n - k)!} \frac{B_k^- (-1)^k (1 -
+t)^k}{k!}
+\]</span></p>
+<p>従って、当初の仮定は正しかったことになる。</p>
+<p><span class="math display">\[
+  D_0(\mathbf{F}_n) = (-1)^{n - 1} \frac{B_{n - 1}^-}{(n - 1)!}
+    (\mathrm{ad}_\mathbf{A})^{n - 1}(\mathbf{B})
+\]</span></p>
+<p>これより、BCHの公式の一次近似について、以下が成り立つことが示せた。</p>
+<p><span class="math display">\[
+  \ln(\exp(\mathbf{A}) \exp(\mathbf{B})) = \mathbf{W}(1)
+  \approx \mathbf{A} + \sum_{n = 0}^\infty (-1)^n \frac{B_n^-}{n!}
+    \underbrace{[\mathbf{A}, [\mathbf{A}, [\mathbf{A}, \cdots,
+[\mathbf{A},}_{n} \mathbf{B}] \cdots ]]]
+\]</span></p>
+<h2 id="参考文献">参考文献</h2>
+<ul>
+<li><a
+href="http://asrl.utias.utoronto.ca/~tdb/bib/barfoot_ser17.pdf">State
+Estimation for Robotics</a></li>
+<li><a href="https://github.com/gaoxiang12/slambook-en">Introduction to
+Visual SLAM: From Theory to Practice</a></li>
+<li><a href="https://www.researchgate.net/publication/288975577">The
+Campbell-Baker-Hausdorff formula</a></li>
+<li><a
+href="https://iopscience.iop.org/article/10.1088/0305-4470/22/21/018">The
+Baker-Campbell-Hausdorff formula and the convergence of the Magnus
+expansion</a></li>
+</ul>
+</body>
+</html>

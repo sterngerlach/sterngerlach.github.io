@@ -66,6 +66,8 @@ sterngerlachのGitHubページにようこそ。
 - [SO(3)とSE(3)についてのメモ書き (その3: SO(3)のヤコビ行列の計算)](./lie-3.html)
 - [SO(3)とSE(3)についてのメモ書き (その4: SE(3)とse(3)の変換)](./lie-4.html)
 - [SO(3)とSE(3)についてのメモ書き (その5: SE(3)の微分)](./lie-5.html)
+- [BCHの公式の一次近似](./bch-approx.html)
+- [BCHの公式の一次近似 (補足)](./bch-approx-supp.html)
 
 <!-- -->
 
