@@ -22,14 +22,14 @@ sterngerlachのGitHubページにようこそ。
 
 <!-- -->
 
-- [東芝EMIデータベース (その1: CA35-1001からCA35-1100)](./toshiba-emi-db-1.html)
-- [東芝EMIデータベース (その2: CA35-1101からCA32-1200)](./toshiba-emi-db-2.html)
-- [東芝EMIデータベース (その3: CA32-1201からCA32-1300)](./toshiba-emi-db-3.html)
-- [東芝EMIデータベース (その4: CA32-1301からCA28-1400)](./toshiba-emi-db-4.html)
-- [東芝EMIデータベース (その5: CA32-1401からCA32-1500)](./toshiba-emi-db-5.html)
-- [東芝EMIデータベース (その6: CA32-1501からCA32-1554)](./toshiba-emi-db-6.html)
-- [テイチクデータベース (その1: 35CH-1から30CH-200)](./teichiku-db-1.html)
-- [テイチクデータベース (その2: 30CH-201から30CH-419)](./teichiku-db-2.html)
+- [東芝EMIデータベース (その1: CA35-1001からCA35-1100)](./cd-catalog/toshiba-emi-db-1.html)
+- [東芝EMIデータベース (その2: CA35-1101からCA32-1200)](./cd-catalog/toshiba-emi-db-2.html)
+- [東芝EMIデータベース (その3: CA32-1201からCA32-1300)](./cd-catalog/toshiba-emi-db-3.html)
+- [東芝EMIデータベース (その4: CA32-1301からCA28-1400)](./cd-catalog/toshiba-emi-db-4.html)
+- [東芝EMIデータベース (その5: CA32-1401からCA32-1500)](./cd-catalog/toshiba-emi-db-5.html)
+- [東芝EMIデータベース (その6: CA32-1501からCA32-1554)](./cd-catalog/toshiba-emi-db-6.html)
+- [テイチクデータベース (その1: 35CH-1から30CH-200)](./cd-catalog/teichiku-db-1.html)
+- [テイチクデータベース (その2: 30CH-201から30CH-419)](./cd-catalog/teichiku-db-2.html)
 
 <!-- -->
 
