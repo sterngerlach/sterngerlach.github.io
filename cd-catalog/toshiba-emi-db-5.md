@@ -7,7 +7,7 @@ author: SternGerlach
  pandoc -s --filter pandoc-crossref -M "crossrefYaml=./crossref_config.yaml" -f markdown -t html5 --mathjax --css ./style.css ./toshiba-emi-db-5.md > ./toshiba-emi-db-5.html
 -->
 
-[ホームに戻る](./index.html)
+[ホームに戻る](../index.html)
 
 ## このページについて
 
