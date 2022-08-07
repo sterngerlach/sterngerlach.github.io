@@ -7,7 +7,7 @@ author: SternGerlach
  pandoc -s --filter pandoc-crossref -M "crossrefYaml=./crossref_config.yaml" -f markdown -t html5 --mathjax --css ./style.css ./teichiku-db-1.md > ./teichiku-db-1.html
 -->
 
-[ホームに戻る](./index.html)
+[ホームに戻る](../index.html)
 
 ## このページについて
 
