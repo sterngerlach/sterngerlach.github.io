@@ -36,6 +36,7 @@ sterngerlachのGitHubページにようこそ。
 <!-- -->
 
 - [井上鑑 / Tokyo Installation (1986年)](./akira-inoue-1986-tokyo-installation.html)
+- [オフコース CA35シリーズ](./off-course-ca35-series.html)
 
 ## 雑記
 
