@@ -181,6 +181,8 @@ CA35シリーズのなかで最も入手が容易だと思います。
 
 [<img src="images/Off-Course-1977-Junktion-CA35-1042-0.jpg" height="300" />](images/Off-Course-1977-Junktion-CA35-1042-0.jpg)
 [<img src="images/Off-Course-1977-Junktion-CA35-1042-1.jpg" height="300" />](images/Off-Course-1977-Junktion-CA35-1042-1.jpg)
+[<img src="images/Off-Course-1977-Junktion-CA35-1042-2.jpg" height="300" />](images/Off-Course-1977-Junktion-CA35-1042-2.jpg)
+[<img src="images/Off-Course-1977-Junktion-CA35-1042-3.jpg" height="300" />](images/Off-Course-1977-Junktion-CA35-1042-3.jpg)
 
 ### Sincerely (CA35-1043)
 
@@ -192,6 +194,8 @@ CA35シリーズのなかで最も入手が容易だと思います。
 
 [<img src="images/Yasuhiro-Suzuki-1983-Sincerely-CA35-1043-0.jpg" height="300" />](images/Yasuhiro-Suzuki-1983-Sincerely-CA35-1043-0.jpg)
 [<img src="images/Yasuhiro-Suzuki-1983-Sincerely-CA35-1043-1.jpg" height="300" />](images/Yasuhiro-Suzuki-1983-Sincerely-CA35-1043-1.jpg)
+[<img src="images/Yasuhiro-Suzuki-1983-Sincerely-CA35-1043-2.jpg" height="300" />](images/Yasuhiro-Suzuki-1983-Sincerely-CA35-1043-2.jpg)
+[<img src="images/Yasuhiro-Suzuki-1983-Sincerely-CA35-1043-3.jpg" height="300" />](images/Yasuhiro-Suzuki-1983-Sincerely-CA35-1043-3.jpg)
 
 ### Fairway (CA35-1056)
 
@@ -210,6 +214,8 @@ CA35シリーズのなかで最も入手が容易だと思います。
 
 [<img src="images/Off-Course-1979-Three-And-Two-CA35-1057-0.jpg" height="300" />](images/Off-Course-1979-Three-And-Two-CA35-1057-0.jpg)
 [<img src="images/Off-Course-1979-Three-And-Two-CA35-1057-1.jpg" height="300" />](images/Off-Course-1979-Three-And-Two-CA35-1057-1.jpg)
+[<img src="images/Off-Course-1979-Three-And-Two-CA35-1057-2.jpg" height="300" />](images/Off-Course-1979-Three-And-Two-CA35-1057-2.jpg)
+[<img src="images/Off-Course-1979-Three-And-Two-CA35-1057-3.jpg" height="300" />](images/Off-Course-1979-Three-And-Two-CA35-1057-3.jpg)
 
 ### Next Sound Track (CA35-1058)
 
@@ -221,6 +227,8 @@ CA35シリーズのなかで最も入手が容易だと思います。
 
 [<img src="images/Off-Course-1982-Next-CA35-1058-0.jpg" height="300" />](images/Off-Course-1982-Next-CA35-1058-0.jpg)
 [<img src="images/Off-Course-1982-Next-CA35-1058-1.jpg" height="300" />](images/Off-Course-1982-Next-CA35-1058-1.jpg)
+[<img src="images/Off-Course-1982-Next-CA35-1058-2.jpg" height="300" />](images/Off-Course-1982-Next-CA35-1058-2.jpg)
+[<img src="images/Off-Course-1982-Next-CA35-1058-3.jpg" height="300" />](images/Off-Course-1982-Next-CA35-1058-3.jpg)
 
 ### Yes-Yes-Yes オフコースA面コレクション (CA35-1063)
 
@@ -232,4 +240,6 @@ CA35シリーズのなかで最も入手が容易だと思います。
 
 [<img src="images/Off-Course-1983-Yes-Yes-Yes-CA35-1063-0.jpg" height="300" />](images/Off-Course-1983-Yes-Yes-Yes-CA35-1063-0.jpg)
 [<img src="images/Off-Course-1983-Yes-Yes-Yes-CA35-1063-1.jpg" height="300" />](images/Off-Course-1983-Yes-Yes-Yes-CA35-1063-1.jpg)
+[<img src="images/Off-Course-1983-Yes-Yes-Yes-CA35-1063-2.jpg" height="300" />](images/Off-Course-1983-Yes-Yes-Yes-CA35-1063-2.jpg)
+[<img src="images/Off-Course-1983-Yes-Yes-Yes-CA35-1063-3.jpg" height="300" />](images/Off-Course-1983-Yes-Yes-Yes-CA35-1063-3.jpg)
 
