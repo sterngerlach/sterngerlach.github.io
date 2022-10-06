@@ -248,7 +248,6 @@ auhtor: SternGerlach
 1. 来生たかお / Only Yesterday (1985年)
 1. 来生たかお / I Will... (1986年)
 1. 来生たかお / Étranger (エトランジェ) (1987年)
-1. ハイ・ファイ・セット / Fashionable Lover (ファッショナブル・ラヴァー) (1976年)
 1. ハイ・ファイ・セット / Love Collection (ラブ・コレクション) (1977年)
 1. ハイ・ファイ・セット / The Diary (1977年)
 1. ハイ・ファイ・セット / Swing (1978年)
