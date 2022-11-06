@@ -352,7 +352,6 @@ auhtor: SternGerlach
 1. 今井美樹 / Elfin (1987年)
 1. 今井美樹 / Bewith (1988年)
 1. 今井美樹 / Mocha (Under a Full Moon) (1989年)
-1. 今井美樹 / Retour (1990年)
 1. 相曽晴日 / 紅いペディキュア (1984年)
 1. 相曽晴日 / Intrigue (1985年)
 1. 相曽晴日 / High Noon High Moon (1987年)
