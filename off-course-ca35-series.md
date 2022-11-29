@@ -1,6 +1,6 @@
 ---
 title: オフコース CA35シリーズ
-auhtor: SternGerlach
+author: SternGerlach
 ---
 
 <!--
@@ -71,7 +71,6 @@ CA35シリーズのなかで最も入手が容易だと思います。
 - 発売日: 1983年7月21日
 - 備考: 未所持。
 - 入手のしやすさ: ごく稀にオークションでみかけますが、高額なので手が出せません。
-数百枚程度しか残っていないと思います。
 
 ### We Are (CA35-1015)
 
@@ -108,7 +107,6 @@ CA35シリーズのなかで最も入手が容易だと思います。
 - 発売日: 1983年9月1日
 - 備考: 未所持。
 - 入手のしやすさ: ごく稀にオークションでみかけますが、高額なので手が出せません。
-数百枚程度しか残っていないと思います。
 
 ### ワインの匂い (CA35-1032)
 
@@ -131,9 +129,9 @@ CA35シリーズのなかで最も入手が容易だと思います。
 - 備考: 自分が持っているものは、マトリクスが「CA35-1033 31A1」(かっこいいフォント)、そして「CSR COMPACT DISC」の刻印付きです。
 1984年に発売されたものだと思います。
 - 入手のしやすさ: 初期の70年代の作品は、入手の難易度が一気に上がります。
-オークションでみたことが一度もありません。
 駿河屋の入荷待ちリストに登録しており、入荷通知のメールが届いた瞬間に購入しました。
-入手できたのは奇跡だと思います。
+入手できたのは運が良かったです。
+オークションにも稀に出現します。
 
 [<img src="images/Off-Course-1974-Konomichi-O-Yukeba-CA35-1033-0.jpg" height="300" />](images/Off-Course-1974-Konomichi-O-Yukeba-CA35-1033-0.jpg)
 [<img src="images/Off-Course-1974-Konomichi-O-Yukeba-CA35-1033-1.jpg" height="300" />](images/Off-Course-1974-Konomichi-O-Yukeba-CA35-1033-1.jpg)
@@ -146,16 +144,21 @@ CA35シリーズのなかで最も入手が容易だと思います。
 - 発売日: 1983年10月21日
 - 備考: 未所持。
 - 入手のしやすさ: ごく稀にオークションでみかけますが、高額なので手が出せません。
-数百枚程度しか残っていないと思います。
 
 ### 僕の贈りもの (CA35-1040)
 
 - 1stアルバム
 - 発売日: 1983年11月21日
-- 備考: 未所持。
-- 入手のしやすさ: 入手は絶望的なので、諦めています。
+- 備考: 自分が持っているものは、マトリクスが「CA35-1040 11」(かっこいいフォント)、そして「CSR COMPACT DISC」の刻印付きです。
+マトリクスが「11」なので最初のプレスです。
+- 入手のしやすさ: 初期の70年代の作品は、入手の難易度が一気に上がります。
 オークションでみたことが一度もありません。
-絶滅したのかもしれません。
+入手できたのは運が良かったです。
+
+[<img src="images/Off-Course-1973-Boku-No-Okurimono-CA35-1040-0.jpg" height="300" />](images/Off-Course-1973-Boku-No-Okurimono-CA35-1040-0.jpg)
+[<img src="images/Off-Course-1973-Boku-No-Okurimono-CA35-1040-1.jpg" height="300" />](images/Off-Course-1973-Boku-No-Okurimono-CA35-1040-1.jpg)
+[<img src="images/Off-Course-1973-Boku-No-Okurimono-CA35-1040-2.jpg" height="300" />](images/Off-Course-1973-Boku-No-Okurimono-CA35-1040-2.jpg)
+[<img src="images/Off-Course-1973-Boku-No-Okurimono-CA35-1040-3.jpg" height="300" />](images/Off-Course-1973-Boku-No-Okurimono-CA35-1040-3.jpg)
 
 ### Song Is Love (CA35-1041)
 
