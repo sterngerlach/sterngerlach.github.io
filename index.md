@@ -19,6 +19,7 @@ sterngerlachのGitHubページにようこそ。
 - [今所持しているCDとレコード](./cds.html)
 - [欲しいCDとレコード](./want-list.html)
 - [東芝EMIコレクション](./toshiba-emi.html)
+- [CBS・ソニーコレクション](./cbs-sony.html)
 
 <!-- -->
 
