@@ -270,7 +270,7 @@ void PointNetClsTop(const int op_mode,
 
 ### 入出力ポート
 
-`PointNetClsTop`関数が、IPコアを表す最上位の関数です。
+`PointNetClsTop`が、IPコアを表す最上位の関数です。
 関数の引数は、IPコアの入出力ポートとなり、別のIPコアに接続されます (上のブロックデザインをご覧ください)。
 HLSでは、関数そのものが回路 (Verilog HDLにおけるモジュール) になります。
 関数の再帰呼び出しはできません。
@@ -424,7 +424,7 @@ struct BatchNorm1dParams
 };
 ```
 
-`PointNetClsTop`関数内では、PyTorchで定義されたモデルの各層に対応して、以下のようなパラメータが宣言されます。
+`PointNetClsTop`内では、PyTorchで定義されたモデルの各層に対応して、以下のようなパラメータが宣言されます。
 
 - `feat_conv1`: `PointNetFeat::conv1`の重み、バイアス
 - `feat_conv2`: `PointNetFeat::conv2`の重み、バイアス
@@ -490,7 +490,7 @@ using param_t = ap_fixed_sat<kParamBitWidth, kParamIntWidth>;
 ### 重み初期化モード
 
 特徴抽出ネットワークの全パラメータと、分類ネットワークのパラメータの一部を、DRAMバッファから読み取って、オンチップバッファに格納します。
-以下に示す、`InitializeFeatNaive`および`InitializeClsNaive`関数を利用します。
+以下に示す、`InitializeFeatNaive`および`InitializeClsNaive`を利用します。
 それぞれ、特徴抽出ネットワークと、分類ネットワークのための関数です。
 
 ```C++
@@ -559,7 +559,7 @@ DRAMバッファ上には`float`型で置かれていますが、これを固定
 ### 推論モード
 
 入力点群から、各クラスのロジットを計算します。
-以下に示す、`InferenceFeatNaive`および`InferenceClsNaive`関数を利用します。
+以下に示す、`InferenceFeatNaive`および`InferenceClsNaive`を利用します。
 それぞれ、特徴抽出ネットワークと、分類ネットワークの処理です。
 
 ```C++
@@ -677,14 +677,14 @@ void InferenceClsNaive(const T feature[kFeatDims5],
 }
 ```
 
-`InferenceFeatNaive`関数では、DRAMに置かれた点群データ (`point_cloud`) から、1つずつ点を読み取ります。
+`InferenceFeatNaive`では、DRAMに置かれた点群データ (`point_cloud`) から、1つずつ点を読み取ります。
 各点 (`x0`) に対してローカルな特徴量 (`x10`) を計算し、現在のグローバル特徴量 (`feature`) を更新する処理を、点の個数 (`num_points`) だけ繰り返します。
-`InferenceClsNaive`関数は、点群全体を表すグローバル特徴量 (`feature`) を受け取って、各クラスに対するロジット (`x4`) を計算し、それをDRAMバッファ (`out_logits`) に書き戻します。
+`InferenceClsNaive`は、点群全体を表すグローバル特徴量 (`feature`) を受け取って、各クラスに対するロジット (`x4`) を計算し、それをDRAMバッファ (`out_logits`) に書き戻します。
 
-`ReadPointNaive`関数は、$i$番目の点$\boldsymbol{p}_i$を、DRAMバッファから読み取るものです。
-`LinearNaive`、`BatchNorm1dReLUNaive`、`MaxPool1dNaive`関数は、名前の通り、全結合層 (`Conv1d`)、バッチ正規化層とReLU活性化、Maxプーリング層に対応します (先程の計算式を参照)。
+`ReadPointNaive`は、$i$番目の点$\boldsymbol{p}_i$を、DRAMバッファから読み取るものです。
+`LinearNaive`、`BatchNorm1dReLUNaive`、`MaxPool1dNaive`は、名前の通り、全結合層 (`Conv1d`)、バッチ正規化層とReLU活性化、Maxプーリング層に対応します (先程の計算式を参照)。
 オンチップバッファからパラメータを読み出して、層の出力を計算します。
-`LinearNaiveDDR`関数も全結合層の関数ですが、DRAMバッファからパラメータを少しずつ取り出しつつ、出力を計算します。
+`LinearNaiveDDR`も全結合層の関数ですが、DRAMバッファからパラメータを少しずつ取り出しつつ、出力を計算します。
 これらの関数を以下に示します。
 HLSプラグマを除けば、ソフトウェア実装と大体同じであることが分かります。
 行数は多いですが、処理内容は単純です。
@@ -809,7 +809,7 @@ void MaxPool1dNaive(const T x[Dims], T y[Dims])
 }
 ```
 
-`LinearNaiveDDR`関数では、全結合層のバイアス項 `bias`と、出力1要素分の計算に必要な重み `weight`だけをオンチップメモリ上に保持します。
+`LinearNaiveDDR`では、全結合層のバイアス項 `bias`と、出力1要素分の計算に必要な重み `weight`だけをオンチップメモリ上に保持します。
 入出力の次元を$\mathrm{InDims}, \mathrm{OutDims}$とすれば、`bias`のサイズは$\mathrm{OutDims}$、`weight`のサイズは$\mathrm{InDims}$となります。
 
 上記の関数のループには`#pragma HLS PIPELINE`が付加されており、ループ内部の処理が自動的にパイプライン化されます (**最適化その4: ループのパイプライン化**)。
@@ -877,6 +877,7 @@ $$
 
 `LinearNaive`、`LinearNaiveDDR`、`BatchNorm1dReLUNaive`、`MaxPool1dNaive`が、各層のナイーブな実装でした。
 並列化したバージョン `LinearOpt1`、`LinearOpt1DDR`、`BatchNorm1dReLUOpt1`、`MaxPool1dOpt1`に置き換えます (名前を`Naive`から`Opt1`にします)。
+テンプレート引数として`B`が追加されています (`B`並列)。
 
 ```C++
 // Parallel implementation of the fully-connected layer
@@ -1053,7 +1054,7 @@ void MaxPool1dOpt1(const T x[Dims], T y[Dims])
 }
 ```
 
-`LinearOpt1`関数を`LinearNaive`関数と比べてみると、`j` (入力次元) のループはそのままで、`i` (出力次元) に関するループが、`i0`と`i1`の2つに分割されています。
+`LinearOpt1`と`LinearNaive`を比べてみると、`j` (入力次元) のループはそのままで、`i` (出力次元) に関するループが、`i0`と`i1`の2つに分割されています。
 `i0`は`B`刻み、`i1`は`i0`から`i0 + B - 1`まで1つずつ増えてゆきます。
 `i1`に関するループはアンローリング (`#pragma HLS UNROLL`) されているので、ループの中身が完全に展開されます。
 `i1`のループ自体は無くなって、`i0`から`i0 + B - 1`までの処理が並列に実行されます。
@@ -1104,8 +1105,8 @@ void MaxPool1dOpt1(const T x[Dims], T y[Dims])
 
 [<img src="point-cloud-classification-images/complete-partition.svg" width="360" />](point-cloud-classification-images/complete-partition.svg)
 
-`LinearOpt1`関数内には記述されていませんが、`weight`と`bias`については、別の場所で、`vals`と同様のHLSプラグマを指定する必要があります。
-`weight`と`bias`から、1サイクルで`B`個の**連続した**要素 (`bias[i0]`から`bias[i0 + B - 1]`まで、そして`weight[i0][j]`から`weight[i0 + B - 1][j]`まで) を読み出すためには、次のように**サイクリック分割**します (今回の場合はブロック分割でも大丈夫です)。
+`LinearOpt1`内には記述されていませんが、`weight`と`bias`については、別の場所で、`vals`と同様のHLSプラグマを指定する必要があります。
+`weight`と`bias`から、1サイクルで`B`個の**連続した**要素 (`bias[i0]`から`bias[i0 + B - 1]`まで、そして`weight[i0][j]`から`weight[i0 + B - 1][j]`まで) を読み出すためには、次のように**サイクリック分割**します。
 `weight`は2次元配列ですが、最初の次元に対して分割したいので、`dim=1`を指定します。
 オンチップメモリ (BlockRAM) 1つにつきポートが2つ付いており、1サイクルで2要素の読み出し (あるいは1つの書き出しと1つの読み出し) ができます。
 `B`個の要素を1サイクルで読み出すためには、配列を`BHalf = B / 2`個に分割すればよいです。
@@ -1143,3 +1144,354 @@ void MaxPool1dOpt1(const T x[Dims], T y[Dims])
 [<img src="point-cloud-classification-images/cyclic-partition2.svg" width="360" />](point-cloud-classification-images/cyclic-partition2.svg)
 
 これらを考えると、`weight`と`bias`については上記のプラグマを使えばよいと分かります。
+
+さて、2つ目のループに注目してみましょう。
+1つ目のループで計算された`B`個の要素を、出力`y`に書き込む部分です。
+
+```C++
+    for (int i1 = 0; i1 < B; ++i1) {
+#pragma HLS UNROLL
+      int i = i0 + i1;
+      if (ApplyReLU)
+        y[i] = vals[i1] > T(0) ? vals[i1] : T(0);
+      else
+        y[i] = vals[i1];
+    }
+```
+
+このループもアンローリングされて、次のようになります。
+
+```C++
+    if (ApplyReLU) {
+      y[i0 + 0] = vals[0] > T(0) ? vals[0] : T(0);
+      y[i0 + 1] = vals[1] > T(0) ? vals[1] : T(0);
+      // ...
+      y[i0 + B - 1] = vals[B - 1] > T(0) ? vals[B - 1] : T(0);
+    } else {
+      y[i0 + 0] = vals[0];
+      y[i0 + 1] = vals[1];
+      // ...
+      y[i0 + B - 1] = vals[B - 1];
+    }
+```
+
+出力`y[i0]`から`y[i0 + B - 1]`までの、連続する`B`個の要素に1サイクルでアクセスする必要があります。
+`LinearOpt1`内には記載されませんが、配列`y`も、次のようにサイクリック分割すればよいです。
+```C++
+  constexpr const int BHalf = B / 2;
+  T y[OutDims];
+#pragma HLS ARRAY_PARTITION variable=y type=cyclic factor=BHalf dim=1
+```
+
+なお、入力`x`については、ループの各イテレーションで1つの要素にしかアクセスしないため、分割する必要はありません。
+`LinearOpt1`を使って、全結合層の処理を`B`並列で実行するには、引数である重み`weight`、バイアス`bias`、出力`y`を、出力の次元で`B / 2`個に分割しなければなりません (`B`が2であれば分割の必要はない)。
+
+以上が`LinearOpt1`の主な変更点です。
+`LinearOpt1DDR`についても、`B`個の出力を並列に計算するために、同様の変更がなされています。
+全結合層のバイアス項`bias`と、出力の`B`要素分を計算するために必要な重み`weight`を、DRAMバッファからオンチップバッファ上に転送しています。
+`LinearNaiveDDR`とは異なり、重みを保持するバッファ`weight`は、2次元配列となっています。
+`B`個の必要な要素を取り出すために、`bias`と`weight`は`BHalf = B / 2`個に分割されています。
+
+`BatchNorm1dReLUOpt1`と`MaxPool1dOpt1`についても、`i` (出力次元) に関するループが、`i0`と`i1`の2つに分割されています。
+`i1`のループはアンローリングされ、`B`個の出力が並列に計算されます。
+`BatchNorm1dReLUOpt1`を使って、バッチ正規化とReLU活性化を`B`並列で実行するには、関数の入力`x`、出力`y`と、バッチ正規化層のパラメータ (スケール`scale`、バイアス`bias`、平均`mean`) を`B / 2`個に分割します。
+`MaxPool1dOpt1`についても同様で、`B`並列でMaxプーリングを行うために、関数の入力`x`と`y`を`B / 2`個に分割します (`x`は各点に対するローカル特徴量で、`y`は点群全体を表すグローバルな特徴量)。
+
+各層を`B`並列で動作させるための、配列の分割のルールを次にまとめます。
+2並列の場合は、分割の必要がないことが分かります。
+
+- `LinearOpt1`: 重み`weight`、バイアス`bias`、出力`y`を、出力の次元で`B / 2`個に分割 (入力`x`は分割の必要なし)
+- `LinearOpt1DDR`: 出力`y`を`B / 2`個に分割 (入力`x`は分割の必要なし)
+- `BatchNorm1dReLUOpt1`: 入力`x`と出力`y`、パラメータ (スケール`scale`、バイアス`bias`、平均`mean`) を、`B / 2`個に分割
+- `MaxPool1dOpt1`: 入力`x`と出力`y`を、`B / 2`個に分割
+
+これらの並列化されたバージョンを使って、特徴抽出ネットワークと、分類ネットワークの推論処理を次のように書き換えます。
+`InferenceFeatNaive`と`InferenceClsNaive`から、それぞれ`InferenceFeatOpt1`と`InferenceClsOpt1`になります。
+関数の引数は変更しません。
+なお、`InitializeFeatNaive`と`InitializeClsNaive` (重みの初期化関数) は、そのまま使うことにします。
+
+```C++
+// Parallel implementation of the PointNet feature extraction
+// `T` is the type for layer input, output, and intermediate results
+// `U` is the type for parameters
+// `N` is the expected number of input points (e.g., 1024)
+template <typename T, typename U, int N>
+void InferenceFeatOpt1(const float* point_cloud,
+                       const int num_points,
+                       T feature[kFeatDims5],
+                       const LinearParams<U, kFeatDims0, kFeatDims1>* conv1,
+                       const LinearParams<U, kFeatDims1, kFeatDims2>* conv2,
+                       const LinearParams<U, kFeatDims2, kFeatDims3>* conv3,
+                       const LinearParams<U, kFeatDims3, kFeatDims4>* conv4,
+                       const LinearParams<U, kFeatDims4, kFeatDims5>* conv5,
+                       const BatchNorm1dParams<U, kFeatDims1>* bn1,
+                       const BatchNorm1dParams<U, kFeatDims2>* bn2,
+                       const BatchNorm1dParams<U, kFeatDims3>* bn3,
+                       const BatchNorm1dParams<U, kFeatDims4>* bn4,
+                       const BatchNorm1dParams<U, kFeatDims5>* bn5)
+{
+#pragma HLS INLINE off
+
+  // Zero-initialize the output feature
+  VectorNdSetZero<T, kFeatDims5>(feature);
+
+  // Compute the feature
+  for (int i = 0; i < num_points; ++i) {
+#pragma HLS LOOP_TRIPCOUNT min=N max=N avg=N
+#pragma HLS LOOP_FLATTEN off
+
+    // Input, output, and intermediate results
+    T x0[kFeatDims0];
+    T x1[kFeatDims1];
+    T x2[kFeatDims1];
+    T x3[kFeatDims2];
+    T x4[kFeatDims2];
+    T x5[kFeatDims3];
+    T x6[kFeatDims3];
+    T x7[kFeatDims4];
+    T x8[kFeatDims4];
+    T x9[kFeatDims5];
+    T x10[kFeatDims5];
+
+#pragma HLS ARRAY_PARTITION variable=x3 type=cyclic factor=4 dim=1
+#pragma HLS ARRAY_PARTITION variable=x5 type=cyclic factor=4 dim=1
+#pragma HLS ARRAY_PARTITION variable=x7 type=cyclic factor=8 dim=1
+#pragma HLS ARRAY_PARTITION variable=x9 type=cyclic factor=64 dim=1
+
+    // Read a point from a DDR memory
+    ReadPointNaive<T>(point_cloud, i, x0);
+
+    // Compute a point feature
+    LinearOpt1<T, U, kFeatDims0, kFeatDims1, false, 2>(
+      x0, x1, conv1->weight, conv1->bias);
+    BatchNorm1dReLUOpt1<T, U, kFeatDims1, 2>(
+      x1, x2, bn1->scale, bn1->bias, bn1->mean);
+    LinearOpt1<T, U, kFeatDims1, kFeatDims2, false, 8>(
+      x2, x3, conv2->weight, conv2->bias);
+    BatchNorm1dReLUOpt1<T, U, kFeatDims2, 2>(
+      x3, x4, bn2->scale, bn2->bias, bn2->mean);
+    LinearOpt1<T, U, kFeatDims2, kFeatDims3, false, 8>(
+      x4, x5, conv3->weight, conv3->bias);
+    BatchNorm1dReLUOpt1<T, U, kFeatDims3, 2>(
+      x5, x6, bn3->scale, bn3->bias, bn3->mean);
+    LinearOpt1<T, U, kFeatDims3, kFeatDims4, false, 16>(
+      x6, x7, conv4->weight, conv4->bias);
+    BatchNorm1dReLUOpt1<T, U, kFeatDims4, 2>(
+      x7, x8, bn4->scale, bn4->bias, bn4->mean);
+    LinearOpt1<T, U, kFeatDims4, kFeatDims5, false, 128>(
+      x8, x9, conv5->weight, conv5->bias);
+    BatchNorm1dReLUOpt1<T, U, kFeatDims5, 2>(
+      x9, x10, bn5->scale, bn5->bias, bn5->mean);
+
+    // Update the output feature
+    MaxPool1dOpt1<T, kFeatDims5, 2>(x10, feature);
+  }
+}
+
+// Parallel implementation of the classification network
+// `T` is the type for layer input, output, and intermediate results
+// `U` is the type for parameters
+template <typename T, typename U>
+void InferenceClsOpt1(const T feature[kFeatDims5],
+                      float* out_logits,
+                      const LinearParams<U, kClsDims2, kClsDims3>* fc3,
+                      const BatchNorm1dParams<T, kClsDims1>* bn1,
+                      const BatchNorm1dParams<T, kClsDims2>* bn2,
+                      const float* params1,
+                      const float* params2,
+                      const float* params3)
+{
+#pragma HLS INLINE off
+
+  static_assert(kFeatDims5 == kClsDims0,
+                "Feature dimension should be equal to the input dimension");
+
+  // Input, output, and intermediate results
+  T x0[kClsDims1];
+  T x1[kClsDims1];
+  T x2[kClsDims2];
+  T x3[kClsDims2];
+  T x4[kClsDims3];
+
+#pragma HLS ARRAY_PARTITION variable=x0 type=cyclic factor=8 dim=1
+#pragma HLS ARRAY_PARTITION variable=x2 type=cyclic factor=4 dim=1
+
+  // Compute logits
+  LinearOpt1DDR<T, U, kClsDims0, kClsDims1, false, 16>(
+    feature, x0, params1, 0);
+  BatchNorm1dReLUOpt1<T, U, kClsDims1, 2>(
+    x0, x1, bn1->scale, bn1->bias, bn1->mean);
+  LinearOpt1DDR<T, U, kClsDims1, kClsDims2, false, 8>(
+    x1, x2, params2, 0);
+  BatchNorm1dReLUOpt1<T, U, kClsDims2, 2>(
+    x2, x3, bn2->scale, bn2->bias, bn2->mean);
+  LinearOpt1<T, U, kClsDims2, kClsDims3, false, 2>(
+    x3, x4, fc3->weight, fc3->bias);
+
+  // Write the result
+  WriteTensor1dNaive<T, kClsDims3>(out_logits, x4, 0);
+}
+```
+
+各層の関数を呼び出す際に、テンプレート引数に並列化度も指定しています。
+例えば、特徴抽出ネットワークの4番目の全結合層 (PyTorchのモデルにおける`PointNetFeat::conv4`) は16並列、最後の全結合層 (`PointNetFeat::conv5`) は128並列で実行されます。
+一方、バッチ正規化層とMaxプーリングは、2並列で実行されています。
+各層の並列度をどのように決定したのかについては、後述します。
+
+続いて、IPコアの最上位関数`PointNetClsTop`を以下に示します。
+
+```C++
+void PointNetClsTop(const int op_mode,
+                    const float* point_cloud,
+                    const int num_points,
+                    float* out_logits,
+                    const float* feat_params1,
+                    const float* feat_params2,
+                    const float* feat_params3,
+                    const float* feat_params4,
+                    const float* feat_params5,
+                    const float* cls_params1,
+                    const float* cls_params2,
+                    const float* cls_params3)
+{
+#pragma HLS INTERFACE m_axi port=point_cloud offset=slave bundle=gmem0
+#pragma HLS INTERFACE m_axi port=out_logits offset=slave bundle=gmem0
+#pragma HLS INTERFACE m_axi port=feat_params1 offset=slave bundle=gmem0
+#pragma HLS INTERFACE m_axi port=feat_params2 offset=slave bundle=gmem0
+#pragma HLS INTERFACE m_axi port=feat_params3 offset=slave bundle=gmem0
+#pragma HLS INTERFACE m_axi port=feat_params4 offset=slave bundle=gmem0
+#pragma HLS INTERFACE m_axi port=feat_params5 offset=slave bundle=gmem0
+#pragma HLS INTERFACE m_axi port=cls_params1 offset=slave bundle=gmem0
+#pragma HLS INTERFACE m_axi port=cls_params2 offset=slave bundle=gmem0
+#pragma HLS INTERFACE m_axi port=cls_params3 offset=slave bundle=gmem0
+
+#pragma HLS INTERFACE s_axilite port=op_mode bundle=control
+#pragma HLS INTERFACE s_axilite port=point_cloud bundle=control
+#pragma HLS INTERFACE s_axilite port=num_points bundle=control
+#pragma HLS INTERFACE s_axilite port=out_logits bundle=control
+#pragma HLS INTERFACE s_axilite port=feat_params1 bundle=control
+#pragma HLS INTERFACE s_axilite port=feat_params2 bundle=control
+#pragma HLS INTERFACE s_axilite port=feat_params3 bundle=control
+#pragma HLS INTERFACE s_axilite port=feat_params4 bundle=control
+#pragma HLS INTERFACE s_axilite port=feat_params5 bundle=control
+#pragma HLS INTERFACE s_axilite port=cls_params1 bundle=control
+#pragma HLS INTERFACE s_axilite port=cls_params2 bundle=control
+#pragma HLS INTERFACE s_axilite port=cls_params3 bundle=control
+#pragma HLS INTERFACE s_axilite port=return bundle=control
+
+  // Parameters for feature extraction
+  LinearParams<param_t, kFeatDims0, kFeatDims1> feat_conv1;
+  LinearParams<param_t, kFeatDims1, kFeatDims2> feat_conv2;
+  LinearParams<param_t, kFeatDims2, kFeatDims3> feat_conv3;
+  LinearParams<param_t, kFeatDims3, kFeatDims4> feat_conv4;
+  LinearParams<param_t, kFeatDims4, kFeatDims5> feat_conv5;
+  BatchNorm1dParams<param_t, kFeatDims1> feat_bn1;
+  BatchNorm1dParams<param_t, kFeatDims2> feat_bn2;
+  BatchNorm1dParams<param_t, kFeatDims3> feat_bn3;
+  BatchNorm1dParams<param_t, kFeatDims4> feat_bn4;
+  BatchNorm1dParams<param_t, kFeatDims5> feat_bn5;
+
+#pragma HLS ARRAY_PARTITION variable=feat_conv2.weight type=cyclic factor=4 dim=1
+#pragma HLS ARRAY_PARTITION variable=feat_conv2.bias type=cyclic factor=4 dim=1
+#pragma HLS ARRAY_PARTITION variable=feat_conv3.weight type=cyclic factor=4 dim=1
+#pragma HLS ARRAY_PARTITION variable=feat_conv3.bias type=cyclic factor=4 dim=1
+#pragma HLS ARRAY_PARTITION variable=feat_conv4.weight type=cyclic factor=8 dim=1
+#pragma HLS ARRAY_PARTITION variable=feat_conv4.bias type=cyclic factor=8 dim=1
+#pragma HLS ARRAY_PARTITION variable=feat_conv5.weight type=cyclic factor=64 dim=1
+#pragma HLS ARRAY_PARTITION variable=feat_conv5.bias type=cyclic factor=64 dim=1
+
+  // Parameters for classification network
+  // LinearParams<param_t, kClsDims0, kClsDims1> cls_fc1;
+  // LinearParams<param_t, kClsDims1, kClsDims2> cls_fc2;
+  LinearParams<param_t, kClsDims2, kClsDims3> cls_fc3;
+  BatchNorm1dParams<param_t, kClsDims1> cls_bn1;
+  BatchNorm1dParams<param_t, kClsDims2> cls_bn2;
+
+  // Extracted feature
+  value_t feature[kFeatDims5];
+
+  if (op_mode == kModeInitWeights) {
+    // Initialize the PointNet feature extraction network
+    InitializeFeatOpt1<param_t>(
+      &feat_conv1, &feat_conv2, &feat_conv3, &feat_conv4, &feat_conv5,
+      &feat_bn1, &feat_bn2, &feat_bn3, &feat_bn4, &feat_bn5,
+      feat_params1, feat_params2, feat_params3, feat_params4, feat_params5);
+    // Initialize the classification network
+    InitializeClsOpt1<param_t>(
+      &cls_fc3, &cls_bn1, &cls_bn2,
+      cls_params1, cls_params2, cls_params3);
+  } else if (op_mode == kModeInference) {
+    // Run the PointNet feature extraction
+    InferenceFeatOpt1<value_t, param_t, 1024>(
+      point_cloud, num_points, feature,
+      &feat_conv1, &feat_conv2, &feat_conv3, &feat_conv4, &feat_conv5,
+      &feat_bn1, &feat_bn2, &feat_bn3, &feat_bn4, &feat_bn5);
+
+    // Run the classification
+    InferenceClsOpt1<value_t, param_t>(
+      feature, out_logits,
+      &cls_fc3, &cls_bn1, &cls_bn2,
+      cls_params1, cls_params2, cls_params3);
+  }
+}
+```
+
+関数の入出力ポートについては全く同一です。
+以前のバージョンと比較すると、層の入出力やパラメータを保持するバッファ (`feat_conv5.weight`、`feat_conv5.bias`、`x3`、`x5`など) を分割するために、`#pragma HLS ARRAY_PARTITION`が追加されていることが分かります。
+配列の分割数 (`factor`) については、上述のルールに則っています。
+例えば、`InferenceFeatOpt1`と`PointNetClsTop`をみると、特徴抽出ネットワークの最後の全結合層を128並列で実行したいので、出力用のバッファ`x10`と、全結合層の2つのパラメータ`feat_conv5.weight`、`feat_conv5.bias`を64分割しています (記述する場所が散らばっているのが難点です)。
+同様に、`InferenceClsOpt1`と`PointNetClsTop`をみると、分類ネットワークの最初の全結合層は16並列で実行されるので、出力用のバッファ`x0`は8分割しています。
+バッチ正規化層とMaxプーリングは2並列なので、配列を分割する必要はありません。
+
+先述のように、配列を分割するとポート数が増えて、一度に多くの要素を読み出せるようになりますが、貴重なオンチップメモリの消費も増えます。
+オンチップメモリの消費を抑えつつ、なるべく並列度を上げる必要があります。
+推論時間の短縮に最も効果がある部分 (例えば特徴抽出ネットワークの最後の全結合層) の並列度を上げて、効果があまりない部分 (例えばバッチ正規化層) の並列度は下げています。
+
+ここで、各層の実行サイクル数を比較してみます (動作周波数は150MHz)。
+特徴抽出ネットワークについては次のようになりました。
+
+| 層 | `InferenceFeatNaive` | `InferenceFeatOpt1` |
+| :-- | :-- | :-- |
+| 全結合層1 (`PointNetFeat::conv1`) | 577 (3.843us) | 321 (2.138us) |
+| バッチ正規化層 + ReLU (`PointNetFeat::bn1`) | 68 (0.453us) | 36 (0.240us) |
+| 全結合層2 (`PointNetFeat::conv2`) | 4,481 (29.84us) | 569 (3.790us) |
+| バッチ正規化層 + ReLU (`PointNetFeat::bn2`) | 68 (0.453us) | 36 (0.240us) |
+| 全結合層3 (`PointNetFeat::conv3`) | 4,481 (29.84us) | 569 (3.790us) |
+| バッチ正規化層 + ReLU (`PointNetFeat::bn3`) | 68 (0.453us) | 36 (0.240us) |
+| 全結合層4 (`PointNetFeat::conv4`) | 8,961 (59.68us) | 569 (3.790us) |
+| バッチ正規化層 + ReLU (`PointNetFeat::bn4`) | 132 (0.879us) | 68 (0.453us) |
+| 全結合層5 (`PointNetFeat::conv5`) | 137,217 (914.0us) | 1,081 (7.199us) |
+| バッチ正規化層 + ReLU (`PointNetFeat::bn5`) | 1,028 (6.846us) | 516 (3.437us) |
+| Maxプーリング層 | 1,026 (6.833us) | 514 (3.423us) |
+| 全体 (1回分) | 158,149 (1.053ms) | 4,357 (29.02us) |
+| 全体 (1024回分) | 161,945,604 (1.079s) | 4,462,596 (29.72ms) |
+
+特徴抽出ネットワークに関しては、やはり最後の全結合層がボトルネックとなっています。
+128並列にすることで、実行時間を126.9倍 (137,217サイクルから1,081サイクル) 削減できています。
+4つ目の全結合層についても、16並列にすることで、実行時間が15.75倍 (8,961サイクルから569サイクル) 短くなりました。
+全結合層やバッチ正規化層、Maxプーリング層にみられるデータ並列性を活かして、推論時間を短縮できました。
+また分類ネットワークについては次のようになりました。
+
+| 層 | `InferenceClsNaive` | `InferenceClsOpt1` |
+| :-- | :-- | :-- |
+| 全結合層1 (`PointNetCls::fc1`) | 1,056,279 (7.035ms) | 558,071 (3.717ms) |
+| バッチ正規化層 + ReLU (`PointNetCls::bn1`) | 516 (3.437us) | 260 (1.732us) |
+| 全結合層2 (`PointNetCls::fc2`) | 266,007 (1.772ms) | 148,183 (987.0us) |
+| バッチ正規化層 + ReLU (`PointNetCls::bn2`) | 260 (1.732us) | 132 (0.879us) |
+| 全結合層3 (`PointNetCls::fc3`) | 10,481 (69.80us) | 5,261 (35.04us) |
+| 全体 | 1,333,605 (8.882ms) | 711,969 (4.742ms) |
+
+最初の全結合層は16並列で実行するようにしましたが、実行時間は1.89倍 (1,056,279サイクルから558,071サイクル) しか短くなっていません。
+前述のように、分類ネットワークの最初の全結合層2つでは、パラメータをオンチップバッファに置くのではなく、DRAMバッファから必要な部分だけを転送しています。
+行列の積や加算は16並列で実行されるのですが、データ転送部分の実行時間は短縮されないので、このような結果になっています。
+2つ目の全結合層に関しても同様に、8並列を指定したのですが、実行時間は1.80倍 (266,007サイクルから148,183サイクル) の削減に留まっています。
+
+現在の実装では、入出力ポートの幅は32ビットで、1サイクルにつき`float`のデータを1つずつ転送しています。
+入出力ポートの幅を広げて、1サイクルで複数のデータを転送すれば、データ転送の実行時間を短縮できます。
+後ほど、ポート幅を32ビットから64ビットに広げて、1サイクルで`float`のデータを2つずつ転送するように、改善します。
+
+IPコアの動作モードには2つありますが、このうち重みの初期化モードについては、全く手を加えていません。
+重みの初期化は、IPコアの利用開始前に一度だけ行われ、ネットワークの推論時間とは全く関係ないためです。
+
+以上で推論の並列化が済みました。
+詳しくは`hls/src/top_opt1.cpp`をご参照ください。

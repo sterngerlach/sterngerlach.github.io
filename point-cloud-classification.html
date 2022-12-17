@@ -408,7 +408,7 @@ href="point-cloud-classification-images/board-design.svg"><img src="point-cloud-
 (Bitstream) を生成します。
 ビットストリームをFPGAにロードすることで、PointNetの専用回路が使えるようになります。</p>
 <h3 id="入出力ポート">入出力ポート</h3>
-<p><code>PointNetClsTop</code>関数が、IPコアを表す最上位の関数です。
+<p><code>PointNetClsTop</code>が、IPコアを表す最上位の関数です。
 関数の引数は、IPコアの入出力ポートとなり、別のIPコアに接続されます
 (上のブロックデザインをご覧ください)。 HLSでは、関数そのものが回路
 (Verilog HDLにおけるモジュール) になります。
@@ -603,7 +603,7 @@ class="sourceCode c++"><code class="sourceCode cpp"><span id="cb5-1"><a href="#c
 <span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>  T bias<span class="op">[</span>Dims<span class="op">];</span></span>
 <span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>  T mean<span class="op">[</span>Dims<span class="op">];</span></span>
 <span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span></code></pre></div>
-<p><code>PointNetClsTop</code>関数内では、PyTorchで定義されたモデルの各層に対応して、以下のようなパラメータが宣言されます。</p>
+<p><code>PointNetClsTop</code>内では、PyTorchで定義されたモデルの各層に対応して、以下のようなパラメータが宣言されます。</p>
 <ul>
 <li><code>feat_conv1</code>:
 <code>PointNetFeat::conv1</code>の重み、バイアス</li>
@@ -683,7 +683,7 @@ class="sourceCode c++"><code class="sourceCode cpp"><span id="cb6-1"><a href="#c
 <p>これらを順に説明します。</p>
 <h3 id="重み初期化モード">重み初期化モード</h3>
 <p>特徴抽出ネットワークの全パラメータと、分類ネットワークのパラメータの一部を、DRAMバッファから読み取って、オンチップバッファに格納します。
-以下に示す、<code>InitializeFeatNaive</code>および<code>InitializeClsNaive</code>関数を利用します。
+以下に示す、<code>InitializeFeatNaive</code>および<code>InitializeClsNaive</code>を利用します。
 それぞれ、特徴抽出ネットワークと、分類ネットワークのための関数です。</p>
 <div class="sourceCode" id="cb7"><pre
 class="sourceCode c++"><code class="sourceCode cpp"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Naive implementation of the parameter initialization</span></span>
@@ -757,7 +757,7 @@ DRAMバッファから、全結合層およびバッチ正規化層のパラメ�
 </ul>
 <h3 id="推論モード">推論モード</h3>
 <p>入力点群から、各クラスのロジットを計算します。
-以下に示す、<code>InferenceFeatNaive</code>および<code>InferenceClsNaive</code>関数を利用します。
+以下に示す、<code>InferenceFeatNaive</code>および<code>InferenceClsNaive</code>を利用します。
 それぞれ、特徴抽出ネットワークと、分類ネットワークの処理です。</p>
 <div class="sourceCode" id="cb8"><pre
 class="sourceCode c++"><code class="sourceCode cpp"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Naive implementation of the PointNet feature extraction</span></span>
@@ -872,23 +872,23 @@ class="sourceCode c++"><code class="sourceCode cpp"><span id="cb8-1"><a href="#c
 <span id="cb8-110"><a href="#cb8-110" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Write the result</span></span>
 <span id="cb8-111"><a href="#cb8-111" aria-hidden="true" tabindex="-1"></a>  WriteTensor1dNaive<span class="op">&lt;</span>T<span class="op">,</span> kClsDims3<span class="op">&gt;(</span>out_logits<span class="op">,</span> x4<span class="op">,</span> <span class="dv">0</span><span class="op">);</span></span>
 <span id="cb8-112"><a href="#cb8-112" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
-<p><code>InferenceFeatNaive</code>関数では、DRAMに置かれた点群データ
+<p><code>InferenceFeatNaive</code>では、DRAMに置かれた点群データ
 (<code>point_cloud</code>) から、1つずつ点を読み取ります。 各点
 (<code>x0</code>) に対してローカルな特徴量 (<code>x10</code>)
 を計算し、現在のグローバル特徴量 (<code>feature</code>)
 を更新する処理を、点の個数 (<code>num_points</code>) だけ繰り返します。
-<code>InferenceClsNaive</code>関数は、点群全体を表すグローバル特徴量
+<code>InferenceClsNaive</code>は、点群全体を表すグローバル特徴量
 (<code>feature</code>) を受け取って、各クラスに対するロジット
 (<code>x4</code>) を計算し、それをDRAMバッファ (<code>out_logits</code>)
 に書き戻します。</p>
-<p><code>ReadPointNaive</code>関数は、<span
+<p><code>ReadPointNaive</code>は、<span
 class="math inline">\(i\)</span>番目の点<span
 class="math inline">\(\boldsymbol{p}_i\)</span>を、DRAMバッファから読み取るものです。
-<code>LinearNaive</code>、<code>BatchNorm1dReLUNaive</code>、<code>MaxPool1dNaive</code>関数は、名前の通り、全結合層
+<code>LinearNaive</code>、<code>BatchNorm1dReLUNaive</code>、<code>MaxPool1dNaive</code>は、名前の通り、全結合層
 (<code>Conv1d</code>)、バッチ正規化層とReLU活性化、Maxプーリング層に対応します
 (先程の計算式を参照)。
 オンチップバッファからパラメータを読み出して、層の出力を計算します。
-<code>LinearNaiveDDR</code>関数も全結合層の関数ですが、DRAMバッファからパラメータを少しずつ取り出しつつ、出力を計算します。
+<code>LinearNaiveDDR</code>も全結合層の関数ですが、DRAMバッファからパラメータを少しずつ取り出しつつ、出力を計算します。
 これらの関数を以下に示します。
 HLSプラグマを除けば、ソフトウェア実装と大体同じであることが分かります。
 行数は多いですが、処理内容は単純です。</p>
@@ -1010,7 +1010,7 @@ class="sourceCode c++"><code class="sourceCode cpp"><span id="cb9-1"><a href="#c
 <span id="cb9-115"><a href="#cb9-115" aria-hidden="true" tabindex="-1"></a>    y<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> x<span class="op">[</span>i<span class="op">]</span> <span class="op">&gt;</span> y<span class="op">[</span>i<span class="op">]</span> <span class="op">?</span> x<span class="op">[</span>i<span class="op">]</span> <span class="op">:</span> y<span class="op">[</span>i<span class="op">];</span></span>
 <span id="cb9-116"><a href="#cb9-116" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
 <span id="cb9-117"><a href="#cb9-117" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
-<p><code>LinearNaiveDDR</code>関数では、全結合層のバイアス項
+<p><code>LinearNaiveDDR</code>では、全結合層のバイアス項
 <code>bias</code>と、出力1要素分の計算に必要な重み
 <code>weight</code>だけをオンチップメモリ上に保持します。
 入出力の次元を<span class="math inline">\(\mathrm{InDims},
@@ -1096,7 +1096,9 @@ B - 1} \right)
 <p><code>LinearNaive</code>、<code>LinearNaiveDDR</code>、<code>BatchNorm1dReLUNaive</code>、<code>MaxPool1dNaive</code>が、各層のナイーブな実装でした。
 並列化したバージョン
 <code>LinearOpt1</code>、<code>LinearOpt1DDR</code>、<code>BatchNorm1dReLUOpt1</code>、<code>MaxPool1dOpt1</code>に置き換えます
-(名前を<code>Naive</code>から<code>Opt1</code>にします)。</p>
+(名前を<code>Naive</code>から<code>Opt1</code>にします)。
+テンプレート引数として<code>B</code>が追加されています
+(<code>B</code>並列)。</p>
 <div class="sourceCode" id="cb10"><pre
 class="sourceCode c++"><code class="sourceCode cpp"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Parallel implementation of the fully-connected layer</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co">// Matrix-vector multiplication is parallelized along the output dimension</span></span>
@@ -1270,7 +1272,7 @@ class="sourceCode c++"><code class="sourceCode cpp"><span id="cb10-1"><a href="#
 <span id="cb10-170"><a href="#cb10-170" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
 <span id="cb10-171"><a href="#cb10-171" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
 <span id="cb10-172"><a href="#cb10-172" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
-<p><code>LinearOpt1</code>関数を<code>LinearNaive</code>関数と比べてみると、<code>j</code>
+<p><code>LinearOpt1</code>と<code>LinearNaive</code>を比べてみると、<code>j</code>
 (入力次元) のループはそのままで、<code>i</code> (出力次元)
 に関するループが、<code>i0</code>と<code>i1</code>の2つに分割されています。
 <code>i0</code>は<code>B</code>刻み、<code>i1</code>は<code>i0</code>から<code>i0 + B - 1</code>まで1つずつ増えてゆきます。
@@ -1318,11 +1320,10 @@ class="sourceCode c++"><code class="sourceCode cpp"><span id="cb12-1"><a href="#
 <p><code>B</code>個の要素をもつ配列<code>vals</code>を、完全に分割すると、次のようになります。</p>
 <p><a
 href="point-cloud-classification-images/complete-partition.svg"><img src="point-cloud-classification-images/complete-partition.svg" width="360" /></a></p>
-<p><code>LinearOpt1</code>関数内には記述されていませんが、<code>weight</code>と<code>bias</code>については、別の場所で、<code>vals</code>と同様のHLSプラグマを指定する必要があります。
+<p><code>LinearOpt1</code>内には記述されていませんが、<code>weight</code>と<code>bias</code>については、別の場所で、<code>vals</code>と同様のHLSプラグマを指定する必要があります。
 <code>weight</code>と<code>bias</code>から、1サイクルで<code>B</code>個の<strong>連続した</strong>要素
 (<code>bias[i0]</code>から<code>bias[i0 + B - 1]</code>まで、そして<code>weight[i0][j]</code>から<code>weight[i0 + B - 1][j]</code>まで)
-を読み出すためには、次のように<strong>サイクリック分割</strong>します
-(今回の場合はブロック分割でも大丈夫です)。
+を読み出すためには、次のように<strong>サイクリック分割</strong>します。
 <code>weight</code>は2次元配列ですが、最初の次元に対して分割したいので、<code>dim=1</code>を指定します。
 オンチップメモリ (BlockRAM)
 1つにつきポートが2つ付いており、1サイクルで2要素の読み出し
@@ -1370,5 +1371,476 @@ href="point-cloud-classification-images/cyclic-partition3.svg"><img src="point-c
 <p><a
 href="point-cloud-classification-images/cyclic-partition2.svg"><img src="point-cloud-classification-images/cyclic-partition2.svg" width="360" /></a></p>
 <p>これらを考えると、<code>weight</code>と<code>bias</code>については上記のプラグマを使えばよいと分かります。</p>
+<p>さて、2つ目のループに注目してみましょう。
+1つ目のループで計算された<code>B</code>個の要素を、出力<code>y</code>に書き込む部分です。</p>
+<div class="sourceCode" id="cb14"><pre
+class="sourceCode c++"><code class="sourceCode cpp"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i1 <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i1 <span class="op">&lt;</span> B<span class="op">;</span> <span class="op">++</span>i1<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS UNROLL</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>      <span class="dt">int</span> i <span class="op">=</span> i0 <span class="op">+</span> i1<span class="op">;</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> <span class="op">(</span>ApplyReLU<span class="op">)</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>        y<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> vals<span class="op">[</span>i1<span class="op">]</span> <span class="op">&gt;</span> T<span class="op">(</span><span class="dv">0</span><span class="op">)</span> <span class="op">?</span> vals<span class="op">[</span>i1<span class="op">]</span> <span class="op">:</span> T<span class="op">(</span><span class="dv">0</span><span class="op">);</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>      <span class="cf">else</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>        y<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> vals<span class="op">[</span>i1<span class="op">];</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span></code></pre></div>
+<p>このループもアンローリングされて、次のようになります。</p>
+<div class="sourceCode" id="cb15"><pre
+class="sourceCode c++"><code class="sourceCode cpp"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>ApplyReLU<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>      y<span class="op">[</span>i0 <span class="op">+</span> <span class="dv">0</span><span class="op">]</span> <span class="op">=</span> vals<span class="op">[</span><span class="dv">0</span><span class="op">]</span> <span class="op">&gt;</span> T<span class="op">(</span><span class="dv">0</span><span class="op">)</span> <span class="op">?</span> vals<span class="op">[</span><span class="dv">0</span><span class="op">]</span> <span class="op">:</span> T<span class="op">(</span><span class="dv">0</span><span class="op">);</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>      y<span class="op">[</span>i0 <span class="op">+</span> <span class="dv">1</span><span class="op">]</span> <span class="op">=</span> vals<span class="op">[</span><span class="dv">1</span><span class="op">]</span> <span class="op">&gt;</span> T<span class="op">(</span><span class="dv">0</span><span class="op">)</span> <span class="op">?</span> vals<span class="op">[</span><span class="dv">1</span><span class="op">]</span> <span class="op">:</span> T<span class="op">(</span><span class="dv">0</span><span class="op">);</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>      <span class="co">// ...</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>      y<span class="op">[</span>i0 <span class="op">+</span> B <span class="op">-</span> <span class="dv">1</span><span class="op">]</span> <span class="op">=</span> vals<span class="op">[</span>B <span class="op">-</span> <span class="dv">1</span><span class="op">]</span> <span class="op">&gt;</span> T<span class="op">(</span><span class="dv">0</span><span class="op">)</span> <span class="op">?</span> vals<span class="op">[</span>B <span class="op">-</span> <span class="dv">1</span><span class="op">]</span> <span class="op">:</span> T<span class="op">(</span><span class="dv">0</span><span class="op">);</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>      y<span class="op">[</span>i0 <span class="op">+</span> <span class="dv">0</span><span class="op">]</span> <span class="op">=</span> vals<span class="op">[</span><span class="dv">0</span><span class="op">];</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>      y<span class="op">[</span>i0 <span class="op">+</span> <span class="dv">1</span><span class="op">]</span> <span class="op">=</span> vals<span class="op">[</span><span class="dv">1</span><span class="op">];</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>      <span class="co">// ...</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>      y<span class="op">[</span>i0 <span class="op">+</span> B <span class="op">-</span> <span class="dv">1</span><span class="op">]</span> <span class="op">=</span> vals<span class="op">[</span>B <span class="op">-</span> <span class="dv">1</span><span class="op">];</span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span></code></pre></div>
+<p>出力<code>y[i0]</code>から<code>y[i0 + B - 1]</code>までの、連続する<code>B</code>個の要素に1サイクルでアクセスする必要があります。
+<code>LinearOpt1</code>内には記載されませんが、配列<code>y</code>も、次のようにサイクリック分割すればよいです。</p>
+<div class="sourceCode" id="cb16"><pre
+class="sourceCode c++"><code class="sourceCode cpp"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>  <span class="kw">constexpr</span> <span class="at">const</span> <span class="dt">int</span> BHalf <span class="op">=</span> B <span class="op">/</span> <span class="dv">2</span><span class="op">;</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  T y<span class="op">[</span>OutDims<span class="op">];</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS ARRAY_PARTITION variable=y type=cyclic factor=BHalf dim=1</span></span></code></pre></div>
+<p>なお、入力<code>x</code>については、ループの各イテレーションで1つの要素にしかアクセスしないため、分割する必要はありません。
+<code>LinearOpt1</code>を使って、全結合層の処理を<code>B</code>並列で実行するには、引数である重み<code>weight</code>、バイアス<code>bias</code>、出力<code>y</code>を、出力の次元で<code>B / 2</code>個に分割しなければなりません
+(<code>B</code>が2であれば分割の必要はない)。</p>
+<p>以上が<code>LinearOpt1</code>の主な変更点です。
+<code>LinearOpt1DDR</code>についても、<code>B</code>個の出力を並列に計算するために、同様の変更がなされています。
+全結合層のバイアス項<code>bias</code>と、出力の<code>B</code>要素分を計算するために必要な重み<code>weight</code>を、DRAMバッファからオンチップバッファ上に転送しています。
+<code>LinearNaiveDDR</code>とは異なり、重みを保持するバッファ<code>weight</code>は、2次元配列となっています。
+<code>B</code>個の必要な要素を取り出すために、<code>bias</code>と<code>weight</code>は<code>BHalf = B / 2</code>個に分割されています。</p>
+<p><code>BatchNorm1dReLUOpt1</code>と<code>MaxPool1dOpt1</code>についても、<code>i</code>
+(出力次元)
+に関するループが、<code>i0</code>と<code>i1</code>の2つに分割されています。
+<code>i1</code>のループはアンローリングされ、<code>B</code>個の出力が並列に計算されます。
+<code>BatchNorm1dReLUOpt1</code>を使って、バッチ正規化とReLU活性化を<code>B</code>並列で実行するには、関数の入力<code>x</code>、出力<code>y</code>と、バッチ正規化層のパラメータ
+(スケール<code>scale</code>、バイアス<code>bias</code>、平均<code>mean</code>)
+を<code>B / 2</code>個に分割します。
+<code>MaxPool1dOpt1</code>についても同様で、<code>B</code>並列でMaxプーリングを行うために、関数の入力<code>x</code>と<code>y</code>を<code>B / 2</code>個に分割します
+(<code>x</code>は各点に対するローカル特徴量で、<code>y</code>は点群全体を表すグローバルな特徴量)。</p>
+<p>各層を<code>B</code>並列で動作させるための、配列の分割のルールを次にまとめます。
+2並列の場合は、分割の必要がないことが分かります。</p>
+<ul>
+<li><code>LinearOpt1</code>:
+重み<code>weight</code>、バイアス<code>bias</code>、出力<code>y</code>を、出力の次元で<code>B / 2</code>個に分割
+(入力<code>x</code>は分割の必要なし)</li>
+<li><code>LinearOpt1DDR</code>:
+出力<code>y</code>を<code>B / 2</code>個に分割
+(入力<code>x</code>は分割の必要なし)</li>
+<li><code>BatchNorm1dReLUOpt1</code>:
+入力<code>x</code>と出力<code>y</code>、パラメータ
+(スケール<code>scale</code>、バイアス<code>bias</code>、平均<code>mean</code>)
+を、<code>B / 2</code>個に分割</li>
+<li><code>MaxPool1dOpt1</code>:
+入力<code>x</code>と出力<code>y</code>を、<code>B / 2</code>個に分割</li>
+</ul>
+<p>これらの並列化されたバージョンを使って、特徴抽出ネットワークと、分類ネットワークの推論処理を次のように書き換えます。
+<code>InferenceFeatNaive</code>と<code>InferenceClsNaive</code>から、それぞれ<code>InferenceFeatOpt1</code>と<code>InferenceClsOpt1</code>になります。
+関数の引数は変更しません。
+なお、<code>InitializeFeatNaive</code>と<code>InitializeClsNaive</code>
+(重みの初期化関数) は、そのまま使うことにします。</p>
+<div class="sourceCode" id="cb17"><pre
+class="sourceCode c++"><code class="sourceCode cpp"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Parallel implementation of the PointNet feature extraction</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="co">// `T` is the type for layer input, output, and intermediate results</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="co">// `U` is the type for parameters</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="co">// `N` is the expected number of input points (e.g., 1024)</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span> <span class="op">&lt;</span><span class="kw">typename</span> T<span class="op">,</span> <span class="kw">typename</span> U<span class="op">,</span> <span class="dt">int</span> N<span class="op">&gt;</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> InferenceFeatOpt1<span class="op">(</span><span class="at">const</span> <span class="dt">float</span><span class="op">*</span> point_cloud<span class="op">,</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>                       <span class="at">const</span> <span class="dt">int</span> num_points<span class="op">,</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>                       T feature<span class="op">[</span>kFeatDims5<span class="op">],</span></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>                       <span class="at">const</span> LinearParams<span class="op">&lt;</span>U<span class="op">,</span> kFeatDims0<span class="op">,</span> kFeatDims1<span class="op">&gt;*</span> conv1<span class="op">,</span></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>                       <span class="at">const</span> LinearParams<span class="op">&lt;</span>U<span class="op">,</span> kFeatDims1<span class="op">,</span> kFeatDims2<span class="op">&gt;*</span> conv2<span class="op">,</span></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>                       <span class="at">const</span> LinearParams<span class="op">&lt;</span>U<span class="op">,</span> kFeatDims2<span class="op">,</span> kFeatDims3<span class="op">&gt;*</span> conv3<span class="op">,</span></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>                       <span class="at">const</span> LinearParams<span class="op">&lt;</span>U<span class="op">,</span> kFeatDims3<span class="op">,</span> kFeatDims4<span class="op">&gt;*</span> conv4<span class="op">,</span></span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>                       <span class="at">const</span> LinearParams<span class="op">&lt;</span>U<span class="op">,</span> kFeatDims4<span class="op">,</span> kFeatDims5<span class="op">&gt;*</span> conv5<span class="op">,</span></span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>                       <span class="at">const</span> BatchNorm1dParams<span class="op">&lt;</span>U<span class="op">,</span> kFeatDims1<span class="op">&gt;*</span> bn1<span class="op">,</span></span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>                       <span class="at">const</span> BatchNorm1dParams<span class="op">&lt;</span>U<span class="op">,</span> kFeatDims2<span class="op">&gt;*</span> bn2<span class="op">,</span></span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>                       <span class="at">const</span> BatchNorm1dParams<span class="op">&lt;</span>U<span class="op">,</span> kFeatDims3<span class="op">&gt;*</span> bn3<span class="op">,</span></span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>                       <span class="at">const</span> BatchNorm1dParams<span class="op">&lt;</span>U<span class="op">,</span> kFeatDims4<span class="op">&gt;*</span> bn4<span class="op">,</span></span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>                       <span class="at">const</span> BatchNorm1dParams<span class="op">&lt;</span>U<span class="op">,</span> kFeatDims5<span class="op">&gt;*</span> bn5<span class="op">)</span></span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS INLINE off</span></span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Zero-initialize the output feature</span></span>
+<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a>  VectorNdSetZero<span class="op">&lt;</span>T<span class="op">,</span> kFeatDims5<span class="op">&gt;(</span>feature<span class="op">);</span></span>
+<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Compute the feature</span></span>
+<span id="cb17-26"><a href="#cb17-26" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> num_points<span class="op">;</span> <span class="op">++</span>i<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb17-27"><a href="#cb17-27" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS LOOP_TRIPCOUNT min=N max=N avg=N</span></span>
+<span id="cb17-28"><a href="#cb17-28" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS LOOP_FLATTEN off</span></span>
+<span id="cb17-29"><a href="#cb17-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-30"><a href="#cb17-30" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Input, output, and intermediate results</span></span>
+<span id="cb17-31"><a href="#cb17-31" aria-hidden="true" tabindex="-1"></a>    T x0<span class="op">[</span>kFeatDims0<span class="op">];</span></span>
+<span id="cb17-32"><a href="#cb17-32" aria-hidden="true" tabindex="-1"></a>    T x1<span class="op">[</span>kFeatDims1<span class="op">];</span></span>
+<span id="cb17-33"><a href="#cb17-33" aria-hidden="true" tabindex="-1"></a>    T x2<span class="op">[</span>kFeatDims1<span class="op">];</span></span>
+<span id="cb17-34"><a href="#cb17-34" aria-hidden="true" tabindex="-1"></a>    T x3<span class="op">[</span>kFeatDims2<span class="op">];</span></span>
+<span id="cb17-35"><a href="#cb17-35" aria-hidden="true" tabindex="-1"></a>    T x4<span class="op">[</span>kFeatDims2<span class="op">];</span></span>
+<span id="cb17-36"><a href="#cb17-36" aria-hidden="true" tabindex="-1"></a>    T x5<span class="op">[</span>kFeatDims3<span class="op">];</span></span>
+<span id="cb17-37"><a href="#cb17-37" aria-hidden="true" tabindex="-1"></a>    T x6<span class="op">[</span>kFeatDims3<span class="op">];</span></span>
+<span id="cb17-38"><a href="#cb17-38" aria-hidden="true" tabindex="-1"></a>    T x7<span class="op">[</span>kFeatDims4<span class="op">];</span></span>
+<span id="cb17-39"><a href="#cb17-39" aria-hidden="true" tabindex="-1"></a>    T x8<span class="op">[</span>kFeatDims4<span class="op">];</span></span>
+<span id="cb17-40"><a href="#cb17-40" aria-hidden="true" tabindex="-1"></a>    T x9<span class="op">[</span>kFeatDims5<span class="op">];</span></span>
+<span id="cb17-41"><a href="#cb17-41" aria-hidden="true" tabindex="-1"></a>    T x10<span class="op">[</span>kFeatDims5<span class="op">];</span></span>
+<span id="cb17-42"><a href="#cb17-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-43"><a href="#cb17-43" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS ARRAY_PARTITION variable=x3 type=cyclic factor=4 dim=1</span></span>
+<span id="cb17-44"><a href="#cb17-44" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS ARRAY_PARTITION variable=x5 type=cyclic factor=4 dim=1</span></span>
+<span id="cb17-45"><a href="#cb17-45" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS ARRAY_PARTITION variable=x7 type=cyclic factor=8 dim=1</span></span>
+<span id="cb17-46"><a href="#cb17-46" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS ARRAY_PARTITION variable=x9 type=cyclic factor=64 dim=1</span></span>
+<span id="cb17-47"><a href="#cb17-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-48"><a href="#cb17-48" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Read a point from a DDR memory</span></span>
+<span id="cb17-49"><a href="#cb17-49" aria-hidden="true" tabindex="-1"></a>    ReadPointNaive<span class="op">&lt;</span>T<span class="op">&gt;(</span>point_cloud<span class="op">,</span> i<span class="op">,</span> x0<span class="op">);</span></span>
+<span id="cb17-50"><a href="#cb17-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-51"><a href="#cb17-51" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Compute a point feature</span></span>
+<span id="cb17-52"><a href="#cb17-52" aria-hidden="true" tabindex="-1"></a>    LinearOpt1<span class="op">&lt;</span>T<span class="op">,</span> U<span class="op">,</span> kFeatDims0<span class="op">,</span> kFeatDims1<span class="op">,</span> <span class="kw">false</span><span class="op">,</span> <span class="dv">2</span><span class="op">&gt;(</span></span>
+<span id="cb17-53"><a href="#cb17-53" aria-hidden="true" tabindex="-1"></a>      x0<span class="op">,</span> x1<span class="op">,</span> conv1<span class="op">-&gt;</span>weight<span class="op">,</span> conv1<span class="op">-&gt;</span>bias<span class="op">);</span></span>
+<span id="cb17-54"><a href="#cb17-54" aria-hidden="true" tabindex="-1"></a>    BatchNorm1dReLUOpt1<span class="op">&lt;</span>T<span class="op">,</span> U<span class="op">,</span> kFeatDims1<span class="op">,</span> <span class="dv">2</span><span class="op">&gt;(</span></span>
+<span id="cb17-55"><a href="#cb17-55" aria-hidden="true" tabindex="-1"></a>      x1<span class="op">,</span> x2<span class="op">,</span> bn1<span class="op">-&gt;</span>scale<span class="op">,</span> bn1<span class="op">-&gt;</span>bias<span class="op">,</span> bn1<span class="op">-&gt;</span>mean<span class="op">);</span></span>
+<span id="cb17-56"><a href="#cb17-56" aria-hidden="true" tabindex="-1"></a>    LinearOpt1<span class="op">&lt;</span>T<span class="op">,</span> U<span class="op">,</span> kFeatDims1<span class="op">,</span> kFeatDims2<span class="op">,</span> <span class="kw">false</span><span class="op">,</span> <span class="dv">8</span><span class="op">&gt;(</span></span>
+<span id="cb17-57"><a href="#cb17-57" aria-hidden="true" tabindex="-1"></a>      x2<span class="op">,</span> x3<span class="op">,</span> conv2<span class="op">-&gt;</span>weight<span class="op">,</span> conv2<span class="op">-&gt;</span>bias<span class="op">);</span></span>
+<span id="cb17-58"><a href="#cb17-58" aria-hidden="true" tabindex="-1"></a>    BatchNorm1dReLUOpt1<span class="op">&lt;</span>T<span class="op">,</span> U<span class="op">,</span> kFeatDims2<span class="op">,</span> <span class="dv">2</span><span class="op">&gt;(</span></span>
+<span id="cb17-59"><a href="#cb17-59" aria-hidden="true" tabindex="-1"></a>      x3<span class="op">,</span> x4<span class="op">,</span> bn2<span class="op">-&gt;</span>scale<span class="op">,</span> bn2<span class="op">-&gt;</span>bias<span class="op">,</span> bn2<span class="op">-&gt;</span>mean<span class="op">);</span></span>
+<span id="cb17-60"><a href="#cb17-60" aria-hidden="true" tabindex="-1"></a>    LinearOpt1<span class="op">&lt;</span>T<span class="op">,</span> U<span class="op">,</span> kFeatDims2<span class="op">,</span> kFeatDims3<span class="op">,</span> <span class="kw">false</span><span class="op">,</span> <span class="dv">8</span><span class="op">&gt;(</span></span>
+<span id="cb17-61"><a href="#cb17-61" aria-hidden="true" tabindex="-1"></a>      x4<span class="op">,</span> x5<span class="op">,</span> conv3<span class="op">-&gt;</span>weight<span class="op">,</span> conv3<span class="op">-&gt;</span>bias<span class="op">);</span></span>
+<span id="cb17-62"><a href="#cb17-62" aria-hidden="true" tabindex="-1"></a>    BatchNorm1dReLUOpt1<span class="op">&lt;</span>T<span class="op">,</span> U<span class="op">,</span> kFeatDims3<span class="op">,</span> <span class="dv">2</span><span class="op">&gt;(</span></span>
+<span id="cb17-63"><a href="#cb17-63" aria-hidden="true" tabindex="-1"></a>      x5<span class="op">,</span> x6<span class="op">,</span> bn3<span class="op">-&gt;</span>scale<span class="op">,</span> bn3<span class="op">-&gt;</span>bias<span class="op">,</span> bn3<span class="op">-&gt;</span>mean<span class="op">);</span></span>
+<span id="cb17-64"><a href="#cb17-64" aria-hidden="true" tabindex="-1"></a>    LinearOpt1<span class="op">&lt;</span>T<span class="op">,</span> U<span class="op">,</span> kFeatDims3<span class="op">,</span> kFeatDims4<span class="op">,</span> <span class="kw">false</span><span class="op">,</span> <span class="dv">16</span><span class="op">&gt;(</span></span>
+<span id="cb17-65"><a href="#cb17-65" aria-hidden="true" tabindex="-1"></a>      x6<span class="op">,</span> x7<span class="op">,</span> conv4<span class="op">-&gt;</span>weight<span class="op">,</span> conv4<span class="op">-&gt;</span>bias<span class="op">);</span></span>
+<span id="cb17-66"><a href="#cb17-66" aria-hidden="true" tabindex="-1"></a>    BatchNorm1dReLUOpt1<span class="op">&lt;</span>T<span class="op">,</span> U<span class="op">,</span> kFeatDims4<span class="op">,</span> <span class="dv">2</span><span class="op">&gt;(</span></span>
+<span id="cb17-67"><a href="#cb17-67" aria-hidden="true" tabindex="-1"></a>      x7<span class="op">,</span> x8<span class="op">,</span> bn4<span class="op">-&gt;</span>scale<span class="op">,</span> bn4<span class="op">-&gt;</span>bias<span class="op">,</span> bn4<span class="op">-&gt;</span>mean<span class="op">);</span></span>
+<span id="cb17-68"><a href="#cb17-68" aria-hidden="true" tabindex="-1"></a>    LinearOpt1<span class="op">&lt;</span>T<span class="op">,</span> U<span class="op">,</span> kFeatDims4<span class="op">,</span> kFeatDims5<span class="op">,</span> <span class="kw">false</span><span class="op">,</span> <span class="dv">128</span><span class="op">&gt;(</span></span>
+<span id="cb17-69"><a href="#cb17-69" aria-hidden="true" tabindex="-1"></a>      x8<span class="op">,</span> x9<span class="op">,</span> conv5<span class="op">-&gt;</span>weight<span class="op">,</span> conv5<span class="op">-&gt;</span>bias<span class="op">);</span></span>
+<span id="cb17-70"><a href="#cb17-70" aria-hidden="true" tabindex="-1"></a>    BatchNorm1dReLUOpt1<span class="op">&lt;</span>T<span class="op">,</span> U<span class="op">,</span> kFeatDims5<span class="op">,</span> <span class="dv">2</span><span class="op">&gt;(</span></span>
+<span id="cb17-71"><a href="#cb17-71" aria-hidden="true" tabindex="-1"></a>      x9<span class="op">,</span> x10<span class="op">,</span> bn5<span class="op">-&gt;</span>scale<span class="op">,</span> bn5<span class="op">-&gt;</span>bias<span class="op">,</span> bn5<span class="op">-&gt;</span>mean<span class="op">);</span></span>
+<span id="cb17-72"><a href="#cb17-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-73"><a href="#cb17-73" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Update the output feature</span></span>
+<span id="cb17-74"><a href="#cb17-74" aria-hidden="true" tabindex="-1"></a>    MaxPool1dOpt1<span class="op">&lt;</span>T<span class="op">,</span> kFeatDims5<span class="op">,</span> <span class="dv">2</span><span class="op">&gt;(</span>x10<span class="op">,</span> feature<span class="op">);</span></span>
+<span id="cb17-75"><a href="#cb17-75" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb17-76"><a href="#cb17-76" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb17-77"><a href="#cb17-77" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-78"><a href="#cb17-78" aria-hidden="true" tabindex="-1"></a><span class="co">// Parallel implementation of the classification network</span></span>
+<span id="cb17-79"><a href="#cb17-79" aria-hidden="true" tabindex="-1"></a><span class="co">// `T` is the type for layer input, output, and intermediate results</span></span>
+<span id="cb17-80"><a href="#cb17-80" aria-hidden="true" tabindex="-1"></a><span class="co">// `U` is the type for parameters</span></span>
+<span id="cb17-81"><a href="#cb17-81" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span> <span class="op">&lt;</span><span class="kw">typename</span> T<span class="op">,</span> <span class="kw">typename</span> U<span class="op">&gt;</span></span>
+<span id="cb17-82"><a href="#cb17-82" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> InferenceClsOpt1<span class="op">(</span><span class="at">const</span> T feature<span class="op">[</span>kFeatDims5<span class="op">],</span></span>
+<span id="cb17-83"><a href="#cb17-83" aria-hidden="true" tabindex="-1"></a>                      <span class="dt">float</span><span class="op">*</span> out_logits<span class="op">,</span></span>
+<span id="cb17-84"><a href="#cb17-84" aria-hidden="true" tabindex="-1"></a>                      <span class="at">const</span> LinearParams<span class="op">&lt;</span>U<span class="op">,</span> kClsDims2<span class="op">,</span> kClsDims3<span class="op">&gt;*</span> fc3<span class="op">,</span></span>
+<span id="cb17-85"><a href="#cb17-85" aria-hidden="true" tabindex="-1"></a>                      <span class="at">const</span> BatchNorm1dParams<span class="op">&lt;</span>T<span class="op">,</span> kClsDims1<span class="op">&gt;*</span> bn1<span class="op">,</span></span>
+<span id="cb17-86"><a href="#cb17-86" aria-hidden="true" tabindex="-1"></a>                      <span class="at">const</span> BatchNorm1dParams<span class="op">&lt;</span>T<span class="op">,</span> kClsDims2<span class="op">&gt;*</span> bn2<span class="op">,</span></span>
+<span id="cb17-87"><a href="#cb17-87" aria-hidden="true" tabindex="-1"></a>                      <span class="at">const</span> <span class="dt">float</span><span class="op">*</span> params1<span class="op">,</span></span>
+<span id="cb17-88"><a href="#cb17-88" aria-hidden="true" tabindex="-1"></a>                      <span class="at">const</span> <span class="dt">float</span><span class="op">*</span> params2<span class="op">,</span></span>
+<span id="cb17-89"><a href="#cb17-89" aria-hidden="true" tabindex="-1"></a>                      <span class="at">const</span> <span class="dt">float</span><span class="op">*</span> params3<span class="op">)</span></span>
+<span id="cb17-90"><a href="#cb17-90" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb17-91"><a href="#cb17-91" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS INLINE off</span></span>
+<span id="cb17-92"><a href="#cb17-92" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-93"><a href="#cb17-93" aria-hidden="true" tabindex="-1"></a>  <span class="kw">static_assert</span><span class="op">(</span>kFeatDims5 <span class="op">==</span> kClsDims0<span class="op">,</span></span>
+<span id="cb17-94"><a href="#cb17-94" aria-hidden="true" tabindex="-1"></a>                <span class="st">&quot;Feature dimension should be equal to the input dimension&quot;</span><span class="op">);</span></span>
+<span id="cb17-95"><a href="#cb17-95" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-96"><a href="#cb17-96" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Input, output, and intermediate results</span></span>
+<span id="cb17-97"><a href="#cb17-97" aria-hidden="true" tabindex="-1"></a>  T x0<span class="op">[</span>kClsDims1<span class="op">];</span></span>
+<span id="cb17-98"><a href="#cb17-98" aria-hidden="true" tabindex="-1"></a>  T x1<span class="op">[</span>kClsDims1<span class="op">];</span></span>
+<span id="cb17-99"><a href="#cb17-99" aria-hidden="true" tabindex="-1"></a>  T x2<span class="op">[</span>kClsDims2<span class="op">];</span></span>
+<span id="cb17-100"><a href="#cb17-100" aria-hidden="true" tabindex="-1"></a>  T x3<span class="op">[</span>kClsDims2<span class="op">];</span></span>
+<span id="cb17-101"><a href="#cb17-101" aria-hidden="true" tabindex="-1"></a>  T x4<span class="op">[</span>kClsDims3<span class="op">];</span></span>
+<span id="cb17-102"><a href="#cb17-102" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-103"><a href="#cb17-103" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS ARRAY_PARTITION variable=x0 type=cyclic factor=8 dim=1</span></span>
+<span id="cb17-104"><a href="#cb17-104" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS ARRAY_PARTITION variable=x2 type=cyclic factor=4 dim=1</span></span>
+<span id="cb17-105"><a href="#cb17-105" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-106"><a href="#cb17-106" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Compute logits</span></span>
+<span id="cb17-107"><a href="#cb17-107" aria-hidden="true" tabindex="-1"></a>  LinearOpt1DDR<span class="op">&lt;</span>T<span class="op">,</span> U<span class="op">,</span> kClsDims0<span class="op">,</span> kClsDims1<span class="op">,</span> <span class="kw">false</span><span class="op">,</span> <span class="dv">16</span><span class="op">&gt;(</span></span>
+<span id="cb17-108"><a href="#cb17-108" aria-hidden="true" tabindex="-1"></a>    feature<span class="op">,</span> x0<span class="op">,</span> params1<span class="op">,</span> <span class="dv">0</span><span class="op">);</span></span>
+<span id="cb17-109"><a href="#cb17-109" aria-hidden="true" tabindex="-1"></a>  BatchNorm1dReLUOpt1<span class="op">&lt;</span>T<span class="op">,</span> U<span class="op">,</span> kClsDims1<span class="op">,</span> <span class="dv">2</span><span class="op">&gt;(</span></span>
+<span id="cb17-110"><a href="#cb17-110" aria-hidden="true" tabindex="-1"></a>    x0<span class="op">,</span> x1<span class="op">,</span> bn1<span class="op">-&gt;</span>scale<span class="op">,</span> bn1<span class="op">-&gt;</span>bias<span class="op">,</span> bn1<span class="op">-&gt;</span>mean<span class="op">);</span></span>
+<span id="cb17-111"><a href="#cb17-111" aria-hidden="true" tabindex="-1"></a>  LinearOpt1DDR<span class="op">&lt;</span>T<span class="op">,</span> U<span class="op">,</span> kClsDims1<span class="op">,</span> kClsDims2<span class="op">,</span> <span class="kw">false</span><span class="op">,</span> <span class="dv">8</span><span class="op">&gt;(</span></span>
+<span id="cb17-112"><a href="#cb17-112" aria-hidden="true" tabindex="-1"></a>    x1<span class="op">,</span> x2<span class="op">,</span> params2<span class="op">,</span> <span class="dv">0</span><span class="op">);</span></span>
+<span id="cb17-113"><a href="#cb17-113" aria-hidden="true" tabindex="-1"></a>  BatchNorm1dReLUOpt1<span class="op">&lt;</span>T<span class="op">,</span> U<span class="op">,</span> kClsDims2<span class="op">,</span> <span class="dv">2</span><span class="op">&gt;(</span></span>
+<span id="cb17-114"><a href="#cb17-114" aria-hidden="true" tabindex="-1"></a>    x2<span class="op">,</span> x3<span class="op">,</span> bn2<span class="op">-&gt;</span>scale<span class="op">,</span> bn2<span class="op">-&gt;</span>bias<span class="op">,</span> bn2<span class="op">-&gt;</span>mean<span class="op">);</span></span>
+<span id="cb17-115"><a href="#cb17-115" aria-hidden="true" tabindex="-1"></a>  LinearOpt1<span class="op">&lt;</span>T<span class="op">,</span> U<span class="op">,</span> kClsDims2<span class="op">,</span> kClsDims3<span class="op">,</span> <span class="kw">false</span><span class="op">,</span> <span class="dv">2</span><span class="op">&gt;(</span></span>
+<span id="cb17-116"><a href="#cb17-116" aria-hidden="true" tabindex="-1"></a>    x3<span class="op">,</span> x4<span class="op">,</span> fc3<span class="op">-&gt;</span>weight<span class="op">,</span> fc3<span class="op">-&gt;</span>bias<span class="op">);</span></span>
+<span id="cb17-117"><a href="#cb17-117" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-118"><a href="#cb17-118" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Write the result</span></span>
+<span id="cb17-119"><a href="#cb17-119" aria-hidden="true" tabindex="-1"></a>  WriteTensor1dNaive<span class="op">&lt;</span>T<span class="op">,</span> kClsDims3<span class="op">&gt;(</span>out_logits<span class="op">,</span> x4<span class="op">,</span> <span class="dv">0</span><span class="op">);</span></span>
+<span id="cb17-120"><a href="#cb17-120" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>各層の関数を呼び出す際に、テンプレート引数に並列化度も指定しています。
+例えば、特徴抽出ネットワークの4番目の全結合層
+(PyTorchのモデルにおける<code>PointNetFeat::conv4</code>)
+は16並列、最後の全結合層 (<code>PointNetFeat::conv5</code>)
+は128並列で実行されます。
+一方、バッチ正規化層とMaxプーリングは、2並列で実行されています。
+各層の並列度をどのように決定したのかについては、後述します。</p>
+<p>続いて、IPコアの最上位関数<code>PointNetClsTop</code>を以下に示します。</p>
+<div class="sourceCode" id="cb18"><pre
+class="sourceCode c++"><code class="sourceCode cpp"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> PointNetClsTop<span class="op">(</span><span class="at">const</span> <span class="dt">int</span> op_mode<span class="op">,</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>                    <span class="at">const</span> <span class="dt">float</span><span class="op">*</span> point_cloud<span class="op">,</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>                    <span class="at">const</span> <span class="dt">int</span> num_points<span class="op">,</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>                    <span class="dt">float</span><span class="op">*</span> out_logits<span class="op">,</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>                    <span class="at">const</span> <span class="dt">float</span><span class="op">*</span> feat_params1<span class="op">,</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>                    <span class="at">const</span> <span class="dt">float</span><span class="op">*</span> feat_params2<span class="op">,</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>                    <span class="at">const</span> <span class="dt">float</span><span class="op">*</span> feat_params3<span class="op">,</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>                    <span class="at">const</span> <span class="dt">float</span><span class="op">*</span> feat_params4<span class="op">,</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>                    <span class="at">const</span> <span class="dt">float</span><span class="op">*</span> feat_params5<span class="op">,</span></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>                    <span class="at">const</span> <span class="dt">float</span><span class="op">*</span> cls_params1<span class="op">,</span></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>                    <span class="at">const</span> <span class="dt">float</span><span class="op">*</span> cls_params2<span class="op">,</span></span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>                    <span class="at">const</span> <span class="dt">float</span><span class="op">*</span> cls_params3<span class="op">)</span></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS INTERFACE m_axi port=point_cloud offset=slave bundle=gmem0</span></span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS INTERFACE m_axi port=out_logits offset=slave bundle=gmem0</span></span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS INTERFACE m_axi port=feat_params1 offset=slave bundle=gmem0</span></span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS INTERFACE m_axi port=feat_params2 offset=slave bundle=gmem0</span></span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS INTERFACE m_axi port=feat_params3 offset=slave bundle=gmem0</span></span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS INTERFACE m_axi port=feat_params4 offset=slave bundle=gmem0</span></span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS INTERFACE m_axi port=feat_params5 offset=slave bundle=gmem0</span></span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS INTERFACE m_axi port=cls_params1 offset=slave bundle=gmem0</span></span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS INTERFACE m_axi port=cls_params2 offset=slave bundle=gmem0</span></span>
+<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS INTERFACE m_axi port=cls_params3 offset=slave bundle=gmem0</span></span>
+<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS INTERFACE s_axilite port=op_mode bundle=control</span></span>
+<span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS INTERFACE s_axilite port=point_cloud bundle=control</span></span>
+<span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS INTERFACE s_axilite port=num_points bundle=control</span></span>
+<span id="cb18-28"><a href="#cb18-28" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS INTERFACE s_axilite port=out_logits bundle=control</span></span>
+<span id="cb18-29"><a href="#cb18-29" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS INTERFACE s_axilite port=feat_params1 bundle=control</span></span>
+<span id="cb18-30"><a href="#cb18-30" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS INTERFACE s_axilite port=feat_params2 bundle=control</span></span>
+<span id="cb18-31"><a href="#cb18-31" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS INTERFACE s_axilite port=feat_params3 bundle=control</span></span>
+<span id="cb18-32"><a href="#cb18-32" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS INTERFACE s_axilite port=feat_params4 bundle=control</span></span>
+<span id="cb18-33"><a href="#cb18-33" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS INTERFACE s_axilite port=feat_params5 bundle=control</span></span>
+<span id="cb18-34"><a href="#cb18-34" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS INTERFACE s_axilite port=cls_params1 bundle=control</span></span>
+<span id="cb18-35"><a href="#cb18-35" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS INTERFACE s_axilite port=cls_params2 bundle=control</span></span>
+<span id="cb18-36"><a href="#cb18-36" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS INTERFACE s_axilite port=cls_params3 bundle=control</span></span>
+<span id="cb18-37"><a href="#cb18-37" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS INTERFACE s_axilite port=return bundle=control</span></span>
+<span id="cb18-38"><a href="#cb18-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-39"><a href="#cb18-39" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Parameters for feature extraction</span></span>
+<span id="cb18-40"><a href="#cb18-40" aria-hidden="true" tabindex="-1"></a>  LinearParams<span class="op">&lt;</span><span class="dt">param_t</span><span class="op">,</span> kFeatDims0<span class="op">,</span> kFeatDims1<span class="op">&gt;</span> feat_conv1<span class="op">;</span></span>
+<span id="cb18-41"><a href="#cb18-41" aria-hidden="true" tabindex="-1"></a>  LinearParams<span class="op">&lt;</span><span class="dt">param_t</span><span class="op">,</span> kFeatDims1<span class="op">,</span> kFeatDims2<span class="op">&gt;</span> feat_conv2<span class="op">;</span></span>
+<span id="cb18-42"><a href="#cb18-42" aria-hidden="true" tabindex="-1"></a>  LinearParams<span class="op">&lt;</span><span class="dt">param_t</span><span class="op">,</span> kFeatDims2<span class="op">,</span> kFeatDims3<span class="op">&gt;</span> feat_conv3<span class="op">;</span></span>
+<span id="cb18-43"><a href="#cb18-43" aria-hidden="true" tabindex="-1"></a>  LinearParams<span class="op">&lt;</span><span class="dt">param_t</span><span class="op">,</span> kFeatDims3<span class="op">,</span> kFeatDims4<span class="op">&gt;</span> feat_conv4<span class="op">;</span></span>
+<span id="cb18-44"><a href="#cb18-44" aria-hidden="true" tabindex="-1"></a>  LinearParams<span class="op">&lt;</span><span class="dt">param_t</span><span class="op">,</span> kFeatDims4<span class="op">,</span> kFeatDims5<span class="op">&gt;</span> feat_conv5<span class="op">;</span></span>
+<span id="cb18-45"><a href="#cb18-45" aria-hidden="true" tabindex="-1"></a>  BatchNorm1dParams<span class="op">&lt;</span><span class="dt">param_t</span><span class="op">,</span> kFeatDims1<span class="op">&gt;</span> feat_bn1<span class="op">;</span></span>
+<span id="cb18-46"><a href="#cb18-46" aria-hidden="true" tabindex="-1"></a>  BatchNorm1dParams<span class="op">&lt;</span><span class="dt">param_t</span><span class="op">,</span> kFeatDims2<span class="op">&gt;</span> feat_bn2<span class="op">;</span></span>
+<span id="cb18-47"><a href="#cb18-47" aria-hidden="true" tabindex="-1"></a>  BatchNorm1dParams<span class="op">&lt;</span><span class="dt">param_t</span><span class="op">,</span> kFeatDims3<span class="op">&gt;</span> feat_bn3<span class="op">;</span></span>
+<span id="cb18-48"><a href="#cb18-48" aria-hidden="true" tabindex="-1"></a>  BatchNorm1dParams<span class="op">&lt;</span><span class="dt">param_t</span><span class="op">,</span> kFeatDims4<span class="op">&gt;</span> feat_bn4<span class="op">;</span></span>
+<span id="cb18-49"><a href="#cb18-49" aria-hidden="true" tabindex="-1"></a>  BatchNorm1dParams<span class="op">&lt;</span><span class="dt">param_t</span><span class="op">,</span> kFeatDims5<span class="op">&gt;</span> feat_bn5<span class="op">;</span></span>
+<span id="cb18-50"><a href="#cb18-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-51"><a href="#cb18-51" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS ARRAY_PARTITION variable=feat_conv2.weight type=cyclic factor=4 dim=1</span></span>
+<span id="cb18-52"><a href="#cb18-52" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS ARRAY_PARTITION variable=feat_conv2.bias type=cyclic factor=4 dim=1</span></span>
+<span id="cb18-53"><a href="#cb18-53" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS ARRAY_PARTITION variable=feat_conv3.weight type=cyclic factor=4 dim=1</span></span>
+<span id="cb18-54"><a href="#cb18-54" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS ARRAY_PARTITION variable=feat_conv3.bias type=cyclic factor=4 dim=1</span></span>
+<span id="cb18-55"><a href="#cb18-55" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS ARRAY_PARTITION variable=feat_conv4.weight type=cyclic factor=8 dim=1</span></span>
+<span id="cb18-56"><a href="#cb18-56" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS ARRAY_PARTITION variable=feat_conv4.bias type=cyclic factor=8 dim=1</span></span>
+<span id="cb18-57"><a href="#cb18-57" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS ARRAY_PARTITION variable=feat_conv5.weight type=cyclic factor=64 dim=1</span></span>
+<span id="cb18-58"><a href="#cb18-58" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS ARRAY_PARTITION variable=feat_conv5.bias type=cyclic factor=64 dim=1</span></span>
+<span id="cb18-59"><a href="#cb18-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-60"><a href="#cb18-60" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Parameters for classification network</span></span>
+<span id="cb18-61"><a href="#cb18-61" aria-hidden="true" tabindex="-1"></a>  <span class="co">// LinearParams&lt;param_t, kClsDims0, kClsDims1&gt; cls_fc1;</span></span>
+<span id="cb18-62"><a href="#cb18-62" aria-hidden="true" tabindex="-1"></a>  <span class="co">// LinearParams&lt;param_t, kClsDims1, kClsDims2&gt; cls_fc2;</span></span>
+<span id="cb18-63"><a href="#cb18-63" aria-hidden="true" tabindex="-1"></a>  LinearParams<span class="op">&lt;</span><span class="dt">param_t</span><span class="op">,</span> kClsDims2<span class="op">,</span> kClsDims3<span class="op">&gt;</span> cls_fc3<span class="op">;</span></span>
+<span id="cb18-64"><a href="#cb18-64" aria-hidden="true" tabindex="-1"></a>  BatchNorm1dParams<span class="op">&lt;</span><span class="dt">param_t</span><span class="op">,</span> kClsDims1<span class="op">&gt;</span> cls_bn1<span class="op">;</span></span>
+<span id="cb18-65"><a href="#cb18-65" aria-hidden="true" tabindex="-1"></a>  BatchNorm1dParams<span class="op">&lt;</span><span class="dt">param_t</span><span class="op">,</span> kClsDims2<span class="op">&gt;</span> cls_bn2<span class="op">;</span></span>
+<span id="cb18-66"><a href="#cb18-66" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-67"><a href="#cb18-67" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Extracted feature</span></span>
+<span id="cb18-68"><a href="#cb18-68" aria-hidden="true" tabindex="-1"></a>  <span class="dt">value_t</span> feature<span class="op">[</span>kFeatDims5<span class="op">];</span></span>
+<span id="cb18-69"><a href="#cb18-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-70"><a href="#cb18-70" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span>op_mode <span class="op">==</span> kModeInitWeights<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb18-71"><a href="#cb18-71" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Initialize the PointNet feature extraction network</span></span>
+<span id="cb18-72"><a href="#cb18-72" aria-hidden="true" tabindex="-1"></a>    InitializeFeatOpt1<span class="op">&lt;</span><span class="dt">param_t</span><span class="op">&gt;(</span></span>
+<span id="cb18-73"><a href="#cb18-73" aria-hidden="true" tabindex="-1"></a>      <span class="op">&amp;</span>feat_conv1<span class="op">,</span> <span class="op">&amp;</span>feat_conv2<span class="op">,</span> <span class="op">&amp;</span>feat_conv3<span class="op">,</span> <span class="op">&amp;</span>feat_conv4<span class="op">,</span> <span class="op">&amp;</span>feat_conv5<span class="op">,</span></span>
+<span id="cb18-74"><a href="#cb18-74" aria-hidden="true" tabindex="-1"></a>      <span class="op">&amp;</span>feat_bn1<span class="op">,</span> <span class="op">&amp;</span>feat_bn2<span class="op">,</span> <span class="op">&amp;</span>feat_bn3<span class="op">,</span> <span class="op">&amp;</span>feat_bn4<span class="op">,</span> <span class="op">&amp;</span>feat_bn5<span class="op">,</span></span>
+<span id="cb18-75"><a href="#cb18-75" aria-hidden="true" tabindex="-1"></a>      feat_params1<span class="op">,</span> feat_params2<span class="op">,</span> feat_params3<span class="op">,</span> feat_params4<span class="op">,</span> feat_params5<span class="op">);</span></span>
+<span id="cb18-76"><a href="#cb18-76" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Initialize the classification network</span></span>
+<span id="cb18-77"><a href="#cb18-77" aria-hidden="true" tabindex="-1"></a>    InitializeClsOpt1<span class="op">&lt;</span><span class="dt">param_t</span><span class="op">&gt;(</span></span>
+<span id="cb18-78"><a href="#cb18-78" aria-hidden="true" tabindex="-1"></a>      <span class="op">&amp;</span>cls_fc3<span class="op">,</span> <span class="op">&amp;</span>cls_bn1<span class="op">,</span> <span class="op">&amp;</span>cls_bn2<span class="op">,</span></span>
+<span id="cb18-79"><a href="#cb18-79" aria-hidden="true" tabindex="-1"></a>      cls_params1<span class="op">,</span> cls_params2<span class="op">,</span> cls_params3<span class="op">);</span></span>
+<span id="cb18-80"><a href="#cb18-80" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span> <span class="cf">else</span> <span class="cf">if</span> <span class="op">(</span>op_mode <span class="op">==</span> kModeInference<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb18-81"><a href="#cb18-81" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Run the PointNet feature extraction</span></span>
+<span id="cb18-82"><a href="#cb18-82" aria-hidden="true" tabindex="-1"></a>    InferenceFeatOpt1<span class="op">&lt;</span><span class="dt">value_t</span><span class="op">,</span> <span class="dt">param_t</span><span class="op">,</span> <span class="dv">1024</span><span class="op">&gt;(</span></span>
+<span id="cb18-83"><a href="#cb18-83" aria-hidden="true" tabindex="-1"></a>      point_cloud<span class="op">,</span> num_points<span class="op">,</span> feature<span class="op">,</span></span>
+<span id="cb18-84"><a href="#cb18-84" aria-hidden="true" tabindex="-1"></a>      <span class="op">&amp;</span>feat_conv1<span class="op">,</span> <span class="op">&amp;</span>feat_conv2<span class="op">,</span> <span class="op">&amp;</span>feat_conv3<span class="op">,</span> <span class="op">&amp;</span>feat_conv4<span class="op">,</span> <span class="op">&amp;</span>feat_conv5<span class="op">,</span></span>
+<span id="cb18-85"><a href="#cb18-85" aria-hidden="true" tabindex="-1"></a>      <span class="op">&amp;</span>feat_bn1<span class="op">,</span> <span class="op">&amp;</span>feat_bn2<span class="op">,</span> <span class="op">&amp;</span>feat_bn3<span class="op">,</span> <span class="op">&amp;</span>feat_bn4<span class="op">,</span> <span class="op">&amp;</span>feat_bn5<span class="op">);</span></span>
+<span id="cb18-86"><a href="#cb18-86" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-87"><a href="#cb18-87" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Run the classification</span></span>
+<span id="cb18-88"><a href="#cb18-88" aria-hidden="true" tabindex="-1"></a>    InferenceClsOpt1<span class="op">&lt;</span><span class="dt">value_t</span><span class="op">,</span> <span class="dt">param_t</span><span class="op">&gt;(</span></span>
+<span id="cb18-89"><a href="#cb18-89" aria-hidden="true" tabindex="-1"></a>      feature<span class="op">,</span> out_logits<span class="op">,</span></span>
+<span id="cb18-90"><a href="#cb18-90" aria-hidden="true" tabindex="-1"></a>      <span class="op">&amp;</span>cls_fc3<span class="op">,</span> <span class="op">&amp;</span>cls_bn1<span class="op">,</span> <span class="op">&amp;</span>cls_bn2<span class="op">,</span></span>
+<span id="cb18-91"><a href="#cb18-91" aria-hidden="true" tabindex="-1"></a>      cls_params1<span class="op">,</span> cls_params2<span class="op">,</span> cls_params3<span class="op">);</span></span>
+<span id="cb18-92"><a href="#cb18-92" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb18-93"><a href="#cb18-93" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>関数の入出力ポートについては全く同一です。
+以前のバージョンと比較すると、層の入出力やパラメータを保持するバッファ
+(<code>feat_conv5.weight</code>、<code>feat_conv5.bias</code>、<code>x3</code>、<code>x5</code>など)
+を分割するために、<code>#pragma HLS ARRAY_PARTITION</code>が追加されていることが分かります。
+配列の分割数 (<code>factor</code>)
+については、上述のルールに則っています。
+例えば、<code>InferenceFeatOpt1</code>と<code>PointNetClsTop</code>をみると、特徴抽出ネットワークの最後の全結合層を128並列で実行したいので、出力用のバッファ<code>x10</code>と、全結合層の2つのパラメータ<code>feat_conv5.weight</code>、<code>feat_conv5.bias</code>を64分割しています
+(記述する場所が散らばっているのが難点です)。
+同様に、<code>InferenceClsOpt1</code>と<code>PointNetClsTop</code>をみると、分類ネットワークの最初の全結合層は16並列で実行されるので、出力用のバッファ<code>x0</code>は8分割しています。
+バッチ正規化層とMaxプーリングは2並列なので、配列を分割する必要はありません。</p>
+<p>先述のように、配列を分割するとポート数が増えて、一度に多くの要素を読み出せるようになりますが、貴重なオンチップメモリの消費も増えます。
+オンチップメモリの消費を抑えつつ、なるべく並列度を上げる必要があります。
+推論時間の短縮に最も効果がある部分
+(例えば特徴抽出ネットワークの最後の全結合層)
+の並列度を上げて、効果があまりない部分 (例えばバッチ正規化層)
+の並列度は下げています。</p>
+<p>ここで、各層の実行サイクル数を比較してみます (動作周波数は150MHz)。
+特徴抽出ネットワークについては次のようになりました。</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">層</th>
+<th style="text-align: left;"><code>InferenceFeatNaive</code></th>
+<th style="text-align: left;"><code>InferenceFeatOpt1</code></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">全結合層1
+(<code>PointNetFeat::conv1</code>)</td>
+<td style="text-align: left;">577 (3.843us)</td>
+<td style="text-align: left;">321 (2.138us)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">バッチ正規化層 + ReLU
+(<code>PointNetFeat::bn1</code>)</td>
+<td style="text-align: left;">68 (0.453us)</td>
+<td style="text-align: left;">36 (0.240us)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">全結合層2
+(<code>PointNetFeat::conv2</code>)</td>
+<td style="text-align: left;">4,481 (29.84us)</td>
+<td style="text-align: left;">569 (3.790us)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">バッチ正規化層 + ReLU
+(<code>PointNetFeat::bn2</code>)</td>
+<td style="text-align: left;">68 (0.453us)</td>
+<td style="text-align: left;">36 (0.240us)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">全結合層3
+(<code>PointNetFeat::conv3</code>)</td>
+<td style="text-align: left;">4,481 (29.84us)</td>
+<td style="text-align: left;">569 (3.790us)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">バッチ正規化層 + ReLU
+(<code>PointNetFeat::bn3</code>)</td>
+<td style="text-align: left;">68 (0.453us)</td>
+<td style="text-align: left;">36 (0.240us)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">全結合層4
+(<code>PointNetFeat::conv4</code>)</td>
+<td style="text-align: left;">8,961 (59.68us)</td>
+<td style="text-align: left;">569 (3.790us)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">バッチ正規化層 + ReLU
+(<code>PointNetFeat::bn4</code>)</td>
+<td style="text-align: left;">132 (0.879us)</td>
+<td style="text-align: left;">68 (0.453us)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">全結合層5
+(<code>PointNetFeat::conv5</code>)</td>
+<td style="text-align: left;">137,217 (914.0us)</td>
+<td style="text-align: left;">1,081 (7.199us)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">バッチ正規化層 + ReLU
+(<code>PointNetFeat::bn5</code>)</td>
+<td style="text-align: left;">1,028 (6.846us)</td>
+<td style="text-align: left;">516 (3.437us)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Maxプーリング層</td>
+<td style="text-align: left;">1,026 (6.833us)</td>
+<td style="text-align: left;">514 (3.423us)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">全体 (1回分)</td>
+<td style="text-align: left;">158,149 (1.053ms)</td>
+<td style="text-align: left;">4,357 (29.02us)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">全体 (1024回分)</td>
+<td style="text-align: left;">161,945,604 (1.079s)</td>
+<td style="text-align: left;">4,462,596 (29.72ms)</td>
+</tr>
+</tbody>
+</table>
+<p>特徴抽出ネットワークに関しては、やはり最後の全結合層がボトルネックとなっています。
+128並列にすることで、実行時間を126.9倍
+(137,217サイクルから1,081サイクル) 削減できています。
+4つ目の全結合層についても、16並列にすることで、実行時間が15.75倍
+(8,961サイクルから569サイクル) 短くなりました。
+全結合層やバッチ正規化層、Maxプーリング層にみられるデータ並列性を活かして、推論時間を短縮できました。
+また分類ネットワークについては次のようになりました。</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">層</th>
+<th style="text-align: left;"><code>InferenceClsNaive</code></th>
+<th style="text-align: left;"><code>InferenceClsOpt1</code></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">全結合層1
+(<code>PointNetCls::fc1</code>)</td>
+<td style="text-align: left;">1,056,279 (7.035ms)</td>
+<td style="text-align: left;">558,071 (3.717ms)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">バッチ正規化層 + ReLU
+(<code>PointNetCls::bn1</code>)</td>
+<td style="text-align: left;">516 (3.437us)</td>
+<td style="text-align: left;">260 (1.732us)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">全結合層2
+(<code>PointNetCls::fc2</code>)</td>
+<td style="text-align: left;">266,007 (1.772ms)</td>
+<td style="text-align: left;">148,183 (987.0us)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">バッチ正規化層 + ReLU
+(<code>PointNetCls::bn2</code>)</td>
+<td style="text-align: left;">260 (1.732us)</td>
+<td style="text-align: left;">132 (0.879us)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">全結合層3
+(<code>PointNetCls::fc3</code>)</td>
+<td style="text-align: left;">10,481 (69.80us)</td>
+<td style="text-align: left;">5,261 (35.04us)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">全体</td>
+<td style="text-align: left;">1,333,605 (8.882ms)</td>
+<td style="text-align: left;">711,969 (4.742ms)</td>
+</tr>
+</tbody>
+</table>
+<p>最初の全結合層は16並列で実行するようにしましたが、実行時間は1.89倍
+(1,056,279サイクルから558,071サイクル) しか短くなっていません。
+前述のように、分類ネットワークの最初の全結合層2つでは、パラメータをオンチップバッファに置くのではなく、DRAMバッファから必要な部分だけを転送しています。
+行列の積や加算は16並列で実行されるのですが、データ転送部分の実行時間は短縮されないので、このような結果になっています。
+2つ目の全結合層に関しても同様に、8並列を指定したのですが、実行時間は1.80倍
+(266,007サイクルから148,183サイクル) の削減に留まっています。</p>
+<p>現在の実装では、入出力ポートの幅は32ビットで、1サイクルにつき<code>float</code>のデータを1つずつ転送しています。
+入出力ポートの幅を広げて、1サイクルで複数のデータを転送すれば、データ転送の実行時間を短縮できます。
+後ほど、ポート幅を32ビットから64ビットに広げて、1サイクルで<code>float</code>のデータを2つずつ転送するように、改善します。</p>
+<p>IPコアの動作モードには2つありますが、このうち重みの初期化モードについては、全く手を加えていません。
+重みの初期化は、IPコアの利用開始前に一度だけ行われ、ネットワークの推論時間とは全く関係ないためです。</p>
+<p>以上で推論の並列化が済みました。
+詳しくは<code>hls/src/top_opt1.cpp</code>をご参照ください。</p>
 </body>
 </html>
