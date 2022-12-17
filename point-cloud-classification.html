@@ -313,90 +313,109 @@ ZCU104には、FPGAのほかに、クアッドコア ARM Cortex-A53 CPU
 6.2ですので、C++14やC++17の一部機能が利用できます。
 但し、ツールのバグを踏むかもしれないので、あまり凝った機能は使わないようにしています。</p>
 <div class="sourceCode" id="cb2"><pre
-class="sourceCode c++"><code class="sourceCode cpp"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> PointNetClsTop<span class="op">(</span><span class="at">const</span> <span class="dt">int</span> op_mode<span class="op">,</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>                    <span class="at">const</span> <span class="dt">float</span><span class="op">*</span> point_cloud<span class="op">,</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>                    <span class="at">const</span> <span class="dt">int</span> num_points<span class="op">,</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>                    <span class="dt">float</span><span class="op">*</span> out_logits<span class="op">,</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>                    <span class="at">const</span> <span class="dt">float</span><span class="op">*</span> feat_params1<span class="op">,</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>                    <span class="at">const</span> <span class="dt">float</span><span class="op">*</span> feat_params2<span class="op">,</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>                    <span class="at">const</span> <span class="dt">float</span><span class="op">*</span> feat_params3<span class="op">,</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>                    <span class="at">const</span> <span class="dt">float</span><span class="op">*</span> feat_params4<span class="op">,</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>                    <span class="at">const</span> <span class="dt">float</span><span class="op">*</span> feat_params5<span class="op">,</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>                    <span class="at">const</span> <span class="dt">float</span><span class="op">*</span> cls_params1<span class="op">,</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>                    <span class="at">const</span> <span class="dt">float</span><span class="op">*</span> cls_params2<span class="op">,</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>                    <span class="at">const</span> <span class="dt">float</span><span class="op">*</span> cls_params3<span class="op">)</span></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS INTERFACE m_axi port=point_cloud offset=slave bundle=gmem0</span></span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS INTERFACE m_axi port=out_logits offset=slave bundle=gmem0</span></span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS INTERFACE m_axi port=feat_params1 offset=slave bundle=gmem0</span></span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS INTERFACE m_axi port=feat_params2 offset=slave bundle=gmem0</span></span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS INTERFACE m_axi port=feat_params3 offset=slave bundle=gmem0</span></span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS INTERFACE m_axi port=feat_params4 offset=slave bundle=gmem0</span></span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS INTERFACE m_axi port=feat_params5 offset=slave bundle=gmem0</span></span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS INTERFACE m_axi port=cls_params1 offset=slave bundle=gmem0</span></span>
-<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS INTERFACE m_axi port=cls_params2 offset=slave bundle=gmem0</span></span>
-<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS INTERFACE m_axi port=cls_params3 offset=slave bundle=gmem0</span></span>
-<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS INTERFACE s_axilite port=op_mode bundle=control</span></span>
-<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS INTERFACE s_axilite port=point_cloud bundle=control</span></span>
-<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS INTERFACE s_axilite port=num_points bundle=control</span></span>
-<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS INTERFACE s_axilite port=out_logits bundle=control</span></span>
-<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS INTERFACE s_axilite port=feat_params1 bundle=control</span></span>
-<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS INTERFACE s_axilite port=feat_params2 bundle=control</span></span>
-<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS INTERFACE s_axilite port=feat_params3 bundle=control</span></span>
-<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS INTERFACE s_axilite port=feat_params4 bundle=control</span></span>
-<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS INTERFACE s_axilite port=feat_params5 bundle=control</span></span>
-<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS INTERFACE s_axilite port=cls_params1 bundle=control</span></span>
-<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS INTERFACE s_axilite port=cls_params2 bundle=control</span></span>
-<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS INTERFACE s_axilite port=cls_params3 bundle=control</span></span>
-<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS INTERFACE s_axilite port=return bundle=control</span></span>
-<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Parameters for feature extraction</span></span>
-<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>  LinearParams<span class="op">&lt;</span><span class="dt">param_t</span><span class="op">,</span> kFeatDims0<span class="op">,</span> kFeatDims1<span class="op">&gt;</span> feat_conv1<span class="op">;</span></span>
-<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>  LinearParams<span class="op">&lt;</span><span class="dt">param_t</span><span class="op">,</span> kFeatDims1<span class="op">,</span> kFeatDims2<span class="op">&gt;</span> feat_conv2<span class="op">;</span></span>
-<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>  LinearParams<span class="op">&lt;</span><span class="dt">param_t</span><span class="op">,</span> kFeatDims2<span class="op">,</span> kFeatDims3<span class="op">&gt;</span> feat_conv3<span class="op">;</span></span>
-<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>  LinearParams<span class="op">&lt;</span><span class="dt">param_t</span><span class="op">,</span> kFeatDims3<span class="op">,</span> kFeatDims4<span class="op">&gt;</span> feat_conv4<span class="op">;</span></span>
-<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>  LinearParams<span class="op">&lt;</span><span class="dt">param_t</span><span class="op">,</span> kFeatDims4<span class="op">,</span> kFeatDims5<span class="op">&gt;</span> feat_conv5<span class="op">;</span></span>
-<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>  BatchNorm1dParams<span class="op">&lt;</span><span class="dt">param_t</span><span class="op">,</span> kFeatDims1<span class="op">&gt;</span> feat_bn1<span class="op">;</span></span>
-<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>  BatchNorm1dParams<span class="op">&lt;</span><span class="dt">param_t</span><span class="op">,</span> kFeatDims2<span class="op">&gt;</span> feat_bn2<span class="op">;</span></span>
-<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>  BatchNorm1dParams<span class="op">&lt;</span><span class="dt">param_t</span><span class="op">,</span> kFeatDims3<span class="op">&gt;</span> feat_bn3<span class="op">;</span></span>
-<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>  BatchNorm1dParams<span class="op">&lt;</span><span class="dt">param_t</span><span class="op">,</span> kFeatDims4<span class="op">&gt;</span> feat_bn4<span class="op">;</span></span>
-<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>  BatchNorm1dParams<span class="op">&lt;</span><span class="dt">param_t</span><span class="op">,</span> kFeatDims5<span class="op">&gt;</span> feat_bn5<span class="op">;</span></span>
-<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Parameters for classification network</span></span>
-<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>  <span class="co">// LinearParams&lt;param_t, kClsDims0, kClsDims1&gt; cls_fc1;</span></span>
-<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a>  <span class="co">// LinearParams&lt;param_t, kClsDims1, kClsDims2&gt; cls_fc2;</span></span>
-<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a>  LinearParams<span class="op">&lt;</span><span class="dt">param_t</span><span class="op">,</span> kClsDims2<span class="op">,</span> kClsDims3<span class="op">&gt;</span> cls_fc3<span class="op">;</span></span>
-<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a>  BatchNorm1dParams<span class="op">&lt;</span><span class="dt">param_t</span><span class="op">,</span> kClsDims1<span class="op">&gt;</span> cls_bn1<span class="op">;</span></span>
-<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a>  BatchNorm1dParams<span class="op">&lt;</span><span class="dt">param_t</span><span class="op">,</span> kClsDims2<span class="op">&gt;</span> cls_bn2<span class="op">;</span></span>
+class="sourceCode c++"><code class="sourceCode cpp"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Size of the PointNet classification network</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co">// Refer to net/model.py for details</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co">// Size of the feature extraction network</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="kw">constexpr</span> <span class="at">const</span> <span class="dt">int</span> kFeatDims0 <span class="op">=</span> <span class="dv">3</span><span class="op">;</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="kw">constexpr</span> <span class="at">const</span> <span class="dt">int</span> kFeatDims1 <span class="op">=</span> <span class="dv">64</span><span class="op">;</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="kw">constexpr</span> <span class="at">const</span> <span class="dt">int</span> kFeatDims2 <span class="op">=</span> <span class="dv">64</span><span class="op">;</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="kw">constexpr</span> <span class="at">const</span> <span class="dt">int</span> kFeatDims3 <span class="op">=</span> <span class="dv">64</span><span class="op">;</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="kw">constexpr</span> <span class="at">const</span> <span class="dt">int</span> kFeatDims4 <span class="op">=</span> <span class="dv">128</span><span class="op">;</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="kw">constexpr</span> <span class="at">const</span> <span class="dt">int</span> kFeatDims5 <span class="op">=</span> <span class="dv">1024</span><span class="op">;</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co">// Size of the classification network</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co">// ModelNet40 has 40 object classes</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="kw">constexpr</span> <span class="at">const</span> <span class="dt">int</span> kClsDims0 <span class="op">=</span> kFeatDims5<span class="op">;</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="kw">constexpr</span> <span class="at">const</span> <span class="dt">int</span> kClsDims1 <span class="op">=</span> <span class="dv">512</span><span class="op">;</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="kw">constexpr</span> <span class="at">const</span> <span class="dt">int</span> kClsDims2 <span class="op">=</span> <span class="dv">256</span><span class="op">;</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="kw">constexpr</span> <span class="at">const</span> <span class="dt">int</span> kClsDims3 <span class="op">=</span> <span class="dv">40</span><span class="op">;</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="co">// Top function</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> PointNetClsTop<span class="op">(</span><span class="at">const</span> <span class="dt">int</span> op_mode<span class="op">,</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>                    <span class="at">const</span> <span class="dt">float</span><span class="op">*</span> point_cloud<span class="op">,</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>                    <span class="at">const</span> <span class="dt">int</span> num_points<span class="op">,</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>                    <span class="dt">float</span><span class="op">*</span> out_logits<span class="op">,</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>                    <span class="at">const</span> <span class="dt">float</span><span class="op">*</span> feat_params1<span class="op">,</span></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>                    <span class="at">const</span> <span class="dt">float</span><span class="op">*</span> feat_params2<span class="op">,</span></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>                    <span class="at">const</span> <span class="dt">float</span><span class="op">*</span> feat_params3<span class="op">,</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>                    <span class="at">const</span> <span class="dt">float</span><span class="op">*</span> feat_params4<span class="op">,</span></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>                    <span class="at">const</span> <span class="dt">float</span><span class="op">*</span> feat_params5<span class="op">,</span></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>                    <span class="at">const</span> <span class="dt">float</span><span class="op">*</span> cls_params1<span class="op">,</span></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>                    <span class="at">const</span> <span class="dt">float</span><span class="op">*</span> cls_params2<span class="op">,</span></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>                    <span class="at">const</span> <span class="dt">float</span><span class="op">*</span> cls_params3<span class="op">)</span></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS INTERFACE m_axi port=point_cloud offset=slave bundle=gmem0</span></span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS INTERFACE m_axi port=out_logits offset=slave bundle=gmem0</span></span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS INTERFACE m_axi port=feat_params1 offset=slave bundle=gmem0</span></span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS INTERFACE m_axi port=feat_params2 offset=slave bundle=gmem0</span></span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS INTERFACE m_axi port=feat_params3 offset=slave bundle=gmem0</span></span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS INTERFACE m_axi port=feat_params4 offset=slave bundle=gmem0</span></span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS INTERFACE m_axi port=feat_params5 offset=slave bundle=gmem0</span></span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS INTERFACE m_axi port=cls_params1 offset=slave bundle=gmem0</span></span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS INTERFACE m_axi port=cls_params2 offset=slave bundle=gmem0</span></span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS INTERFACE m_axi port=cls_params3 offset=slave bundle=gmem0</span></span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS INTERFACE s_axilite port=op_mode bundle=control</span></span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS INTERFACE s_axilite port=point_cloud bundle=control</span></span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS INTERFACE s_axilite port=num_points bundle=control</span></span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS INTERFACE s_axilite port=out_logits bundle=control</span></span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS INTERFACE s_axilite port=feat_params1 bundle=control</span></span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS INTERFACE s_axilite port=feat_params2 bundle=control</span></span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS INTERFACE s_axilite port=feat_params3 bundle=control</span></span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS INTERFACE s_axilite port=feat_params4 bundle=control</span></span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS INTERFACE s_axilite port=feat_params5 bundle=control</span></span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS INTERFACE s_axilite port=cls_params1 bundle=control</span></span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS INTERFACE s_axilite port=cls_params2 bundle=control</span></span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS INTERFACE s_axilite port=cls_params3 bundle=control</span></span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS INTERFACE s_axilite port=return bundle=control</span></span>
 <span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Extracted feature</span></span>
-<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a>  <span class="dt">value_t</span> feature<span class="op">[</span>kFeatDims5<span class="op">];</span></span>
-<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span>op_mode <span class="op">==</span> kModeInitWeights<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Initialize the PointNet feature extraction network</span></span>
-<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a>    InitializeFeatNaive<span class="op">&lt;</span><span class="dt">param_t</span><span class="op">&gt;(</span></span>
-<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a>      <span class="op">&amp;</span>feat_conv1<span class="op">,</span> <span class="op">&amp;</span>feat_conv2<span class="op">,</span> <span class="op">&amp;</span>feat_conv3<span class="op">,</span> <span class="op">&amp;</span>feat_conv4<span class="op">,</span> <span class="op">&amp;</span>feat_conv5<span class="op">,</span></span>
-<span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a>      <span class="op">&amp;</span>feat_bn1<span class="op">,</span> <span class="op">&amp;</span>feat_bn2<span class="op">,</span> <span class="op">&amp;</span>feat_bn3<span class="op">,</span> <span class="op">&amp;</span>feat_bn4<span class="op">,</span> <span class="op">&amp;</span>feat_bn5<span class="op">,</span></span>
-<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a>      feat_params1<span class="op">,</span> feat_params2<span class="op">,</span> feat_params3<span class="op">,</span> feat_params4<span class="op">,</span> feat_params5<span class="op">);</span></span>
-<span id="cb2-67"><a href="#cb2-67" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Initialize the classification network</span></span>
-<span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a>    InitializeClsNaive<span class="op">&lt;</span><span class="dt">param_t</span><span class="op">&gt;(</span></span>
-<span id="cb2-69"><a href="#cb2-69" aria-hidden="true" tabindex="-1"></a>      <span class="op">&amp;</span>cls_fc3<span class="op">,</span> <span class="op">&amp;</span>cls_bn1<span class="op">,</span> <span class="op">&amp;</span>cls_bn2<span class="op">,</span></span>
-<span id="cb2-70"><a href="#cb2-70" aria-hidden="true" tabindex="-1"></a>      cls_params1<span class="op">,</span> cls_params2<span class="op">,</span> cls_params3<span class="op">);</span></span>
-<span id="cb2-71"><a href="#cb2-71" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span> <span class="cf">else</span> <span class="cf">if</span> <span class="op">(</span>op_mode <span class="op">==</span> kModeInference<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb2-72"><a href="#cb2-72" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Run the PointNet feature extraction</span></span>
-<span id="cb2-73"><a href="#cb2-73" aria-hidden="true" tabindex="-1"></a>    InferenceFeatNaive<span class="op">&lt;</span><span class="dt">value_t</span><span class="op">,</span> <span class="dt">param_t</span><span class="op">,</span> <span class="dv">1024</span><span class="op">&gt;(</span></span>
-<span id="cb2-74"><a href="#cb2-74" aria-hidden="true" tabindex="-1"></a>      point_cloud<span class="op">,</span> num_points<span class="op">,</span> feature<span class="op">,</span></span>
-<span id="cb2-75"><a href="#cb2-75" aria-hidden="true" tabindex="-1"></a>      <span class="op">&amp;</span>feat_conv1<span class="op">,</span> <span class="op">&amp;</span>feat_conv2<span class="op">,</span> <span class="op">&amp;</span>feat_conv3<span class="op">,</span> <span class="op">&amp;</span>feat_conv4<span class="op">,</span> <span class="op">&amp;</span>feat_conv5<span class="op">,</span></span>
-<span id="cb2-76"><a href="#cb2-76" aria-hidden="true" tabindex="-1"></a>      <span class="op">&amp;</span>feat_bn1<span class="op">,</span> <span class="op">&amp;</span>feat_bn2<span class="op">,</span> <span class="op">&amp;</span>feat_bn3<span class="op">,</span> <span class="op">&amp;</span>feat_bn4<span class="op">,</span> <span class="op">&amp;</span>feat_bn5<span class="op">);</span></span>
-<span id="cb2-77"><a href="#cb2-77" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-78"><a href="#cb2-78" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Run the classification</span></span>
-<span id="cb2-79"><a href="#cb2-79" aria-hidden="true" tabindex="-1"></a>    InferenceClsNaive<span class="op">&lt;</span><span class="dt">value_t</span><span class="op">,</span> <span class="dt">param_t</span><span class="op">&gt;(</span></span>
-<span id="cb2-80"><a href="#cb2-80" aria-hidden="true" tabindex="-1"></a>      feature<span class="op">,</span> out_logits<span class="op">,</span></span>
-<span id="cb2-81"><a href="#cb2-81" aria-hidden="true" tabindex="-1"></a>      <span class="op">&amp;</span>cls_fc3<span class="op">,</span> <span class="op">&amp;</span>cls_bn1<span class="op">,</span> <span class="op">&amp;</span>cls_bn2<span class="op">,</span></span>
-<span id="cb2-82"><a href="#cb2-82" aria-hidden="true" tabindex="-1"></a>      cls_params1<span class="op">,</span> cls_params2<span class="op">,</span> cls_params3<span class="op">);</span></span>
-<span id="cb2-83"><a href="#cb2-83" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
-<span id="cb2-84"><a href="#cb2-84" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Parameters for feature extraction</span></span>
+<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a>  LinearParams<span class="op">&lt;</span><span class="dt">param_t</span><span class="op">,</span> kFeatDims0<span class="op">,</span> kFeatDims1<span class="op">&gt;</span> feat_conv1<span class="op">;</span></span>
+<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a>  LinearParams<span class="op">&lt;</span><span class="dt">param_t</span><span class="op">,</span> kFeatDims1<span class="op">,</span> kFeatDims2<span class="op">&gt;</span> feat_conv2<span class="op">;</span></span>
+<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a>  LinearParams<span class="op">&lt;</span><span class="dt">param_t</span><span class="op">,</span> kFeatDims2<span class="op">,</span> kFeatDims3<span class="op">&gt;</span> feat_conv3<span class="op">;</span></span>
+<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a>  LinearParams<span class="op">&lt;</span><span class="dt">param_t</span><span class="op">,</span> kFeatDims3<span class="op">,</span> kFeatDims4<span class="op">&gt;</span> feat_conv4<span class="op">;</span></span>
+<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a>  LinearParams<span class="op">&lt;</span><span class="dt">param_t</span><span class="op">,</span> kFeatDims4<span class="op">,</span> kFeatDims5<span class="op">&gt;</span> feat_conv5<span class="op">;</span></span>
+<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a>  BatchNorm1dParams<span class="op">&lt;</span><span class="dt">param_t</span><span class="op">,</span> kFeatDims1<span class="op">&gt;</span> feat_bn1<span class="op">;</span></span>
+<span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a>  BatchNorm1dParams<span class="op">&lt;</span><span class="dt">param_t</span><span class="op">,</span> kFeatDims2<span class="op">&gt;</span> feat_bn2<span class="op">;</span></span>
+<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a>  BatchNorm1dParams<span class="op">&lt;</span><span class="dt">param_t</span><span class="op">,</span> kFeatDims3<span class="op">&gt;</span> feat_bn3<span class="op">;</span></span>
+<span id="cb2-67"><a href="#cb2-67" aria-hidden="true" tabindex="-1"></a>  BatchNorm1dParams<span class="op">&lt;</span><span class="dt">param_t</span><span class="op">,</span> kFeatDims4<span class="op">&gt;</span> feat_bn4<span class="op">;</span></span>
+<span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a>  BatchNorm1dParams<span class="op">&lt;</span><span class="dt">param_t</span><span class="op">,</span> kFeatDims5<span class="op">&gt;</span> feat_bn5<span class="op">;</span></span>
+<span id="cb2-69"><a href="#cb2-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-70"><a href="#cb2-70" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Parameters for classification network</span></span>
+<span id="cb2-71"><a href="#cb2-71" aria-hidden="true" tabindex="-1"></a>  <span class="co">// LinearParams&lt;param_t, kClsDims0, kClsDims1&gt; cls_fc1;</span></span>
+<span id="cb2-72"><a href="#cb2-72" aria-hidden="true" tabindex="-1"></a>  <span class="co">// LinearParams&lt;param_t, kClsDims1, kClsDims2&gt; cls_fc2;</span></span>
+<span id="cb2-73"><a href="#cb2-73" aria-hidden="true" tabindex="-1"></a>  LinearParams<span class="op">&lt;</span><span class="dt">param_t</span><span class="op">,</span> kClsDims2<span class="op">,</span> kClsDims3<span class="op">&gt;</span> cls_fc3<span class="op">;</span></span>
+<span id="cb2-74"><a href="#cb2-74" aria-hidden="true" tabindex="-1"></a>  BatchNorm1dParams<span class="op">&lt;</span><span class="dt">param_t</span><span class="op">,</span> kClsDims1<span class="op">&gt;</span> cls_bn1<span class="op">;</span></span>
+<span id="cb2-75"><a href="#cb2-75" aria-hidden="true" tabindex="-1"></a>  BatchNorm1dParams<span class="op">&lt;</span><span class="dt">param_t</span><span class="op">,</span> kClsDims2<span class="op">&gt;</span> cls_bn2<span class="op">;</span></span>
+<span id="cb2-76"><a href="#cb2-76" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-77"><a href="#cb2-77" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Extracted feature</span></span>
+<span id="cb2-78"><a href="#cb2-78" aria-hidden="true" tabindex="-1"></a>  <span class="dt">value_t</span> feature<span class="op">[</span>kFeatDims5<span class="op">];</span></span>
+<span id="cb2-79"><a href="#cb2-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-80"><a href="#cb2-80" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span>op_mode <span class="op">==</span> kModeInitWeights<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb2-81"><a href="#cb2-81" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Initialize the PointNet feature extraction network</span></span>
+<span id="cb2-82"><a href="#cb2-82" aria-hidden="true" tabindex="-1"></a>    InitializeFeatNaive<span class="op">&lt;</span><span class="dt">param_t</span><span class="op">&gt;(</span></span>
+<span id="cb2-83"><a href="#cb2-83" aria-hidden="true" tabindex="-1"></a>      <span class="op">&amp;</span>feat_conv1<span class="op">,</span> <span class="op">&amp;</span>feat_conv2<span class="op">,</span> <span class="op">&amp;</span>feat_conv3<span class="op">,</span> <span class="op">&amp;</span>feat_conv4<span class="op">,</span> <span class="op">&amp;</span>feat_conv5<span class="op">,</span></span>
+<span id="cb2-84"><a href="#cb2-84" aria-hidden="true" tabindex="-1"></a>      <span class="op">&amp;</span>feat_bn1<span class="op">,</span> <span class="op">&amp;</span>feat_bn2<span class="op">,</span> <span class="op">&amp;</span>feat_bn3<span class="op">,</span> <span class="op">&amp;</span>feat_bn4<span class="op">,</span> <span class="op">&amp;</span>feat_bn5<span class="op">,</span></span>
+<span id="cb2-85"><a href="#cb2-85" aria-hidden="true" tabindex="-1"></a>      feat_params1<span class="op">,</span> feat_params2<span class="op">,</span> feat_params3<span class="op">,</span> feat_params4<span class="op">,</span> feat_params5<span class="op">);</span></span>
+<span id="cb2-86"><a href="#cb2-86" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Initialize the classification network</span></span>
+<span id="cb2-87"><a href="#cb2-87" aria-hidden="true" tabindex="-1"></a>    InitializeClsNaive<span class="op">&lt;</span><span class="dt">param_t</span><span class="op">&gt;(</span></span>
+<span id="cb2-88"><a href="#cb2-88" aria-hidden="true" tabindex="-1"></a>      <span class="op">&amp;</span>cls_fc3<span class="op">,</span> <span class="op">&amp;</span>cls_bn1<span class="op">,</span> <span class="op">&amp;</span>cls_bn2<span class="op">,</span></span>
+<span id="cb2-89"><a href="#cb2-89" aria-hidden="true" tabindex="-1"></a>      cls_params1<span class="op">,</span> cls_params2<span class="op">,</span> cls_params3<span class="op">);</span></span>
+<span id="cb2-90"><a href="#cb2-90" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span> <span class="cf">else</span> <span class="cf">if</span> <span class="op">(</span>op_mode <span class="op">==</span> kModeInference<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb2-91"><a href="#cb2-91" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Run the PointNet feature extraction</span></span>
+<span id="cb2-92"><a href="#cb2-92" aria-hidden="true" tabindex="-1"></a>    InferenceFeatNaive<span class="op">&lt;</span><span class="dt">value_t</span><span class="op">,</span> <span class="dt">param_t</span><span class="op">,</span> <span class="dv">1024</span><span class="op">&gt;(</span></span>
+<span id="cb2-93"><a href="#cb2-93" aria-hidden="true" tabindex="-1"></a>      point_cloud<span class="op">,</span> num_points<span class="op">,</span> feature<span class="op">,</span></span>
+<span id="cb2-94"><a href="#cb2-94" aria-hidden="true" tabindex="-1"></a>      <span class="op">&amp;</span>feat_conv1<span class="op">,</span> <span class="op">&amp;</span>feat_conv2<span class="op">,</span> <span class="op">&amp;</span>feat_conv3<span class="op">,</span> <span class="op">&amp;</span>feat_conv4<span class="op">,</span> <span class="op">&amp;</span>feat_conv5<span class="op">,</span></span>
+<span id="cb2-95"><a href="#cb2-95" aria-hidden="true" tabindex="-1"></a>      <span class="op">&amp;</span>feat_bn1<span class="op">,</span> <span class="op">&amp;</span>feat_bn2<span class="op">,</span> <span class="op">&amp;</span>feat_bn3<span class="op">,</span> <span class="op">&amp;</span>feat_bn4<span class="op">,</span> <span class="op">&amp;</span>feat_bn5<span class="op">);</span></span>
+<span id="cb2-96"><a href="#cb2-96" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-97"><a href="#cb2-97" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Run the classification</span></span>
+<span id="cb2-98"><a href="#cb2-98" aria-hidden="true" tabindex="-1"></a>    InferenceClsNaive<span class="op">&lt;</span><span class="dt">value_t</span><span class="op">,</span> <span class="dt">param_t</span><span class="op">&gt;(</span></span>
+<span id="cb2-99"><a href="#cb2-99" aria-hidden="true" tabindex="-1"></a>      feature<span class="op">,</span> out_logits<span class="op">,</span></span>
+<span id="cb2-100"><a href="#cb2-100" aria-hidden="true" tabindex="-1"></a>      <span class="op">&amp;</span>cls_fc3<span class="op">,</span> <span class="op">&amp;</span>cls_bn1<span class="op">,</span> <span class="op">&amp;</span>cls_bn2<span class="op">,</span></span>
+<span id="cb2-101"><a href="#cb2-101" aria-hidden="true" tabindex="-1"></a>      cls_params1<span class="op">,</span> cls_params2<span class="op">,</span> cls_params3<span class="op">);</span></span>
+<span id="cb2-102"><a href="#cb2-102" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb2-103"><a href="#cb2-103" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <p>上記を高位合成すると、次のようなIPコアが作られます。</p>
 <p><a
 href="point-cloud-classification-images/pointnet-ip-core.svg"><img src="point-cloud-classification-images/pointnet-ip-core.svg" width="360" /></a></p>
@@ -409,6 +428,7 @@ href="point-cloud-classification-images/board-design.svg"><img src="point-cloud-
 ビットストリームをFPGAにロードすることで、PointNetの専用回路が使えるようになります。</p>
 <h3 id="入出力ポート">入出力ポート</h3>
 <p><code>PointNetClsTop</code>が、IPコアを表す最上位の関数です。
+トップ関数 (Top function) とよばれます。
 関数の引数は、IPコアの入出力ポートとなり、別のIPコアに接続されます
 (上のブロックデザインをご覧ください)。 HLSでは、関数そのものが回路
 (Verilog HDLにおけるモジュール) になります。
@@ -1438,7 +1458,8 @@ class="sourceCode c++"><code class="sourceCode cpp"><span id="cb16-1"><a href="#
 <code>InferenceFeatNaive</code>と<code>InferenceClsNaive</code>から、それぞれ<code>InferenceFeatOpt1</code>と<code>InferenceClsOpt1</code>になります。
 関数の引数は変更しません。
 なお、<code>InitializeFeatNaive</code>と<code>InitializeClsNaive</code>
-(重みの初期化関数) は、そのまま使うことにします。</p>
+(重みの初期化関数) は、そのまま使うことにします
+(関数名だけ、<code>InitializeFeatOpt1</code>、<code>InitializeClsOpt1</code>としました)。</p>
 <div class="sourceCode" id="cb17"><pre
 class="sourceCode c++"><code class="sourceCode cpp"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Parallel implementation of the PointNet feature extraction</span></span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="co">// `T` is the type for layer input, output, and intermediate results</span></span>
@@ -1842,5 +1863,937 @@ class="sourceCode c++"><code class="sourceCode cpp"><span id="cb18-1"><a href="#
 重みの初期化は、IPコアの利用開始前に一度だけ行われ、ネットワークの推論時間とは全く関係ないためです。</p>
 <p>以上で推論の並列化が済みました。
 詳しくは<code>hls/src/top_opt1.cpp</code>をご参照ください。</p>
+<h2 id="並列化その2-タスク並列性の活用">並列化その2
+(タスク並列性の活用)</h2>
+<p>各層の計算は並列化できましたが、特徴抽出ネットワークの部分には、まだ高速化の余地が残されています。
+特徴抽出ネットワークの推論処理を、もう一度みてみましょう。</p>
+<div class="sourceCode" id="cb19"><pre
+class="sourceCode c++"><code class="sourceCode cpp"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Compute the feature</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> num_points<span class="op">;</span> <span class="op">++</span>i<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS LOOP_TRIPCOUNT min=N max=N avg=N</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS LOOP_FLATTEN off</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>    <span class="co">// ...</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Read a point from a DDR memory</span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>    ReadPointNaive<span class="op">&lt;</span>T<span class="op">&gt;(</span>point_cloud<span class="op">,</span> i<span class="op">,</span> x0<span class="op">);</span></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Compute a point feature</span></span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>    LinearOpt1<span class="op">&lt;</span>T<span class="op">,</span> U<span class="op">,</span> kFeatDims0<span class="op">,</span> kFeatDims1<span class="op">,</span> <span class="kw">false</span><span class="op">,</span> <span class="dv">2</span><span class="op">&gt;(</span></span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>      x0<span class="op">,</span> x1<span class="op">,</span> conv1<span class="op">-&gt;</span>weight<span class="op">,</span> conv1<span class="op">-&gt;</span>bias<span class="op">);</span></span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>    BatchNorm1dReLUOpt1<span class="op">&lt;</span>T<span class="op">,</span> U<span class="op">,</span> kFeatDims1<span class="op">,</span> <span class="dv">2</span><span class="op">&gt;(</span></span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>      x1<span class="op">,</span> x2<span class="op">,</span> bn1<span class="op">-&gt;</span>scale<span class="op">,</span> bn1<span class="op">-&gt;</span>bias<span class="op">,</span> bn1<span class="op">-&gt;</span>mean<span class="op">);</span></span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>    LinearOpt1<span class="op">&lt;</span>T<span class="op">,</span> U<span class="op">,</span> kFeatDims1<span class="op">,</span> kFeatDims2<span class="op">,</span> <span class="kw">false</span><span class="op">,</span> <span class="dv">8</span><span class="op">&gt;(</span></span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>      x2<span class="op">,</span> x3<span class="op">,</span> conv2<span class="op">-&gt;</span>weight<span class="op">,</span> conv2<span class="op">-&gt;</span>bias<span class="op">);</span></span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>    BatchNorm1dReLUOpt1<span class="op">&lt;</span>T<span class="op">,</span> U<span class="op">,</span> kFeatDims2<span class="op">,</span> <span class="dv">2</span><span class="op">&gt;(</span></span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>      x3<span class="op">,</span> x4<span class="op">,</span> bn2<span class="op">-&gt;</span>scale<span class="op">,</span> bn2<span class="op">-&gt;</span>bias<span class="op">,</span> bn2<span class="op">-&gt;</span>mean<span class="op">);</span></span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a>    LinearOpt1<span class="op">&lt;</span>T<span class="op">,</span> U<span class="op">,</span> kFeatDims2<span class="op">,</span> kFeatDims3<span class="op">,</span> <span class="kw">false</span><span class="op">,</span> <span class="dv">8</span><span class="op">&gt;(</span></span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a>      x4<span class="op">,</span> x5<span class="op">,</span> conv3<span class="op">-&gt;</span>weight<span class="op">,</span> conv3<span class="op">-&gt;</span>bias<span class="op">);</span></span>
+<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a>    BatchNorm1dReLUOpt1<span class="op">&lt;</span>T<span class="op">,</span> U<span class="op">,</span> kFeatDims3<span class="op">,</span> <span class="dv">2</span><span class="op">&gt;(</span></span>
+<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a>      x5<span class="op">,</span> x6<span class="op">,</span> bn3<span class="op">-&gt;</span>scale<span class="op">,</span> bn3<span class="op">-&gt;</span>bias<span class="op">,</span> bn3<span class="op">-&gt;</span>mean<span class="op">);</span></span>
+<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a>    LinearOpt1<span class="op">&lt;</span>T<span class="op">,</span> U<span class="op">,</span> kFeatDims3<span class="op">,</span> kFeatDims4<span class="op">,</span> <span class="kw">false</span><span class="op">,</span> <span class="dv">16</span><span class="op">&gt;(</span></span>
+<span id="cb19-25"><a href="#cb19-25" aria-hidden="true" tabindex="-1"></a>      x6<span class="op">,</span> x7<span class="op">,</span> conv4<span class="op">-&gt;</span>weight<span class="op">,</span> conv4<span class="op">-&gt;</span>bias<span class="op">);</span></span>
+<span id="cb19-26"><a href="#cb19-26" aria-hidden="true" tabindex="-1"></a>    BatchNorm1dReLUOpt1<span class="op">&lt;</span>T<span class="op">,</span> U<span class="op">,</span> kFeatDims4<span class="op">,</span> <span class="dv">2</span><span class="op">&gt;(</span></span>
+<span id="cb19-27"><a href="#cb19-27" aria-hidden="true" tabindex="-1"></a>      x7<span class="op">,</span> x8<span class="op">,</span> bn4<span class="op">-&gt;</span>scale<span class="op">,</span> bn4<span class="op">-&gt;</span>bias<span class="op">,</span> bn4<span class="op">-&gt;</span>mean<span class="op">);</span></span>
+<span id="cb19-28"><a href="#cb19-28" aria-hidden="true" tabindex="-1"></a>    LinearOpt1<span class="op">&lt;</span>T<span class="op">,</span> U<span class="op">,</span> kFeatDims4<span class="op">,</span> kFeatDims5<span class="op">,</span> <span class="kw">false</span><span class="op">,</span> <span class="dv">128</span><span class="op">&gt;(</span></span>
+<span id="cb19-29"><a href="#cb19-29" aria-hidden="true" tabindex="-1"></a>      x8<span class="op">,</span> x9<span class="op">,</span> conv5<span class="op">-&gt;</span>weight<span class="op">,</span> conv5<span class="op">-&gt;</span>bias<span class="op">);</span></span>
+<span id="cb19-30"><a href="#cb19-30" aria-hidden="true" tabindex="-1"></a>    BatchNorm1dReLUOpt1<span class="op">&lt;</span>T<span class="op">,</span> U<span class="op">,</span> kFeatDims5<span class="op">,</span> <span class="dv">2</span><span class="op">&gt;(</span></span>
+<span id="cb19-31"><a href="#cb19-31" aria-hidden="true" tabindex="-1"></a>      x9<span class="op">,</span> x10<span class="op">,</span> bn5<span class="op">-&gt;</span>scale<span class="op">,</span> bn5<span class="op">-&gt;</span>bias<span class="op">,</span> bn5<span class="op">-&gt;</span>mean<span class="op">);</span></span>
+<span id="cb19-32"><a href="#cb19-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-33"><a href="#cb19-33" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Update the output feature</span></span>
+<span id="cb19-34"><a href="#cb19-34" aria-hidden="true" tabindex="-1"></a>    MaxPool1dOpt1<span class="op">&lt;</span>T<span class="op">,</span> kFeatDims5<span class="op">,</span> <span class="dv">2</span><span class="op">&gt;(</span>x10<span class="op">,</span> feature<span class="op">);</span></span>
+<span id="cb19-35"><a href="#cb19-35" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span></code></pre></div>
+<p>ループの内部をみると、最初に、DRAMに置かれた点群<code>point_cloud</code>から<code>i</code>番目の点を取ってきて、オンチップバッファ<code>x0</code>に格納しています。
+続いて、この<code>x0</code>がバケツリレーのように、複数の関数に渡されていきます。
+例えば、最初の全結合層によって<code>x0</code>から<code>x1</code>、バッチ正規化層によって<code>x1</code>から<code>x2</code>、次の全結合層によって<code>x2</code>から<code>x3</code>が計算されています。
+ある層の関数 (例えば<code>LinearOpt1(x4, x5)</code>)
+は、その一つ前の関数の出力 (<code>x4</code>) を入力として受け取り、出力
+(<code>x5</code>) を次の関数に引き渡します。
+全ての関数が、入出力を介して、数珠つなぎのようになっています。
+関数の実行の流れを図にすると、次のようになります。</p>
+<p><a
+href="point-cloud-classification-images/dataflow-optimization-before.svg"><img src="point-cloud-classification-images/dataflow-optimization-before.svg" width="720" /></a></p>
+<p>先程のパイプライン化と同様に、複数の点について処理を並列化できます。</p>
+<p><a
+href="point-cloud-classification-images/dataflow-optimization-after.svg"><img src="point-cloud-classification-images/dataflow-optimization-after.svg" width="720" /></a></p>
+<p>例えば、1つ目の点に対して、最後の全結合層を計算している間に、2つ目の点に対して、その一つ前のバッチ正規化層を計算するというように、複数の点に対する処理を時間的にオーバーラップさせます。
+以前は、ループ内の処理をパイプライン化して、ループの複数のイテレーションを並列に実行しました。
+そして、パイプラインの各ステージは、主に乗算や加算でした。
+ここでは、各ステージは一つの関数 (タスク)
+に対応するので、より粗粒度なパイプライン化といえます。
+このようなタスクレベルのパイプライン化は、Vitis
+HLSでは<strong>データフロー最適化</strong> (Dataflow optimization)
+とよばれています (<strong>最適化その6: データフロー最適化</strong>)。
+データフロー最適化を適用するには、いろいろな条件がありますが、今回の場合は大丈夫です。</p>
+<p>以前述べたように、パイプラインの各ステージの実行サイクル数をなるべく均等に揃えることで、パイプラインの効果が増します。
+各層の計算時間を、なるべく均一にしたいということです。
+計算時間は、上の表にまとめられています。
+データ並列性を利用する前は、実行サイクル数 (特に全結合層)
+には、かなりのばらつきがありました。
+全結合層5つだけ抜き出してみると、577、4,481、4,481、8,961、137,217となっています。
+それぞれの層を、2、8、8、16、128並列で実行することで
+(<code>InferenceFeatOpt1</code>を参照)、321、569、569、569、1,081サイクルに削減され、ばらつきもかなり抑えられました。
+最後の全結合層を256並列にすれば、さらに均等になりますが、回路が複雑になり過ぎるのでやめました。</p>
+<p>パイプラインは最も時間の長いステージによって性能が制限されます。
+今回の場合は、最後の全結合層 (1,081サイクル) によって性能が決まります。
+他のステージは、1,081サイクル以下であれば、何サイクルであろうとも性能に影響を与えません。
+リソース消費を抑えるため、他のステージに関しては、1,081サイクルを超えない範囲で、なるべく並列度を落としました。</p>
+<p>特徴抽出ネットワークに関してはこのように、データフロー最適化を予め考慮したうえで、各層の並列度を指定しました。
+分類ネットワークの並列度は、何となく決めています。</p>
+<p>データフロー最適化を施した実装を、次に示します。
+<code>InferenceFeatOpt1</code>から、<code>InferenceFeatOpt2</code>としました。</p>
+<div class="sourceCode" id="cb20"><pre
+class="sourceCode c++"><code class="sourceCode cpp"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Parallel implementation of the PointNet feature extraction</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="co">// `T` is the type for layer input, output, and intermediate results</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="co">// `U` is the type for parameters</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="co">// `N` is the expected number of input points (e.g., 1024)</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span> <span class="op">&lt;</span><span class="kw">typename</span> T<span class="op">,</span> <span class="kw">typename</span> U<span class="op">,</span> <span class="dt">int</span> N<span class="op">&gt;</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> InferenceFeatOpt2<span class="op">(...)</span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS INLINE off</span></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Zero-initialize the output feature</span></span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>  VectorNdSetZero<span class="op">&lt;</span>T<span class="op">,</span> kFeatDims5<span class="op">&gt;(</span>feature<span class="op">);</span></span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Compute the feature</span></span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> num_points<span class="op">;</span> <span class="op">++</span>i<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS LOOP_TRIPCOUNT min=N max=N avg=N</span></span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS LOOP_FLATTEN off</span></span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS DATAFLOW</span></span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS STABLE variable=point_cloud</span></span>
+<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS STABLE variable=num_points</span></span>
+<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS STABLE variable=feature</span></span>
+<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS STABLE variable=conv1</span></span>
+<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS STABLE variable=conv2</span></span>
+<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS STABLE variable=conv3</span></span>
+<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS STABLE variable=conv4</span></span>
+<span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS STABLE variable=conv5</span></span>
+<span id="cb20-27"><a href="#cb20-27" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS STABLE variable=bn1</span></span>
+<span id="cb20-28"><a href="#cb20-28" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS STABLE variable=bn2</span></span>
+<span id="cb20-29"><a href="#cb20-29" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS STABLE variable=bn3</span></span>
+<span id="cb20-30"><a href="#cb20-30" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS STABLE variable=bn4</span></span>
+<span id="cb20-31"><a href="#cb20-31" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS STABLE variable=bn5</span></span>
+<span id="cb20-32"><a href="#cb20-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-33"><a href="#cb20-33" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Input, output, and intermediate results</span></span>
+<span id="cb20-34"><a href="#cb20-34" aria-hidden="true" tabindex="-1"></a>    <span class="co">// ...</span></span>
+<span id="cb20-35"><a href="#cb20-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-36"><a href="#cb20-36" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Read a point from a DDR memory</span></span>
+<span id="cb20-37"><a href="#cb20-37" aria-hidden="true" tabindex="-1"></a>    ReadPointNaive<span class="op">&lt;</span>T<span class="op">&gt;(</span>point_cloud<span class="op">,</span> i<span class="op">,</span> x0<span class="op">);</span></span>
+<span id="cb20-38"><a href="#cb20-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-39"><a href="#cb20-39" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Compute a point feature</span></span>
+<span id="cb20-40"><a href="#cb20-40" aria-hidden="true" tabindex="-1"></a>    LinearOpt1<span class="op">&lt;</span>T<span class="op">,</span> U<span class="op">,</span> kFeatDims0<span class="op">,</span> kFeatDims1<span class="op">,</span> <span class="kw">false</span><span class="op">,</span> <span class="dv">2</span><span class="op">&gt;(</span></span>
+<span id="cb20-41"><a href="#cb20-41" aria-hidden="true" tabindex="-1"></a>      x0<span class="op">,</span> x1<span class="op">,</span> conv1<span class="op">-&gt;</span>weight<span class="op">,</span> conv1<span class="op">-&gt;</span>bias<span class="op">);</span></span>
+<span id="cb20-42"><a href="#cb20-42" aria-hidden="true" tabindex="-1"></a>    BatchNorm1dReLUOpt1<span class="op">&lt;</span>T<span class="op">,</span> U<span class="op">,</span> kFeatDims1<span class="op">,</span> <span class="dv">2</span><span class="op">&gt;(</span></span>
+<span id="cb20-43"><a href="#cb20-43" aria-hidden="true" tabindex="-1"></a>      x1<span class="op">,</span> x2<span class="op">,</span> bn1<span class="op">-&gt;</span>scale<span class="op">,</span> bn1<span class="op">-&gt;</span>bias<span class="op">,</span> bn1<span class="op">-&gt;</span>mean<span class="op">);</span></span>
+<span id="cb20-44"><a href="#cb20-44" aria-hidden="true" tabindex="-1"></a>    LinearOpt1<span class="op">&lt;</span>T<span class="op">,</span> U<span class="op">,</span> kFeatDims1<span class="op">,</span> kFeatDims2<span class="op">,</span> <span class="kw">false</span><span class="op">,</span> <span class="dv">8</span><span class="op">&gt;(</span></span>
+<span id="cb20-45"><a href="#cb20-45" aria-hidden="true" tabindex="-1"></a>      x2<span class="op">,</span> x3<span class="op">,</span> conv2<span class="op">-&gt;</span>weight<span class="op">,</span> conv2<span class="op">-&gt;</span>bias<span class="op">);</span></span>
+<span id="cb20-46"><a href="#cb20-46" aria-hidden="true" tabindex="-1"></a>    BatchNorm1dReLUOpt1<span class="op">&lt;</span>T<span class="op">,</span> U<span class="op">,</span> kFeatDims2<span class="op">,</span> <span class="dv">2</span><span class="op">&gt;(</span></span>
+<span id="cb20-47"><a href="#cb20-47" aria-hidden="true" tabindex="-1"></a>      x3<span class="op">,</span> x4<span class="op">,</span> bn2<span class="op">-&gt;</span>scale<span class="op">,</span> bn2<span class="op">-&gt;</span>bias<span class="op">,</span> bn2<span class="op">-&gt;</span>mean<span class="op">);</span></span>
+<span id="cb20-48"><a href="#cb20-48" aria-hidden="true" tabindex="-1"></a>    LinearOpt1<span class="op">&lt;</span>T<span class="op">,</span> U<span class="op">,</span> kFeatDims2<span class="op">,</span> kFeatDims3<span class="op">,</span> <span class="kw">false</span><span class="op">,</span> <span class="dv">8</span><span class="op">&gt;(</span></span>
+<span id="cb20-49"><a href="#cb20-49" aria-hidden="true" tabindex="-1"></a>      x4<span class="op">,</span> x5<span class="op">,</span> conv3<span class="op">-&gt;</span>weight<span class="op">,</span> conv3<span class="op">-&gt;</span>bias<span class="op">);</span></span>
+<span id="cb20-50"><a href="#cb20-50" aria-hidden="true" tabindex="-1"></a>    BatchNorm1dReLUOpt1<span class="op">&lt;</span>T<span class="op">,</span> U<span class="op">,</span> kFeatDims3<span class="op">,</span> <span class="dv">2</span><span class="op">&gt;(</span></span>
+<span id="cb20-51"><a href="#cb20-51" aria-hidden="true" tabindex="-1"></a>      x5<span class="op">,</span> x6<span class="op">,</span> bn3<span class="op">-&gt;</span>scale<span class="op">,</span> bn3<span class="op">-&gt;</span>bias<span class="op">,</span> bn3<span class="op">-&gt;</span>mean<span class="op">);</span></span>
+<span id="cb20-52"><a href="#cb20-52" aria-hidden="true" tabindex="-1"></a>    LinearOpt1<span class="op">&lt;</span>T<span class="op">,</span> U<span class="op">,</span> kFeatDims3<span class="op">,</span> kFeatDims4<span class="op">,</span> <span class="kw">false</span><span class="op">,</span> <span class="dv">16</span><span class="op">&gt;(</span></span>
+<span id="cb20-53"><a href="#cb20-53" aria-hidden="true" tabindex="-1"></a>      x6<span class="op">,</span> x7<span class="op">,</span> conv4<span class="op">-&gt;</span>weight<span class="op">,</span> conv4<span class="op">-&gt;</span>bias<span class="op">);</span></span>
+<span id="cb20-54"><a href="#cb20-54" aria-hidden="true" tabindex="-1"></a>    BatchNorm1dReLUOpt1<span class="op">&lt;</span>T<span class="op">,</span> U<span class="op">,</span> kFeatDims4<span class="op">,</span> <span class="dv">2</span><span class="op">&gt;(</span></span>
+<span id="cb20-55"><a href="#cb20-55" aria-hidden="true" tabindex="-1"></a>      x7<span class="op">,</span> x8<span class="op">,</span> bn4<span class="op">-&gt;</span>scale<span class="op">,</span> bn4<span class="op">-&gt;</span>bias<span class="op">,</span> bn4<span class="op">-&gt;</span>mean<span class="op">);</span></span>
+<span id="cb20-56"><a href="#cb20-56" aria-hidden="true" tabindex="-1"></a>    LinearOpt1<span class="op">&lt;</span>T<span class="op">,</span> U<span class="op">,</span> kFeatDims4<span class="op">,</span> kFeatDims5<span class="op">,</span> <span class="kw">false</span><span class="op">,</span> <span class="dv">128</span><span class="op">&gt;(</span></span>
+<span id="cb20-57"><a href="#cb20-57" aria-hidden="true" tabindex="-1"></a>      x8<span class="op">,</span> x9<span class="op">,</span> conv5<span class="op">-&gt;</span>weight<span class="op">,</span> conv5<span class="op">-&gt;</span>bias<span class="op">);</span></span>
+<span id="cb20-58"><a href="#cb20-58" aria-hidden="true" tabindex="-1"></a>    BatchNorm1dReLUOpt1<span class="op">&lt;</span>T<span class="op">,</span> U<span class="op">,</span> kFeatDims5<span class="op">,</span> <span class="dv">2</span><span class="op">&gt;(</span></span>
+<span id="cb20-59"><a href="#cb20-59" aria-hidden="true" tabindex="-1"></a>      x9<span class="op">,</span> x10<span class="op">,</span> bn5<span class="op">-&gt;</span>scale<span class="op">,</span> bn5<span class="op">-&gt;</span>bias<span class="op">,</span> bn5<span class="op">-&gt;</span>mean<span class="op">);</span></span>
+<span id="cb20-60"><a href="#cb20-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-61"><a href="#cb20-61" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Update the output feature</span></span>
+<span id="cb20-62"><a href="#cb20-62" aria-hidden="true" tabindex="-1"></a>    MaxPool1dOpt1<span class="op">&lt;</span>T<span class="op">,</span> kFeatDims5<span class="op">,</span> <span class="dv">2</span><span class="op">&gt;(</span>x10<span class="op">,</span> feature<span class="op">);</span></span>
+<span id="cb20-63"><a href="#cb20-63" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb20-64"><a href="#cb20-64" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p><code>InferenceFeatOpt1</code>と異なるのはHLSプラグマの部分だけです。
+ループの先頭部分には<code>#pragma HLS DATAFLOW</code>の記述があり、ループの中身をデータフロー最適化するように指示します。
+<code>#pragma HLS STABLE</code>の部分は、ループの各イテレーションを開始するにあたって、その変数について同期をとる必要がない、ということを示します。
+各層のパラメータや点群など、ループの実行中は変化しない変数に付与しています。
+この記述がないと、データフロー最適化がうまく機能しません。</p>
+<p>この2種類のHLSプラグマを挿入するだけで、データフロー最適化をいとも簡単に実現できます。
+高位合成ツールは素晴らしいと思います。 <code>PointNetClsTop</code>
+(トップ関数) や分類ネットワークの推論 (<code>InferenceClsOpt1</code>)
+については以前と全く同じであるため、ここでは割愛します。</p>
+<p>データフロー最適化による効果をみてみます。
+<code>InferenceFeatOpt1</code>では、1つの点に対する順伝播に4,357サイクル
+(29.02us)
+要していましたが、<code>InferenceFeatOpt2</code>でも4,344サイクル
+(28.93us) で、ほぼ変わりません。
+一方、1,024個の点に対する処理時間をみてみると、<code>InferenceFeatOpt1</code>では4,462,596サイクル
+(29.72ms) でしたが、<code>InferenceFeatOpt2</code>では1,112,259サイクル
+(7.408ms) に削減されています。
+パイプライン化しても、各入力データに対する計算時間 (レイテンシ)
+は変化しませんが、単位時間あたりに処理可能なデータ数 (スループット)
+は改善するので、それに伴って全体の性能も向上するということです。</p>
+<p>これでデータフロー最適化は終わりです。
+詳しくは<code>hls/src/top_opt2.cpp</code>をご覧ください。</p>
+<h3 id="入出力ポート幅の拡張">入出力ポート幅の拡張</h3>
+<p>分類ネットワークの全結合層部分では、積和演算を並列化したにもかかわらず、全体の処理時間はそれほど短縮されませんでした。
+DRAMからオンチップバッファへのパラメータ転送のサイクル数が、変化していないためです。
+そこで最後の最適化として、入出力ポートのビット幅を32から64に広げて、1サイクルにつき2つの<code>float</code>データを転送できるように、実装を修正してみましょう
+(<strong>最適化その7: データ転送</strong>)。</p>
+<p>最初に、IPコアの最上位関数<code>PointNetClsTop</code>から修正します。
+修正前は、次のようになっていました。</p>
+<div class="sourceCode" id="cb21"><pre
+class="sourceCode c++"><code class="sourceCode cpp"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> PointNetClsTop<span class="op">(</span><span class="at">const</span> <span class="dt">int</span> op_mode<span class="op">,</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>                    <span class="at">const</span> <span class="dt">float</span><span class="op">*</span> point_cloud<span class="op">,</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>                    <span class="at">const</span> <span class="dt">int</span> num_points<span class="op">,</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>                    <span class="dt">float</span><span class="op">*</span> out_logits<span class="op">,</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>                    <span class="at">const</span> <span class="dt">float</span><span class="op">*</span> feat_params1<span class="op">,</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>                    <span class="at">const</span> <span class="dt">float</span><span class="op">*</span> feat_params2<span class="op">,</span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>                    <span class="at">const</span> <span class="dt">float</span><span class="op">*</span> feat_params3<span class="op">,</span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>                    <span class="at">const</span> <span class="dt">float</span><span class="op">*</span> feat_params4<span class="op">,</span></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>                    <span class="at">const</span> <span class="dt">float</span><span class="op">*</span> feat_params5<span class="op">,</span></span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>                    <span class="at">const</span> <span class="dt">float</span><span class="op">*</span> cls_params1<span class="op">,</span></span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>                    <span class="at">const</span> <span class="dt">float</span><span class="op">*</span> cls_params2<span class="op">,</span></span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>                    <span class="at">const</span> <span class="dt">float</span><span class="op">*</span> cls_params3<span class="op">)</span></span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>  <span class="co">// ...</span></span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>これを、次のように64ビット幅にします。</p>
+<div class="sourceCode" id="cb22"><pre
+class="sourceCode c++"><code class="sourceCode cpp"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> PointNetClsTop<span class="op">(</span><span class="at">const</span> <span class="dt">int</span> op_mode<span class="op">,</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>                    <span class="at">const</span> ap_uint<span class="op">&lt;</span><span class="dv">64</span><span class="op">&gt;*</span> point_cloud<span class="op">,</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>                    <span class="at">const</span> <span class="dt">int</span> num_points<span class="op">,</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>                    ap_uint<span class="op">&lt;</span><span class="dv">64</span><span class="op">&gt;*</span> out_logits<span class="op">,</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>                    <span class="at">const</span> ap_uint<span class="op">&lt;</span><span class="dv">64</span><span class="op">&gt;*</span> feat_params1<span class="op">,</span></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>                    <span class="at">const</span> ap_uint<span class="op">&lt;</span><span class="dv">64</span><span class="op">&gt;*</span> feat_params2<span class="op">,</span></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>                    <span class="at">const</span> ap_uint<span class="op">&lt;</span><span class="dv">64</span><span class="op">&gt;*</span> feat_params3<span class="op">,</span></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>                    <span class="at">const</span> ap_uint<span class="op">&lt;</span><span class="dv">64</span><span class="op">&gt;*</span> feat_params4<span class="op">,</span></span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>                    <span class="at">const</span> ap_uint<span class="op">&lt;</span><span class="dv">64</span><span class="op">&gt;*</span> feat_params5<span class="op">,</span></span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>                    <span class="at">const</span> ap_uint<span class="op">&lt;</span><span class="dv">64</span><span class="op">&gt;*</span> cls_params1<span class="op">,</span></span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>                    <span class="at">const</span> ap_uint<span class="op">&lt;</span><span class="dv">64</span><span class="op">&gt;*</span> cls_params2<span class="op">,</span></span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>                    <span class="at">const</span> ap_uint<span class="op">&lt;</span><span class="dv">64</span><span class="op">&gt;*</span> cls_params3<span class="op">)</span></span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>  <span class="co">// ...</span></span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p><code>ap_uint</code>は、Vitis
+HLSで提供されている、任意ビット長の符号なし整数型です。
+ここでは64ビットとしています。
+1サイクルにつきデータを2つずつ読み取らなければいけないので、データ転送に関する部分を全て修正します。
+DRAMからパラメータを取り出して、オンチップバッファに格納する、重み初期化関数<code>InitializeFeatOpt1</code>、<code>InitializeClsOpt1</code>も次のように直して、新たに<code>InitializeFeatOpt3</code>、<code>InitializeClsOpt3</code>とします。
+単に、関数の引数を<code>float*</code>から<code>ap_uint&lt;64&gt;*</code>に変更しただけです。</p>
+<div class="sourceCode" id="cb23"><pre
+class="sourceCode c++"><code class="sourceCode cpp"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Parallel implementation of the parameter initialization</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="co">// `T` is the type for parameters</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span> <span class="op">&lt;</span><span class="kw">typename</span> T<span class="op">&gt;</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> InitializeFeatOpt3<span class="op">(</span>LinearParams<span class="op">&lt;</span>T<span class="op">,</span> kFeatDims0<span class="op">,</span> kFeatDims1<span class="op">&gt;*</span> conv1<span class="op">,</span></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>                        LinearParams<span class="op">&lt;</span>T<span class="op">,</span> kFeatDims1<span class="op">,</span> kFeatDims2<span class="op">&gt;*</span> conv2<span class="op">,</span></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>                        LinearParams<span class="op">&lt;</span>T<span class="op">,</span> kFeatDims2<span class="op">,</span> kFeatDims3<span class="op">&gt;*</span> conv3<span class="op">,</span></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>                        LinearParams<span class="op">&lt;</span>T<span class="op">,</span> kFeatDims3<span class="op">,</span> kFeatDims4<span class="op">&gt;*</span> conv4<span class="op">,</span></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>                        LinearParams<span class="op">&lt;</span>T<span class="op">,</span> kFeatDims4<span class="op">,</span> kFeatDims5<span class="op">&gt;*</span> conv5<span class="op">,</span></span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>                        BatchNorm1dParams<span class="op">&lt;</span>T<span class="op">,</span> kFeatDims1<span class="op">&gt;*</span> bn1<span class="op">,</span></span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>                        BatchNorm1dParams<span class="op">&lt;</span>T<span class="op">,</span> kFeatDims2<span class="op">&gt;*</span> bn2<span class="op">,</span></span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>                        BatchNorm1dParams<span class="op">&lt;</span>T<span class="op">,</span> kFeatDims3<span class="op">&gt;*</span> bn3<span class="op">,</span></span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>                        BatchNorm1dParams<span class="op">&lt;</span>T<span class="op">,</span> kFeatDims4<span class="op">&gt;*</span> bn4<span class="op">,</span></span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>                        BatchNorm1dParams<span class="op">&lt;</span>T<span class="op">,</span> kFeatDims5<span class="op">&gt;*</span> bn5<span class="op">,</span></span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>                        <span class="at">const</span> ap_uint<span class="op">&lt;</span><span class="dv">64</span><span class="op">&gt;*</span> params1<span class="op">,</span></span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a>                        <span class="at">const</span> ap_uint<span class="op">&lt;</span><span class="dv">64</span><span class="op">&gt;*</span> params2<span class="op">,</span></span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a>                        <span class="at">const</span> ap_uint<span class="op">&lt;</span><span class="dv">64</span><span class="op">&gt;*</span> params3<span class="op">,</span></span>
+<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a>                        <span class="at">const</span> ap_uint<span class="op">&lt;</span><span class="dv">64</span><span class="op">&gt;*</span> params4<span class="op">,</span></span>
+<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a>                        <span class="at">const</span> ap_uint<span class="op">&lt;</span><span class="dv">64</span><span class="op">&gt;*</span> params5<span class="op">)</span></span>
+<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS INLINE off</span></span>
+<span id="cb23-21"><a href="#cb23-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-22"><a href="#cb23-22" aria-hidden="true" tabindex="-1"></a>  ReadBlockParamsOpt2<span class="op">&lt;</span>T<span class="op">,</span> kFeatDims0<span class="op">,</span> kFeatDims1<span class="op">&gt;(</span>conv1<span class="op">,</span> bn1<span class="op">,</span> params1<span class="op">);</span></span>
+<span id="cb23-23"><a href="#cb23-23" aria-hidden="true" tabindex="-1"></a>  ReadBlockParamsOpt1<span class="op">&lt;</span>T<span class="op">,</span> kFeatDims1<span class="op">,</span> kFeatDims2<span class="op">&gt;(</span>conv2<span class="op">,</span> bn2<span class="op">,</span> params2<span class="op">);</span></span>
+<span id="cb23-24"><a href="#cb23-24" aria-hidden="true" tabindex="-1"></a>  ReadBlockParamsOpt1<span class="op">&lt;</span>T<span class="op">,</span> kFeatDims2<span class="op">,</span> kFeatDims3<span class="op">&gt;(</span>conv3<span class="op">,</span> bn3<span class="op">,</span> params3<span class="op">);</span></span>
+<span id="cb23-25"><a href="#cb23-25" aria-hidden="true" tabindex="-1"></a>  ReadBlockParamsOpt1<span class="op">&lt;</span>T<span class="op">,</span> kFeatDims3<span class="op">,</span> kFeatDims4<span class="op">&gt;(</span>conv4<span class="op">,</span> bn4<span class="op">,</span> params4<span class="op">);</span></span>
+<span id="cb23-26"><a href="#cb23-26" aria-hidden="true" tabindex="-1"></a>  ReadBlockParamsOpt1<span class="op">&lt;</span>T<span class="op">,</span> kFeatDims4<span class="op">,</span> kFeatDims5<span class="op">&gt;(</span>conv5<span class="op">,</span> bn5<span class="op">,</span> params5<span class="op">);</span></span>
+<span id="cb23-27"><a href="#cb23-27" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb23-28"><a href="#cb23-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-29"><a href="#cb23-29" aria-hidden="true" tabindex="-1"></a><span class="co">// Parallel implementation of the parameter initialization</span></span>
+<span id="cb23-30"><a href="#cb23-30" aria-hidden="true" tabindex="-1"></a><span class="co">// `T` is the type for parameters</span></span>
+<span id="cb23-31"><a href="#cb23-31" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span> <span class="op">&lt;</span><span class="kw">typename</span> T<span class="op">&gt;</span></span>
+<span id="cb23-32"><a href="#cb23-32" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> InitializeClsOpt3<span class="op">(</span>LinearParams<span class="op">&lt;</span>T<span class="op">,</span> kClsDims2<span class="op">,</span> kClsDims3<span class="op">&gt;*</span> fc3<span class="op">,</span></span>
+<span id="cb23-33"><a href="#cb23-33" aria-hidden="true" tabindex="-1"></a>                       BatchNorm1dParams<span class="op">&lt;</span>T<span class="op">,</span> kClsDims1<span class="op">&gt;*</span> bn1<span class="op">,</span></span>
+<span id="cb23-34"><a href="#cb23-34" aria-hidden="true" tabindex="-1"></a>                       BatchNorm1dParams<span class="op">&lt;</span>T<span class="op">,</span> kClsDims2<span class="op">&gt;*</span> bn2<span class="op">,</span></span>
+<span id="cb23-35"><a href="#cb23-35" aria-hidden="true" tabindex="-1"></a>                       <span class="at">const</span> ap_uint<span class="op">&lt;</span><span class="dv">64</span><span class="op">&gt;*</span> params1<span class="op">,</span></span>
+<span id="cb23-36"><a href="#cb23-36" aria-hidden="true" tabindex="-1"></a>                       <span class="at">const</span> ap_uint<span class="op">&lt;</span><span class="dv">64</span><span class="op">&gt;*</span> params2<span class="op">,</span></span>
+<span id="cb23-37"><a href="#cb23-37" aria-hidden="true" tabindex="-1"></a>                       <span class="at">const</span> ap_uint<span class="op">&lt;</span><span class="dv">64</span><span class="op">&gt;*</span> params3<span class="op">)</span></span>
+<span id="cb23-38"><a href="#cb23-38" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb23-39"><a href="#cb23-39" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS INLINE off</span></span>
+<span id="cb23-40"><a href="#cb23-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-41"><a href="#cb23-41" aria-hidden="true" tabindex="-1"></a>  ReadBatchNorm1dParamsOpt1<span class="op">&lt;</span>T<span class="op">,</span> kClsDims1<span class="op">&gt;(</span></span>
+<span id="cb23-42"><a href="#cb23-42" aria-hidden="true" tabindex="-1"></a>    bn1<span class="op">,</span> params1<span class="op">,</span> kClsDims0 <span class="op">*</span> kClsDims1 <span class="op">+</span> kClsDims1<span class="op">);</span></span>
+<span id="cb23-43"><a href="#cb23-43" aria-hidden="true" tabindex="-1"></a>  ReadBatchNorm1dParamsOpt1<span class="op">&lt;</span>T<span class="op">,</span> kClsDims2<span class="op">&gt;(</span></span>
+<span id="cb23-44"><a href="#cb23-44" aria-hidden="true" tabindex="-1"></a>    bn2<span class="op">,</span> params2<span class="op">,</span> kClsDims1 <span class="op">*</span> kClsDims2 <span class="op">+</span> kClsDims2<span class="op">);</span></span>
+<span id="cb23-45"><a href="#cb23-45" aria-hidden="true" tabindex="-1"></a>  ReadLinearParamsOpt1<span class="op">&lt;</span>T<span class="op">,</span> kClsDims2<span class="op">,</span> kClsDims3<span class="op">&gt;(</span></span>
+<span id="cb23-46"><a href="#cb23-46" aria-hidden="true" tabindex="-1"></a>    fc3<span class="op">,</span> params3<span class="op">,</span> <span class="dv">0</span><span class="op">);</span></span>
+<span id="cb23-47"><a href="#cb23-47" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>最初の実装では<code>ReadLinearParamsNaive</code>、<code>ReadBatchNorm1dParamsNaive</code>、<code>ReadBlockParamsNaive</code>を使っていましたが、ここでは新たに<code>ReadLinearParamsOpt1</code>、<code>ReadBatchNorm1dParamsOpt1</code>、<code>ReadBlockParamsOpt1</code>、<code>ReadBlockParamsOpt2</code>の4種類を使っています。
+詳しく中身をみてみましょう。</p>
+<div class="sourceCode" id="cb24"><pre
+class="sourceCode c++"><code class="sourceCode cpp"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Parallel implementation of the parameter initialization</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="co">// Read the parameters for a linear layer from a DDR memory and</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="co">// store them to BRAM buffers</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="co">// `T` is the type for parameters</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="co">// `InDims` is the number of input dimensions</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a><span class="co">// `OutDims` is the number of output dimensions</span></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span> <span class="op">&lt;</span><span class="kw">typename</span> T<span class="op">,</span> <span class="dt">int</span> InDims<span class="op">,</span> <span class="dt">int</span> OutDims<span class="op">&gt;</span></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> ReadLinearParamsOpt1<span class="op">(</span>LinearParams<span class="op">&lt;</span>T<span class="op">,</span> InDims<span class="op">,</span> OutDims<span class="op">&gt;*</span> linear<span class="op">,</span></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>                          <span class="at">const</span> ap_uint<span class="op">&lt;</span><span class="dv">64</span><span class="op">&gt;*</span> params<span class="op">,</span></span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>                          <span class="at">const</span> <span class="dt">int</span> offset<span class="op">)</span></span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS INLINE</span></span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>  <span class="co">// `params` contains weight parameters of size (`OutDims`, `InDims`) and</span></span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>  <span class="co">// bias parameters of size (`OutDims`) in a contiguous buffer</span></span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>  <span class="kw">static_assert</span><span class="op">(</span>InDims <span class="op">%</span> <span class="dv">2</span> <span class="op">==</span> <span class="dv">0</span><span class="op">,</span> <span class="st">&quot;`InDims` must be a multiple of 2&quot;</span><span class="op">);</span></span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a>  <span class="kw">static_assert</span><span class="op">(</span>OutDims <span class="op">%</span> <span class="dv">2</span> <span class="op">==</span> <span class="dv">0</span><span class="op">,</span> <span class="st">&quot;`OutDims` must be a multiple of 2&quot;</span><span class="op">);</span></span>
+<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a>  <span class="ot">assert</span><span class="op">(</span>offset <span class="op">%</span> <span class="dv">2</span> <span class="op">==</span> <span class="dv">0</span><span class="op">);</span></span>
+<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a>  ReadTensor2dOpt1<span class="op">&lt;</span>T<span class="op">,</span> OutDims<span class="op">,</span> InDims<span class="op">&gt;(</span>linear<span class="op">-&gt;</span>weight<span class="op">,</span> params<span class="op">,</span> offset<span class="op">);</span></span>
+<span id="cb24-21"><a href="#cb24-21" aria-hidden="true" tabindex="-1"></a>  ReadTensor1dOpt1<span class="op">&lt;</span>T<span class="op">,</span> OutDims<span class="op">&gt;(</span>linear<span class="op">-&gt;</span>bias<span class="op">,</span> params<span class="op">,</span></span>
+<span id="cb24-22"><a href="#cb24-22" aria-hidden="true" tabindex="-1"></a>                               offset <span class="op">+</span> InDims <span class="op">*</span> OutDims<span class="op">);</span></span>
+<span id="cb24-23"><a href="#cb24-23" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb24-24"><a href="#cb24-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-25"><a href="#cb24-25" aria-hidden="true" tabindex="-1"></a><span class="co">// Parallel implementation of the parameter initialization</span></span>
+<span id="cb24-26"><a href="#cb24-26" aria-hidden="true" tabindex="-1"></a><span class="co">// Read the parameters for a 1D batch normalization layer from a DDR memory and</span></span>
+<span id="cb24-27"><a href="#cb24-27" aria-hidden="true" tabindex="-1"></a><span class="co">// store them to BRAM buffers</span></span>
+<span id="cb24-28"><a href="#cb24-28" aria-hidden="true" tabindex="-1"></a><span class="co">// `T` is the type for parameters</span></span>
+<span id="cb24-29"><a href="#cb24-29" aria-hidden="true" tabindex="-1"></a><span class="co">// `Dims` is the number of input and output dimensions</span></span>
+<span id="cb24-30"><a href="#cb24-30" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span> <span class="op">&lt;</span><span class="kw">typename</span> T<span class="op">,</span> <span class="dt">int</span> Dims<span class="op">&gt;</span></span>
+<span id="cb24-31"><a href="#cb24-31" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> ReadBatchNorm1dParamsOpt1<span class="op">(</span>BatchNorm1dParams<span class="op">&lt;</span>T<span class="op">,</span> Dims<span class="op">&gt;*</span> bn<span class="op">,</span></span>
+<span id="cb24-32"><a href="#cb24-32" aria-hidden="true" tabindex="-1"></a>                               <span class="at">const</span> ap_uint<span class="op">&lt;</span><span class="dv">64</span><span class="op">&gt;*</span> params<span class="op">,</span></span>
+<span id="cb24-33"><a href="#cb24-33" aria-hidden="true" tabindex="-1"></a>                               <span class="at">const</span> <span class="dt">int</span> offset<span class="op">)</span></span>
+<span id="cb24-34"><a href="#cb24-34" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb24-35"><a href="#cb24-35" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS INLINE</span></span>
+<span id="cb24-36"><a href="#cb24-36" aria-hidden="true" tabindex="-1"></a>  <span class="co">// `params` contains scale parameters of size (`Dims`),</span></span>
+<span id="cb24-37"><a href="#cb24-37" aria-hidden="true" tabindex="-1"></a>  <span class="co">// bias of size (`Dims`), and mean of size (`Dims`) in a contiguous buffer</span></span>
+<span id="cb24-38"><a href="#cb24-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-39"><a href="#cb24-39" aria-hidden="true" tabindex="-1"></a>  <span class="kw">static_assert</span><span class="op">(</span>Dims <span class="op">%</span> <span class="dv">2</span> <span class="op">==</span> <span class="dv">0</span><span class="op">,</span> <span class="st">&quot;`Dims` must be a multiple of 2&quot;</span><span class="op">);</span></span>
+<span id="cb24-40"><a href="#cb24-40" aria-hidden="true" tabindex="-1"></a>  <span class="ot">assert</span><span class="op">(</span>offset <span class="op">%</span> <span class="dv">2</span> <span class="op">==</span> <span class="dv">0</span><span class="op">);</span></span>
+<span id="cb24-41"><a href="#cb24-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-42"><a href="#cb24-42" aria-hidden="true" tabindex="-1"></a>  ReadTensor1dOpt1<span class="op">&lt;</span>T<span class="op">,</span> Dims<span class="op">&gt;(</span>bn<span class="op">-&gt;</span>scale<span class="op">,</span> params<span class="op">,</span> offset<span class="op">);</span></span>
+<span id="cb24-43"><a href="#cb24-43" aria-hidden="true" tabindex="-1"></a>  ReadTensor1dOpt1<span class="op">&lt;</span>T<span class="op">,</span> Dims<span class="op">&gt;(</span>bn<span class="op">-&gt;</span>bias<span class="op">,</span> params<span class="op">,</span> offset <span class="op">+</span> Dims<span class="op">);</span></span>
+<span id="cb24-44"><a href="#cb24-44" aria-hidden="true" tabindex="-1"></a>  ReadTensor1dOpt1<span class="op">&lt;</span>T<span class="op">,</span> Dims<span class="op">&gt;(</span>bn<span class="op">-&gt;</span>mean<span class="op">,</span> params<span class="op">,</span> offset <span class="op">+</span> Dims <span class="op">*</span> <span class="dv">2</span><span class="op">);</span></span>
+<span id="cb24-45"><a href="#cb24-45" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb24-46"><a href="#cb24-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-47"><a href="#cb24-47" aria-hidden="true" tabindex="-1"></a><span class="co">// Parallel implementation of the parameter initialization</span></span>
+<span id="cb24-48"><a href="#cb24-48" aria-hidden="true" tabindex="-1"></a><span class="co">// Read the parameters for a linear and 1D batch normalization layer</span></span>
+<span id="cb24-49"><a href="#cb24-49" aria-hidden="true" tabindex="-1"></a><span class="co">// from a DDR memory and store them to BRAM buffers</span></span>
+<span id="cb24-50"><a href="#cb24-50" aria-hidden="true" tabindex="-1"></a><span class="co">// `T` is the type for parameters</span></span>
+<span id="cb24-51"><a href="#cb24-51" aria-hidden="true" tabindex="-1"></a><span class="co">// `InDims` is the number of input dimensions</span></span>
+<span id="cb24-52"><a href="#cb24-52" aria-hidden="true" tabindex="-1"></a><span class="co">// `OutDims` is the number of output dimensions</span></span>
+<span id="cb24-53"><a href="#cb24-53" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span> <span class="op">&lt;</span><span class="kw">typename</span> T<span class="op">,</span> <span class="dt">int</span> InDims<span class="op">,</span> <span class="dt">int</span> OutDims<span class="op">&gt;</span></span>
+<span id="cb24-54"><a href="#cb24-54" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> ReadBlockParamsOpt1<span class="op">(</span>LinearParams<span class="op">&lt;</span>T<span class="op">,</span> InDims<span class="op">,</span> OutDims<span class="op">&gt;*</span> linear<span class="op">,</span></span>
+<span id="cb24-55"><a href="#cb24-55" aria-hidden="true" tabindex="-1"></a>                         BatchNorm1dParams<span class="op">&lt;</span>T<span class="op">,</span> OutDims<span class="op">&gt;*</span> bn<span class="op">,</span></span>
+<span id="cb24-56"><a href="#cb24-56" aria-hidden="true" tabindex="-1"></a>                         <span class="at">const</span> ap_uint<span class="op">&lt;</span><span class="dv">64</span><span class="op">&gt;*</span> params<span class="op">)</span></span>
+<span id="cb24-57"><a href="#cb24-57" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb24-58"><a href="#cb24-58" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS INLINE</span></span>
+<span id="cb24-59"><a href="#cb24-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-60"><a href="#cb24-60" aria-hidden="true" tabindex="-1"></a>  <span class="kw">static_assert</span><span class="op">(</span>InDims <span class="op">%</span> <span class="dv">2</span> <span class="op">==</span> <span class="dv">0</span><span class="op">,</span> <span class="st">&quot;`InDims` must be a multiple of 2&quot;</span><span class="op">);</span></span>
+<span id="cb24-61"><a href="#cb24-61" aria-hidden="true" tabindex="-1"></a>  <span class="kw">static_assert</span><span class="op">(</span>OutDims <span class="op">%</span> <span class="dv">2</span> <span class="op">==</span> <span class="dv">0</span><span class="op">,</span> <span class="st">&quot;`OutDims` must be a multiple of 2&quot;</span><span class="op">);</span></span>
+<span id="cb24-62"><a href="#cb24-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-63"><a href="#cb24-63" aria-hidden="true" tabindex="-1"></a>  ReadTensor2dOpt1<span class="op">&lt;</span>T<span class="op">,</span> OutDims<span class="op">,</span> InDims<span class="op">&gt;(</span>linear<span class="op">-&gt;</span>weight<span class="op">,</span> params<span class="op">,</span> <span class="dv">0</span><span class="op">);</span></span>
+<span id="cb24-64"><a href="#cb24-64" aria-hidden="true" tabindex="-1"></a>  ReadTensor1dOpt1<span class="op">&lt;</span>T<span class="op">,</span> OutDims<span class="op">&gt;(</span>linear<span class="op">-&gt;</span>bias<span class="op">,</span> params<span class="op">,</span> InDims <span class="op">*</span> OutDims<span class="op">);</span></span>
+<span id="cb24-65"><a href="#cb24-65" aria-hidden="true" tabindex="-1"></a>  ReadTensor1dOpt1<span class="op">&lt;</span>T<span class="op">,</span> OutDims<span class="op">&gt;(</span>bn<span class="op">-&gt;</span>scale<span class="op">,</span> params<span class="op">,</span></span>
+<span id="cb24-66"><a href="#cb24-66" aria-hidden="true" tabindex="-1"></a>                               InDims <span class="op">*</span> OutDims <span class="op">+</span> OutDims<span class="op">);</span></span>
+<span id="cb24-67"><a href="#cb24-67" aria-hidden="true" tabindex="-1"></a>  ReadTensor1dOpt1<span class="op">&lt;</span>T<span class="op">,</span> OutDims<span class="op">&gt;(</span>bn<span class="op">-&gt;</span>bias<span class="op">,</span> params<span class="op">,</span></span>
+<span id="cb24-68"><a href="#cb24-68" aria-hidden="true" tabindex="-1"></a>                               InDims <span class="op">*</span> OutDims <span class="op">+</span> OutDims <span class="op">*</span> <span class="dv">2</span><span class="op">);</span></span>
+<span id="cb24-69"><a href="#cb24-69" aria-hidden="true" tabindex="-1"></a>  ReadTensor1dOpt1<span class="op">&lt;</span>T<span class="op">,</span> OutDims<span class="op">&gt;(</span>bn<span class="op">-&gt;</span>mean<span class="op">,</span> params<span class="op">,</span></span>
+<span id="cb24-70"><a href="#cb24-70" aria-hidden="true" tabindex="-1"></a>                               InDims <span class="op">*</span> OutDims <span class="op">+</span> OutDims <span class="op">*</span> <span class="dv">3</span><span class="op">);</span></span>
+<span id="cb24-71"><a href="#cb24-71" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb24-72"><a href="#cb24-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-73"><a href="#cb24-73" aria-hidden="true" tabindex="-1"></a><span class="co">// Parallel implementation of the parameter initialization</span></span>
+<span id="cb24-74"><a href="#cb24-74" aria-hidden="true" tabindex="-1"></a><span class="co">// Read the parameters for a linear and 1D batch normalization layer</span></span>
+<span id="cb24-75"><a href="#cb24-75" aria-hidden="true" tabindex="-1"></a><span class="co">// from a DDR memory and store them to BRAM buffers</span></span>
+<span id="cb24-76"><a href="#cb24-76" aria-hidden="true" tabindex="-1"></a><span class="co">// `T` is the type for parameters</span></span>
+<span id="cb24-77"><a href="#cb24-77" aria-hidden="true" tabindex="-1"></a><span class="co">// `InDims` is the number of input dimensions</span></span>
+<span id="cb24-78"><a href="#cb24-78" aria-hidden="true" tabindex="-1"></a><span class="co">// `OutDims` is the number of output dimensions</span></span>
+<span id="cb24-79"><a href="#cb24-79" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span> <span class="op">&lt;</span><span class="kw">typename</span> T<span class="op">,</span> <span class="dt">int</span> InDims<span class="op">,</span> <span class="dt">int</span> OutDims<span class="op">&gt;</span></span>
+<span id="cb24-80"><a href="#cb24-80" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> ReadBlockParamsOpt2<span class="op">(</span>LinearParams<span class="op">&lt;</span>T<span class="op">,</span> InDims<span class="op">,</span> OutDims<span class="op">&gt;*</span> linear<span class="op">,</span></span>
+<span id="cb24-81"><a href="#cb24-81" aria-hidden="true" tabindex="-1"></a>                         BatchNorm1dParams<span class="op">&lt;</span>T<span class="op">,</span> OutDims<span class="op">&gt;*</span> bn<span class="op">,</span></span>
+<span id="cb24-82"><a href="#cb24-82" aria-hidden="true" tabindex="-1"></a>                         <span class="at">const</span> ap_uint<span class="op">&lt;</span><span class="dv">64</span><span class="op">&gt;*</span> params<span class="op">)</span></span>
+<span id="cb24-83"><a href="#cb24-83" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb24-84"><a href="#cb24-84" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS INLINE</span></span>
+<span id="cb24-85"><a href="#cb24-85" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-86"><a href="#cb24-86" aria-hidden="true" tabindex="-1"></a>  <span class="kw">static_assert</span><span class="op">(</span>InDims <span class="op">==</span> <span class="dv">3</span><span class="op">,</span> <span class="st">&quot;`InDims` must be 3&quot;</span><span class="op">);</span></span>
+<span id="cb24-87"><a href="#cb24-87" aria-hidden="true" tabindex="-1"></a>  <span class="kw">static_assert</span><span class="op">(</span>OutDims <span class="op">%</span> <span class="dv">2</span> <span class="op">==</span> <span class="dv">0</span><span class="op">,</span> <span class="st">&quot;`OutDims` must be a multiple of 2&quot;</span><span class="op">);</span></span>
+<span id="cb24-88"><a href="#cb24-88" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-89"><a href="#cb24-89" aria-hidden="true" tabindex="-1"></a>  ReadTensor2dOpt2<span class="op">&lt;</span>T<span class="op">,</span> OutDims<span class="op">,</span> InDims<span class="op">&gt;(</span>linear<span class="op">-&gt;</span>weight<span class="op">,</span> params<span class="op">,</span> <span class="dv">0</span><span class="op">);</span></span>
+<span id="cb24-90"><a href="#cb24-90" aria-hidden="true" tabindex="-1"></a>  ReadTensor1dOpt1<span class="op">&lt;</span>T<span class="op">,</span> OutDims<span class="op">&gt;(</span>linear<span class="op">-&gt;</span>bias<span class="op">,</span> params<span class="op">,</span> InDims <span class="op">*</span> OutDims<span class="op">);</span></span>
+<span id="cb24-91"><a href="#cb24-91" aria-hidden="true" tabindex="-1"></a>  ReadTensor1dOpt1<span class="op">&lt;</span>T<span class="op">,</span> OutDims<span class="op">&gt;(</span>bn<span class="op">-&gt;</span>scale<span class="op">,</span> params<span class="op">,</span></span>
+<span id="cb24-92"><a href="#cb24-92" aria-hidden="true" tabindex="-1"></a>                               InDims <span class="op">*</span> OutDims <span class="op">+</span> OutDims<span class="op">);</span></span>
+<span id="cb24-93"><a href="#cb24-93" aria-hidden="true" tabindex="-1"></a>  ReadTensor1dOpt1<span class="op">&lt;</span>T<span class="op">,</span> OutDims<span class="op">&gt;(</span>bn<span class="op">-&gt;</span>bias<span class="op">,</span> params<span class="op">,</span></span>
+<span id="cb24-94"><a href="#cb24-94" aria-hidden="true" tabindex="-1"></a>                               InDims <span class="op">*</span> OutDims <span class="op">+</span> OutDims <span class="op">*</span> <span class="dv">2</span><span class="op">);</span></span>
+<span id="cb24-95"><a href="#cb24-95" aria-hidden="true" tabindex="-1"></a>  ReadTensor1dOpt1<span class="op">&lt;</span>T<span class="op">,</span> OutDims<span class="op">&gt;(</span>bn<span class="op">-&gt;</span>mean<span class="op">,</span> params<span class="op">,</span></span>
+<span id="cb24-96"><a href="#cb24-96" aria-hidden="true" tabindex="-1"></a>                               InDims <span class="op">*</span> OutDims <span class="op">+</span> OutDims <span class="op">*</span> <span class="dv">3</span><span class="op">);</span></span>
+<span id="cb24-97"><a href="#cb24-97" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>基本的には元のナイーブな実装と同じですが、引数の型が<code>float*</code>から<code>ap_uint&lt;64&gt;*</code>に変わっています。
+関数の中身も単純で、指定したオフセットから、指定したサイズのパラメータを読み取ることを繰り返すだけです。
+例えばバッチ正規化層のパラメータを読み取るときは、スケール、バイアス、平均の順に読み取ります。
+DRAMバッファ上には予め、正しい位置にこの順で並べておく必要があります。
+中で使われている関数<code>ReadTensor1dOpt1</code>、<code>ReadTensor2dOpt1</code>、<code>ReadTensor2dOpt2</code>は次の通りです。</p>
+<div class="sourceCode" id="cb25"><pre
+class="sourceCode c++"><code class="sourceCode cpp"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="kw">union</span> <span class="dt">conv32_t</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>  <span class="bu">std::</span>uint32_t<span class="op"> </span>u32<span class="op">;</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span> i32<span class="op">;</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">float</span> f<span class="op">;</span></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a><span class="co">// Interpret float as std::uint32_t</span></span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a><span class="kw">inline</span> <span class="bu">std::</span>uint32_t<span class="op"> </span>FloatToU32<span class="op">(</span><span class="at">const</span> <span class="dt">float</span> f<span class="op">)</span></span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>  <span class="dt">conv32_t</span> conv<span class="op">;</span></span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a>  conv<span class="op">.</span>f <span class="op">=</span> f<span class="op">;</span></span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> conv<span class="op">.</span>u32<span class="op">;</span></span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a><span class="co">// Interpret std::uint32_t as float</span></span>
+<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a><span class="kw">inline</span> <span class="dt">float</span> U32ToFloat<span class="op">(</span><span class="at">const</span> <span class="bu">std::</span>uint32_t<span class="op"> </span>u32<span class="op">)</span></span>
+<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb25-19"><a href="#cb25-19" aria-hidden="true" tabindex="-1"></a>  <span class="dt">conv32_t</span> conv<span class="op">;</span></span>
+<span id="cb25-20"><a href="#cb25-20" aria-hidden="true" tabindex="-1"></a>  conv<span class="op">.</span>u32 <span class="op">=</span> u32<span class="op">;</span></span>
+<span id="cb25-21"><a href="#cb25-21" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> conv<span class="op">.</span>f<span class="op">;</span></span>
+<span id="cb25-22"><a href="#cb25-22" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb25-23"><a href="#cb25-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-24"><a href="#cb25-24" aria-hidden="true" tabindex="-1"></a><span class="co">// Read a 1D tensor from a DDR memory</span></span>
+<span id="cb25-25"><a href="#cb25-25" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span> <span class="op">&lt;</span><span class="kw">typename</span> T<span class="op">,</span> <span class="dt">int</span> D0<span class="op">&gt;</span></span>
+<span id="cb25-26"><a href="#cb25-26" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> ReadTensor1dNaive<span class="op">(</span>T tensor<span class="op">[</span>D0<span class="op">],</span></span>
+<span id="cb25-27"><a href="#cb25-27" aria-hidden="true" tabindex="-1"></a>                       <span class="at">const</span> <span class="dt">float</span><span class="op">*</span> src<span class="op">,</span></span>
+<span id="cb25-28"><a href="#cb25-28" aria-hidden="true" tabindex="-1"></a>                       <span class="at">const</span> <span class="dt">int</span> offset<span class="op">)</span></span>
+<span id="cb25-29"><a href="#cb25-29" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb25-30"><a href="#cb25-30" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS INLINE off</span></span>
+<span id="cb25-31"><a href="#cb25-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-32"><a href="#cb25-32" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> D0<span class="op">;</span> <span class="op">++</span>i<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb25-33"><a href="#cb25-33" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS PIPELINE II=1</span></span>
+<span id="cb25-34"><a href="#cb25-34" aria-hidden="true" tabindex="-1"></a>    tensor<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> T<span class="op">(</span>src<span class="op">[</span>offset <span class="op">+</span> i<span class="op">]);</span></span>
+<span id="cb25-35"><a href="#cb25-35" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb25-36"><a href="#cb25-36" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb25-37"><a href="#cb25-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-38"><a href="#cb25-38" aria-hidden="true" tabindex="-1"></a><span class="co">// Read a 1D tensor from a DDR memory</span></span>
+<span id="cb25-39"><a href="#cb25-39" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span> <span class="op">&lt;</span><span class="kw">typename</span> T<span class="op">,</span> <span class="dt">int</span> D0<span class="op">&gt;</span></span>
+<span id="cb25-40"><a href="#cb25-40" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> ReadTensor1dOpt1<span class="op">(</span>T tensor<span class="op">[</span>D0<span class="op">],</span></span>
+<span id="cb25-41"><a href="#cb25-41" aria-hidden="true" tabindex="-1"></a>                      <span class="at">const</span> ap_uint<span class="op">&lt;</span><span class="dv">64</span><span class="op">&gt;*</span> src<span class="op">,</span></span>
+<span id="cb25-42"><a href="#cb25-42" aria-hidden="true" tabindex="-1"></a>                      <span class="at">const</span> <span class="dt">int</span> offset<span class="op">)</span></span>
+<span id="cb25-43"><a href="#cb25-43" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb25-44"><a href="#cb25-44" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS INLINE off</span></span>
+<span id="cb25-45"><a href="#cb25-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-46"><a href="#cb25-46" aria-hidden="true" tabindex="-1"></a>  <span class="kw">static_assert</span><span class="op">(</span>D0 <span class="op">%</span> <span class="dv">2</span> <span class="op">==</span> <span class="dv">0</span><span class="op">,</span> <span class="st">&quot;`D0` must be a multiple of 2&quot;</span><span class="op">);</span></span>
+<span id="cb25-47"><a href="#cb25-47" aria-hidden="true" tabindex="-1"></a>  <span class="ot">assert</span><span class="op">(</span>offset <span class="op">%</span> <span class="dv">2</span> <span class="op">==</span> <span class="dv">0</span><span class="op">);</span></span>
+<span id="cb25-48"><a href="#cb25-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-49"><a href="#cb25-49" aria-hidden="true" tabindex="-1"></a>  <span class="kw">constexpr</span> <span class="at">const</span> <span class="dt">int</span> D0Over2 <span class="op">=</span> D0 <span class="op">/</span> <span class="dv">2</span><span class="op">;</span></span>
+<span id="cb25-50"><a href="#cb25-50" aria-hidden="true" tabindex="-1"></a>  <span class="at">const</span> <span class="dt">int</span> offset2 <span class="op">=</span> offset <span class="op">/</span> <span class="dv">2</span><span class="op">;</span></span>
+<span id="cb25-51"><a href="#cb25-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-52"><a href="#cb25-52" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> D0Over2<span class="op">;</span> <span class="op">++</span>i<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb25-53"><a href="#cb25-53" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS PIPELINE II=1</span></span>
+<span id="cb25-54"><a href="#cb25-54" aria-hidden="true" tabindex="-1"></a>    <span class="at">const</span> ap_uint<span class="op">&lt;</span><span class="dv">64</span><span class="op">&gt;</span> tensor_data <span class="op">=</span> src<span class="op">[</span>offset2 <span class="op">+</span> i<span class="op">];</span></span>
+<span id="cb25-55"><a href="#cb25-55" aria-hidden="true" tabindex="-1"></a>    tensor<span class="op">[</span>i <span class="op">*</span> <span class="dv">2</span> <span class="op">+</span> <span class="dv">0</span><span class="op">]</span> <span class="op">=</span> T<span class="op">(</span>U32ToFloat<span class="op">(</span>tensor_data<span class="op">.</span>range<span class="op">(</span><span class="dv">31</span><span class="op">,</span> <span class="dv">0</span><span class="op">)));</span></span>
+<span id="cb25-56"><a href="#cb25-56" aria-hidden="true" tabindex="-1"></a>    tensor<span class="op">[</span>i <span class="op">*</span> <span class="dv">2</span> <span class="op">+</span> <span class="dv">1</span><span class="op">]</span> <span class="op">=</span> T<span class="op">(</span>U32ToFloat<span class="op">(</span>tensor_data<span class="op">.</span>range<span class="op">(</span><span class="dv">63</span><span class="op">,</span> <span class="dv">32</span><span class="op">)));</span></span>
+<span id="cb25-57"><a href="#cb25-57" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb25-58"><a href="#cb25-58" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb25-59"><a href="#cb25-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-60"><a href="#cb25-60" aria-hidden="true" tabindex="-1"></a><span class="co">// Read a 2D tensor from a DDR memory</span></span>
+<span id="cb25-61"><a href="#cb25-61" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span> <span class="op">&lt;</span><span class="kw">typename</span> T<span class="op">,</span> <span class="dt">int</span> D0<span class="op">,</span> <span class="dt">int</span> D1<span class="op">&gt;</span></span>
+<span id="cb25-62"><a href="#cb25-62" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> ReadTensor2dNaive<span class="op">(</span>T tensor<span class="op">[</span>D0<span class="op">][</span>D1<span class="op">],</span></span>
+<span id="cb25-63"><a href="#cb25-63" aria-hidden="true" tabindex="-1"></a>                       <span class="at">const</span> <span class="dt">float</span><span class="op">*</span> src<span class="op">,</span></span>
+<span id="cb25-64"><a href="#cb25-64" aria-hidden="true" tabindex="-1"></a>                       <span class="at">const</span> <span class="dt">int</span> offset<span class="op">)</span></span>
+<span id="cb25-65"><a href="#cb25-65" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb25-66"><a href="#cb25-66" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS INLINE off</span></span>
+<span id="cb25-67"><a href="#cb25-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-68"><a href="#cb25-68" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> D0<span class="op">;</span> <span class="op">++</span>i<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb25-69"><a href="#cb25-69" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> j <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> j <span class="op">&lt;</span> D1<span class="op">;</span> <span class="op">++</span>j<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb25-70"><a href="#cb25-70" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS PIPELINE II=1</span></span>
+<span id="cb25-71"><a href="#cb25-71" aria-hidden="true" tabindex="-1"></a>      <span class="at">const</span> <span class="dt">int</span> idx <span class="op">=</span> i <span class="op">*</span> D1 <span class="op">+</span> j<span class="op">;</span></span>
+<span id="cb25-72"><a href="#cb25-72" aria-hidden="true" tabindex="-1"></a>      tensor<span class="op">[</span>i<span class="op">][</span>j<span class="op">]</span> <span class="op">=</span> T<span class="op">(</span>src<span class="op">[</span>offset <span class="op">+</span> idx<span class="op">]);</span></span>
+<span id="cb25-73"><a href="#cb25-73" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb25-74"><a href="#cb25-74" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb25-75"><a href="#cb25-75" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb25-76"><a href="#cb25-76" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-77"><a href="#cb25-77" aria-hidden="true" tabindex="-1"></a><span class="co">// Read a 2D tensor from a DDR memory</span></span>
+<span id="cb25-78"><a href="#cb25-78" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span> <span class="op">&lt;</span><span class="kw">typename</span> T<span class="op">,</span> <span class="dt">int</span> D0<span class="op">,</span> <span class="dt">int</span> D1<span class="op">&gt;</span></span>
+<span id="cb25-79"><a href="#cb25-79" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> ReadTensor2dOpt1<span class="op">(</span>T tensor<span class="op">[</span>D0<span class="op">][</span>D1<span class="op">],</span></span>
+<span id="cb25-80"><a href="#cb25-80" aria-hidden="true" tabindex="-1"></a>                      <span class="at">const</span> ap_uint<span class="op">&lt;</span><span class="dv">64</span><span class="op">&gt;*</span> src<span class="op">,</span></span>
+<span id="cb25-81"><a href="#cb25-81" aria-hidden="true" tabindex="-1"></a>                      <span class="at">const</span> <span class="dt">int</span> offset<span class="op">)</span></span>
+<span id="cb25-82"><a href="#cb25-82" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb25-83"><a href="#cb25-83" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS INLINE off</span></span>
+<span id="cb25-84"><a href="#cb25-84" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-85"><a href="#cb25-85" aria-hidden="true" tabindex="-1"></a>  <span class="kw">static_assert</span><span class="op">(</span>D1 <span class="op">%</span> <span class="dv">2</span> <span class="op">==</span> <span class="dv">0</span><span class="op">,</span> <span class="st">&quot;`D1` must be a multiple of 2&quot;</span><span class="op">);</span></span>
+<span id="cb25-86"><a href="#cb25-86" aria-hidden="true" tabindex="-1"></a>  <span class="ot">assert</span><span class="op">(</span>offset <span class="op">%</span> <span class="dv">2</span> <span class="op">==</span> <span class="dv">0</span><span class="op">);</span></span>
+<span id="cb25-87"><a href="#cb25-87" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-88"><a href="#cb25-88" aria-hidden="true" tabindex="-1"></a>  <span class="kw">constexpr</span> <span class="at">const</span> <span class="dt">int</span> D1Over2 <span class="op">=</span> D1 <span class="op">/</span> <span class="dv">2</span><span class="op">;</span></span>
+<span id="cb25-89"><a href="#cb25-89" aria-hidden="true" tabindex="-1"></a>  <span class="at">const</span> <span class="dt">int</span> offset2 <span class="op">=</span> offset <span class="op">/</span> <span class="dv">2</span><span class="op">;</span></span>
+<span id="cb25-90"><a href="#cb25-90" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-91"><a href="#cb25-91" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> D0<span class="op">;</span> <span class="op">++</span>i<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb25-92"><a href="#cb25-92" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> j <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> j <span class="op">&lt;</span> D1Over2<span class="op">;</span> <span class="op">++</span>j<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb25-93"><a href="#cb25-93" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS PIPELINE II=1</span></span>
+<span id="cb25-94"><a href="#cb25-94" aria-hidden="true" tabindex="-1"></a>      <span class="at">const</span> <span class="dt">int</span> idx <span class="op">=</span> i <span class="op">*</span> D1Over2 <span class="op">+</span> j<span class="op">;</span></span>
+<span id="cb25-95"><a href="#cb25-95" aria-hidden="true" tabindex="-1"></a>      <span class="at">const</span> ap_uint<span class="op">&lt;</span><span class="dv">64</span><span class="op">&gt;</span> tensor_data <span class="op">=</span> src<span class="op">[</span>offset2 <span class="op">+</span> idx<span class="op">];</span></span>
+<span id="cb25-96"><a href="#cb25-96" aria-hidden="true" tabindex="-1"></a>      tensor<span class="op">[</span>i<span class="op">][</span>j <span class="op">*</span> <span class="dv">2</span> <span class="op">+</span> <span class="dv">0</span><span class="op">]</span> <span class="op">=</span> T<span class="op">(</span>U32ToFloat<span class="op">(</span>tensor_data<span class="op">.</span>range<span class="op">(</span><span class="dv">31</span><span class="op">,</span> <span class="dv">0</span><span class="op">)));</span></span>
+<span id="cb25-97"><a href="#cb25-97" aria-hidden="true" tabindex="-1"></a>      tensor<span class="op">[</span>i<span class="op">][</span>j <span class="op">*</span> <span class="dv">2</span> <span class="op">+</span> <span class="dv">1</span><span class="op">]</span> <span class="op">=</span> T<span class="op">(</span>U32ToFloat<span class="op">(</span>tensor_data<span class="op">.</span>range<span class="op">(</span><span class="dv">63</span><span class="op">,</span> <span class="dv">32</span><span class="op">)));</span></span>
+<span id="cb25-98"><a href="#cb25-98" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb25-99"><a href="#cb25-99" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb25-100"><a href="#cb25-100" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb25-101"><a href="#cb25-101" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-102"><a href="#cb25-102" aria-hidden="true" tabindex="-1"></a><span class="co">// Read a 2D tensor of size (`D0`, 3) from a DDR memory</span></span>
+<span id="cb25-103"><a href="#cb25-103" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span> <span class="op">&lt;</span><span class="kw">typename</span> T<span class="op">,</span> <span class="dt">int</span> D0<span class="op">,</span> <span class="dt">int</span> D1<span class="op">&gt;</span></span>
+<span id="cb25-104"><a href="#cb25-104" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> ReadTensor2dOpt2<span class="op">(</span>T tensor<span class="op">[</span>D0<span class="op">][</span>D1<span class="op">],</span></span>
+<span id="cb25-105"><a href="#cb25-105" aria-hidden="true" tabindex="-1"></a>                      <span class="at">const</span> ap_uint<span class="op">&lt;</span><span class="dv">64</span><span class="op">&gt;*</span> src<span class="op">,</span></span>
+<span id="cb25-106"><a href="#cb25-106" aria-hidden="true" tabindex="-1"></a>                      <span class="at">const</span> <span class="dt">int</span> offset<span class="op">)</span></span>
+<span id="cb25-107"><a href="#cb25-107" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb25-108"><a href="#cb25-108" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS INLINE off</span></span>
+<span id="cb25-109"><a href="#cb25-109" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-110"><a href="#cb25-110" aria-hidden="true" tabindex="-1"></a>  <span class="kw">static_assert</span><span class="op">(</span>D0 <span class="op">%</span> <span class="dv">2</span> <span class="op">==</span> <span class="dv">0</span><span class="op">,</span> <span class="st">&quot;`D0` must be a multiple of 2&quot;</span><span class="op">);</span></span>
+<span id="cb25-111"><a href="#cb25-111" aria-hidden="true" tabindex="-1"></a>  <span class="kw">static_assert</span><span class="op">(</span>D1 <span class="op">==</span> <span class="dv">3</span><span class="op">,</span> <span class="st">&quot;`D1` must be 3&quot;</span><span class="op">);</span></span>
+<span id="cb25-112"><a href="#cb25-112" aria-hidden="true" tabindex="-1"></a>  <span class="ot">assert</span><span class="op">(</span>offset <span class="op">%</span> <span class="dv">2</span> <span class="op">==</span> <span class="dv">0</span><span class="op">);</span></span>
+<span id="cb25-113"><a href="#cb25-113" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-114"><a href="#cb25-114" aria-hidden="true" tabindex="-1"></a>  <span class="kw">constexpr</span> <span class="at">const</span> <span class="dt">int</span> Iter <span class="op">=</span> D0 <span class="op">*</span> D1 <span class="op">/</span> <span class="op">(</span><span class="dv">2</span> <span class="op">*</span> <span class="dv">3</span><span class="op">);</span></span>
+<span id="cb25-115"><a href="#cb25-115" aria-hidden="true" tabindex="-1"></a>  <span class="at">const</span> <span class="dt">int</span> offset2 <span class="op">=</span> offset <span class="op">/</span> <span class="dv">2</span><span class="op">;</span></span>
+<span id="cb25-116"><a href="#cb25-116" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-117"><a href="#cb25-117" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> Iter<span class="op">;</span> <span class="op">++</span>i<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb25-118"><a href="#cb25-118" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS PIPELINE</span></span>
+<span id="cb25-119"><a href="#cb25-119" aria-hidden="true" tabindex="-1"></a>    <span class="at">const</span> <span class="dt">int</span> src_idx <span class="op">=</span> i <span class="op">*</span> <span class="dv">3</span><span class="op">;</span></span>
+<span id="cb25-120"><a href="#cb25-120" aria-hidden="true" tabindex="-1"></a>    <span class="at">const</span> <span class="dt">int</span> dst_idx <span class="op">=</span> i <span class="op">*</span> <span class="dv">2</span><span class="op">;</span></span>
+<span id="cb25-121"><a href="#cb25-121" aria-hidden="true" tabindex="-1"></a>    <span class="at">const</span> ap_uint<span class="op">&lt;</span><span class="dv">64</span><span class="op">&gt;</span> tensor_data0 <span class="op">=</span> src<span class="op">[</span>offset2 <span class="op">+</span> src_idx <span class="op">+</span> <span class="dv">0</span><span class="op">];</span></span>
+<span id="cb25-122"><a href="#cb25-122" aria-hidden="true" tabindex="-1"></a>    <span class="at">const</span> ap_uint<span class="op">&lt;</span><span class="dv">64</span><span class="op">&gt;</span> tensor_data1 <span class="op">=</span> src<span class="op">[</span>offset2 <span class="op">+</span> src_idx <span class="op">+</span> <span class="dv">1</span><span class="op">];</span></span>
+<span id="cb25-123"><a href="#cb25-123" aria-hidden="true" tabindex="-1"></a>    <span class="at">const</span> ap_uint<span class="op">&lt;</span><span class="dv">64</span><span class="op">&gt;</span> tensor_data2 <span class="op">=</span> src<span class="op">[</span>offset2 <span class="op">+</span> src_idx <span class="op">+</span> <span class="dv">2</span><span class="op">];</span></span>
+<span id="cb25-124"><a href="#cb25-124" aria-hidden="true" tabindex="-1"></a>    tensor<span class="op">[</span>dst_idx <span class="op">+</span> <span class="dv">0</span><span class="op">][</span><span class="dv">0</span><span class="op">]</span> <span class="op">=</span> T<span class="op">(</span>U32ToFloat<span class="op">(</span>tensor_data0<span class="op">.</span>range<span class="op">(</span><span class="dv">31</span><span class="op">,</span> <span class="dv">0</span><span class="op">)));</span></span>
+<span id="cb25-125"><a href="#cb25-125" aria-hidden="true" tabindex="-1"></a>    tensor<span class="op">[</span>dst_idx <span class="op">+</span> <span class="dv">0</span><span class="op">][</span><span class="dv">1</span><span class="op">]</span> <span class="op">=</span> T<span class="op">(</span>U32ToFloat<span class="op">(</span>tensor_data0<span class="op">.</span>range<span class="op">(</span><span class="dv">63</span><span class="op">,</span> <span class="dv">32</span><span class="op">)));</span></span>
+<span id="cb25-126"><a href="#cb25-126" aria-hidden="true" tabindex="-1"></a>    tensor<span class="op">[</span>dst_idx <span class="op">+</span> <span class="dv">0</span><span class="op">][</span><span class="dv">2</span><span class="op">]</span> <span class="op">=</span> T<span class="op">(</span>U32ToFloat<span class="op">(</span>tensor_data1<span class="op">.</span>range<span class="op">(</span><span class="dv">31</span><span class="op">,</span> <span class="dv">0</span><span class="op">)));</span></span>
+<span id="cb25-127"><a href="#cb25-127" aria-hidden="true" tabindex="-1"></a>    tensor<span class="op">[</span>dst_idx <span class="op">+</span> <span class="dv">1</span><span class="op">][</span><span class="dv">0</span><span class="op">]</span> <span class="op">=</span> T<span class="op">(</span>U32ToFloat<span class="op">(</span>tensor_data1<span class="op">.</span>range<span class="op">(</span><span class="dv">63</span><span class="op">,</span> <span class="dv">32</span><span class="op">)));</span></span>
+<span id="cb25-128"><a href="#cb25-128" aria-hidden="true" tabindex="-1"></a>    tensor<span class="op">[</span>dst_idx <span class="op">+</span> <span class="dv">1</span><span class="op">][</span><span class="dv">1</span><span class="op">]</span> <span class="op">=</span> T<span class="op">(</span>U32ToFloat<span class="op">(</span>tensor_data2<span class="op">.</span>range<span class="op">(</span><span class="dv">31</span><span class="op">,</span> <span class="dv">0</span><span class="op">)));</span></span>
+<span id="cb25-129"><a href="#cb25-129" aria-hidden="true" tabindex="-1"></a>    tensor<span class="op">[</span>dst_idx <span class="op">+</span> <span class="dv">1</span><span class="op">][</span><span class="dv">2</span><span class="op">]</span> <span class="op">=</span> T<span class="op">(</span>U32ToFloat<span class="op">(</span>tensor_data2<span class="op">.</span>range<span class="op">(</span><span class="dv">63</span><span class="op">,</span> <span class="dv">32</span><span class="op">)));</span></span>
+<span id="cb25-130"><a href="#cb25-130" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb25-131"><a href="#cb25-131" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>比較できるように、データを1つずつ読み取る、元のナイーブな実装も載せました。
+各関数の動作をまとめます。</p>
+<ul>
+<li><code>ReadTensor1dOpt1&lt;T, D0&gt;(tensor, src, offset)</code>:
+指定されたDRAMバッファ<code>src</code>の、<code>float</code>で<code>offset</code>個分だけずらした場所から
+(<code>src</code>に<code>4 * offset</code>バイト分だけ足したアドレスから)、<code>D0</code>個分の<code>float</code>を2つずつ読み取る。
+読み取ったデータは<code>float</code>から<code>T</code>型にキャストして、指定された1次元のオンチップバッファ<code>tensor</code>
+(サイズ<code>(D0)</code>)に2つずつ格納する。
+1サイクルで2つずつ読み取るため、サイズ<code>D0</code>は偶数と仮定している。</li>
+<li><code>ReadTensor2dOpt1&lt;T, D0, D1&gt;(tensor, src, offset)</code>:
+指定されたDRAMバッファ<code>src</code>からデータを2つずつ読み取って、2次元のオンチップバッファ<code>tensor</code>
+(サイズ<code>(D0, D1)</code>)に格納する。
+1サイクルで2つずつ読み取るため、サイズ<code>D1</code>は偶数と仮定している。</li>
+<li><code>ReadTensor2dOpt2&lt;T, D0, D1&gt;(tensor, src, offset)</code>:
+<code>D1</code>が3である場合の専用の実装。
+3サイクル掛けて、指定されたDRAMバッファ<code>src</code>からデータを6つ読み取った後、オンチップバッファ<code>tensor</code>に格納していく。
+実装を簡略化するため、サイズに関しては、<code>D1</code>は3、<code>D0</code>は偶数であることを仮定している
+(要素数が偶数)。</li>
+</ul>
+<p><code>ReadTensor2dOpt2</code>および<code>ReadBlockParamsOpt2</code>は、特徴抽出ネットワークにおける最初の全結合層の重みを転送するために使われています
+(<code>InitializeFeatOpt3</code>を参照)。
+最初の全結合層は、3次元の点の座標を64次元の特徴に変換するので、重みのサイズは<code>(64, 3)</code>となります。
+データを2つずつ読み取りたいのに、2番目の次元が奇数で、実装上の都合が悪いので、専用の関数を用意したわけです。
+<code>ReadTensor2dOpt2</code>では、重みを6つずつ読み取ることで対処しています。
+別の対処法としては、重みのバッファサイズを<code>(64, 3)</code>から<code>(64, 4)</code>に広げることが考えられます
+(4番目の次元は単に使わない)。</p>
+<p><code>ReadBlockParamsOpt1</code>と<code>ReadBlockParamsOpt2</code>の違いは、<code>ReadTensor2dOpt1</code>と<code>ReadTensor2dOpt2</code>のどちらを使っているかだけです。
+2つの関数は、C++17に用意された<code>if constexpr</code>文を使えば、1つにまとめられると思いますが、今回はC++14までの機能を使っているので、別々にしています。</p>
+<p><code>ap_uint</code>型には<code>range()</code>という便利なメソッドが用意されており、指定したビットの部分を自由に取り出せます。
+<code>range(31, 0)</code>で下位32ビット、<code>range(63, 32)</code>で上位32ビットを取り出しています。</p>
+<p><code>U32ToFloat()</code>、<code>FloatToU32()</code>は、ビット表現を維持したまま、別の型に解釈するための関数です
+(<code>float</code>と符号なし32ビット整数)。
+<code>tensor_data.range(31, 0)</code>は32ビットの符号なし整数型
+(<code>unsigned int</code>や<code>ap_uint&lt;32&gt;</code>)
+ですが、実際には<code>float</code>のデータが入っているので、<code>U32ToFloat()</code>を使って<code>float</code>に解釈し直しています。
+2つの関数は、共用体を使って実現しています。
+C++20であれば、<code>std::bit_cast</code>で同等の処理ができます。</p>
+<p>特徴抽出ネットワークの推論に着目します
+(<code>InferenceFeatOpt2</code>を参照)。
+<code>i</code>番目の点をDRAMバッファから読み取る<code>ReadPointNaive</code>も、64ビット幅に合わせて書き直します。
+修正後のバージョンを<code>ReadPointOpt1</code>としました。</p>
+<div class="sourceCode" id="cb26"><pre
+class="sourceCode c++"><code class="sourceCode cpp"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Read a point from a DDR memory</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span> <span class="op">&lt;</span><span class="kw">typename</span> T<span class="op">&gt;</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> ReadPointNaive<span class="op">(</span><span class="at">const</span> <span class="dt">float</span><span class="op">*</span> point_cloud<span class="op">,</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>                    <span class="at">const</span> <span class="dt">int</span> idx<span class="op">,</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>                    T x<span class="op">[</span><span class="dv">3</span><span class="op">])</span></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS INLINE off</span></span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> <span class="dv">3</span><span class="op">;</span> <span class="op">++</span>i<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS PIPELINE II=1</span></span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>    x<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> T<span class="op">(</span>point_cloud<span class="op">[</span>idx <span class="op">*</span> <span class="dv">3</span> <span class="op">+</span> i<span class="op">]);</span></span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a><span class="co">// Read a point from a DDR memory</span></span>
+<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span> <span class="op">&lt;</span><span class="kw">typename</span> T<span class="op">&gt;</span></span>
+<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> ReadPointOpt1<span class="op">(</span><span class="at">const</span> ap_uint<span class="op">&lt;</span><span class="dv">64</span><span class="op">&gt;*</span> point_cloud<span class="op">,</span></span>
+<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a>                   <span class="at">const</span> <span class="dt">int</span> idx<span class="op">,</span></span>
+<span id="cb26-19"><a href="#cb26-19" aria-hidden="true" tabindex="-1"></a>                   T x<span class="op">[</span><span class="dv">3</span><span class="op">])</span></span>
+<span id="cb26-20"><a href="#cb26-20" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb26-21"><a href="#cb26-21" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS INLINE off</span></span>
+<span id="cb26-22"><a href="#cb26-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-23"><a href="#cb26-23" aria-hidden="true" tabindex="-1"></a>  <span class="at">const</span> ap_uint<span class="op">&lt;</span><span class="dv">64</span><span class="op">&gt;</span> point_data0 <span class="op">=</span> point_cloud<span class="op">[</span>idx <span class="op">*</span> <span class="dv">2</span> <span class="op">+</span> <span class="dv">0</span><span class="op">];</span></span>
+<span id="cb26-24"><a href="#cb26-24" aria-hidden="true" tabindex="-1"></a>  <span class="at">const</span> ap_uint<span class="op">&lt;</span><span class="dv">64</span><span class="op">&gt;</span> point_data1 <span class="op">=</span> point_cloud<span class="op">[</span>idx <span class="op">*</span> <span class="dv">2</span> <span class="op">+</span> <span class="dv">1</span><span class="op">];</span></span>
+<span id="cb26-25"><a href="#cb26-25" aria-hidden="true" tabindex="-1"></a>  x<span class="op">[</span><span class="dv">0</span><span class="op">]</span> <span class="op">=</span> T<span class="op">(</span>U32ToFloat<span class="op">(</span>point_data0<span class="op">.</span>range<span class="op">(</span><span class="dv">31</span><span class="op">,</span> <span class="dv">0</span><span class="op">)));</span></span>
+<span id="cb26-26"><a href="#cb26-26" aria-hidden="true" tabindex="-1"></a>  x<span class="op">[</span><span class="dv">1</span><span class="op">]</span> <span class="op">=</span> T<span class="op">(</span>U32ToFloat<span class="op">(</span>point_data0<span class="op">.</span>range<span class="op">(</span><span class="dv">63</span><span class="op">,</span> <span class="dv">32</span><span class="op">)));</span></span>
+<span id="cb26-27"><a href="#cb26-27" aria-hidden="true" tabindex="-1"></a>  x<span class="op">[</span><span class="dv">2</span><span class="op">]</span> <span class="op">=</span> T<span class="op">(</span>U32ToFloat<span class="op">(</span>point_data1<span class="op">.</span>range<span class="op">(</span><span class="dv">31</span><span class="op">,</span> <span class="dv">0</span><span class="op">)));</span></span>
+<span id="cb26-28"><a href="#cb26-28" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p><code>ReadPointNaive</code>では、DRAMバッファ<code>point_cloud</code>のサイズが<span
+class="math inline">\((N, 3)\)</span>であることを想定していました。
+一方<code>ReadPointOpt1</code>では、実装を簡単にするため、バッファサイズが<span
+class="math inline">\((N, 4)\)</span>であるとします
+(4番目の次元については使わない)。
+<code>i</code>番目の点を読み取るときは、バッファの<code>idx * 2 + 0</code>番目と<code>idx * 2 + 1</code>番目を参照すればよいです。</p>
+<p>最後に、分類ネットワークの推論を直します
+(<code>InferenceClsOpt1</code>を参照)。
+点群の特徴量から、物体の各クラスに対するロジットを計算し、<code>WriteTensor1dNaive</code>によりDRAMバッファに書き込んでいます。
+<code>WriteTensor1dNaive</code>を、64ビット幅に合わせて書き直します。
+修正後のバージョンを<code>WriteTensor1dOpt1</code>としました。</p>
+<div class="sourceCode" id="cb27"><pre
+class="sourceCode c++"><code class="sourceCode cpp"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Write a 1D tensor to a DDR memory</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span> <span class="op">&lt;</span><span class="kw">typename</span> T<span class="op">,</span> <span class="dt">int</span> D0<span class="op">&gt;</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> WriteTensor1dNaive<span class="op">(</span><span class="dt">float</span><span class="op">*</span> dst<span class="op">,</span></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>                        <span class="at">const</span> T tensor<span class="op">[</span>D0<span class="op">],</span></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>                        <span class="at">const</span> <span class="dt">int</span> offset<span class="op">)</span></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS INLINE off</span></span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> D0<span class="op">;</span> <span class="op">++</span>i<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS PIPELINE II=1</span></span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>    dst<span class="op">[</span>offset <span class="op">+</span> i<span class="op">]</span> <span class="op">=</span> <span class="kw">static_cast</span><span class="op">&lt;</span><span class="dt">float</span><span class="op">&gt;(</span>tensor<span class="op">[</span>i<span class="op">]);</span></span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a><span class="co">// Write a 1D tensor to a DDR memory</span></span>
+<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span> <span class="op">&lt;</span><span class="kw">typename</span> T<span class="op">,</span> <span class="dt">int</span> D0<span class="op">&gt;</span></span>
+<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> WriteTensor1dOpt1<span class="op">(</span>ap_uint<span class="op">&lt;</span><span class="dv">64</span><span class="op">&gt;*</span> dst<span class="op">,</span></span>
+<span id="cb27-18"><a href="#cb27-18" aria-hidden="true" tabindex="-1"></a>                       <span class="at">const</span> T tensor<span class="op">[</span>D0<span class="op">],</span></span>
+<span id="cb27-19"><a href="#cb27-19" aria-hidden="true" tabindex="-1"></a>                       <span class="at">const</span> <span class="dt">int</span> offset<span class="op">)</span></span>
+<span id="cb27-20"><a href="#cb27-20" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb27-21"><a href="#cb27-21" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS INLINE off</span></span>
+<span id="cb27-22"><a href="#cb27-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-23"><a href="#cb27-23" aria-hidden="true" tabindex="-1"></a>  <span class="kw">static_assert</span><span class="op">(</span>D0 <span class="op">%</span> <span class="dv">2</span> <span class="op">==</span> <span class="dv">0</span><span class="op">,</span> <span class="st">&quot;`D0` must be a multiple of 2&quot;</span><span class="op">);</span></span>
+<span id="cb27-24"><a href="#cb27-24" aria-hidden="true" tabindex="-1"></a>  <span class="ot">assert</span><span class="op">(</span>offset <span class="op">%</span> <span class="dv">2</span> <span class="op">==</span> <span class="dv">0</span><span class="op">);</span></span>
+<span id="cb27-25"><a href="#cb27-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-26"><a href="#cb27-26" aria-hidden="true" tabindex="-1"></a>  <span class="kw">constexpr</span> <span class="at">const</span> <span class="dt">int</span> D0Over2 <span class="op">=</span> D0 <span class="op">/</span> <span class="dv">2</span><span class="op">;</span></span>
+<span id="cb27-27"><a href="#cb27-27" aria-hidden="true" tabindex="-1"></a>  <span class="at">const</span> <span class="dt">int</span> offset2 <span class="op">=</span> offset <span class="op">/</span> <span class="dv">2</span><span class="op">;</span></span>
+<span id="cb27-28"><a href="#cb27-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-29"><a href="#cb27-29" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> D0Over2<span class="op">;</span> <span class="op">++</span>i<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb27-30"><a href="#cb27-30" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS PIPELINE II=1</span></span>
+<span id="cb27-31"><a href="#cb27-31" aria-hidden="true" tabindex="-1"></a>    ap_uint<span class="op">&lt;</span><span class="dv">64</span><span class="op">&gt;</span> tensor_data<span class="op">;</span></span>
+<span id="cb27-32"><a href="#cb27-32" aria-hidden="true" tabindex="-1"></a>    tensor_data<span class="op">.</span>range<span class="op">(</span><span class="dv">31</span><span class="op">,</span> <span class="dv">0</span><span class="op">)</span> <span class="op">=</span> FloatToU32<span class="op">(</span></span>
+<span id="cb27-33"><a href="#cb27-33" aria-hidden="true" tabindex="-1"></a>      <span class="kw">static_cast</span><span class="op">&lt;</span><span class="dt">float</span><span class="op">&gt;(</span>tensor<span class="op">[</span>i <span class="op">*</span> <span class="dv">2</span> <span class="op">+</span> <span class="dv">0</span><span class="op">]));</span></span>
+<span id="cb27-34"><a href="#cb27-34" aria-hidden="true" tabindex="-1"></a>    tensor_data<span class="op">.</span>range<span class="op">(</span><span class="dv">63</span><span class="op">,</span> <span class="dv">32</span><span class="op">)</span> <span class="op">=</span> FloatToU32<span class="op">(</span></span>
+<span id="cb27-35"><a href="#cb27-35" aria-hidden="true" tabindex="-1"></a>      <span class="kw">static_cast</span><span class="op">&lt;</span><span class="dt">float</span><span class="op">&gt;(</span>tensor<span class="op">[</span>i <span class="op">*</span> <span class="dv">2</span> <span class="op">+</span> <span class="dv">1</span><span class="op">]));</span></span>
+<span id="cb27-36"><a href="#cb27-36" aria-hidden="true" tabindex="-1"></a>    dst<span class="op">[</span>offset2 <span class="op">+</span> i<span class="op">]</span> <span class="op">=</span> tensor_data<span class="op">;</span></span>
+<span id="cb27-37"><a href="#cb27-37" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb27-38"><a href="#cb27-38" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>オンチップバッファ<code>tensor</code>に置かれたサイズ<code>(D0)</code>のデータを、1サイクルに2つずつ、DRAMに書き戻しています。
+実装を簡単にするため、<code>D0</code>は偶数であると仮定します。
+2つのデータは<code>T</code>型ですが、ソフトウェア側から利用しやすいように<code>float</code>に直し、更に<code>FloatToU32</code>を使って、ビット表現を維持したまま32ビットの符号なし整数型に再解釈しています。
+これら2つを、<code>ap_uint&lt;64&gt;</code>型の上位32ビットと下位32ビットに詰めて、DRAMバッファに書き戻しています。</p>
+<p>最初の2つの全結合層 (<code>LinearOpt1DDR</code>)
+も直して、新たに<code>LinearOpt2DDR</code>を作ります。
+重みとバイアスの転送部分を変更します。
+転送に要するサイクル数が半分ほどになるので、分類ネットワークの推論時間の削減が期待されます。
+実装を簡単にするため、入出力の次元がいずれも偶数であることを前提としています。</p>
+<div class="sourceCode" id="cb28"><pre
+class="sourceCode c++"><code class="sourceCode cpp"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Parallel implementation of the fully-connected layer</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="co">// Weight and bias parameters are stored on the DDR memory</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="co">// Matrix-vector multiplication is parallelized along the output dimension</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="co">// `T` is the type for values</span></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a><span class="co">// `TParam` is the type for weight and bias</span></span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a><span class="co">// `InDims` is the number of input dimensions</span></span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a><span class="co">// `OutDims` is the number of output dimensions</span></span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a><span class="co">// `ApplyReLU` is the flag to apply ReLU activation</span></span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a><span class="co">// `B` is the block size for the output dimension</span></span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span> <span class="op">&lt;</span><span class="kw">typename</span> T<span class="op">,</span> <span class="kw">typename</span> TParam<span class="op">,</span></span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>          <span class="dt">int</span> InDims<span class="op">,</span> <span class="dt">int</span> OutDims<span class="op">,</span> <span class="dt">bool</span> ApplyReLU<span class="op">,</span> <span class="dt">int</span> B<span class="op">&gt;</span></span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> LinearOpt2DDR<span class="op">(</span><span class="at">const</span> T x<span class="op">[</span>InDims<span class="op">],</span></span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a>                   T y<span class="op">[</span>OutDims<span class="op">],</span></span>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a>                   <span class="at">const</span> ap_uint<span class="op">&lt;</span><span class="dv">64</span><span class="op">&gt;*</span> params<span class="op">,</span></span>
+<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a>                   <span class="at">const</span> <span class="dt">int</span> offset<span class="op">)</span></span>
+<span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb28-17"><a href="#cb28-17" aria-hidden="true" tabindex="-1"></a>  <span class="co">// `x` is of size (1, `InDims`)</span></span>
+<span id="cb28-18"><a href="#cb28-18" aria-hidden="true" tabindex="-1"></a>  <span class="co">// `y` is of size (1, `OutDims`)</span></span>
+<span id="cb28-19"><a href="#cb28-19" aria-hidden="true" tabindex="-1"></a>  <span class="co">// `params` contains weight parameters of size (`OutDims`, `InDims`) and</span></span>
+<span id="cb28-20"><a href="#cb28-20" aria-hidden="true" tabindex="-1"></a>  <span class="co">// bias parameters of size (`OutDims`) in a contiguous buffer</span></span>
+<span id="cb28-21"><a href="#cb28-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-22"><a href="#cb28-22" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS INLINE off</span></span>
+<span id="cb28-23"><a href="#cb28-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-24"><a href="#cb28-24" aria-hidden="true" tabindex="-1"></a>  <span class="co">// `OutDims` must be a multiple of `B`</span></span>
+<span id="cb28-25"><a href="#cb28-25" aria-hidden="true" tabindex="-1"></a>  <span class="kw">static_assert</span><span class="op">(</span>OutDims <span class="op">%</span> B <span class="op">==</span> <span class="dv">0</span><span class="op">,</span> <span class="st">&quot;`OutDims` must be a multiple of `B`&quot;</span><span class="op">);</span></span>
+<span id="cb28-26"><a href="#cb28-26" aria-hidden="true" tabindex="-1"></a>  <span class="co">// `B` must be larger than 1</span></span>
+<span id="cb28-27"><a href="#cb28-27" aria-hidden="true" tabindex="-1"></a>  <span class="kw">static_assert</span><span class="op">(</span>B <span class="op">&gt;</span> <span class="dv">1</span><span class="op">,</span> <span class="st">&quot;`B` must be larger than 1&quot;</span><span class="op">);</span></span>
+<span id="cb28-28"><a href="#cb28-28" aria-hidden="true" tabindex="-1"></a>  <span class="co">// `InDims` must be a multiple of 2</span></span>
+<span id="cb28-29"><a href="#cb28-29" aria-hidden="true" tabindex="-1"></a>  <span class="kw">static_assert</span><span class="op">(</span>InDims <span class="op">%</span> <span class="dv">2</span> <span class="op">==</span> <span class="dv">0</span><span class="op">,</span> <span class="st">&quot;`InDims` must be a multiple of 2&quot;</span><span class="op">);</span></span>
+<span id="cb28-30"><a href="#cb28-30" aria-hidden="true" tabindex="-1"></a>  <span class="co">// `OutDims` must be a multiple of 2</span></span>
+<span id="cb28-31"><a href="#cb28-31" aria-hidden="true" tabindex="-1"></a>  <span class="kw">static_assert</span><span class="op">(</span>OutDims <span class="op">%</span> <span class="dv">2</span> <span class="op">==</span> <span class="dv">0</span><span class="op">,</span> <span class="st">&quot;`OutDims` must be a multiple of 2&quot;</span><span class="op">);</span></span>
+<span id="cb28-32"><a href="#cb28-32" aria-hidden="true" tabindex="-1"></a>  <span class="co">// `offset` must be a multiple of 2</span></span>
+<span id="cb28-33"><a href="#cb28-33" aria-hidden="true" tabindex="-1"></a>  <span class="ot">assert</span><span class="op">(</span>offset <span class="op">%</span> <span class="dv">2</span> <span class="op">==</span> <span class="dv">0</span><span class="op">);</span></span>
+<span id="cb28-34"><a href="#cb28-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-35"><a href="#cb28-35" aria-hidden="true" tabindex="-1"></a>  <span class="kw">constexpr</span> <span class="at">const</span> <span class="dt">int</span> BHalf <span class="op">=</span> B <span class="op">/</span> <span class="dv">2</span><span class="op">;</span></span>
+<span id="cb28-36"><a href="#cb28-36" aria-hidden="true" tabindex="-1"></a>  <span class="kw">constexpr</span> <span class="at">const</span> <span class="dt">int</span> OffsetToBias <span class="op">=</span> OutDims <span class="op">*</span> InDims <span class="op">/</span> <span class="dv">2</span><span class="op">;</span></span>
+<span id="cb28-37"><a href="#cb28-37" aria-hidden="true" tabindex="-1"></a>  <span class="kw">constexpr</span> <span class="at">const</span> <span class="dt">int</span> InDims2 <span class="op">=</span> InDims <span class="op">/</span> <span class="dv">2</span><span class="op">;</span></span>
+<span id="cb28-38"><a href="#cb28-38" aria-hidden="true" tabindex="-1"></a>  <span class="kw">constexpr</span> <span class="at">const</span> <span class="dt">int</span> OutDims2 <span class="op">=</span> OutDims <span class="op">/</span> <span class="dv">2</span><span class="op">;</span></span>
+<span id="cb28-39"><a href="#cb28-39" aria-hidden="true" tabindex="-1"></a>  <span class="at">const</span> <span class="dt">int</span> offset2 <span class="op">=</span> offset <span class="op">/</span> <span class="dv">2</span><span class="op">;</span></span>
+<span id="cb28-40"><a href="#cb28-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-41"><a href="#cb28-41" aria-hidden="true" tabindex="-1"></a>  TParam bias<span class="op">[</span>OutDims<span class="op">];</span></span>
+<span id="cb28-42"><a href="#cb28-42" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS ARRAY_PARTITION variable=bias type=cyclic factor=BHalf dim=1</span></span>
+<span id="cb28-43"><a href="#cb28-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-44"><a href="#cb28-44" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Copy the bias parameters in advance</span></span>
+<span id="cb28-45"><a href="#cb28-45" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> OutDims2<span class="op">;</span> <span class="op">++</span>i<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb28-46"><a href="#cb28-46" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS PIPELINE II=1</span></span>
+<span id="cb28-47"><a href="#cb28-47" aria-hidden="true" tabindex="-1"></a>    <span class="at">const</span> ap_uint<span class="op">&lt;</span><span class="dv">64</span><span class="op">&gt;</span> bias_data <span class="op">=</span> params<span class="op">[</span>offset2 <span class="op">+</span> OffsetToBias <span class="op">+</span> i<span class="op">];</span></span>
+<span id="cb28-48"><a href="#cb28-48" aria-hidden="true" tabindex="-1"></a>    bias<span class="op">[</span>i <span class="op">*</span> <span class="dv">2</span> <span class="op">+</span> <span class="dv">0</span><span class="op">]</span> <span class="op">=</span> TParam<span class="op">(</span>U32ToFloat<span class="op">(</span>bias_data<span class="op">.</span>range<span class="op">(</span><span class="dv">31</span><span class="op">,</span> <span class="dv">0</span><span class="op">)));</span></span>
+<span id="cb28-49"><a href="#cb28-49" aria-hidden="true" tabindex="-1"></a>    bias<span class="op">[</span>i <span class="op">*</span> <span class="dv">2</span> <span class="op">+</span> <span class="dv">1</span><span class="op">]</span> <span class="op">=</span> TParam<span class="op">(</span>U32ToFloat<span class="op">(</span>bias_data<span class="op">.</span>range<span class="op">(</span><span class="dv">63</span><span class="op">,</span> <span class="dv">32</span><span class="op">)));</span></span>
+<span id="cb28-50"><a href="#cb28-50" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb28-51"><a href="#cb28-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-52"><a href="#cb28-52" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i0 <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i0 <span class="op">&lt;</span> OutDims<span class="op">;</span> i0 <span class="op">+=</span> B<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb28-53"><a href="#cb28-53" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS PIPELINE off</span></span>
+<span id="cb28-54"><a href="#cb28-54" aria-hidden="true" tabindex="-1"></a>    T vals<span class="op">[</span>B<span class="op">];</span></span>
+<span id="cb28-55"><a href="#cb28-55" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS ARRAY_PARTITION variable=vals type=complete dim=1</span></span>
+<span id="cb28-56"><a href="#cb28-56" aria-hidden="true" tabindex="-1"></a>    TParam weight<span class="op">[</span>B<span class="op">][</span>InDims<span class="op">];</span></span>
+<span id="cb28-57"><a href="#cb28-57" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS ARRAY_PARTITION variable=weight type=cyclic factor=BHalf dim=1</span></span>
+<span id="cb28-58"><a href="#cb28-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-59"><a href="#cb28-59" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Copy the weight parameters for `B` outputs</span></span>
+<span id="cb28-60"><a href="#cb28-60" aria-hidden="true" tabindex="-1"></a>    <span class="at">const</span> <span class="dt">int</span> offset0 <span class="op">=</span> offset2 <span class="op">+</span> i0 <span class="op">*</span> InDims2<span class="op">;</span></span>
+<span id="cb28-61"><a href="#cb28-61" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i1 <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i1 <span class="op">&lt;</span> B<span class="op">;</span> <span class="op">++</span>i1<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb28-62"><a href="#cb28-62" aria-hidden="true" tabindex="-1"></a>      <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> j <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> j <span class="op">&lt;</span> InDims2<span class="op">;</span> <span class="op">++</span>j<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb28-63"><a href="#cb28-63" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS PIPELINE</span></span>
+<span id="cb28-64"><a href="#cb28-64" aria-hidden="true" tabindex="-1"></a>        <span class="at">const</span> ap_uint<span class="op">&lt;</span><span class="dv">64</span><span class="op">&gt;</span> weight_data <span class="op">=</span> params<span class="op">[</span>offset0 <span class="op">+</span> i1 <span class="op">*</span> InDims2 <span class="op">+</span> j<span class="op">];</span></span>
+<span id="cb28-65"><a href="#cb28-65" aria-hidden="true" tabindex="-1"></a>        weight<span class="op">[</span>i1<span class="op">][</span>j <span class="op">*</span> <span class="dv">2</span> <span class="op">+</span> <span class="dv">0</span><span class="op">]</span> <span class="op">=</span> TParam<span class="op">(</span></span>
+<span id="cb28-66"><a href="#cb28-66" aria-hidden="true" tabindex="-1"></a>          U32ToFloat<span class="op">(</span>weight_data<span class="op">.</span>range<span class="op">(</span><span class="dv">31</span><span class="op">,</span> <span class="dv">0</span><span class="op">)));</span></span>
+<span id="cb28-67"><a href="#cb28-67" aria-hidden="true" tabindex="-1"></a>        weight<span class="op">[</span>i1<span class="op">][</span>j <span class="op">*</span> <span class="dv">2</span> <span class="op">+</span> <span class="dv">1</span><span class="op">]</span> <span class="op">=</span> TParam<span class="op">(</span></span>
+<span id="cb28-68"><a href="#cb28-68" aria-hidden="true" tabindex="-1"></a>          U32ToFloat<span class="op">(</span>weight_data<span class="op">.</span>range<span class="op">(</span><span class="dv">63</span><span class="op">,</span> <span class="dv">32</span><span class="op">)));</span></span>
+<span id="cb28-69"><a href="#cb28-69" aria-hidden="true" tabindex="-1"></a>      <span class="op">}</span></span>
+<span id="cb28-70"><a href="#cb28-70" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb28-71"><a href="#cb28-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-72"><a href="#cb28-72" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> j <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> j <span class="op">&lt;</span> InDims<span class="op">;</span> <span class="op">++</span>j<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb28-73"><a href="#cb28-73" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS PIPELINE</span></span>
+<span id="cb28-74"><a href="#cb28-74" aria-hidden="true" tabindex="-1"></a>      <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i1 <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i1 <span class="op">&lt;</span> B<span class="op">;</span> <span class="op">++</span>i1<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb28-75"><a href="#cb28-75" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS UNROLL</span></span>
+<span id="cb28-76"><a href="#cb28-76" aria-hidden="true" tabindex="-1"></a>        <span class="dt">int</span> i <span class="op">=</span> i0 <span class="op">+</span> i1<span class="op">;</span></span>
+<span id="cb28-77"><a href="#cb28-77" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span>i <span class="op">&lt;</span> OutDims<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb28-78"><a href="#cb28-78" aria-hidden="true" tabindex="-1"></a>          T last <span class="op">=</span> <span class="op">(</span>j <span class="op">==</span> <span class="dv">0</span><span class="op">)</span> <span class="op">?</span> T<span class="op">(</span>bias<span class="op">[</span>i<span class="op">])</span> <span class="op">:</span> vals<span class="op">[</span>i1<span class="op">];</span></span>
+<span id="cb28-79"><a href="#cb28-79" aria-hidden="true" tabindex="-1"></a>          vals<span class="op">[</span>i1<span class="op">]</span> <span class="op">=</span> last <span class="op">+</span> x<span class="op">[</span>j<span class="op">]</span> <span class="op">*</span> weight<span class="op">[</span>i1<span class="op">][</span>j<span class="op">];</span></span>
+<span id="cb28-80"><a href="#cb28-80" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb28-81"><a href="#cb28-81" aria-hidden="true" tabindex="-1"></a>      <span class="op">}</span></span>
+<span id="cb28-82"><a href="#cb28-82" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb28-83"><a href="#cb28-83" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-84"><a href="#cb28-84" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i1 <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i1 <span class="op">&lt;</span> B<span class="op">;</span> <span class="op">++</span>i1<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb28-85"><a href="#cb28-85" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS UNROLL</span></span>
+<span id="cb28-86"><a href="#cb28-86" aria-hidden="true" tabindex="-1"></a>      <span class="dt">int</span> i <span class="op">=</span> i0 <span class="op">+</span> i1<span class="op">;</span></span>
+<span id="cb28-87"><a href="#cb28-87" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> <span class="op">(</span>i <span class="op">&lt;</span> OutDims<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb28-88"><a href="#cb28-88" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span>ApplyReLU<span class="op">)</span></span>
+<span id="cb28-89"><a href="#cb28-89" aria-hidden="true" tabindex="-1"></a>          y<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> vals<span class="op">[</span>i1<span class="op">]</span> <span class="op">&gt;</span> T<span class="op">(</span><span class="dv">0</span><span class="op">)</span> <span class="op">?</span> vals<span class="op">[</span>i1<span class="op">]</span> <span class="op">:</span> T<span class="op">(</span><span class="dv">0</span><span class="op">);</span></span>
+<span id="cb28-90"><a href="#cb28-90" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span></span>
+<span id="cb28-91"><a href="#cb28-91" aria-hidden="true" tabindex="-1"></a>          y<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> vals<span class="op">[</span>i1<span class="op">];</span></span>
+<span id="cb28-92"><a href="#cb28-92" aria-hidden="true" tabindex="-1"></a>      <span class="op">}</span></span>
+<span id="cb28-93"><a href="#cb28-93" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb28-94"><a href="#cb28-94" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb28-95"><a href="#cb28-95" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>2つのネットワークについて、データの入出力に関連する部分を修正しました。
+<code>InferenceFeatOpt2</code>と<code>InferenceClsOpt1</code>に対して、修正を施したものを<code>InferenceFeatOpt3</code>、<code>InferenceClsOpt3</code>とします。
+<code>InferenceFeatOpt3</code>では、点群データを読み取る際に、<code>ReadPointNaive</code>の代わりに<code>ReadPointOpt1</code>を使っています
+(他は同じ)。
+また<code>InferenceClsOpt3</code>では、ロジットを書き込む際に、<code>WriteTensor1dNaive</code>ではなく<code>WriteTensor1dOpt1</code>を使い、最初の2つの全結合層については、<code>LinearOpt1DDR</code>の代わりに<code>LinearOpt2DDR</code>を使っています。</p>
+<div class="sourceCode" id="cb29"><pre
+class="sourceCode c++"><code class="sourceCode cpp"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span> <span class="op">&lt;</span><span class="kw">typename</span> T<span class="op">,</span> <span class="kw">typename</span> U<span class="op">,</span> <span class="dt">int</span> N<span class="op">&gt;</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> InferenceFeatOpt3<span class="op">(...)</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS INLINE off</span></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Zero-initialize the output feature</span></span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>  VectorNdSetZero<span class="op">&lt;</span>T<span class="op">,</span> kFeatDims5<span class="op">&gt;(</span>feature<span class="op">);</span></span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Compute the feature</span></span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> num_points<span class="op">;</span> <span class="op">++</span>i<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>    <span class="co">// ...</span></span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Read a point from a DDR memory</span></span>
+<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a>    ReadPointOpt1<span class="op">&lt;</span>T<span class="op">&gt;(</span>point_cloud<span class="op">,</span> i<span class="op">,</span> x0<span class="op">);</span></span>
+<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-16"><a href="#cb29-16" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Compute a point feature</span></span>
+<span id="cb29-17"><a href="#cb29-17" aria-hidden="true" tabindex="-1"></a>    <span class="co">// ...</span></span>
+<span id="cb29-18"><a href="#cb29-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-19"><a href="#cb29-19" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Update the output feature</span></span>
+<span id="cb29-20"><a href="#cb29-20" aria-hidden="true" tabindex="-1"></a>    MaxPool1dOpt1<span class="op">&lt;</span>T<span class="op">,</span> kFeatDims5<span class="op">,</span> <span class="dv">2</span><span class="op">&gt;(</span>x10<span class="op">,</span> feature<span class="op">);</span></span>
+<span id="cb29-21"><a href="#cb29-21" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb29-22"><a href="#cb29-22" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb29-23"><a href="#cb29-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-24"><a href="#cb29-24" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span> <span class="op">&lt;</span><span class="kw">typename</span> T<span class="op">,</span> <span class="kw">typename</span> U<span class="op">&gt;</span></span>
+<span id="cb29-25"><a href="#cb29-25" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> InferenceClsOpt3<span class="op">(...)</span></span>
+<span id="cb29-26"><a href="#cb29-26" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb29-27"><a href="#cb29-27" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma HLS INLINE off</span></span>
+<span id="cb29-28"><a href="#cb29-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-29"><a href="#cb29-29" aria-hidden="true" tabindex="-1"></a>  <span class="co">// ...</span></span>
+<span id="cb29-30"><a href="#cb29-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-31"><a href="#cb29-31" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Compute logits</span></span>
+<span id="cb29-32"><a href="#cb29-32" aria-hidden="true" tabindex="-1"></a>  LinearOpt2DDR<span class="op">&lt;</span>T<span class="op">,</span> U<span class="op">,</span> kClsDims0<span class="op">,</span> kClsDims1<span class="op">,</span> <span class="kw">false</span><span class="op">,</span> <span class="dv">16</span><span class="op">&gt;(</span></span>
+<span id="cb29-33"><a href="#cb29-33" aria-hidden="true" tabindex="-1"></a>    feature<span class="op">,</span> x0<span class="op">,</span> params1<span class="op">,</span> <span class="dv">0</span><span class="op">);</span></span>
+<span id="cb29-34"><a href="#cb29-34" aria-hidden="true" tabindex="-1"></a>  BatchNorm1dReLUOpt1<span class="op">&lt;</span>T<span class="op">,</span> U<span class="op">,</span> kClsDims1<span class="op">,</span> <span class="dv">2</span><span class="op">&gt;(</span></span>
+<span id="cb29-35"><a href="#cb29-35" aria-hidden="true" tabindex="-1"></a>    x0<span class="op">,</span> x1<span class="op">,</span> bn1<span class="op">-&gt;</span>scale<span class="op">,</span> bn1<span class="op">-&gt;</span>bias<span class="op">,</span> bn1<span class="op">-&gt;</span>mean<span class="op">);</span></span>
+<span id="cb29-36"><a href="#cb29-36" aria-hidden="true" tabindex="-1"></a>  LinearOpt2DDR<span class="op">&lt;</span>T<span class="op">,</span> U<span class="op">,</span> kClsDims1<span class="op">,</span> kClsDims2<span class="op">,</span> <span class="kw">false</span><span class="op">,</span> <span class="dv">8</span><span class="op">&gt;(</span></span>
+<span id="cb29-37"><a href="#cb29-37" aria-hidden="true" tabindex="-1"></a>    x1<span class="op">,</span> x2<span class="op">,</span> params2<span class="op">,</span> <span class="dv">0</span><span class="op">);</span></span>
+<span id="cb29-38"><a href="#cb29-38" aria-hidden="true" tabindex="-1"></a>  BatchNorm1dReLUOpt1<span class="op">&lt;</span>T<span class="op">,</span> U<span class="op">,</span> kClsDims2<span class="op">,</span> <span class="dv">2</span><span class="op">&gt;(</span></span>
+<span id="cb29-39"><a href="#cb29-39" aria-hidden="true" tabindex="-1"></a>    x2<span class="op">,</span> x3<span class="op">,</span> bn2<span class="op">-&gt;</span>scale<span class="op">,</span> bn2<span class="op">-&gt;</span>bias<span class="op">,</span> bn2<span class="op">-&gt;</span>mean<span class="op">);</span></span>
+<span id="cb29-40"><a href="#cb29-40" aria-hidden="true" tabindex="-1"></a>  LinearOpt1<span class="op">&lt;</span>T<span class="op">,</span> U<span class="op">,</span> kClsDims2<span class="op">,</span> kClsDims3<span class="op">,</span> <span class="kw">false</span><span class="op">,</span> <span class="dv">2</span><span class="op">&gt;(</span></span>
+<span id="cb29-41"><a href="#cb29-41" aria-hidden="true" tabindex="-1"></a>    x3<span class="op">,</span> x4<span class="op">,</span> fc3<span class="op">-&gt;</span>weight<span class="op">,</span> fc3<span class="op">-&gt;</span>bias<span class="op">);</span></span>
+<span id="cb29-42"><a href="#cb29-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-43"><a href="#cb29-43" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Write the result</span></span>
+<span id="cb29-44"><a href="#cb29-44" aria-hidden="true" tabindex="-1"></a>  WriteTensor1dOpt1<span class="op">&lt;</span>T<span class="op">,</span> kClsDims3<span class="op">&gt;(</span>out_logits<span class="op">,</span> x4<span class="op">,</span> <span class="dv">0</span><span class="op">);</span></span>
+<span id="cb29-45"><a href="#cb29-45" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>入出力ポート幅によって、どの程度実行時間を削減できたでしょうか。
+特徴抽出ネットワーク<code>InferenceFeatOpt2</code>の実行サイクル数は1,112,259
+(7.408ms)、新たに用意した<code>InferenceFeatOpt3</code>は1,112,254
+(7.408ms) でした。 ほぼ一緒です。
+分類ネットワークに関しては、ポート幅32ビット用の<code>InferenceClsOpt1</code>は711,969サイクル
+(4.742ms)
+でしたが、64ビット用の<code>InferenceClsOpt3</code>では383,885サイクル
+(2.557ms) に削減されました。
+ポート幅を2倍に広げたことで、分類ネットワークの推論時間を1.85倍短縮できたわけです。</p>
+<p>当初のナイーブ実装 (<code>InferenceFeatNaive</code> +
+<code>InferenceClsNaive</code>) と、ここに示す実装
+(<code>InferenceFeatOpt3</code> + <code>InferenceClsOpt3</code>)
+とで、実行サイクル数はどの程度変化したでしょうか。
+上がナイーブ実装、下が最適化済みの実装での結果です。
+ナイーブ実装では、推論に163,279,213サイクル (1.087s)
+要していますが、最適化によって1,496,143サイクル (9.964ms)
+にまで削減されています。 およそ109倍の差ですね。</p>
+<p><a
+href="point-cloud-classification-images/pointnet-naive-clock-cycles.png"><img src="point-cloud-classification-images/pointnet-naive-clock-cycles.png" width="720" /></a></p>
+<p><a
+href="point-cloud-classification-images/pointnet-opt3-clock-cycles.png"><img src="point-cloud-classification-images/pointnet-opt3-clock-cycles.png" width="720" /></a></p>
+<p>以上で、高位合成の実装ができあがりました。
+<code>hls/src/top_opt3.cpp</code>をご覧ください。</p>
+<h2 id="ビットストリームの準備">ビットストリームの準備</h2>
+<p>高位合成の実装ができたので、Vitis
+HLSでコンパイルし、IPコアを作成します。
+今回は、以下のような環境で作業しています
+(試す人はいないと思いますが書いておきます)。</p>
+<ul>
+<li>Ubuntu 20.04.5 LTS</li>
+<li>Intel(R) Xeon(R) E-2186G CPU @ 3.80GHz</li>
+<li>64GB DRAM</li>
+<li>Vivado ML Edition 2022.1
+(インストール場所は<code>/tools/Xilinx</code>以下)</li>
+<li>CMake 3.16.3</li>
+</ul>
+<p>また、対象のFPGAボードは、Xilinx ZCU104 Evaluation Kitです。</p>
+<p>今回用意したGitHubリポジトリでは、以下のように<code>make</code>するだけで、自動的にIPコアを作成できます。
+TclスクリプトとCMakeを組み合わせて実現されています。
+上のスクリーンショットのように、Vitis
+HLSにはGUIが用意されていますが、Tclスクリプトを使えばコマンドライン上でのバッチ処理が可能です。
+適当な場所にリポジトリをクローンしたら、<code>hls</code>ディレクトリに移って、作業用のディレクトリを準備します。
+続いてCMakeプロジェクトを構成し、所望のIPコアを<code>make</code>で作成します。</p>
+<pre><code># 予めVivadoとVitis HLSを使えるようにsourceする
+&gt; source /tools/Xilinx/Vivado/2022.1/settings64.sh
+
+# GitHubリポジトリのクローン
+&gt; git clone git@github.com:sterngerlach/advent_2022_point_cloud_classification.git
+&gt; cd advent_2022_point_cloud_classification
+
+# 作業用ディレクトリの準備
+&gt; cd hls
+&gt; mkdir build
+&gt; mkdir work
+
+&gt; cd build
+
+# CMakeプロジェクトを構成
+# settings64.shによってCMakeが書き換えられるので、システムのCMakeを使う
+&gt; /usr/bin/cmake ..
+
+# ナイーブ実装からIPコアを作成
+# workディレクトリ内に作られる
+&gt; make pointnet_naive_150_csynth_export
+
+# ループアンローリングと配列の分割を済ませたIPコアを作成
+&gt; make pointnet_opt1_csynth_export
+
+# データフロー最適化を済ませたIPコアを作成
+&gt; make pointnet_opt2_csynth_export
+
+# 入出力のポート幅を64ビットに広げたIPコアを作成
+&gt; make pointnet_opt3_csynth_export</code></pre>
+<p>IPコアを作成したら、GUIを起動して、合成結果をみてみましょう
+(上のスクリーンショットのような画面が開きます)。</p>
+<pre><code>&gt; cd hls/work
+
+# ナイーブ実装用のVitis HLSプロジェクトをGUIで開く
+&gt; vitis_hls -p pointnet_naive_150
+
+# 他も同様
+&gt; vitis_hls -p pointnet_opt1
+&gt; vitis_hls -p pointnet_opt2
+&gt; vitis_hls -p pointnet_opt3</code></pre>
+<p>Vitis
+HLSを使うのはここまでで、これ以降は、Vivadoを使った作業に移ります。
+続いて、このIPコアを、別のIPコアと組み合わせて、ボードデザインを用意します。
+今回は、ボードデザインの作成については省略します。
+最初に、<code>vivado</code>ディレクトリに移って、作業用のディレクトリを準備します。
+続いてCMakeプロジェクトを構成し、所望のボードデザインを<code>make</code>で作成します。</p>
+<pre><code># 作業用ディレクトリの準備
+&gt; cd vivado
+&gt; mkdir build
+&gt; mkdir work
+&gt; mkdir bitstream
+
+&gt; cd build
+
+# CMakeプロジェクトを構成
+# settings64.shによってCMakeが書き換えられるので、システムのCMakeを使う
+# Vitis HLSによるIPコアの合成が終わっていないとエラー
+&gt; /usr/bin/cmake ..
+
+# ナイーブ実装のIPコアから、ボードデザインを作成
+&gt; make pointnet_naive_150_create
+
+# 最適化済みのIPコアから、ボードデザインを作成
+&gt; make pointnet_opt1_create
+&gt; make pointnet_opt2_create
+&gt; make pointnet_opt3_create</code></pre>
+<p>ボードデザインを作成したら、GUIを起動して、ブロック図をみてみましょう。</p>
+<pre><code>&gt; cd vivado/work
+&gt; vivado -project pointnet_naive_150/pointnet_naive_150.xpr
+&gt; vivado -project pointnet_opt1/pointnet_opt1.xpr
+&gt; vivado -project pointnet_opt2/pointnet_opt2.xpr
+&gt; vivado -project pointnet_opt3/pointnet_opt3.xpr</code></pre>
+<p><a
+href="point-cloud-classification-images/pointnet-opt3-vivado.png"><img src="point-cloud-classification-images/pointnet-opt3-vivado.png" width="720" /></a></p>
+<p>左側のFlow Navigatorから、「Open Block
+Design」を選択すると、ブロック図を表示できます。</p>
+<p><a
+href="point-cloud-classification-images/pointnet-opt3-vivado2.png"><img src="point-cloud-classification-images/pointnet-opt3-vivado2.png" width="720" /></a></p>
+<p>ブロック図を拡大したものが以下です。</p>
+<p><a
+href="point-cloud-classification-images/board-design.svg"><img src="point-cloud-classification-images/board-design.svg" width="720" /></a></p>
+<p>ボードデザインに対して、論理合成と配置配線を行い、回路情報をまとめたビットストリーム
+(Bitstream) を作成しましょう。
+マシンのスペックにもよりますが、こちらの環境では、1つのボードデザインの論理合成と配置配線に、30分以上掛かりました
+(8コアを使った場合)。
+今回のGitHubリポジトリには、ビットストリームも入れてあるので、この作業は必要ありません
+(試してみても大丈夫です)。</p>
+<pre><code>&gt; cd vivado/build
+&gt; make pointnet_naive_150_impl &amp;&amp; make pointnet_naive_150_copy_bitstream
+&gt; make pointnet_opt1_impl &amp;&amp; make pointnet_opt1_copy_bitstream
+&gt; make pointnet_opt2_impl &amp;&amp; make pointnet_opt2_copy_bitstream
+&gt; make pointnet_opt3_impl &amp;&amp; make pointnet_opt3_copy_bitstream</code></pre>
+<p>もう一度GUIを起動して、合成済みの回路をみてみましょう。 左側のFlow
+Navigatorから、「Open Implemented Design」を選択します。
+個人的には、ニューヨークのマンハッタンのようにみえて、美しいと思います。
+GUI上で、リソースの使用率 (Utilization) や、電力消費の見積もり
+(Power)、タイミング (Timing) などを確認できます。</p>
+<p><a
+href="point-cloud-classification-images/pointnet-opt3-vivado3.png"><img src="point-cloud-classification-images/pointnet-opt3-vivado3.png" width="720" /></a></p>
+<p><code>vivado/bitstream</code>ディレクトリ以下に、生成されたビットストリームがコピーされます。
+ビットストリーム (拡張子<code>.bit</code>) の他に、Hardware
+Handoffファイル (拡張子<code>.hwh</code>) もあります。
+FPGAボードにビットストリームをロードするためには、2つのファイルがセットで必要になります。
+ビットストリームを読み直せば、回路を何度でも切り替えられるというのが、ASICに対するFPGAの大きな利点です。
+さて、これらのファイルを<code>scp</code>などでFPGAボード上に転送すれば、回路を動かす準備が整います。</p>
+<pre><code>&gt; cd vivado/bitstream
+&gt; ls
+-rw-rw-r-- 1 x x  19M Dec 14 23:34 pointnet_naive_150.bit
+-rw-rw-r-- 1 x x 363K Dec 14 23:34 pointnet_naive_150.hwh
+-rw-rw-r-- 1 x x  19M Dec 15 00:01 pointnet_opt1.bit
+-rw-rw-r-- 1 x x 363K Dec 15 00:01 pointnet_opt1.hwh
+-rw-rw-r-- 1 x x  19M Dec 14 23:20 pointnet_opt2.bit
+-rw-rw-r-- 1 x x 363K Dec 14 23:20 pointnet_opt2.hwh
+-rw-rw-r-- 1 x x  19M Dec 15 18:07 pointnet_opt3.bit
+-rw-rw-r-- 1 x x 363K Dec 15 18:07 pointnet_opt3.hwh</code></pre>
 </body>
 </html>
