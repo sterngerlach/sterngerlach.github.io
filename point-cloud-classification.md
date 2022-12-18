@@ -25,8 +25,22 @@ author: SternGerlach
 また、コレクションは[こちら](./cds.html)と[こちら](./toshiba-emi.html)にまとめてあります。
 暇なときにご覧ください。
 
+もう一つ余談。
+オフコースの初期の5作品から、自分の好きなものをピックアップしました。
+
+1. 1stアルバム「僕の贈りもの」(1973年): 🥇「よみがえるひととき」🥈「貼り忘れた写真」🥉「彼のほほえみ」
+2. 2ndアルバム「この道をゆけば オフ・コース・ラウンド2」(1974年): 🥇「はたちの頃」🥈「別れの情景(1)」🥉「首輪のない犬」「あの角をまがれば」「日曜日のたいくつ」
+3. 3rdアルバム「ワインの匂い」(1975年): 🥇「幻想」🥈「老人のつぶやき」🥉「憂き世に」「雨よ激しく」「倖せなんて」
+4. 4thアルバム「Song Is Love」(1976年): 🥇「冬が来るまえに」🥈「青空と人生と」🥉「歌を捧げて」「青春」「ひとりで生きてゆければ」
+5. 5thアルバム「Junktion」(1977年): 🥇「変わってゆく女」🥈「Invitation」🥉「愛のきざし」
+
+それぞれの曲に思い入れがありますが、ここでは触れません。
+以上です。
+
 今年は、点群処理 (点群分類タスク) 向けニューラルネットのFPGA高速化を試してみます。
 LeNetやResNetなど、画像処理向けニューラルネットのFPGA高速化も面白いのですが、既にたくさんの素晴らしい記事が出ているのでやめました。
+音楽の話も、誰にも通じないし、ウケないと思ったのでやめました。
+コンピュータで閲覧されることをお勧めします。
 
 ## ニューラルネットの準備
 
@@ -34,7 +48,7 @@ LeNetやResNetなど、画像処理向けニューラルネットのFPGA高速�
 PointNetは、MLPとMaxプーリング層からなる、シンプルかつ強力なモデルです。
 分類タスク向けのPointNetの構造を、以下に示します。
 
-[<img src="point-cloud-classification-images/pointnet-layers.svg" width="720" />](point-cloud-classification-images/pointnet-layers.svg)
+[<img src="point-cloud-classification-images/pointnet-layers.svg" width="100%" />](point-cloud-classification-images/pointnet-layers.svg)
 
 モデルは、点群からの特徴抽出と、特徴に基づく分類の、2つの部分に分けられます (図のFeature extractionとClassification)。
 
@@ -51,7 +65,7 @@ MLPを用いて、各点$\boldsymbol{p}_i \in \mathbb{R}^3$に対して、1024�
 画像認識向けのモデルとは異なり、畳み込み層がありません。
 また、MLPは、全結合層、ReLU活性化層、バッチ正規化層をまとめたものとします。
 
-[<img src="point-cloud-classification-images/pointnet-layers2.svg" width="720" />](point-cloud-classification-images/pointnet-layers2.svg)
+[<img src="point-cloud-classification-images/pointnet-layers2.svg" width="80%" />](point-cloud-classification-images/pointnet-layers2.svg)
 
 PyTorchによるモデルの定義は、次のようになります (`net/model.py`)。
 ソースコード全体は[こちらのリポジトリ](https://github.com/sterngerlach/advent_2022_point_cloud_classification)に置かれているので、適宜ご参照ください。
@@ -149,7 +163,7 @@ class PointNetCls(torch.nn.Module):
 
 最終的に、今回FPGA上に実装するPointNetは、以下のようになります。
 
-[<img src="point-cloud-classification-images/pointnet-layers3.svg" width="720" />](point-cloud-classification-images/pointnet-layers3.svg)
+[<img src="point-cloud-classification-images/pointnet-layers3.svg" width="80%" />](point-cloud-classification-images/pointnet-layers3.svg)
 
 ## 高位合成による実装
 
@@ -278,11 +292,11 @@ void PointNetClsTop(const int op_mode,
 
 上記を高位合成すると、次のようなIPコアが作られます。
 
-[<img src="point-cloud-classification-images/pointnet-ip-core.svg" width="360" />](point-cloud-classification-images/pointnet-ip-core.svg)
+[<img src="point-cloud-classification-images/pointnet-ip-core.svg" width="50%" />](point-cloud-classification-images/pointnet-ip-core.svg)
 
 このIPコアを別のIPコアと組み合わせることで (後述)、次のようなブロックデザインができます。
 
-[<img src="point-cloud-classification-images/board-design.svg" width="720" />](point-cloud-classification-images/board-design.svg)
+[<img src="point-cloud-classification-images/board-design.svg" width="100%" />](point-cloud-classification-images/board-design.svg)
 
 このブロックデザインに対して、論理合成および配置配線することで、回路情報を表すビットストリーム (Bitstream) を生成します。
 ビットストリームをFPGAにロードすることで、PointNetの専用回路が使えるようになります。
@@ -836,7 +850,7 @@ void MaxPool1dNaive(const T x[Dims], T y[Dims])
 `#pragma HLS PIPELINE off`とすると、このパイプライン化が抑制されます。
 パイプライン化による効果を、以下の図に示します。
 
-[<img src="point-cloud-classification-images/pipelined-execution.svg" width="640" />](point-cloud-classification-images/pipelined-execution.svg)
+[<img src="point-cloud-classification-images/pipelined-execution.svg" width="70%" />](point-cloud-classification-images/pipelined-execution.svg)
 
 ループをパイプライン化しない場合は、ループの各イテレーションを順に実行します (図の上部)。
 一方、パイプライン化では、ループ内部の処理を分割 (図の場合は4分割) し、それぞれの処理を時間的にオーバーラップさせます (図の下部)。
@@ -1123,7 +1137,7 @@ void MaxPool1dOpt1(const T x[Dims], T y[Dims])
 
 `B`個の要素をもつ配列`vals`を、完全に分割すると、次のようになります。
 
-[<img src="point-cloud-classification-images/complete-partition.svg" width="360" />](point-cloud-classification-images/complete-partition.svg)
+[<img src="point-cloud-classification-images/complete-partition.svg" width="50%" />](point-cloud-classification-images/complete-partition.svg)
 
 `LinearOpt1`内には記述されていませんが、`weight`と`bias`については、別の場所で、`vals`と同様のHLSプラグマを指定する必要があります。
 `weight`と`bias`から、1サイクルで`B`個の**連続した**要素 (`bias[i0]`から`bias[i0 + B - 1]`まで、そして`weight[i0][j]`から`weight[i0 + B - 1][j]`まで) を読み出すためには、次のように**サイクリック分割**します。
@@ -1151,17 +1165,17 @@ void MaxPool1dOpt1(const T x[Dims], T y[Dims])
 係数`B`でアンローリングしたら、配列は`B / 2`個 (`B`個でもよい) にサイクリック分割しないと、`B`並列になりません。
 また、ループをアンローリングしたのに、配列を一切分割しなければ、並列処理になりません。
 
-[<img src="point-cloud-classification-images/cyclic-partition.svg" width="480" />](point-cloud-classification-images/cyclic-partition.svg)
+[<img src="point-cloud-classification-images/cyclic-partition.svg" width="60%" />](point-cloud-classification-images/cyclic-partition.svg)
 
 最初の次元で2つにサイクリック分割 (`factor=2 dim=1`) すれば、次のようになります。
 2分割するとポート数が4つに増えるので、4つの連続した要素 (例えば`w[0][j]`から`w[3][j]`、あるいは`w[4][j]`から`w[7][j]`まで) をまとめて読み出せます。
 
-[<img src="point-cloud-classification-images/cyclic-partition3.svg" width="480" />](point-cloud-classification-images/cyclic-partition3.svg)
+[<img src="point-cloud-classification-images/cyclic-partition3.svg" width="60%" />](point-cloud-classification-images/cyclic-partition3.svg)
 
 2番目の次元で2つにサイクリック分割 (`factor=2 dim=2`) すれば、次のようになります。
 今度は、2番目の次元について、4つの連続した要素 (例えば`w[i][0]`から`w[i][3]`まで) に1サイクルでアクセスできます。
 
-[<img src="point-cloud-classification-images/cyclic-partition2.svg" width="360" />](point-cloud-classification-images/cyclic-partition2.svg)
+[<img src="point-cloud-classification-images/cyclic-partition2.svg" width="50%" />](point-cloud-classification-images/cyclic-partition2.svg)
 
 これらを考えると、`weight`と`bias`については上記のプラグマを使えばよいと分かります。
 
@@ -1566,11 +1580,11 @@ IPコアの動作モードには2つありますが、このうち重みの初�
 全ての関数が、入出力を介して、数珠つなぎのようになっています。
 関数の実行の流れを図にすると、次のようになります。
 
-[<img src="point-cloud-classification-images/dataflow-optimization-before.svg" width="720" />](point-cloud-classification-images/dataflow-optimization-before.svg)
+[<img src="point-cloud-classification-images/dataflow-optimization-before.svg" width="80%" />](point-cloud-classification-images/dataflow-optimization-before.svg)
 
 先程のパイプライン化と同様に、複数の点について処理を並列化できます。
 
-[<img src="point-cloud-classification-images/dataflow-optimization-after.svg" width="720" />](point-cloud-classification-images/dataflow-optimization-after.svg)
+[<img src="point-cloud-classification-images/dataflow-optimization-after.svg" width="90%" />](point-cloud-classification-images/dataflow-optimization-after.svg)
 
 例えば、1つ目の点に対して、最後の全結合層を計算している間に、2つ目の点に対して、その一つ前のバッチ正規化層を計算するというように、複数の点に対する処理を時間的にオーバーラップさせます。
 以前は、ループ内の処理をパイプライン化して、ループの複数のイテレーションを並列に実行しました。
@@ -2308,9 +2322,9 @@ void InferenceClsOpt3(...)
 ナイーブ実装では、推論に163,279,213サイクル (1.087s) 要していますが、最適化によって1,496,143サイクル (9.964ms) にまで削減されています。
 およそ109倍の差ですね。
 
-[<img src="point-cloud-classification-images/pointnet-naive-clock-cycles.png" width="720" />](point-cloud-classification-images/pointnet-naive-clock-cycles.png)
+[<img src="point-cloud-classification-images/pointnet-naive-clock-cycles.png" width="80%" />](point-cloud-classification-images/pointnet-naive-clock-cycles.png)
 
-[<img src="point-cloud-classification-images/pointnet-opt3-clock-cycles.png" width="720" />](point-cloud-classification-images/pointnet-opt3-clock-cycles.png)
+[<img src="point-cloud-classification-images/pointnet-opt3-clock-cycles.png" width="80%" />](point-cloud-classification-images/pointnet-opt3-clock-cycles.png)
 
 以上で、高位合成の実装ができあがりました。
 `hls/src/top_opt3.cpp`をご覧ください。
@@ -2326,7 +2340,7 @@ void InferenceClsOpt3(...)
 - Vivado ML Edition 2022.1 (インストール場所は`/tools/Xilinx`以下)
 - CMake 3.16.3
 
-また、対象のFPGAボードは、Xilinx ZCU104 Evaluation Kitです。
+また、対象のFPGAボードは、Xilinx ZCU104 Evaluation Board (XCZU7EV-2FFVC1156)です。
 
 今回用意したGitHubリポジトリでは、以下のように`make`するだけで、自動的にIPコアを作成できます。
 TclスクリプトとCMakeを組み合わせて実現されています。
@@ -2357,7 +2371,7 @@ TclスクリプトとCMakeを組み合わせて実現されています。
 # workディレクトリ内に作られる
 > make pointnet_naive_150_csynth_export
 
-# ループアンローリングと配列の分割を済ませたIPコアを作成
+# データ並列性を活用した (ループアンローリングと配列の分割を済ませた) IPコアを作成
 > make pointnet_opt1_csynth_export
 
 # データフロー最適化を済ませたIPコアを作成
@@ -2420,15 +2434,15 @@ Vitis HLSを使うのはここまでで、これ以降は、Vivadoを使った�
 > vivado -project pointnet_opt3/pointnet_opt3.xpr
 ```
 
-[<img src="point-cloud-classification-images/pointnet-opt3-vivado.png" width="720" />](point-cloud-classification-images/pointnet-opt3-vivado.png)
+[<img src="point-cloud-classification-images/pointnet-opt3-vivado.png" width="80%" />](point-cloud-classification-images/pointnet-opt3-vivado.png)
 
 左側のFlow Navigatorから、「Open Block Design」を選択すると、ブロック図を表示できます。
 
-[<img src="point-cloud-classification-images/pointnet-opt3-vivado2.png" width="720" />](point-cloud-classification-images/pointnet-opt3-vivado2.png)
+[<img src="point-cloud-classification-images/pointnet-opt3-vivado2.png" width="80%" />](point-cloud-classification-images/pointnet-opt3-vivado2.png)
 
 ブロック図を拡大したものが以下です。
 
-[<img src="point-cloud-classification-images/board-design.svg" width="720" />](point-cloud-classification-images/board-design.svg)
+[<img src="point-cloud-classification-images/board-design.svg" width="100%" />](point-cloud-classification-images/board-design.svg)
 
 ボードデザインに対して、論理合成と配置配線を行い、回路情報をまとめたビットストリーム (Bitstream) を作成しましょう。
 マシンのスペックにもよりますが、こちらの環境では、1つのボードデザインの論理合成と配置配線に、30分以上掛かりました (8コアを使った場合)。
@@ -2447,12 +2461,13 @@ Vitis HLSを使うのはここまでで、これ以降は、Vivadoを使った�
 個人的には、ニューヨークのマンハッタンのようにみえて、美しいと思います。
 GUI上で、リソースの使用率 (Utilization) や、電力消費の見積もり (Power)、タイミング (Timing) などを確認できます。
 
-[<img src="point-cloud-classification-images/pointnet-opt3-vivado3.png" width="720" />](point-cloud-classification-images/pointnet-opt3-vivado3.png)
+[<img src="point-cloud-classification-images/pointnet-opt3-vivado3.png" width="80%" />](point-cloud-classification-images/pointnet-opt3-vivado3.png)
 
 `vivado/bitstream`ディレクトリ以下に、生成されたビットストリームがコピーされます。
 ビットストリーム (拡張子`.bit`) の他に、Hardware Handoffファイル (拡張子`.hwh`) もあります。
+Handoffファイルには、回路のメタデータが含まれます。
 FPGAボードにビットストリームをロードするためには、2つのファイルがセットで必要になります。
-ビットストリームを読み直せば、回路を何度でも切り替えられるというのが、ASICに対するFPGAの大きな利点です。
+ビットストリームを読み直せば、動かす回路を何度でも切り替えられるというのが、ASICに対するFPGAの大きな利点です。
 さて、これらのファイルを`scp`などでFPGAボード上に転送すれば、回路を動かす準備が整います。
 
 ```
@@ -2467,3 +2482,726 @@ FPGAボードにビットストリームをロードするためには、2つの
 -rw-rw-r-- 1 x x  19M Dec 15 18:07 pointnet_opt3.bit
 -rw-rw-r-- 1 x x 363K Dec 15 18:07 pointnet_opt3.hwh
 ```
+
+## 回路を動かす
+
+ビットストリームを用意できたので、いよいよ回路を動かしてみます。
+今回使用するFPGAボード、Xilinx ZCU104 Evaluation Kitは、SoC (System-on-Chip) とよばれています。
+FPGAの他に、クアッドコア ARM Cortex-A53 CPU (1.2GHz)、2GBのDRAMや、様々な周辺回路が統合されていて、Linuxが動作します。
+ここではOSとして、Ubuntu 20.04をベースとしたPynq Linux 2.7を使います。
+Pynq Linuxには`pynq`とよばれるPythonのライブラリが付属しており、PythonからFPGA関連の処理を簡単に行えます。
+
+以下を試すためには、Pynq Linux上に、PyTorch 1.11.0や、TorchVision 0.12.0、NumPy、SciPy、H5py、Tqdmなどのライブラリを予めインストールする必要がありますが、ここでは説明が長くなってしまうため割愛します。
+基本的には`pip`コマンドでインストールできます。
+なお、Xilinx ZCU104、Pynq Linux 2.7用にビルドされたPyTorch 1.11.0、TorchVision 0.12.0のWheelファイルは、[こちらのリポジトリ](https://github.com/sterngerlach/pytorch-pynq-builds)に置いてあります。
+ここまで苦労して、なぜFPGA上で機械学習モデルを動かそうとするのか、たまに自問自答することがあります。
+
+これ以降はC/C++ではなく、Pythonのコードを書いていきます。
+
+最初に、PyTorchのモデルの定義を再掲します (`net/model.py`)。
+何の捻りもなく、シンプルですね。
+```Python
+class PointNetFeat(torch.nn.Module):
+    def __init__(self):
+        super().__init__()
+
+        self.conv1 = torch.nn.Conv1d(3, 64, 1)
+        self.conv2 = torch.nn.Conv1d(64, 64, 1)
+        self.conv3 = torch.nn.Conv1d(64, 64, 1)
+        self.conv4 = torch.nn.Conv1d(64, 128, 1)
+        self.conv5 = torch.nn.Conv1d(128, 1024, 1)
+        self.bn1 = torch.nn.BatchNorm1d(64)
+        self.bn2 = torch.nn.BatchNorm1d(64)
+        self.bn3 = torch.nn.BatchNorm1d(64)
+        self.bn4 = torch.nn.BatchNorm1d(128)
+        self.bn5 = torch.nn.BatchNorm1d(1024)
+
+    def forward(self, x: torch.Tensor):
+        # `x` is of size [B, N, 3]
+        N = x.shape[1]
+        # `x` is of size [B, 3, N]
+        x = x.transpose(1, 2)
+
+        # `x` is of size [B, 1024, N]
+        x = F.relu(self.bn1(self.conv1(x)))
+        x = F.relu(self.bn2(self.conv2(x)))
+        x = F.relu(self.bn3(self.conv3(x)))
+        x = F.relu(self.bn4(self.conv4(x)))
+        x = F.relu(self.bn5(self.conv5(x)))
+
+        # `x` is of size [B, 1024]
+        x = torch.max(x, dim=2)[0]
+
+        return x
+
+class PointNetCls(torch.nn.Module):
+    def __init__(self, num_classes: int):
+        super().__init__()
+
+        # Feature extraction
+        self.feat = PointNetFeat()
+
+        # Classification network
+        self.fc1 = torch.nn.Linear(1024, 512)
+        self.fc2 = torch.nn.Linear(512, 256)
+        self.fc3 = torch.nn.Linear(256, num_classes)
+        self.bn1 = torch.nn.BatchNorm1d(512)
+        self.bn2 = torch.nn.BatchNorm1d(256)
+
+    def forward(self, x):
+        # `x` is of size [B, N, 3]
+        # `x` is of size [B, 1024]
+        x = self.feat(x)
+
+        # `x` is of size [B, `num_classes`]
+        x = F.relu(self.bn1(self.fc1(x)))
+        x = F.relu(self.bn2(self.fc2(x)))
+        x = self.fc3(x)
+
+        return x
+```
+
+次に、FPGAで高速化されたモデルを示します (`host/model_zcu104.py`)。
+モデルの名前は`PointNetClsZCU104`です。
+上記のCPU版のモデル (`PointNetCls`) と、使い勝手が同じになるようにしました。
+```Python
+from net.model import PointNetCls
+
+# Split the 64-bit address
+def split_address(addr: int) -> Tuple[int, int]:
+    mask = (1 << 32) - 1
+    return addr & mask, addr >> 32
+
+# Allocate a contiguous buffer for torch.nn.Conv1d (torch.nn.Linear)
+def allocate_linear_buffer(in_dims: int, out_dims: int) \
+    -> pynq.buffer.PynqBuffer:
+    buf_size = in_dims * out_dims + out_dims
+    return pynq.allocate(shape=(buf_size,), dtype=np.float32, cacheable=False)
+
+# Allocate a contiguous buffer for a block with torch.nn.Conv1d
+# (torch.nn.Linear) and torch.nn.BatchNorm1d
+def allocate_block_buffer(in_dims: int, out_dims: int) \
+    -> pynq.buffer.PynqBuffer:
+    buf_size = 0
+    buf_size += in_dims * out_dims + out_dims
+    buf_size += out_dims * 3
+    return pynq.allocate(shape=(buf_size,), dtype=np.float32, cacheable=False)
+
+# Write the torch.nn.Conv1d parameters to the contiguous buffer
+def write_conv1d_params(buf: pynq.buffer.PynqBuffer,
+                        layer: torch.nn.Conv1d,
+                        offset: int = 0) -> int:
+    if layer.kernel_size != (1,):
+        raise RuntimeError(f"Kernel size should be 1")
+
+    weight_size = layer.out_channels * layer.in_channels
+    bias_size = layer.out_channels
+
+    buf[offset:offset+weight_size] = layer.weight.data.view(-1)
+    offset += weight_size
+    buf[offset:offset+bias_size] = layer.bias.data.view(-1)
+    offset += bias_size
+
+    return offset
+
+# Write the torch.nn.Linear parameters to the contiguous buffer
+def write_linear_params(buf: pynq.buffer.PynqBuffer,
+                        layer: torch.nn.Linear,
+                        offset: int = 0) -> int:
+    weight_size = layer.out_features * layer.in_features
+    bias_size = layer.out_features
+
+    buf[offset:offset+weight_size] = layer.weight.data.view(-1)
+    offset += weight_size
+    buf[offset:offset+bias_size] = layer.bias.data.view(-1)
+    offset += bias_size
+
+    return offset
+
+# Write the torch.nn.BatchNorm1d parameters to the contiguous buffer
+def write_batchnorm1d_params(buf: pynq.buffer.PynqBuffer,
+                             layer: torch.nn.BatchNorm1d,
+                             offset: int = 0) -> int:
+    dims = layer.num_features
+
+    # `scale` is the multiplication of the weight and reciprocal of the
+    # standard deviation (to reduce the on-chip memory consumption)
+    std_inv = torch.sqrt(layer.running_var.data + layer.eps)
+    std_inv = torch.reciprocal(std_inv)
+    scale = std_inv * layer.weight.data
+
+    buf[offset:offset+dims] = scale.data.view(-1)
+    offset += dims
+    buf[offset:offset+dims] = layer.bias.data.view(-1)
+    offset += dims
+    buf[offset:offset+dims] = layer.running_mean.data.view(-1)
+    offset += dims
+
+    return offset
+
+# Write the block (torch.nn.Conv1d and torch.nn.BatchNorm1d) parameters
+# to the contiguous buffer
+def write_conv_batchnorm1d_params(buf: pynq.buffer.PynqBuffer,
+                                  conv: torch.nn.Conv1d,
+                                  bn: torch.nn.BatchNorm1d):
+    offset = 0
+    offset = write_conv1d_params(buf, conv, offset)
+    offset = write_batchnorm1d_params(buf, bn, offset)
+
+# Write the block (torch.nn.Linear and torch.nn.BatchNorm1d) parameters
+# to the contiguous buffer
+def write_linear_batchnorm1d_params(buf: pynq.buffer.PynqBuffer,
+                                    linear: torch.nn.Linear,
+                                    bn: torch.nn.BatchNorm1d):
+    offset = 0
+    offset = write_linear_params(buf, linear, offset)
+    offset = write_batchnorm1d_params(buf, bn, offset)
+
+class PointNetClsZCU104(torch.nn.Module):
+    # Operation modes (refer to hls/src/op_modes.hpp)
+    MODE_INIT_WEIGHTS = 100
+    MODE_INFERENCE = 101
+
+    def __init__(self, model_cpu: PointNetCls,
+                 overlay_path: str, num_points: int):
+        super().__init__()
+
+        # Load an overlay
+        self.overlay = self.load_overlay(overlay_path)
+        # Get the IP core module
+        self.net_ip: pynq.DefaultIP = self.overlay.PointNetClsTop
+        # Get the control registers of the IP core
+        self.registers = self.net_ip.register_map
+
+        # Check the data width of the AXI master interface
+        net_ip_params = self.overlay.ip_dict["PointNetClsTop"]["parameters"]
+        self.axi_m_addr_width = int(net_ip_params["C_M_AXI_GMEM0_ADDR_WIDTH"])
+        self.axi_m_data_width = int(net_ip_params["C_M_AXI_GMEM0_DATA_WIDTH"])
+
+        # Allocate buffers for PointNet feature extraction network
+        self.buf_feat_params1 = allocate_block_buffer(3, 64)
+        self.buf_feat_params2 = allocate_block_buffer(64, 64)
+        self.buf_feat_params3 = allocate_block_buffer(64, 64)
+        self.buf_feat_params4 = allocate_block_buffer(64, 128)
+        self.buf_feat_params5 = allocate_block_buffer(128, 1024)
+
+        # Allocate buffers for classification network
+        self.buf_cls_params1 = allocate_block_buffer(1024, 512)
+        self.buf_cls_params2 = allocate_block_buffer(512, 256)
+        self.buf_cls_params3 = allocate_linear_buffer(256, 40)
+
+        # Allocate a buffer for point cloud
+        self.num_points = num_points
+        if self.axi_m_data_width == 32:
+            self.buf_point_cloud: pynq.buffer.PynqBuffer = pynq.allocate(
+                shape=(self.num_points, 3), dtype=np.float32, cacheable=False)
+        elif self.axi_m_data_width == 64:
+            self.buf_point_cloud: pynq.buffer.PynqBuffer = pynq.allocate(
+                shape=(self.num_points, 4), dtype=np.float32, cacheable=False)
+        else:
+            raise RuntimeError(f"Unexpected data width for AXI master")
+
+        # Allocate a buffer for output logits
+        self.buf_out_logits: pynq.buffer.PynqBuffer = pynq.allocate(
+            shape=(40,), dtype=np.float32, cacheable=False)
+
+        # Copy parameters for PointNet feature extraction network
+        write_conv_batchnorm1d_params(self.buf_feat_params1,
+            model_cpu.feat.conv1, model_cpu.feat.bn1)
+        write_conv_batchnorm1d_params(self.buf_feat_params2,
+            model_cpu.feat.conv2, model_cpu.feat.bn2)
+        write_conv_batchnorm1d_params(self.buf_feat_params3,
+            model_cpu.feat.conv3, model_cpu.feat.bn3)
+        write_conv_batchnorm1d_params(self.buf_feat_params4,
+            model_cpu.feat.conv4, model_cpu.feat.bn4)
+        write_conv_batchnorm1d_params(self.buf_feat_params5,
+            model_cpu.feat.conv5, model_cpu.feat.bn5)
+
+        # Copy parameters for classification network
+        write_linear_batchnorm1d_params(self.buf_cls_params1,
+            model_cpu.fc1, model_cpu.bn1)
+        write_linear_batchnorm1d_params(self.buf_cls_params2,
+            model_cpu.fc2, model_cpu.bn2)
+        write_linear_params(self.buf_cls_params3, model_cpu.fc3)
+
+        # Set the physical addresses of the buffers
+        self.registers.point_cloud_1, self.registers.point_cloud_2 = \
+            split_address(self.buf_point_cloud.device_address)
+        self.registers.out_logits_1, self.registers.out_logits_2 = \
+            split_address(self.buf_out_logits.device_address)
+        self.registers.feat_params1_1, self.registers.feat_params1_2 = \
+            split_address(self.buf_feat_params1.device_address)
+        self.registers.feat_params2_1, self.registers.feat_params2_2 = \
+            split_address(self.buf_feat_params2.device_address)
+        self.registers.feat_params3_1, self.registers.feat_params3_2 = \
+            split_address(self.buf_feat_params3.device_address)
+        self.registers.feat_params4_1, self.registers.feat_params4_2 = \
+            split_address(self.buf_feat_params4.device_address)
+        self.registers.feat_params5_1, self.registers.feat_params5_2 = \
+            split_address(self.buf_feat_params5.device_address)
+        self.registers.cls_params1_1, self.registers.cls_params1_2 = \
+            split_address(self.buf_cls_params1.device_address)
+        self.registers.cls_params2_1, self.registers.cls_params2_2 = \
+            split_address(self.buf_cls_params2.device_address)
+        self.registers.cls_params3_1, self.registers.cls_params3_2 = \
+            split_address(self.buf_cls_params3.device_address)
+
+        # Synchronize the buffers
+        self.buf_feat_params1.sync_to_device()
+        self.buf_feat_params2.sync_to_device()
+        self.buf_feat_params3.sync_to_device()
+        self.buf_feat_params4.sync_to_device()
+        self.buf_feat_params5.sync_to_device()
+        self.buf_cls_params1.sync_to_device()
+        self.buf_cls_params2.sync_to_device()
+        self.buf_cls_params3.sync_to_device()
+
+        # Initialize the weights (transfer the weights to the on-chip buffers)
+        self.registers.op_mode = PointNetClsZCU104.MODE_INIT_WEIGHTS
+        self.registers.CTRL.AP_START = 1
+        self.wait_for_ip()
+
+    def load_overlay(self, overlay_path):
+        overlay = pynq.Overlay(overlay_path)
+
+        if not overlay.is_loaded():
+            raise RuntimeError(f"Unable to load overlay: {overlay_path}")
+
+        return overlay
+
+    def wait_for_ip(self):
+        while self.registers.CTRL.AP_DONE == 0:
+            pass
+
+    def forward(self, x: torch.Tensor):
+        # `x` is of size [B, N, 3]
+        if x.ndim != 3 or x.shape[2] != 3:
+            raise RuntimeError(f"Unexpected shape of the input: {x.shape}")
+
+        batch_size = x.shape[0]
+        num_points = x.shape[1]
+
+        # Reallocate the buffer for point cloud if necessary
+        if num_points > self.num_points:
+            self.num_points = num_points
+            self.buf_point_cloud.freebuffer()
+            if self.axi_m_data_width == 32:
+                self.buf_point_cloud: pynq.buffer.PynqBuffer = pynq.allocate(
+                    shape=(self.num_points, 3),
+                    dtype=np.float32, cacheable=False)
+            elif self.axi_m_data_width == 64:
+                self.buf_point_cloud: pynq.buffer.PynqBuffer = pynq.allocate(
+                    shape=(self.num_points, 4),
+                    dtype=np.float32, cacheable=False)
+            else:
+                raise RuntimeError(f"Unexpected data width for AXI master")
+            self.registers.point_cloud_1, self.registers.point_cloud_2 = \
+                split_address(self.buf_point_cloud.device_address)
+
+        # Allocate the Tensor for output
+        out = torch.empty(size=(batch_size, 40),
+                          dtype=x.dtype, device=x.device)
+
+        # Run the inference
+        self.registers.op_mode = PointNetClsZCU104.MODE_INFERENCE
+        self.registers.num_points = num_points
+
+        for i in range(batch_size):
+            # Copy the input point cloud
+            self.buf_point_cloud[:num_points, :3] = x[i].view(-1, 3)
+            self.buf_point_cloud.sync_to_device()
+
+            # Run the inference
+            self.registers.CTRL.AP_START = 1
+            self.wait_for_ip()
+
+            # Copy the output logits
+            self.buf_out_logits.sync_from_device()
+            out[i, :] = torch.from_numpy(self.buf_out_logits)
+
+        return out
+```
+
+### IPコアの初期化
+
+`PointNetClsZCU104`クラスのコンストラクタで、以下のような手順で初期化し、IPコアを使えるようにします。
+この手順で行う必要はありません。
+各手順について、順番に説明します。
+詳しくは、[Pynqの公式ドキュメント](https://pynq.readthedocs.io/en/latest/)をご覧ください。
+
+1. ビットストリームのロード (`load_overlay`)
+2. DRAMバッファの確保 (`allocate_block_buffer`、`pynq.allocate`)
+3. DRAMバッファへのパラメータのコピー (`write_conv_batchnorm1d_params`、`write_linear_batchnorm1d_params`、`write_linear_params`)
+4. DRAMバッファの物理アドレスを、ポートのレジスタに対して設定
+5. DRAMバッファの内容を同期 (`sync_to_device`)
+6. 重み初期化モードで、IPコアを動作させ、DRAMバッファに置かれたパラメータをオンチップバッファ上にコピー
+7. IPコアの動作終了を待機 (`wait_for_ip`)
+
+ビットストリームを操作するためのクラスは`pynq.Overlay`であり、ファイルパスを与えて、指定したビットストリームをロードします。
+拡張子が`.bit`のビットストリームの他に、`.hwh`のHandoffファイルも必要です。
+ビットストリームが`path/to/X.bit`であれば、対応するHandoffが`path/to/X.hwh`になければエラーとなります。
+`pynq.Overlay`クラスのインスタンス`self.overlay`を起点として、FPGAに対する様々な処理を行っていきます。
+
+オーバーレイ (ビットストリーム) をロードしたら、自作のIPコア`PointNetClsTop`を取り出して、`self.net_ip`に格納します。
+IPコアのプロパティ名は、ボードデザインにおける各IPの名前と対応しています ([こちらの画像](point-cloud-classification-images/board-design.svg)を参照。)
+例えば、割込みコントローラ (AXI Interrupt Controller) には、`axi_intc_0`プロパティを通じてアクセスできます。
+IPコアを操作するためのクラスは、デフォルトでは`pynq.DefaultIP`となっています。
+このクラスを継承して、自作のIPコアをより便利に使えるように、様々なメソッドを追加することも可能です。
+さらに、IPコアの制御レジスタにアクセスするためのインタフェース`register_map` (`pynq.registers.RegisterMap`のサブクラス) を取り出して、`self.registers`に格納します。
+
+次の3行で、IPコアの入出力ポートのアドレス幅とデータ幅を調べて、`self.axi_m_addr_width`および`self.axi_m_data_width`に格納します。
+前者は64、後者は32または64です (入出力ポートの型を`ap_uint<64>*`とした場合は64、`float*`のままであれば32)。
+前述の通り、ポート幅が32ビットであれば、点群バッファのサイズは$(N, 3)$でよいのですが、64ビットの場合は、データを2つずつ読み取る関係上、バッファサイズを$(N, 4)$にする必要があります。
+`self.axi_m_data_width`を参照すれば、点群バッファのサイズを決定できます。
+
+続いて、パラメータや入出力を保持するためのDRAMバッファを確保します。
+このバッファは少し特殊なもので、LinuxカーネルのCMA (Contiguous Memory Allocator) という機能により確保されます。
+通常の`malloc()`や`new`を使ってバッファを確保すると、そのバッファへの仮想アドレスしか分かりません。
+一方、FPGA側からは、物理アドレスを使用してバッファにアクセスするので、仮想アドレスだけでなく、物理アドレスも予め知っておく必要があります。
+
+`allocate_linear_buffer`関数は、その名の通り、全結合層 (入力次元`in_dims`、出力次元`out_dims`) のパラメータ用のバッファを確保します。
+最初に、全結合層の重み (`in_dims * out_dims`) とバイアス (`out_dims`) の要素数を足して、バッファサイズを決定します。
+続いて、`pynq.allocate`関数を呼び出して、指定したサイズおよびデータ型`np.float32` (`float`) の、1次元のバッファを確保します。
+このバッファはDRAMの特殊な領域に置かれて、メモリ上で連続していることが保証されます。
+`allocate_block_buffer`関数は、全結合層とバッチ正規化層のパラメータを保持するためのバッファを確保します。
+全パラメータの要素数を足し合わせてサイズを決定し、`pynq.allocate`関数を使って、1次元のバッファを確保します。
+これらのバッファは`pynq.buffer.PynqBuffer`クラスのインスタンスですが、NumPy配列 (`np.ndarray`) と同じように利用できます。
+例えば、`torch.from_numpy`関数により、PyTorchのテンソルに変換できます。
+
+特徴抽出ネットワーク (`buf_feat_params1`から`buf_feat_params5`) と、分類ネットワーク (`buf_cls_params1`から`buf_cls_params3`) のパラメータ用のバッファを確保します。
+その後、入力 (点群) と出力 (ロジット) 用のバッファも確保します。
+入力については上述の通り、ポートのビット幅が64であれば`(self.num_points, 4)`、32であれば`(self.num_points, 3)`とします。
+
+DRAMバッファを確保し終えたら、次はモデルのパラメータをバッファへコピーします。
+モデルは`PointNetCls`クラスのインスタンスで、コンストラクタの引数`model_cpu`として渡されます。
+`write_conv1d_params`、`write_linear_params`は、それぞれ`torch.nn.Conv1d`、`torch.nn.Linear`のパラメータのコピーに使われます。
+`write_conv1d_params`では、カーネルサイズが1である (それゆえ全結合層`torch.nn.Linear`と動作が同じである) ことを前提とします。
+重みとバイアスの順で、指定された1次元のDRAMバッファに並べてゆきます。
+IPコア側の期待通りにデータが配置されるように、細心の注意を払う必要があります。
+これら2つの関数は、高位合成の実装における、`ReadLinearParamsNaive`や`ReadLinearParamsOpt1`と適合するように作られています。
+
+`write_batchnorm1d_params`は、`torch.nn.BatchNorm1d`のパラメータを、指定されたDRAMバッファにコピーします。
+IPコア側では、`ReadBatchNorm1dParamsNaive`や`ReadBatchNorm1dParamsOpt1`に示すように、スケール、バイアス、平均の順で、パラメータが並ぶことを期待しています。
+バッチ正規化層の分散と重みから、スケールを計算しています (計算式については先述)。
+
+`write_conv_batchnorm1d_params`と`write_linear_batchnorm1d_params`は、全結合層 (`torch.nn.Conv1d`、`torch.nn.Linear`) とバッチ正規化層 (`torch.nn.BatchNorm1d`) のパラメータを、指定されたDRAMバッファにコピーします。
+全結合層の重み、バイアス、それからバッチ正規化層のスケール、バイアス、平均を、この順で並べる必要があります。
+IPコア側の`ReadBlockParamsNaive`、`ReadBlockParamsOpt1`、`ReadBlockParamsOpt2`と対応することが分かります。
+モデルのパラメータはPyTorchのテンソルですが、そのままDRAMバッファ (`pynq.buffer.PynqBuffer`) に代入できます。
+
+パラメータを無事にコピーできたので、DRAMバッファの物理アドレスを設定します。
+IPコアのトップ関数`PointNetClsTop`は次のように宣言されていました (`float*`の代わりに`ap_uint<64>*`もあり)。
+```C++
+void PointNetClsTop(const int op_mode,
+                    const float* point_cloud,
+                    const int num_points,
+                    float* out_logits,
+                    const float* feat_params1,
+                    const float* feat_params2,
+                    const float* feat_params3,
+                    const float* feat_params4,
+                    const float* feat_params5,
+                    const float* cls_params1,
+                    const float* cls_params2,
+                    const float* cls_params3)
+{
+#pragma HLS INTERFACE m_axi port=point_cloud offset=slave bundle=gmem0
+#pragma HLS INTERFACE m_axi port=out_logits offset=slave bundle=gmem0
+#pragma HLS INTERFACE m_axi port=feat_params1 offset=slave bundle=gmem0
+// ...
+#pragma HLS INTERFACE m_axi port=cls_params3 offset=slave bundle=gmem0
+
+#pragma HLS INTERFACE s_axilite port=op_mode bundle=control
+#pragma HLS INTERFACE s_axilite port=point_cloud bundle=control
+#pragma HLS INTERFACE s_axilite port=num_points bundle=control
+#pragma HLS INTERFACE s_axilite port=out_logits bundle=control
+#pragma HLS INTERFACE s_axilite port=feat_params1 bundle=control
+// ...
+#pragma HLS INTERFACE s_axilite port=cls_params3 bundle=control
+#pragma HLS INTERFACE s_axilite port=return bundle=control
+}
+```
+
+`op_mode`と`num_points`を除く、DRAMバッファ用の入出力ポートについて、`#pragma HLS INTERFACE m_axi`と`#pragma HLS INTERFACE s_axilite`の記述がみられます。
+この2つのHLSプラグマを付与すると、各ポートに対して、DRAMバッファの物理アドレスを指定するための、制御レジスタが作成されます。
+アドレスは64ビットですが、制御レジスタのデータ幅は32ビットなので、上位32ビットと下位32ビット用に、2つの制御レジスタが用意されます。
+例えば、`point_cloud`ポートについては、`point_cloud_1` (下位32ビット) と、`point_cloud_2` (上位32ビット) の、2つです。
+DRAMバッファの物理アドレスを設定すれば、ポートとDRAMバッファとが紐づけられ、FPGA側からバッファにアクセスできるようになります。
+Pynqライブラリを使うと、普通に値を代入しているようにみえますが、実際には、メモリマップトI/Oで実現されています。
+言い換えると、各制御レジスタには専用のアドレスが割り振られており、そのアドレスに対して読み書きしています。
+制御レジスタへのアクセスには、先ほどの`self.registers`を利用します。
+
+`op_mode`と`num_points`についても、`#pragma HLS INTERFACE s_axilite`の記述があるので、この2つ (動作モードと点の個数) を設定するための制御レジスタが用意されます。
+
+ここまで済んだら、`sync_to_device`メソッドによりDRAMバッファの内容を同期させて、FPGA側から正しく読めるようにします。
+
+最後に、動作モード`op_mode`を**重み初期化**に設定し、制御レジスタのうち`CTRL.AP_START`を1にすることで、IPコアの動作を開始します。
+重み初期化モードでは、DRAMバッファからパラメータを読み出して、オンチップバッファに格納します。
+`#pragma HLS INTERFACE s_axilite port=return bundle=control`の記述があるおかげで、ソフトウェア側からIPコアを制御するための`CTRL`レジスタが用意されます。
+IPコアの動作を開始したら、`wait_for_ip`メソッドを呼んで、動作終了 (パラメータの転送完了) を待機します。
+`wait_for_ip`メソッド内では、`CTRL`レジスタの`AP_DONE`が1になるまで、ビジーウェイトします。
+以上で初期化がおしまいです。
+
+### 推論
+
+初期化には様々な工程があって面倒ですが、推論は比較的簡単です。
+PyTorchの通常のモジュールと同じく、`forward`メソッドに推論処理を記述します。
+入力点群`x`は、サイズが$(B, N, 3)$のバッチであるとします ($B$はバッチサイズ、$N$は点の個数)。
+今回のIPコアは、バッチデータを扱うようには作っていないので、バッチ内の各サンプルを1つずつ処理することになります。
+出力`out`は、物体のクラス数を$K$とすると、サイズが$(B, K)$となります。
+今回はModelNet40とよばれるデータセットを使うので、クラス数は$K = 40$です。
+
+最初に、点群のサイズ$N$が、点群用に確保してある現在のDRAMバッファよりも大きければ、DRAMバッファを確保し直します。
+続いて、バッチ内の各サンプルに対して推論処理を行って、物体の各クラスに対するロジット (スコア) を計算します。
+点群用のDRAMバッファ`buf_point_cloud`に点群データをコピーして、FPGA側から正しく読み出せるように、バッファを同期します。
+ソフトウェア側からは、入出力ポートの幅 (32か64かどうか) はそれほど意識する必要がありません。
+2つの制御レジスタ (動作モード`op_mode`と点の個数`num_points`) は、予め設定しておきます。
+
+`CTRL`レジスタの`AP_START`を1にすることで、**推論**モードでのIPコアの動作を開始します。
+`wait_for_ip`メソッドにより動作の終了を待機します。
+モデルの出力であるロジットは、IPコア側からDRAMバッファ`buf_out_logits`に書き込まれているので、それをPyTorchのテンソルに変換したうえで、出力用のテンソル`out`に改めて書き込みます。
+以上が推論処理の説明でした。
+
+このように、IPコアの実装だけでなく、それを実際に使うためのドライバも用意する必要があるので、手間が掛かりますね。
+今回は、Pynqライブラリを使ったので、FPGAに関する処理は、比較的容易に記述できました。
+また、CPU・GPU版のモデルと同じように使いたいので、PyTorchのモジュール (`torch.nn.Module`) としてドライバを作成しました。
+Pythonの代わりにC++を使うことも、もちろん可能です。
+その場合は、ビットストリームのロード ([例えばこちら](https://github.com/sterngerlach/my-lidar-graph-slam-v2/blob/b271f4f13050f2f7aced3feb3c37253f287ee006/src/my_lidar_graph_slam/hw/bitstream_loader.cpp))、メモリマップトI/Oの準備 ([例えばこちら](https://github.com/sterngerlach/my-lidar-graph-slam-v2/blob/b271f4f13050f2f7aced3feb3c37253f287ee006/src/my_lidar_graph_slam/hw/mmio.cpp))、DRAMバッファの確保 ([例えばこちら](https://github.com/sterngerlach/my-lidar-graph-slam-v2/blob/b271f4f13050f2f7aced3feb3c37253f287ee006/src/my_lidar_graph_slam/hw/cma_memory.cpp))などを、C++で記述することになります (Pynqライブラリをそのまま移植したのを覚えています)。
+
+### 推論時間の比較
+
+ようやく、IPコアを使った評価に入りました。
+最初に、推論時間を比較してみましょう。
+以下のソースコードを利用します (`host/time_zcu104.py`)。
+```Python
+def main():
+    # Parse the command-line arguments
+    args = parse_command_line()
+
+    # Create a PointNet classification model
+    model = PointNetCls(num_classes=40)
+    # Create an FPGA model
+    model_zcu104 = PointNetClsZCU104(model, args.bitstream, args.num_points)
+
+    model.eval()
+    model_zcu104.eval()
+
+    # Test the output
+    # Create a random input point cloud
+    point_cloud = torch.rand(size=(1, args.num_points, 3))
+    out_cpu = model(point_cloud)
+    out_zcu104 = model_zcu104(point_cloud)
+
+    print(f"Output (CPU):\n{out_cpu}")
+    print(f"Output (FPGA):\n{out_zcu104}")
+
+    # Measure the inference times
+    times_cpu = []
+    times_zcu104 = []
+
+    for _ in range(args.runs):
+        # Create a random input point cloud
+        point_cloud = torch.rand(size=(1, args.num_points, 3))
+
+        t0 = time.monotonic()
+        model(point_cloud)
+        elapsed_cpu = (time.monotonic() - t0) * 1e3
+
+        t0 = time.monotonic()
+        model_zcu104(point_cloud)
+        elapsed_zcu104 = (time.monotonic() - t0) * 1e3
+
+        times_cpu.append(elapsed_cpu)
+        times_zcu104.append(elapsed_zcu104)
+
+    time_avg_cpu = np.mean(times_cpu)
+    time_std_cpu = np.std(times_cpu)
+    time_avg_zcu104 = np.mean(times_zcu104)
+    time_std_zcu104 = np.std(times_zcu104)
+    speedup_factor = time_avg_cpu / time_avg_zcu104
+
+    print(f"Inference time (CPU): " \
+          f"mean: {time_avg_cpu:.3f}ms, " \
+          f"std: {time_std_cpu:.3f}ms")
+    print(f"Inference time (FPGA): " \
+          f"mean: {time_avg_zcu104:.3f}ms, " \
+          f"std: {time_std_zcu104:.3f}ms")
+    print(f"Speedup: {speedup_factor:.3f}x")
+```
+
+ここでは精度は気にしないので、学習済みのモデルをロードする処理は省かれています。
+但し、CPU版のモデル`PointNetCls`と、FPGA版のモデル`PointNetClsZCU104`とで、パラメータを揃える必要はあります。
+また、CPU版のモデルは`eval`モードで動作させます。
+バッチ正規化層の挙動が訓練モードになり、バッチ数が1のときにエラーとなります。
+また、訓練済みのパラメータではなく、入力のバッチから平均や標準偏差が計算されるので、FPGA版のモデルと出力結果が合わなくなります。
+指定された回数`args.runs`だけ、推論時間の計測を行い、平均と標準偏差、また高速化率を算出します。
+また最初に、双方のモデルの出力が合っているかどうか (大体近い値が出力されるか) を確認しています (本当は、IPコアの作成時にもテストします)。
+
+FPGAボード上で以下のコマンドを実行します。
+```
+> cd advent_2022_point_cloud_classification/host
+
+# ナイーブ実装 (動作周波数150MHz)
+> sudo XILINX_XRT=/usr ./time_zcu104.sh ../vivado/bitstream/pointnet_naive_150.bit
+
+# データ並列性を活用した (ループアンローリングと配列の分割を済ませた) 実装 (動作周波数150MHz)
+> sudo XILINX_XRT=/usr ./time_zcu104.sh ../vivado/bitstream/pointnet_opt1.bit
+
+# データフロー最適化を済ませた実装 (動作周波数150MHz)
+> sudo XILINX_XRT=/usr ./time_zcu104.sh ../vivado/bitstream/pointnet_opt2.bit
+
+# 入出力のポート幅を64ビットに広げた実装 (動作周波数150MHz)
+> sudo XILINX_XRT=/usr ./time_zcu104.sh ../vivado/bitstream/pointnet_opt3.bit
+```
+
+ナイーブな実装でテストした場合の出力例を以下に示します。
+```
+$ sudo XILINX_XRT=/usr ./time_zcu104.sh ../vivado/bitstream/pointnet_naive_150.bit
+Output (CPU):
+tensor([[-0.0594, -0.0272,  0.0115, -0.0481, -0.0529,  0.0449, -0.0634, -0.0328,
+          0.0348, -0.0071, -0.0228,  0.0412,  0.0128, -0.0175, -0.0086, -0.0023,
+         -0.0192, -0.0101, -0.0072,  0.0520, -0.0106, -0.0110,  0.0113,  0.0499,
+         -0.0563, -0.0523, -0.0711, -0.0104, -0.0048, -0.0404,  0.0375,  0.0089,
+          0.0326, -0.0408, -0.0302, -0.0041,  0.0534, -0.0349,  0.0380, -0.0020]],
+       grad_fn=<AddmmBackward0>)
+Output (FPGA):
+tensor([[-0.0592, -0.0274,  0.0114, -0.0491, -0.0527,  0.0446, -0.0632, -0.0335,
+          0.0337, -0.0071, -0.0258,  0.0399,  0.0119, -0.0170, -0.0091, -0.0030,
+         -0.0216, -0.0112, -0.0106,  0.0522, -0.0111, -0.0130,  0.0114,  0.0487,
+         -0.0571, -0.0523, -0.0714, -0.0103, -0.0058, -0.0389,  0.0383,  0.0068,
+          0.0306, -0.0421, -0.0314, -0.0052,  0.0539, -0.0360,  0.0399, -0.0031]])
+Inference time (CPU): mean: 369.048ms, std: 1.086ms
+Inference time (FPGA): mean: 1071.358ms, std: 0.023ms
+Speedup: 0.344x
+```
+
+CPU版のモデルでは`float`を使いますが、FPGA版のモデルでは固定小数点数 (`ap_fixed`) を使っているので、同じモデルパラメータと入力を与えても、出力結果には多少のずれが生じます (ここでは、固定小数点数のビット幅を32ビット、整数部を16ビット、小数部を16ビットに設定しています)。
+しかし、CPU版とFPGA版のモデルで、大体似たような出力が得られています (小数第2位くらいまでは合っています)。
+クラス分類問題であれば、これで問題ないと思います。
+推論時間をみると、ナイーブな実装では、CPU版のモデルよりも3倍程度遅いことが分かります。
+
+各実装に対する推論時間をまとめます。
+
+| 実装 | 推論時間の平均 (ms) | 標準偏差 (ms) | 高速化率 (ソフトウェア比) | 高速化率 (ナイーブ実装比) |
+| :-- | :-- | :-- | :-- | :-- |
+| CPU版 | 369.0 | 1.086 | **1.0x** | 2.904x |
+| ナイーブ (100MHz) | 1606.4 | 0.041 | 0.230x | 0.667x |
+| ナイーブ (150MHz) | 1071.4 | 0.023 | 0.344x | **1.0x** |
+| ナイーブ (200MHz) | 872.05 | 0.077 | 0.423x | 1.223x |
+| ナイーブ (250MHz) | 665.33 | 0.073 | 0.555x | 1.610x |
+| データ並列性 (150MHz) | 34.60 | 0.027 | 10.66x | 30.97x |
+| データフロー最適化 (150MHz) | 12.93 | 0.016 | 28.54x | 82.86x |
+| ポート幅拡張 (150MHz) | **10.80** | **0.012** | **34.17x** | **99.20x** |
+
+ナイーブな実装 (150MHz) は、CPUに比べて性能がたったの0.344倍でした。
+データ並列性の利用によって、推論時間は30.97倍も短縮され、CPUに比べて10.66倍高速になりました。
+Vitis HLSにより出力されたクロックサイクル数をみると、ナイーブな実装では161,945,604 (1.079s)、並列化後の実装では4,462,596 (29.72ms)となっています。
+実際には、前者は1.071s、後者は34.60msなので、大体合っているといえます。
+特徴抽出ネットワークにおけるデータフロー最適化の活用によって、推論時間はさらに2.68倍短縮され、CPUに比べて28.54倍、当初のナイーブな実装に比べて82.86倍も高速になりました。
+さらにポート幅を32ビットから64ビットに拡張することで、主に分類ネットワークが高速化されました。
+推論時間は1.20倍短縮され、CPUに比べて34.17倍、当初のナイーブな実装と比べると99.20倍の高速化となりました。
+このように、各種最適化を施すことで、着実に高速化できていることが分かります。
+しかも、基本的には、各種HLSプラグマを挿入するだけよいので、非常に楽です。
+
+## 精度
+
+つぎにモデルの分類精度をみてみましょう。
+ここではModelNet40データセットの、テストデータを利用します。
+データセットは[こちら](https://shapenet.cs.stanford.edu/media/modelnet40_ply_hdf5_2048.zip)からダウンロードできます。
+各サンプルは、飛行機、自動車、ラップトップ、人間など、単一の物体を表すCADモデルから得られた、2048個の点をもつ点群です。
+以下のソースコードを利用します (`host/test_zcu104.py`)。
+データセットの処理や、モデルの訓練については、GitHubのリポジトリを参照してください。
+```Python
+def test(args: argparse.Namespace,
+         model: torch.nn.Module,
+         model_zcu104: torch.nn.Module,
+         test_loader: torch.utils.data.DataLoader):
+    print(f"Testing PointNet ...")
+
+    # model.eval()
+    model_zcu104.eval()
+
+    # test_loss_total = 0.0
+    # correct = 0
+    test_loss_total_zcu104 = 0.0
+    correct_zcu104 = 0
+
+    with torch.no_grad():
+        for i, batch in enumerate(test_loader):
+            if i % 5 == 0:
+                print(f"Testing batch {i} ...")
+
+            data, target = batch["points"], batch["label"]
+
+            # out = model(data)
+            # pred = out.argmax(dim=1, keepdim=True)
+            # loss = F.cross_entropy(out, target)
+            # correct += pred.eq(target.view_as(pred)).sum().item()
+            # test_loss_total += loss.item() * len(data)
+
+            out_zcu104 = model_zcu104(data)
+            pred_zcu104 = out_zcu104.argmax(dim=1, keepdim=True)
+            loss_zcu104 = F.cross_entropy(out_zcu104, target)
+            correct_zcu104 += pred_zcu104.eq(
+                target.view_as(pred_zcu104)).sum().item()
+            test_loss_total_zcu104 += loss_zcu104.item() * len(data)
+
+    # test_loss_avg = test_loss_total / len(test_loader.dataset)
+    # test_acc = correct * 1e2 / len(test_loader.dataset)
+    test_loss_avg_zcu104 = test_loss_total_zcu104 / len(test_loader.dataset)
+    test_acc_zcu104 = correct_zcu104 * 1e2 / len(test_loader.dataset)
+
+    # print(f"Test result (CPU): " \
+    #       f"loss: {test_loss_avg:.6f}, " \
+    #       f"accuracy: {test_acc:.3f}%, " \
+    #       f"correct: {correct}")
+    print(f"Test result (FPGA): " \
+          f"loss: {test_loss_avg_zcu104:.6f}, " \
+          f"accuracy: {test_acc_zcu104:.3f}%, " \
+          f"correct: {correct_zcu104}, " \
+          f"total: {len(test_loader.dataset)}")
+```
+
+FPGAボード上で以下のコマンドを実行します。
+```
+> cd advent_2022_point_cloud_classification/host
+
+# データ並列性を活用した (ループアンローリングと配列の分割を済ませた) 実装 (動作周波数150MHz)
+> sudo XILINX_XRT=/usr ./test_zcu104.sh ../vivado/bitstream/pointnet_opt1.bit
+
+# データフロー最適化を済ませた実装 (動作周波数150MHz)
+> sudo XILINX_XRT=/usr ./test_zcu104.sh ../vivado/bitstream/pointnet_opt2.bit
+
+# 入出力のポート幅を64ビットに広げた実装 (動作周波数150MHz)
+> sudo XILINX_XRT=/usr ./test_zcu104.sh ../vivado/bitstream/pointnet_opt3.bit
+```
+
+出力結果の例を以下に示します。
+```
+> sudo XILINX_XRT=/usr ./test_zcu104.sh ../vivado/bitstream/pointnet_opt1.bit
+Testing batch 0 ....
+Testing batch 5 ...
+...
+Testing batch 2445 ...
+Testing batch 2450 ...
+Testing batch 2455 ...
+Testing batch 2460 ...
+Testing batch 2465 ...
+Test result (FPGA): loss: 0.375841, accuracy: 89.506%, correct: 2209, total: 2468
+```
+
+各実装に対する精度をまとめます。
+全部で2,468個のテストサンプルがあります。
+ナイーブ実装に関しては、時間が掛かりすぎるので省略しています。
+
+| 実装 | 正解数 | 精度 |
+| :-- | :-- | :-- |
+| CPU版 | 2209 | 89.506% |
+| データ並列性 (150MHz) | 2209 | 89.506% |
+| データフロー最適化 (150MHz) | 2209 | 89.506% |
+| ポート幅拡張 (150MHz) | 2209 | 89.506% |
+
+いずれのIPコアも、CPU上で動かした場合と全く同じ精度が得られています。
+`float`の代わりに固定小数点数`ap_fixed`を使っていますが、いまのところは精度低下はみられません。
+
+## リソース消費
