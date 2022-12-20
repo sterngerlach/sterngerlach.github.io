@@ -97,6 +97,7 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
 1. 稲垣潤一 / Shylights (シャイライツ) (1983年) (CA35-1023)
 1. 稲垣潤一 / コンプリート (Complete) (1985年 / CA32-1154 / 1985年盤)
 1. 稲垣潤一 / 16 Candles (1988年) (母親から貰った)
+1. 稲垣潤一, 安部恭弘, 鈴木雄大, 井上鑑 / Modern Wave II ～新たなるメイン・ストリーム～ (1983年 / CA35-1045 / CA35-1045-3 1A1 / 1983年盤)
 1. 井上鑑 / Prophetic Dream -予言者の夢 (1982年) (UPCY-7340)
 1. 井上鑑 / Cryptogram (1982年) (UPCY-7341)
 1. 井上鑑 / Splash (1983年) (UPCY-7342)
