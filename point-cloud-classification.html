@@ -131,14 +131,12 @@ href="./toshiba-emi.html">こちら</a>にまとめてあります。
 <li>5thアルバム「Junktion」(1977年):
 🥇「変わってゆく女」🥈「Invitation」🥉「愛のきざし」</li>
 </ol>
-<p>それぞれの曲に思い入れがありますが、ここでは触れません。
-以上です。</p>
 <p>今年は、点群処理 (点群分類タスク)
 向けニューラルネットのFPGA高速化を試してみます。
 LeNetやResNetなど、画像処理向けニューラルネットのFPGA高速化も面白いのですが、既にたくさんの素晴らしい記事が出ているのでやめました。
 音楽の話も、誰にも通じないし、ウケないと思ったのでやめました。
 コンピュータで閲覧されることをお勧めします。</p>
-<h2 id="ニューラルネットの準備">ニューラルネットの準備</h2>
+<h1 id="ニューラルネットの準備">ニューラルネットの準備</h1>
 <p>点群の分類、セグメンテーション、レジストレーションなど、様々なタスクに対応した代表的なモデルとして、2017年にCVPRで発表されたPointNetが挙げられます。
 PointNetは、MLPとMaxプーリング層からなる、シンプルかつ強力なモデルです。
 分類タスク向けのPointNetの構造を、以下に示します。</p>
@@ -308,7 +306,7 @@ class="math inline">\(\boldsymbol{\phi}\)</span>を逐次的に更新してい�
 <p>最終的に、今回FPGA上に実装するPointNetは、以下のようになります。</p>
 <p><a
 href="point-cloud-classification-images/pointnet-layers3.svg"><img src="point-cloud-classification-images/pointnet-layers3.svg" width="80%" /></a></p>
-<h2 id="高位合成による実装">高位合成による実装</h2>
+<h1 id="高位合成による実装">高位合成による実装</h1>
 <p>今回は、高位合成 (HLS: High-Level
 Synthesis)を用いて、上記に示すPointNetの専用回路
 (<strong>IPコア</strong>) を記述します。
@@ -444,7 +442,7 @@ href="point-cloud-classification-images/board-design.svg"><img src="point-cloud-
 <p>このブロックデザインに対して、論理合成および配置配線することで、回路情報を表すビットストリーム
 (Bitstream) を生成します。
 ビットストリームをFPGAにロードすることで、PointNetの専用回路が使えるようになります。</p>
-<h3 id="入出力ポート">入出力ポート</h3>
+<h2 id="入出力ポート">入出力ポート</h2>
 <p><code>PointNetClsTop</code>が、IPコアを表す最上位の関数です。
 トップ関数 (Top function) とよばれます。
 関数の引数は、IPコアの入出力ポートとなり、別のIPコアに接続されます
@@ -532,7 +530,7 @@ class="sourceCode c++"><code class="sourceCode cpp"><span id="cb4-1"><a href="#c
 <span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
 <span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  <span class="co">// ...</span></span>
 <span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
-<h3 id="各層のパラメータと処理">各層のパラメータと処理</h3>
+<h2 id="各層のパラメータと処理">各層のパラメータと処理</h2>
 <p><code>torch.nn.Conv1d</code>および<code>torch.nn.Linear</code>のパラメータとしては、重みとバイアスが挙げられます。
 <code>Conv1d</code>とありますが、カーネルサイズは1なので、<code>Linear</code>と動作が同じになります。
 以後、<code>Conv1d</code>と<code>Linear</code>を同一視します。
@@ -685,7 +683,7 @@ class="math inline">\(N\)</span>回の順伝播が起こります。
 (<strong>アムダールの法則</strong>)。
 一方、分類ネットワークの順伝播は1度だけで、推論時間のなかではそれほど重要ではありません。
 パラメータをオンチップメモリに事前に格納するのと比べて、推論時にDRAMバッファから読み出すと、層の計算時間は伸びてしまいますが、推論時間に与える影響はそれほど大きくありません。</p>
-<h3 id="データ型">データ型</h3>
+<h2 id="データ型">データ型</h2>
 <p>Vitis
 HLSでは、任意精度の<strong>固定</strong>小数点数型<code>ap_fixed</code>が用意されています。
 単精度浮動小数点数<code>float</code>や、半精度浮動小数点数<code>half</code>も利用できます。
@@ -709,7 +707,7 @@ class="sourceCode c++"><code class="sourceCode cpp"><span id="cb6-1"><a href="#c
 <span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="kw">using</span> <span class="dt">value_t</span> <span class="op">=</span> ap_fixed_sat<span class="op">&lt;</span>kValueBitWidth<span class="op">,</span> kValueIntWidth<span class="op">&gt;;</span></span>
 <span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co">// Data type for network parameters</span></span>
 <span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="kw">using</span> <span class="dt">param_t</span> <span class="op">=</span> ap_fixed_sat<span class="op">&lt;</span>kParamBitWidth<span class="op">,</span> kParamIntWidth<span class="op">&gt;;</span></span></code></pre></div>
-<h3 id="動作モード">動作モード</h3>
+<h2 id="動作モード">動作モード</h2>
 <p>さて、ここで示すIPコアには、2つの<strong>動作モード</strong>
 (Operation mode) が用意されています。</p>
 <ul>
@@ -877,8 +875,8 @@ class="sourceCode c++"><code class="sourceCode cpp"><span id="cb8-1"><a href="#c
 <span id="cb8-77"><a href="#cb8-77" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> InferenceClsNaive<span class="op">(</span><span class="at">const</span> T feature<span class="op">[</span>kFeatDims5<span class="op">],</span></span>
 <span id="cb8-78"><a href="#cb8-78" aria-hidden="true" tabindex="-1"></a>                       <span class="dt">float</span><span class="op">*</span> out_logits<span class="op">,</span></span>
 <span id="cb8-79"><a href="#cb8-79" aria-hidden="true" tabindex="-1"></a>                       <span class="at">const</span> LinearParams<span class="op">&lt;</span>U<span class="op">,</span> kClsDims2<span class="op">,</span> kClsDims3<span class="op">&gt;*</span> fc3<span class="op">,</span></span>
-<span id="cb8-80"><a href="#cb8-80" aria-hidden="true" tabindex="-1"></a>                       <span class="at">const</span> BatchNorm1dParams<span class="op">&lt;</span>T<span class="op">,</span> kClsDims1<span class="op">&gt;*</span> bn1<span class="op">,</span></span>
-<span id="cb8-81"><a href="#cb8-81" aria-hidden="true" tabindex="-1"></a>                       <span class="at">const</span> BatchNorm1dParams<span class="op">&lt;</span>T<span class="op">,</span> kClsDims2<span class="op">&gt;*</span> bn2<span class="op">,</span></span>
+<span id="cb8-80"><a href="#cb8-80" aria-hidden="true" tabindex="-1"></a>                       <span class="at">const</span> BatchNorm1dParams<span class="op">&lt;</span>U<span class="op">,</span> kClsDims1<span class="op">&gt;*</span> bn1<span class="op">,</span></span>
+<span id="cb8-81"><a href="#cb8-81" aria-hidden="true" tabindex="-1"></a>                       <span class="at">const</span> BatchNorm1dParams<span class="op">&lt;</span>U<span class="op">,</span> kClsDims2<span class="op">&gt;*</span> bn2<span class="op">,</span></span>
 <span id="cb8-82"><a href="#cb8-82" aria-hidden="true" tabindex="-1"></a>                       <span class="at">const</span> <span class="dt">float</span><span class="op">*</span> params1<span class="op">,</span></span>
 <span id="cb8-83"><a href="#cb8-83" aria-hidden="true" tabindex="-1"></a>                       <span class="at">const</span> <span class="dt">float</span><span class="op">*</span> params2<span class="op">,</span></span>
 <span id="cb8-84"><a href="#cb8-84" aria-hidden="true" tabindex="-1"></a>                       <span class="at">const</span> <span class="dt">float</span><span class="op">*</span> params3<span class="op">)</span></span>
@@ -1073,7 +1071,7 @@ href="point-cloud-classification-images/pipelined-execution.svg"><img src="point
 2重ループのうち外側のループにパイプライン化を適用すると、内側のループは全て展開されて、1重ループに直されるので、リソース消費が大幅に増えてしまいます。
 外側のループには、パイプライン化を適用しない方がいいと思います。</p>
 <p>上記のIPコアは、<code>hls/src/top_naive.cpp</code>にあります。</p>
-<h3 id="並列化-データ並列性の活用">並列化 (データ並列性の活用)</h3>
+<h2 id="並列化-データ並列性の活用">並列化 (データ並列性の活用)</h2>
 <p>このIPコアも正しく動作するのですが、明らかにナイーブな
 (全く工夫していない素朴な) 実装です。 データ並列性 (Data parallelism)
 を活かして、各層の計算を並列化してみましょう (<strong>最適化その5:
@@ -1563,8 +1561,8 @@ class="sourceCode c++"><code class="sourceCode cpp"><span id="cb17-1"><a href="#
 <span id="cb17-82"><a href="#cb17-82" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> InferenceClsOpt1<span class="op">(</span><span class="at">const</span> T feature<span class="op">[</span>kFeatDims5<span class="op">],</span></span>
 <span id="cb17-83"><a href="#cb17-83" aria-hidden="true" tabindex="-1"></a>                      <span class="dt">float</span><span class="op">*</span> out_logits<span class="op">,</span></span>
 <span id="cb17-84"><a href="#cb17-84" aria-hidden="true" tabindex="-1"></a>                      <span class="at">const</span> LinearParams<span class="op">&lt;</span>U<span class="op">,</span> kClsDims2<span class="op">,</span> kClsDims3<span class="op">&gt;*</span> fc3<span class="op">,</span></span>
-<span id="cb17-85"><a href="#cb17-85" aria-hidden="true" tabindex="-1"></a>                      <span class="at">const</span> BatchNorm1dParams<span class="op">&lt;</span>T<span class="op">,</span> kClsDims1<span class="op">&gt;*</span> bn1<span class="op">,</span></span>
-<span id="cb17-86"><a href="#cb17-86" aria-hidden="true" tabindex="-1"></a>                      <span class="at">const</span> BatchNorm1dParams<span class="op">&lt;</span>T<span class="op">,</span> kClsDims2<span class="op">&gt;*</span> bn2<span class="op">,</span></span>
+<span id="cb17-85"><a href="#cb17-85" aria-hidden="true" tabindex="-1"></a>                      <span class="at">const</span> BatchNorm1dParams<span class="op">&lt;</span>U<span class="op">,</span> kClsDims1<span class="op">&gt;*</span> bn1<span class="op">,</span></span>
+<span id="cb17-86"><a href="#cb17-86" aria-hidden="true" tabindex="-1"></a>                      <span class="at">const</span> BatchNorm1dParams<span class="op">&lt;</span>U<span class="op">,</span> kClsDims2<span class="op">&gt;*</span> bn2<span class="op">,</span></span>
 <span id="cb17-87"><a href="#cb17-87" aria-hidden="true" tabindex="-1"></a>                      <span class="at">const</span> <span class="dt">float</span><span class="op">*</span> params1<span class="op">,</span></span>
 <span id="cb17-88"><a href="#cb17-88" aria-hidden="true" tabindex="-1"></a>                      <span class="at">const</span> <span class="dt">float</span><span class="op">*</span> params2<span class="op">,</span></span>
 <span id="cb17-89"><a href="#cb17-89" aria-hidden="true" tabindex="-1"></a>                      <span class="at">const</span> <span class="dt">float</span><span class="op">*</span> params3<span class="op">)</span></span>
@@ -2047,7 +2045,7 @@ class="sourceCode c++"><code class="sourceCode cpp"><span id="cb20-1"><a href="#
 は改善するので、それに伴って全体の性能も向上するということです。</p>
 <p>これでデータフロー最適化は終わりです。
 詳しくは<code>hls/src/top_opt2.cpp</code>をご覧ください。</p>
-<h3 id="入出力ポート幅の拡張">入出力ポート幅の拡張</h3>
+<h2 id="入出力ポート幅の拡張">入出力ポート幅の拡張</h2>
 <p>分類ネットワークの全結合層部分では、積和演算を並列化したにもかかわらず、全体の処理時間はそれほど短縮されませんでした。
 DRAMからオンチップバッファへのパラメータ転送のサイクル数が、変化していないためです。
 そこで最後の最適化として、入出力ポートのビット幅を32から64に広げて、1サイクルにつき2つの<code>float</code>データを転送できるように、実装を修正してみましょう
@@ -3329,7 +3327,8 @@ href="https://github.com/sterngerlach/my-lidar-graph-slam-v2/blob/b271f4f13050f2
 (<a
 href="https://github.com/sterngerlach/my-lidar-graph-slam-v2/blob/b271f4f13050f2f7aced3feb3c37253f287ee006/src/my_lidar_graph_slam/hw/cma_memory.cpp">例えばこちら</a>)などを、C++で記述することになります
 (Pynqライブラリをそのまま移植したのを覚えています)。</p>
-<h3 id="推論時間の比較">推論時間の比較</h3>
+<h1 id="評価">評価</h1>
+<h2 id="推論時間の比較">推論時間の比較</h2>
 <p>ようやく、IPコアを使った評価に入りました。
 最初に、推論時間を比較してみましょう。 以下のソースコードを利用します
 (<code>host/time_zcu104.py</code>)。</p>
@@ -3514,10 +3513,11 @@ Speedup: 0.344x</code></pre>
 </tbody>
 </table>
 <p>ナイーブな実装 (150MHz) は、CPUに比べて性能がたったの0.344倍でした。
+ナイーブな実装のままでは、動作周波数を250MHzまで上げても、依然としてCPUよりも遅いです。
 データ並列性の利用によって、推論時間は30.97倍も短縮され、CPUに比べて10.66倍高速になりました。
-Vitis
-HLSにより出力されたクロックサイクル数をみると、ナイーブな実装では161,945,604
-(1.079s)、並列化後の実装では4,462,596 (29.72ms)となっています。
+Vitis HLSにより出力されたクロックサイクル数をみると、ナイーブな実装
+(150MHz) では161,945,604 (1.079s)、並列化後の実装では4,462,596
+(29.72ms)となっています。
 実際には、前者は1.071s、後者は34.60msなので、大体合っているといえます。
 特徴抽出ネットワークにおけるデータフロー最適化の活用によって、推論時間はさらに2.68倍短縮され、CPUに比べて28.54倍、当初のナイーブな実装に比べて82.86倍も高速になりました。
 さらにポート幅を32ビットから64ビットに拡張することで、主に分類ネットワークが高速化されました。
@@ -3640,5 +3640,337 @@ Test result (FPGA): loss: 0.375841, accuracy: 89.506%, correct: 2209, total: 246
 <p>いずれのIPコアも、CPU上で動かした場合と全く同じ精度が得られています。
 <code>float</code>の代わりに固定小数点数<code>ap_fixed</code>を使っていますが、いまのところは精度低下はみられません。</p>
 <h2 id="リソース消費">リソース消費</h2>
+<p>各種IPコアの、リソース消費を調べてみましょう。 リソース消費は、LUT
+(ルックアップテーブル)、FF (フリップフロップ)、BRAM (BlockRAM)、URAM
+(UltraRAM)、DSP (Digital Signal Processor)の5つに分類されます。</p>
+<p><a
+href="point-cloud-classification-images/pointnet-opt3-vivado4.png"><img src="point-cloud-classification-images/pointnet-opt3-vivado4.png" width="80%" /></a></p>
+<p>リソース消費を表にまとめます。</p>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">実装</th>
+<th style="text-align: left;">LUT</th>
+<th style="text-align: left;">FF</th>
+<th style="text-align: left;">BRAM (36Kb)</th>
+<th style="text-align: left;">URAM</th>
+<th style="text-align: left;">DSP</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">合計</td>
+<td style="text-align: left;">230,400</td>
+<td style="text-align: left;">460,800</td>
+<td style="text-align: left;">312</td>
+<td style="text-align: left;">96</td>
+<td style="text-align: left;">1,728</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ナイーブ (100MHz)</td>
+<td style="text-align: left;">22,378 (9.71%)</td>
+<td style="text-align: left;">11,045 (2.40%)</td>
+<td style="text-align: left;">149.5 (47.92%)</td>
+<td style="text-align: left;">2 (2.08%)</td>
+<td style="text-align: left;">48 (2.78%)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ナイーブ (150MHz)</td>
+<td style="text-align: left;">22,140 (9.61%)</td>
+<td style="text-align: left;">12,428 (2.70%)</td>
+<td style="text-align: left;">161.5 (51.76%)</td>
+<td style="text-align: left;">2 (2.08%)</td>
+<td style="text-align: left;">48 (2.78%)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ナイーブ (200MHz)</td>
+<td style="text-align: left;">21,344 (9.26%)</td>
+<td style="text-align: left;">13,616 (2.95%)</td>
+<td style="text-align: left;">149.5 (47.92%)</td>
+<td style="text-align: left;">2 (2.08%)</td>
+<td style="text-align: left;">48 (2.78%)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ナイーブ (250MHz)</td>
+<td style="text-align: left;">20,663 (8.97%)</td>
+<td style="text-align: left;">14,713 (3.19%)</td>
+<td style="text-align: left;">149.5 (47.92%)</td>
+<td style="text-align: left;">2 (2.08%)</td>
+<td style="text-align: left;">20 (1.16%)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">データ並列性 (150MHz)</td>
+<td style="text-align: left;">58,223 (25.27%)</td>
+<td style="text-align: left;">42,755 (9.28%)</td>
+<td style="text-align: left;">287.5 (92.15%)</td>
+<td style="text-align: left;">0 (0.00%)</td>
+<td style="text-align: left;">768 (44.44%)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">データフロー最適化 (150MHz)</td>
+<td style="text-align: left;">136,408 (59.20%)</td>
+<td style="text-align: left;">48,940 (10.62%)</td>
+<td style="text-align: left;">310.5 (99.52%)</td>
+<td style="text-align: left;">0 (0.00%)</td>
+<td style="text-align: left;">808 (46.76%)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ポート幅拡張 (150MHz)</td>
+<td style="text-align: left;">84,263 (36.57%)</td>
+<td style="text-align: left;">49,660 (10.78%)</td>
+<td style="text-align: left;">263.5 (84.46%)</td>
+<td style="text-align: left;">64 (66.67%)</td>
+<td style="text-align: left;">808 (46.76%)</td>
+</tr>
+</tbody>
+</table>
+<p>データ並列性を活用すると、複数の積和演算を並列に行う必要があるため、DSPの消費が大幅に増加していることが分かります。
+一方、データフロー最適化を用いても、リソース消費はそれほど増えていません
+(ただし、BRAMが不足して、LUTをLUTRAMとして使っているので、LUTの消費は増加しています)。
+データフロー最適化によって、リソース消費の増加を抑えつつ、回路の性能を改善できます。
+ポート幅を拡張しても、URAM以外のリソース消費はあまり変わっていません
+(BRAMが不足してエラーになったので、オンチップバッファの一部をURAMで実装しています)。</p>
+<p>今回は20万円程度するFPGAボード、Xilinx ZCU104 Evaluation
+Kitを使いました。 このボードのFPGAチップ (XCZU7EV-2FFVC1156)
+には、BRAMだけでなくURAMも提供されているので、比較的大きなオンチップバッファ
+(数MB程度) を作成できます。 URAM (UltraRAM) はBRAM (BlockRAM)
+に比べて個数が少ないですが
+(BRAMが312個に対してURAMは96個)、1個あたりの容量は大きいので、粗粒度だといえます。
+低価格のFPGAボードだと、URAMが提供されていないので、BRAMを大切に使う必要があります。
+個人的には、BRAMが一番最初に枯渇することが多いです
+(FPGAに慣れていない初心者なので、うまく実装できません)。</p>
+<h2 id="値のビット幅削減">値のビット幅削減</h2>
+<p>いままでは、層の入出力やモデルのパラメータを表現するのに、32ビットの固定小数点数
+(整数部と小数部が16ビットずつ) を使っていました。
+精度をある程度保ったまま、ビット数 (リソース消費)
+を抑えられるでしょうか。 ここでは、以下のビット数の組み合わせで、IPコア
+(動作周波数150MHz) を作ってみましょう。
+IPコアは、データ並列性を活用、データフロー最適化を施し、さらにポート幅を拡張したバージョンです。
+これらのビット数は何となく決めました。
+モデルのパラメータの方は、層の入出力に比べて値域が狭いので、よりビット数を削減できるかもしれません。</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">名前</th>
+<th style="text-align: left;">層の入出力 (<code>value_t</code>)</th>
+<th style="text-align: left;">モデルのパラメータ
+(<code>param_t</code>)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">28-28</td>
+<td style="text-align: left;">28ビット (整数部14 + 小数部14)</td>
+<td style="text-align: left;">28ビット (整数部10 + 小数部18)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">28-24</td>
+<td style="text-align: left;">28ビット (整数部14 + 小数部14)</td>
+<td style="text-align: left;">24ビット (整数部8 + 小数部16)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">24-24</td>
+<td style="text-align: left;">24ビット (整数部12 + 小数部12)</td>
+<td style="text-align: left;">24ビット (整数部8 + 小数部16)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">24-20</td>
+<td style="text-align: left;">24ビット (整数部12 + 小数部12)</td>
+<td style="text-align: left;">20ビット (整数部6 + 小数部14)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">24-16</td>
+<td style="text-align: left;">24ビット (整数部12 + 小数部12)</td>
+<td style="text-align: left;">16ビット (整数部4 + 小数部12)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">20-20</td>
+<td style="text-align: left;">20ビット (整数部10 + 小数部10)</td>
+<td style="text-align: left;">20ビット (整数部6 + 小数部14)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">20-16</td>
+<td style="text-align: left;">20ビット (整数部10 + 小数部10)</td>
+<td style="text-align: left;">16ビット (整数部4 + 小数部12)</td>
+</tr>
+</tbody>
+</table>
+<p>各実装における精度をまとめます。</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">実装</th>
+<th style="text-align: left;">正解数</th>
+<th style="text-align: left;">精度</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">CPU版</td>
+<td style="text-align: left;">2209</td>
+<td style="text-align: left;">89.506%</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ポート幅拡張 (150MHz)</td>
+<td style="text-align: left;">2209</td>
+<td style="text-align: left;">89.506%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ポート幅拡張 (150MHz、28-28)</td>
+<td style="text-align: left;">2206</td>
+<td style="text-align: left;">89.384%</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ポート幅拡張 (150MHz、28-24)</td>
+<td style="text-align: left;">2206</td>
+<td style="text-align: left;">89.384%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ポート幅拡張 (150MHz、24-24)</td>
+<td style="text-align: left;">2200</td>
+<td style="text-align: left;">89.141%</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ポート幅拡張 (150MHz、24-20)</td>
+<td style="text-align: left;">550</td>
+<td style="text-align: left;">22.285%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ポート幅拡張 (150MHz、24-16)</td>
+<td style="text-align: left;">121</td>
+<td style="text-align: left;">4.903%</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ポート幅拡張 (150MHz、20-20)</td>
+<td style="text-align: left;">448</td>
+<td style="text-align: left;">18.152%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ポート幅拡張 (150MHz、20-16)</td>
+<td style="text-align: left;">122</td>
+<td style="text-align: left;">4.903%</td>
+</tr>
+</tbody>
+</table>
+<p>また、リソース消費を以下にまとめます。</p>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">実装</th>
+<th style="text-align: left;">LUT</th>
+<th style="text-align: left;">FF</th>
+<th style="text-align: left;">BRAM (36Kb)</th>
+<th style="text-align: left;">URAM</th>
+<th style="text-align: left;">DSP</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">合計</td>
+<td style="text-align: left;">230,400</td>
+<td style="text-align: left;">460,800</td>
+<td style="text-align: left;">312</td>
+<td style="text-align: left;">96</td>
+<td style="text-align: left;">1,728</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ポート幅拡張 (150MHz)</td>
+<td style="text-align: left;">84,263 (36.57%)</td>
+<td style="text-align: left;">49,660 (10.78%)</td>
+<td style="text-align: left;">263.5 (84.46%)</td>
+<td style="text-align: left;">64 (66.67%)</td>
+<td style="text-align: left;">808 (46.76%)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ポート幅拡張 (150MHz、28-28)</td>
+<td style="text-align: left;">74,342 (32.27%)</td>
+<td style="text-align: left;">47,267 (10.26%)</td>
+<td style="text-align: left;">261.5 (83.81%)</td>
+<td style="text-align: left;">64 (66.67%)</td>
+<td style="text-align: left;">808 (46.76%)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ポート幅拡張 (150MHz、28-24)</td>
+<td style="text-align: left;">63,749 (27.67%)</td>
+<td style="text-align: left;">39,139 (8.49%)</td>
+<td style="text-align: left;">257 (82.37%)</td>
+<td style="text-align: left;">64 (66.67%)</td>
+<td style="text-align: left;">404 (23.38%)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ポート幅拡張 (150MHz、24-24)</td>
+<td style="text-align: left;">59,970 (26.03%)</td>
+<td style="text-align: left;">36,240 (7.86%)</td>
+<td style="text-align: left;">257 (82.37%)</td>
+<td style="text-align: left;">64 (66.67%)</td>
+<td style="text-align: left;">404 (23.38%)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ポート幅拡張 (150MHz、24-20)</td>
+<td style="text-align: left;">75,997 (32.98%)</td>
+<td style="text-align: left;">40,762 (8.85%)</td>
+<td style="text-align: left;">259 (83.01%)</td>
+<td style="text-align: left;">64 (66.67%)</td>
+<td style="text-align: left;">202 (11.69%)</td>
+</tr>
+</tbody>
+</table>
+<p>ビット数を削減しても、推論時間は変わりませんでした。
+ビット数の削減に応じて、実装を少し直す必要がありそうです。</p>
+<p>上記の結果をみると、重みのビット数を24ビットから20ビットに削減した途端に、分類精度が一気に低下していることが分かります
+(ここまでの急激な低下には驚きました)。
+層の入出力とモデルのパラメータをいずれも24ビットに設定したIPコアが、最もリソース効率がよいといえます。
+リソース消費をみると、ビット数を削減することで回路の複雑さが徐々に下がってゆき、それに伴ってLUTやFFの使用量が漸減しています。
+28ビットから24ビットに落とすと、積和演算に必要なDSPブロックの数が半減していることが分かります。
+24ビットから20ビットにすると、DSPの使用量はさらに半減しています
+(その分LUTとFFが増加しています)。
+BRAMやURAMについては、ビット数をもう少し減らさないと、消費量が減らないようです
+(オンチップメモリの不足が頭痛の種になります)。</p>
+<h1 id="おわりに">おわりに</h1>
+<p>今回は、FPGAを用いて、点群の分類タスクを高速化しました。
+分類タスクには、軽量かつシンプルなPointNetを利用しました。
+FPGAのリソース消費を抑えるため、モデルを簡略化し、また計算順序を変更しました。
+続いて、Xilinx社の高位合成ツールVitis HLS
+2022.1を使って、PointNet用のカスタムIPコアを作成しました。
+パイプライン化、層の計算の並列化
+(ループのアンローリングと配列の分割)、データフロー最適化などを使って、IPコアの実装を少しずつ改善していきました。</p>
+<p>IPコアを他のIPコアと繋ぎ合わせてボードデザインを作成し、Xilinx Vivado
+2022.1により論理合成・配置配線を行って、FPGAに書き込み可能なビットストリームを作成しました。
+ビットストリームをロードして高速に推論するためのドライバを、Pynqライブラリにより記述しました。
+ModelNet40データセットを使用し、Xilinx ZCU104 Evaluation
+Kit上で、推論時間、リソース消費、分類精度の3つの観点から評価を行いました。
+また、複数のボードデザインでの性能を比較することで、各種最適化による効果を調べました。
+ビット数を削減し、リソース効率を改善することも試みました。</p>
+<p>高位合成ツールを使うことで、Verilog
+HDLなしで、C/C++だけで、高効率なIPコアを作成できました。
+しかしそれでも、PyTorchなどの深層学習ライブラリを使うのと比べて、ソースコードの記述量は何倍も多くなりました。
+内部で行われている処理の流れをよく観察して、全て理解しないと、それを高速化するIPコアも作成できません。
+リソース制約、データ転送など、考えなくてはならない事柄も多いです。
+作業工程が多くて大変ですが、自作のIPコアが正しく動作した
+(ソフトウェア実装と同じような出力が得られた)
+ときや、実装を高速化できたときの歓びは、そのぶん大きいと思います。
+有難うございました。</p>
+<p>GPUって便利だなあと思うことしきりです。</p>
 </body>
 </html>
