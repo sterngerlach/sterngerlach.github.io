@@ -80,7 +80,7 @@ Velodyne社製のLiDAR(VLP-16、HDL-32、HDL-64E)を対象とした、リファ�
 
 <!-- -->
 
-- [点群処理のFPGA高速化](./point-cloud-classification.html)
+- [点群処理のFPGA高速化](./point-cloud-classification.html) ([PDFバージョン](./point-cloud-classification.pdf))
 
 ## 日記
 
