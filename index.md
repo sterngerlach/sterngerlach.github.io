@@ -78,6 +78,10 @@ sterngerlachのGitHubページにようこそ。
 - [LOAMのソースコードに関するノート](./loam-velodyne.pdf)  
 Velodyne社製のLiDAR(VLP-16、HDL-32、HDL-64E)を対象とした、リファクタリング済みのLOAM(LiDAR Odometry And Mapping)のソースコード([GitHub](https://github.com/laboshinl/loam_velodyne))を読みながら作ったノートです。最初の方はちょっと理解が怪しいので、そのうち修正します。誰かのお役に立てれば幸いです。
 
+<!-- -->
+
+- [点群処理のFPGA高速化](./point-cloud-classification.html)
+
 ## 日記
 
 日記を適当に書いてこちらに置いていきます。

@@ -9,15 +9,17 @@
   <style>
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
-    span.underline{text-decoration: underline;}
-    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
     ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
   </style>
   <link rel="stylesheet" href="style.css" />
-  <script
-  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
-  type="text/javascript"></script>
   <!--[if lt IE 9]>
     <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
   <![endif]-->
@@ -119,6 +121,11 @@ href="./loam-velodyne.pdf">LOAMのソースコードに関するノート</a><br
 Velodyne社製のLiDAR(VLP-16、HDL-32、HDL-64E)を対象とした、リファクタリング済みのLOAM(LiDAR
 Odometry And Mapping)のソースコード(<a
 href="https://github.com/laboshinl/loam_velodyne">GitHub</a>)を読みながら作ったノートです。最初の方はちょっと理解が怪しいので、そのうち修正します。誰かのお役に立てれば幸いです。</li>
+</ul>
+<!-- -->
+<ul>
+<li><a
+href="./point-cloud-classification.html">点群処理のFPGA高速化</a></li>
 </ul>
 <h2 id="日記">日記</h2>
 <p>日記を適当に書いてこちらに置いていきます。</p>
