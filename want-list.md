@@ -157,8 +157,6 @@ auhtor: SternGerlach
 1. 谷山浩子 / お昼寝宮・お散歩宮 (1989年)
 1. 谷山浩子 / 冷たい水の中をきみと歩いていく (1990年)
 1. 谷山浩子 / 歪んだ王国 (1992年)
-1. 荒井由実 / Yuming Brand (ユーミン・ブランド) (1976年)
-1. 荒井由実 / Yuming Brand Part.2 (1979年)
 1. 荒井由実 / Yuming Brand Part.3 (1981年)
 1. 荒井由実 / Yuming Singles 1972-1976 (1987年)
 1. 松任谷由実 / YUMING VISUALIVE DA・DI・DA (1986年)
