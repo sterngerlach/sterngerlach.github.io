@@ -4,7 +4,7 @@ auhtor: SternGerlach
 ---
 
 <!--
- pandoc -s --filter pandoc-crossref -M "crossrefYaml=./crossref_config.yaml" -f markdown -t html5 --mathjax --css ./style.css ./cds.md > ./cds.html
+ pandoc -s --filter pandoc-crossref -M "crossrefYaml=./crossref_config.yaml" -f markdown -t html5 --mathjax --css ./style.css ./cds.md -o ./cds.html
 -->
 
 [ホームに戻る](./index.html)
@@ -35,7 +35,9 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
 1. 安部恭弘 / Moderato (1984年 / CA35-1080 / 1984年盤)
 1. 安部恭弘 / Slit (1984年 / CA35-1100 / CA35-1100 1B2 / 1985年盤)
 1. 安部恭弘 / Summertime In Blue ~さよならの共犯者 (1988年) (CT32-5195)
+1. 荒井由実 / ひこうき雲 (1973年 / 35XA-1 / 35XA-1 11A5 +++++ / 1985-86年盤)
 1. 荒井由実 / ひこうき雲 (1973年) (ALCA-9029)
+1. 荒井由実 / ミスリム (Misslim) (1974年 / 35XA-4 / 35XA-4 11A2 / 1983年盤)
 1. 荒井由実 / ミスリム (Misslim) (1974年) (ALCA-9030)
 1. 荒井由実 / コバルト・アワー (Cobalt Hour) (1975年) (ALCA-9031)
 1. 荒井由実 / 14番目の月 (The 14th Moon) (1976年) (ALCA-9032)
@@ -233,7 +235,10 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
 1. 加藤和彦 / パパ・ヘミングウェイ (1979年)
 1. 加藤和彦 / うたかたのオペラ (1980年)
 1. 加藤和彦 / ベル・エキセントリック (1981年)
-1. 加藤和彦 / あの頃、マリー・ローランサン (1983年)
+1. 加藤和彦 / あの頃、マリー・ローランサン (1983年 / SRCL 1843 / 1991年盤)
+1. 加藤和彦 / ヴェネツィア (Venèzia) (1984年 / SRCL 1844 / 1991年盤)
+1. 加藤和彦 / Le Bar Tango (1985年 / 32DH 347 / 1985年盤)
+1. 加藤和彦 / マルタの鷹 (Maltese Falcon) (1987年 / CT32-5059 / 1987年盤)
 1. 加藤和彦 / ボレロ・カリフォルニア (Bolero California) (1991年 / TOCT-5998 / 1991年盤)
 1. 角松敏生 / Before The Daylight \~Is The Most Darkness Moment In A Day (1988年)
 1. 角松敏生 / Reasons For Thousand Lovers (1989年)
@@ -713,7 +718,8 @@ iTunes Storeで未発売のもの、Spotify、Apple Musicなどのストリー�
 1. The Caretaker / Everywhere, An Empty Bliss (2019年) (デジタル音源; Bandcamp)
 1. The Future Sound of London (フューチャー・サウンド・オブ・ロンドン) / Accelerator (アクセラレーター) (1991年)
 1. Toto (トト) / Toto IV \~聖なる剣 (1982年)
-1. Vangelis / China (中國) (1979年 / 813 653-2 / 198?年盤) (新品未開封)
+1. Vangelis (ヴァンゲリス) / China (中國) (1979年 / 813 653-2 / 198?年盤) (新品未開封)
+1. Vangelis (ヴァンゲリス) / Chariots Of Fire (炎のランナー) (1981年 / 800 020-2 / 800020 2 01 / 1983年盤)
 
 ## 現在持っているCDとレコード (クラシック)
 

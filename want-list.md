@@ -4,7 +4,7 @@ auhtor: SternGerlach
 ---
 
 <!--
- pandoc -s --filter pandoc-crossref -M "crossrefYaml=./crossref_config.yaml" -f markdown -t html5 --mathjax --css ./style.css ./want-list.md > ./want-list.html
+ pandoc -s --filter pandoc-crossref -M "crossrefYaml=./crossref_config.yaml" -f markdown -t html5 --mathjax --css ./style.css ./want-list.md -o ./want-list.html
 -->
 
 [ホームに戻る](./index.html)
@@ -88,9 +88,6 @@ auhtor: SternGerlach
 1. 坂本龍一 / ビューティ (Beauty) (1989年)
 1. 加藤和彦 / それから先のことは... (1976年)
 1. 加藤和彦 / ガーディニア (1978年)
-1. 加藤和彦 / ヴェネツィア (1984年)
-1. 加藤和彦 / Le Bar Tango (1985年)
-1. 加藤和彦 / マルタの鷹 (1987年)
 1. 井上鑑 / SF新世紀レンズマン オリジナル・サウンドトラック音楽編 (1984年)
 1. 井上鑑 / Dolphin (1991年)
 1. 佐藤博 / Awakening (1982年)
