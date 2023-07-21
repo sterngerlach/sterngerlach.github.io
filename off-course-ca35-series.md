@@ -4,7 +4,7 @@ author: SternGerlach
 ---
 
 <!--
- pandoc -s --filter pandoc-crossref -M "crossrefYaml=./crossref_config.yaml" -f markdown -t html5 --mathjax --css ./style.css ./off-course-ca35-series.md > ./off-course-ca35-series.html
+ pandoc -s --filter pandoc-crossref -M "crossrefYaml=./crossref_config.yaml" -f markdown -t html5 --mathjax --css ./style.css ./off-course-ca35-series.md -o ./off-course-ca35-series.html
 -->
 
 [ホームに戻る](./index.html)
