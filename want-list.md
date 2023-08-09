@@ -131,7 +131,6 @@ auhtor: SternGerlach
 1. EPO (エポ) / The Best Station Joepo 1980-1984 (1984年)
 1. EPO (エポ) / Pop Tracks (1987年)
 1. EPO (エポ) / Sparks (1989年)
-1. EPO (エポ) / Fire & Snow (1991年)
 1. EPO (エポ) / Voice Of Ooparts (1994年)
 1. EPO (エポ) / Uva (1995年)
 1. 谷山浩子 / ねこの森には帰れない (1977年)
