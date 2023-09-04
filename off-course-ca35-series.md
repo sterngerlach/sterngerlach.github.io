@@ -267,10 +267,20 @@ CA32盤 (CA32-1156) と音源は全く同一です。
 
 - 6thアルバム
 - 発売日: 1983年12月21日
-- 備考: 未所持
+- 所持品 (CBS/Sonyプレス):
+  - マトリクス: CA35-1056 31 (Neat font)
+  - 刻印: CSR Compact Disc (3x)
+- 備考: 1枚所持しており、マトリクスと刻印は上記の通りです。
+1983年12月発売の1stプレスだと思います。
 - 入手のしやすさ: 初期の70年代の作品は、入手の難易度が一気に上がります。
 「Song Is Love」や「Junktion」よりもヒットしているはずですが、なぜか目撃頻度が極端に低いです。
 オリジナルアルバムのなかでは、「僕の贈りもの」と同様に難物です。
+「Fairway」ではなく、同時発売された「Three And Two」「Next Sound Track」を手に取った方が多かったのでしょうか。
+
+[<img src="images/Off-Course-1978-Fairway-CA35-1056-0.jpg" height="300" />](images/Off-Course-1978-Fairway-CA35-1056-0.jpg)
+[<img src="images/Off-Course-1978-Fairway-CA35-1056-1.jpg" height="300" />](images/Off-Course-1978-Fairway-CA35-1056-1.jpg)
+[<img src="images/Off-Course-1978-Fairway-CA35-1056-2.jpg" height="300" />](images/Off-Course-1978-Fairway-CA35-1056-2.jpg)
+[<img src="images/Off-Course-1978-Fairway-CA35-1056-3.jpg" height="300" />](images/Off-Course-1978-Fairway-CA35-1056-3.jpg)
 
 ### Three And Two (CA35-1057)
 
