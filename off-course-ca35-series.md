@@ -95,8 +95,18 @@ CA35シリーズのなかで最も入手が容易だと思います。
 
 - 非公式インストゥルメンタルアルバム (第一弾)
 - 発売日: 1983年7月21日
-- 備考: 未所持
-- 入手のしやすさ: ごく稀にヤフオクでみかけますが、高額なので手が出せません。
+- 所持品:
+  - マトリクス: CA35-1014 11A1 (Neat font)
+  - 刻印: Manufactured By CBS/Sony Records Inc.
+- 備考: 1枚所持しており、マトリクスと刻印は上記の通りです。
+- 入手のしやすさ: 入手は非常に難しいです。1983年7月に発売された後は廃盤となっており、一度も再発されていません。
+ベストアルバムやオリジナルアルバムだけでは飽き足らず、メンバー未参加のインストにまで手を伸ばした方は、相当なファンであったに違いありません。
+しかもCDの黎明期なので、大半の方は、この作品をレコードで購入されたはずです。
+
+[<img src="images/Off-Course-1982-Only-Just-Begun-CA35-1014-0.jpg" height="300" />](images/Off-Course-1982-Only-Just-Begun-CA35-1014-0.jpg)
+[<img src="images/Off-Course-1982-Only-Just-Begun-CA35-1014-1.jpg" height="300" />](images/Off-Course-1982-Only-Just-Begun-CA35-1014-1.jpg)
+[<img src="images/Off-Course-1982-Only-Just-Begun-CA35-1014-2.jpg" height="300" />](images/Off-Course-1982-Only-Just-Begun-CA35-1014-2.jpg)
+[<img src="images/Off-Course-1982-Only-Just-Begun-CA35-1014-3.jpg" height="300" />](images/Off-Course-1982-Only-Just-Begun-CA35-1014-3.jpg)
 
 ### We Are (CA35-1015)
 
