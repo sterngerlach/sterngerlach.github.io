@@ -5,7 +5,7 @@ author: SternGerlach
 ---
 
 <!--
- pandoc -s --filter pandoc-crossref -M "crossrefYaml=./crossref_config.yaml" -f markdown -t html5 --mathjax --css style.css index.md > index.html
+ pandoc -s --filter pandoc-crossref -M "crossrefYaml=./crossref_config.yaml" -f markdown -t html5 --mathjax --css style.css index.md -o index.html
 -->
 
 # ようこそ
