@@ -9,15 +9,17 @@
   <style>
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
-    span.underline{text-decoration: underline;}
-    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
     ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
   </style>
   <link rel="stylesheet" href="./style.css" />
-  <script
-  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
-  type="text/javascript"></script>
   <!--[if lt IE 9]>
     <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
   <![endif]-->
@@ -28,7 +30,7 @@
 <p class="author">SternGerlach</p>
 </header>
 <!--
- pandoc -s --filter pandoc-crossref -M "crossrefYaml=./crossref_config.yaml" -f markdown -t html5 --mathjax --css ./style.css ./toshiba-emi-db-2.md > ./toshiba-emi-db-2.html
+ pandoc -s --filter pandoc-crossref -M "crossrefYaml=./crossref_config.yaml" -f markdown -t html5 --mathjax --css ./style.css ./toshiba-emi-db-2.md -o ./toshiba-emi-db-2.html
 -->
 <p><a href="../index.html">ホームに戻る</a></p>
 <h2 id="このページについて">このページについて</h2>
@@ -42,7 +44,7 @@
 CDのみで発売されたベスト盤もあります。
 オフコースのアルバムは、1983年に3500円盤(CA35)が発売されているのですが、1985年9月に3200円盤(CA32)として再度発売され、オークションでも比較的流通しています。
 薬師丸ひろ子の「古今集」(1984年)も、1984年2月発売の3800円盤(CA38-1068)と、1985年11月発売の3200円盤(CA32-1195)があるようです。</p>
-<p>カタログ番号が1103、1104、1122、1123、1124、1125、1146、1151のものは、アーティストやタイトルが不明で、インターネット上にも情報が全くありませんでした。
+<p>カタログ番号が1103、1122、1123、1124、1125、1146、1151のものは、アーティストやタイトルが不明で、インターネット上にも情報が全くありませんでした。
 発売中止になったのか、あるいはコンピレーション盤だと思われます。</p>
 <ul>
 <li>CA35-1101: 寺尾聰 / ベスト (Best Of Akira Terao) (1985年;

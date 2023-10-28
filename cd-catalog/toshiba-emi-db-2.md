@@ -4,7 +4,7 @@ author: SternGerlach
 ---
 
 <!--
- pandoc -s --filter pandoc-crossref -M "crossrefYaml=./crossref_config.yaml" -f markdown -t html5 --mathjax --css ./style.css ./toshiba-emi-db-2.md > ./toshiba-emi-db-2.html
+ pandoc -s --filter pandoc-crossref -M "crossrefYaml=./crossref_config.yaml" -f markdown -t html5 --mathjax --css ./style.css ./toshiba-emi-db-2.md -o ./toshiba-emi-db-2.html
 -->
 
 [ホームに戻る](../index.html)
@@ -24,7 +24,7 @@ CDのみで発売されたベスト盤もあります。
 オフコースのアルバムは、1983年に3500円盤(CA35)が発売されているのですが、1985年9月に3200円盤(CA32)として再度発売され、オークションでも比較的流通しています。
 薬師丸ひろ子の「古今集」(1984年)も、1984年2月発売の3800円盤(CA38-1068)と、1985年11月発売の3200円盤(CA32-1195)があるようです。
 
-カタログ番号が1103、1104、1122、1123、1124、1125、1146、1151のものは、アーティストやタイトルが不明で、インターネット上にも情報が全くありませんでした。
+カタログ番号が1103、1122、1123、1124、1125、1146、1151のものは、アーティストやタイトルが不明で、インターネット上にも情報が全くありませんでした。
 発売中止になったのか、あるいはコンピレーション盤だと思われます。
 
 * CA35-1101: 寺尾聰 / ベスト (Best Of Akira Terao) (1985年; 1985年1月19日)
