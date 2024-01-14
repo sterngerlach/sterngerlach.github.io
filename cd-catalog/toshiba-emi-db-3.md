@@ -4,7 +4,7 @@ author: SternGerlach
 ---
 
 <!--
- pandoc -s --filter pandoc-crossref -M "crossrefYaml=./crossref_config.yaml" -f markdown -t html5 --mathjax --css ./style.css ./toshiba-emi-db-3.md > ./toshiba-emi-db-3.html
+ pandoc -s --filter pandoc-crossref -M "crossrefYaml=./crossref_config.yaml" -f markdown -t html5 --mathjax --css ./style.css ./toshiba-emi-db-3.md -o ./toshiba-emi-db-3.html
 -->
 
 [ホームに戻る](../index.html)
@@ -108,7 +108,7 @@ Boøwyの「"Gigs" Just A Hero Tour 1986」(1986年)は限定盤で、オーク�
 
 * CA32-1261: 沢田研二 / Co-CóLo 1 (ココロ・ファースト) (1986年; 1986年6月25日)
 * CA32-1262: 高中正義 / ジャングル・ジェーン (Jungle Jane) (1986年; 1986年7月2日)
-* CA32-1263: 松任谷由実 / Yuming Visualive Da・Di・Da (1986年; 1986年6月25日)
+* CA40-1263: 松任谷由実 / Yuming Visualive Da・Di・Da (1986年; 1986年6月25日)
 * CA32-1264: 風見りつ子 / Aventuriér (アヴァンチュリエ) (1986年; 1986年8月22日)
 * CA32-1265: 西島三重子 / 浪漫 "Best Collection" (1986年; 1986年8月1日)
 * CA32-1266: 西村知美 / 夢色の瞬間 (1986年; 1986年7月16日)
