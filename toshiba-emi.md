@@ -5,6 +5,7 @@ author: SternGerlach
 
 <!--
  pandoc -s --filter pandoc-crossref -M "crossrefYaml=./crossref_config.yaml" -f markdown -t html5 --mathjax --css ./style.css ./toshiba-emi.md -o ./toshiba-emi.html
+ pandoc -s -f markdown -t html5 --mathjax --css ./style.css ./toshiba-emi.md -o ./toshiba-emi.html
 -->
 
 [ホームに戻る](./index.html)
@@ -111,6 +112,7 @@ author: SternGerlach
 * CA32-1141: 松任谷由実 / Voyager (ボイジャー) (1983年; 1985年6月1日) (2枚所持)
 * CA32-1142: 松任谷由実 / No Side (ノーサイド) (1984年; 1985年6月1日)
 * CA32-1142: 松任谷由実 / No Side (ノーサイド) (1984年; 1985年6月1日) (2枚所持)
+* CA32-1142: 松任谷由実 / No Side (ノーサイド) (1984年; 1985年6月1日) (3枚所持)
 * CA32-1147: 高中正義 / Traumatic・極東探偵団 (1985年; 1985年7月20日)
 * CA32-1147: 高中正義 / Traumatic・極東探偵団 (1985年; 1985年7月20日) (2枚所持)
 * CA32-1152: 佐藤隆 / コムシ、コムサ (Comme Ci, Comme Ça) (1985年; 1985年8月22日)
@@ -127,6 +129,7 @@ author: SternGerlach
 * CA32-1196: 松任谷由実 / Da・Di・Da (ダ・ディ・ダ) (1985年; 1985年12月5日)
 * CA32-1196: 松任谷由実 / Da・Di・Da (ダ・ディ・ダ) (1985年; 1985年12月5日) (2枚所持)
 * CA32-1199: 佐藤隆 / ピアノとヴァイオリンのための巴里物語 (1985年; 1985年12月21日)
+* CA32-1206: チューリップ / Best Now 心の旅 虹とスニーカーの頃 (1985年; 1985年12月21日)
 * CA32-1213: 山本達彦 / To Be (1986年; 1986年2月1日)
 * CA32-1223: 高中正義, 佐藤隆, 鈴木康博, 安部恭弘 / シティ・ポップス・ビッグ4 (1986年; 1986年2月1日)
 * CA32-1227: 佐藤隆 / 日々の泡 (L'Ecume Des Jours) (1986年; 1986年3月1日)

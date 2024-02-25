@@ -5,6 +5,7 @@ auhtor: SternGerlach
 
 <!--
  pandoc -s --filter pandoc-crossref -M "crossrefYaml=./crossref_config.yaml" -f markdown -t html5 --mathjax --css ./style.css ./want-list.md -o ./want-list.html
+ pandoc -s -f markdown -t html5 --mathjax --css ./style.css ./want-list.md -o ./want-list.html
 -->
 
 [ホームに戻る](./index.html)
@@ -151,7 +152,6 @@ auhtor: SternGerlach
 1. 谷山浩子 / 歪んだ王国 (1992年)
 1. 荒井由実 / Yuming Singles 1972-1976 (1987年)
 1. 中山美穂 / After School (1985年)
-1. 岡村孝子 / After Tone (1987年)
 1. 山根麻衣 / Will (1982年) (30CH-45)
 1. 山根麻衣 / ベスト (1987年) (30CH-252)
 1. 山根麻衣 / 1958 (1989年)
