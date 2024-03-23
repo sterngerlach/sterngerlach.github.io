@@ -5,6 +5,7 @@ author: SternGerlach
 
 <!--
  pandoc -s --filter pandoc-crossref -M "crossrefYaml=./crossref_config.yaml" -f markdown -t html5 --mathjax --css ./style.css ./alfa-db-1.md > ./alfa-db-1.html
+ pandoc -s -f markdown -t html5 --mathjax --css ./style.css ./alfa-db-1.md -o ./alfa-db-1.html
 -->
 
 [ホームに戻る](../index.html)
@@ -97,7 +98,7 @@ author: SternGerlach
 * ??XA-62: ? / ?
 * 32XA-63: 吉野千代乃 / レイン バラード (Rain Ballade) (1986年; 1986年3月25日)
 * ??XA-64: ? / ?
-* 32XA-65: 深町純 & ザ・ニューヨーク・オールスターズ / On The Move (オン・ザ・ムーヴ) (1986年; 1986年3月25日)
+* 32XA-65: 深町純 & ザ・ニューヨーク・オールスターズ / On The Move (オン・ザ・ムーヴ) (1978年; 1986年3月25日)
 * 32XA-66: 細野晴臣 / The Best Of Video Game Music (1986年; 1986年4月25日)
 * 32XA-67: Various Artists / 避暑地まで (Down To The Resort) (1986年; 1986年4月25日)
 * 32XA-68: 松山千春 / あなたが僕を捜す時 (1986年; 1986年5月10日)
