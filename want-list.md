@@ -269,7 +269,6 @@ auhtor: SternGerlach
 1. 今井優子 / Tenderly (1991年)
 1. 新居昭乃 / 懐かしい未来 (1986年)
 1. 裕木奈江 / 素描 (デッサン) (1994年)
-1. 稲垣潤一 / Personally (1984年)
 1. 稲垣潤一 / No Strings (1985年)
 1. 稲垣潤一 / Realistic (1986年)
 1. 稲垣潤一 / Mind Note (1987年)
