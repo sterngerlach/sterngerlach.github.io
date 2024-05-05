@@ -6,6 +6,7 @@ author: SternGerlach
 
 <!--
  pandoc -s --filter pandoc-crossref -M "crossrefYaml=./crossref_config.yaml" -f markdown -t html5 --mathjax --css style.css index.md -o index.html
+ pandoc -s -f markdown -t html5 --mathjax --css style.css index.md -o index.html
 -->
 
 # ようこそ
@@ -34,6 +35,7 @@ sterngerlachのGitHubページにようこそ。
 - [CBSソニーデータベース (その3: 00DH 401から00DH 600)](./cd-catalog/cbs-sony-db-3.html)
 - [CBSソニーデータベース (その4: 00DH 601から32DH 871)](./cd-catalog/cbs-sony-db-4.html)
 - [アルファデータベース (その1: 35XA-1から32XA-200)](./cd-catalog/alfa-db-1.html)
+- [アルファデータベース (28XA-201から50XA-258)](./cd-catalog/alfa-db-2.html)
 - [テイチクデータベース (その1: 35CH-1から30CH-200)](./cd-catalog/teichiku-db-1.html)
 - [テイチクデータベース (その2: 30CH-201から30CH-419)](./cd-catalog/teichiku-db-2.html)
 - [Midi Inc.データベース (その1: MID-xxxx, xxMD-yyyy)](./cd-catalog/midi-db-1.html)
