@@ -129,7 +129,6 @@ auhtor: SternGerlach
 1. EPO (エポ) / Down Town (1980年)
 1. EPO (エポ) / Goodies (1980年)
 1. EPO (エポ) / う・わ・さ・に・な・り・た・い (1982年)
-1. EPO (エポ) / The Best Station Joepo 1980-1984 (1984年)
 1. EPO (エポ) / Pop Tracks (1987年)
 1. EPO (エポ) / Sparks (1989年)
 1. EPO (エポ) / Voice Of Ooparts (1994年)
