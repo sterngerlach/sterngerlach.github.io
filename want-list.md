@@ -270,7 +270,6 @@ auhtor: SternGerlach
 1. 裕木奈江 / 素描 (デッサン) (1994年)
 1. 稲垣潤一 / No Strings (1985年)
 1. 稲垣潤一 / Realistic (1986年)
-1. 稲垣潤一 / Mind Note (1987年)
 1. 安部恭弘 / Hold Me Tight (1983年)
 1. 安部恭弘 / Frame Of Mind (1985年)
 1. 安部恭弘 / Tune Box - The Summer 1986 (1986年)
