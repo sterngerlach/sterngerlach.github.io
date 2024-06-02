@@ -35,7 +35,7 @@ sterngerlachのGitHubページにようこそ。
 - [CBSソニーデータベース (その3: 00DH 401から00DH 600)](./cd-catalog/cbs-sony-db-3.html)
 - [CBSソニーデータベース (その4: 00DH 601から32DH 871)](./cd-catalog/cbs-sony-db-4.html)
 - [アルファデータベース (その1: 35XA-1から32XA-200)](./cd-catalog/alfa-db-1.html)
-- [アルファデータベース (28XA-201から50XA-258)](./cd-catalog/alfa-db-2.html)
+- [アルファデータベース (その2: 28XA-201から50XA-258)](./cd-catalog/alfa-db-2.html)
 - [テイチクデータベース (その1: 35CH-1から30CH-200)](./cd-catalog/teichiku-db-1.html)
 - [テイチクデータベース (その2: 30CH-201から30CH-419)](./cd-catalog/teichiku-db-2.html)
 - [Midi Inc.データベース (その1: MID-xxxx, xxMD-yyyy)](./cd-catalog/midi-db-1.html)
@@ -88,6 +88,18 @@ Velodyne社製のLiDAR(VLP-16、HDL-32、HDL-64E)を対象とした、リファ�
 <!-- -->
 
 - [点群処理のFPGA高速化](./point-cloud-classification.html) ([PDFバージョン](./point-cloud-classification.pdf))
+
+<!-- -->
+
+- [行列輪講: 第1回 行列の基本処理, 逆行列](./doc/matrix-doc/slide-1.pdf)
+- [行列輪講: 第2回 行列式, トレース](./doc/matrix-doc/slide-2.pdf)
+- [行列輪講: 第3回 行列とベクトルの微分1](./doc/matrix-doc/slide-3.pdf)
+- [行列輪講: 第4回 行列とベクトルの微分2](./doc/matrix-doc/slide-4.pdf)
+- [行列輪講: 第5回 行列とベクトルの微分3](./doc/matrix-doc/slide-5.pdf)
+- [行列輪講: 第6回 確率分布, ガウス積分](./doc/matrix-doc/slide-6.pdf)
+- [行列輪講: 第7回 ガウス分布1](./doc/matrix-doc/slide-7.pdf)
+- [行列輪講: 第8回 ガウス分布2](./doc/matrix-doc/slide-8.pdf)
+- [行列輪講: 第9回 ガウス分布3](./doc/matrix-doc/slide-9.pdf)
 
 ## 日記
 
