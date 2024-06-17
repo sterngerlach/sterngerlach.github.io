@@ -11,17 +11,17 @@
     div.columns{display: flex; gap: min(4vw, 1.5em);}
     div.column{flex: auto; overflow-x: auto;}
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-    ul.task-list{list-style: none;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
     ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
       width: 0.8em;
       margin: 0 0.8em 0.2em -1.6em;
       vertical-align: middle;
     }
   </style>
   <link rel="stylesheet" href="./style.css" />
-  <!--[if lt IE 9]>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
-  <![endif]-->
 </head>
 <body>
 <header id="title-block-header">
@@ -137,6 +137,8 @@ VICL-135 / 1991年盤)</li>
 <li>Yellow Magic Orchestra / 増殖 (1980年 / ALCA-5218 / 1998年盤)</li>
 <li>Yellow Magic Orchestra / BGM (1981年 / 38XA-16 / 1984年盤)</li>
 <li>Yellow Magic Orchestra / BGM (1981年 / MOCCD 13022 / 2013年盤)</li>
+<li>Yellow Magic Orchestra / Technodelic (テクノデリック) (1981年 /
+38XA-17 / 1984年盤)</li>
 <li>Yellow Magic Orchestra / Technodelic (テクノデリック) (1981年 /
 ALCA-9044 / 1994年盤)</li>
 <li>Yellow Magic Orchestra / 浮気なぼくら (1983年 / ALCA-293 /
@@ -451,6 +453,7 @@ Garden) (1985年 / 33C31-7410 / 1985年盤)</li>
 1982年盤)</li>
 <li>キャンディーズ / The Best Again キャンディーズ (1981年 / 35DH 6 /
 1982年盤) (ゴールドCD)</li>
+<li>楠瀬誠志郎 / Aisa (アイシア) (1988年 / 32DH 5054 / 1988年盤)</li>
 <li>久保田早紀 / 夜の底は柔らかな幻 (1984年 / DYCL-17 / 2005年盤)</li>
 <li>久保田早紀 / ベスト・コレクション (1985年 / 30DH 216 /
 1985年盤)</li>
@@ -648,6 +651,8 @@ ALCA-363 / 1992年盤)</li>
 ALCA-364 / 1992年盤)</li>
 <li>高橋幸宏 / ワイルド・アンド・ムーディ (Wild &amp; Moody) (1984年 /
 ALCA-365 / 1992年盤)</li>
+<li>高橋幸宏 / 四月の魚 (Poisson D’Avril) (1985年 / 38XA-33 /
+1985年盤)</li>
 <li>高橋幸宏 / 四月の魚 (Poisson D’Avril) (1985年 / ALCA-9067 /
 1994年盤)</li>
 <li>高橋幸宏 / Once A Fool,… (ワンスアフール 遥かなる思い) (1985年 /
@@ -759,6 +764,8 @@ CA32-1206 / 1985年盤)</li>
 / 2012年盤)</li>
 <li>中原めいこ / ミ・ン・ト (Mint) (1983年 / CA35-1049 / 1983年盤)</li>
 <li>中原めいこ / ミ・ン・ト (Mint) (1983年 / TOCT-12009 / 2012年盤)</li>
+<li>中原めいこ / Lotos -ロートスの果実- (1984年 / CA35-1085 /
+1984年盤)</li>
 <li>中原めいこ / Lotos -ロートスの果実- (1984年 / TOCT-12010 /
 2012年盤)</li>
 <li>中原めいこ / Chaki Chaki Club (チャキ・チャキ・クラブ) (1985年 /
@@ -862,7 +869,9 @@ UPCY-9795 / 2018年盤)</li>
 2022年盤)</li>
 <li>濱田金吾 / Fall In Love (フォール・イン・ラヴ) (1985年 / UPCY-90074
 / 2022年盤)</li>
-<li>原田知世 / Soshite (1986年 / 33DH-574 / 1986年盤)</li>
+<li>原田知世 / Pavane (パヴァーヌ) (1985年 / 32DH 206 / 1985年盤)</li>
+<li>原田知世 / Next Door (1986年 / 32DH 209 / 1986年盤)</li>
+<li>原田知世 / Soshite (1986年 / 33DH 574 / 1986年盤)</li>
 <li>早瀬優香子 / Polyester (ポリエステル) (1987年 / 32SD-11 /
 1987年盤)</li>
 <li>Puffy / Amiyumi (1996年 / ESCB 1722 / 1996年盤)</li>
@@ -962,6 +971,8 @@ CA32-1136 / 1985年盤) (2枚所持)</li>
 1985年盤)</li>
 <li>松任谷由実 / Pearl Pierce (パール・ピアス) (1982年 / CA35-1001 /
 1982年盤)</li>
+<li>松任谷由実 / Pearl Pierce (パール・ピアス) (1982年 / CA35-1001 /
+1982年盤)</li>
 <li>松任谷由実 / Pearl Pierce (パール・ピアス) (1982年 / CA32-1139 /
 1985年盤)</li>
 <li>松任谷由実 / Pearl Pierce (パール・ピアス) (1982年 / CA32-1139 /
@@ -1034,6 +1045,8 @@ TOCT-24701〜2 / 2001年盤)</li>
 <li>南佳孝 / Speak Low (1979年 / MHCL 30061 / 2013年盤)</li>
 <li>南佳孝 / Montage (1980年 / MHCL 30062 / 2013年盤)</li>
 <li>南佳孝 / Silkscreen (1981年 / MHCL 30063 / 2013年盤)</li>
+<li>南佳孝 / Seventh Avenue South (1982年 / 35DH 11 / 1982年盤)
+(ゴールドCD)</li>
 <li>南佳孝 / Seventh Avenue South (1982年 / MHCL 30064 / 2013年盤)</li>
 <li>南佳孝 / 冒険王 (1984年 / 38DH 119 / 1984年盤)</li>
 <li>南佳孝 / Last Picture Show (1986年 / 32DH 352 / 1986年盤)</li>
@@ -1105,6 +1118,7 @@ CT32-5398 / 1989年盤)</li>
 <li>山下達郎 / Ride On Time (1980年 / BVCR-17017 / 2002年盤)</li>
 <li>山下達郎 / Greatest Hits! Of Tatsuro Yamashita (1982年 / BVCR-1541 /
 1997年盤)</li>
+<li>山下達郎 / Melodies (1983年 / 38XM-1 / 1983年盤)</li>
 <li>山下達郎 / Melodies (1983年 / 32XM-27 / 1986年盤)</li>
 <li>山下達郎 / Big Wave (1984年 / 38XM-3 / 1984年盤)</li>
 <li>山下達郎 / Pocket Music (1986年 / 32XM-15 / 1986年盤)</li>
@@ -1314,6 +1328,10 @@ Discovery (ディスカバリー) (1979年 / 35DP 24 / 1982年盤)</li>
 <li>Herbie Hancock Trio With Ron Carter + Tony Williams
 (ハービー・ハンコック・トリオ With ロン・カーター +
 トニー・ウィリアムス) / Herbie Hancock Trio With Ron Carter + Tony
+Williams (1981年 / 38DP 17 / 1982年盤) (ゴールドCD)</li>
+<li>Herbie Hancock Trio With Ron Carter + Tony Williams
+(ハービー・ハンコック・トリオ With ロン・カーター +
+トニー・ウィリアムス) / Herbie Hancock Trio With Ron Carter + Tony
 Williams (1981年 / 38DP 17 / 1982年盤)</li>
 <li>Hypnosis / Hypnosis (1984年 / GDC 20195-2 / 2001年盤)</li>
 <li>James Last / Träum Was Schönes (1979年 / 811 518-2 / 1983年盤)</li>
@@ -1511,6 +1529,8 @@ Original Motion Picture Soundtrack “Antarctica”) (1983年 / 3112-22
 (ウェザー・リポート) (1982年 / 35DP 29 / 1982年盤) (ゴールドCD)</li>
 <li>Weather Report (ウェザー・リポート) / Procession (プロセッション)
 (1983年 / 35DP 46 / 1983年盤)</li>
+<li>Wynton Marsalis (ウィントン・マルサリス) / Hot House Flowers (1984年
+/ 32DP 183 / 1984年盤)</li>
 <li>Wynton Marsalis (ウィントン・マルサリス) / Wynton Marsalis
 (マルサリスの肖像) (1982年 / 35DP 33 / 1983年盤)</li>
 <li>Various / Another Side Of Fancy - Part One (2013年 / PMS 015 /

@@ -11,17 +11,17 @@
     div.columns{display: flex; gap: min(4vw, 1.5em);}
     div.column{flex: auto; overflow-x: auto;}
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-    ul.task-list{list-style: none;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
     ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
       width: 0.8em;
       margin: 0 0.8em 0.2em -1.6em;
       vertical-align: middle;
     }
   </style>
   <link rel="stylesheet" href="./style.css" />
-  <!--[if lt IE 9]>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
-  <![endif]-->
 </head>
 <body>
 <header id="title-block-header">
@@ -192,8 +192,6 @@ Lags 1991-1995 (1995年)</li>
 <li>鈴木早智子 / Mode (1992年)</li>
 <li>原田知世 / バースデイ・アルバム (1983年)</li>
 <li>原田知世 / 撫子純情 (1984年)</li>
-<li>原田知世 / Pavane (パヴァーヌ) (1985年)</li>
-<li>原田知世 / Next Door (1986年)</li>
 <li>原田知世 / Schmatz (1987年)</li>
 <li>原田知世 / Tears of Joy (1990年)</li>
 <li>遊佐未森 / 空耳の丘 (1988年)</li>
