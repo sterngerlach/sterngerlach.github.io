@@ -12,17 +12,17 @@
     div.columns{display: flex; gap: min(4vw, 1.5em);}
     div.column{flex: auto; overflow-x: auto;}
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-    ul.task-list{list-style: none;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
     ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
       width: 0.8em;
       margin: 0 0.8em 0.2em -1.6em;
       vertical-align: middle;
     }
   </style>
   <link rel="stylesheet" href="style.css" />
-  <!--[if lt IE 9]>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
-  <![endif]-->
 </head>
 <body>
 <header id="title-block-header">
@@ -67,8 +67,8 @@
 (その4: 00DH 601から32DH 871)</a></li>
 <li><a href="./cd-catalog/alfa-db-1.html">アルファデータベース (その1:
 35XA-1から32XA-200)</a></li>
-<li><a href="./cd-catalog/alfa-db-2.html">アルファデータベース
-(28XA-201から50XA-258)</a></li>
+<li><a href="./cd-catalog/alfa-db-2.html">アルファデータベース (その2:
+28XA-201から50XA-258)</a></li>
 <li><a href="./cd-catalog/teichiku-db-1.html">テイチクデータベース
 (その1: 35CH-1から30CH-200)</a></li>
 <li><a href="./cd-catalog/teichiku-db-2.html">テイチクデータベース
@@ -139,6 +139,27 @@ href="https://github.com/laboshinl/loam_velodyne">GitHub</a>)を読みながら�
 <ul>
 <li><a href="./point-cloud-classification.html">点群処理のFPGA高速化</a>
 (<a href="./point-cloud-classification.pdf">PDFバージョン</a>)</li>
+</ul>
+<!-- -->
+<ul>
+<li><a href="./doc/matrix-doc/slide-1.pdf">行列輪講: 第1回
+行列の基本処理, 逆行列</a></li>
+<li><a href="./doc/matrix-doc/slide-2.pdf">行列輪講: 第2回 行列式,
+トレース</a></li>
+<li><a href="./doc/matrix-doc/slide-3.pdf">行列輪講: 第3回
+行列とベクトルの微分1</a></li>
+<li><a href="./doc/matrix-doc/slide-4.pdf">行列輪講: 第4回
+行列とベクトルの微分2</a></li>
+<li><a href="./doc/matrix-doc/slide-5.pdf">行列輪講: 第5回
+行列とベクトルの微分3</a></li>
+<li><a href="./doc/matrix-doc/slide-6.pdf">行列輪講: 第6回 確率分布,
+ガウス積分</a></li>
+<li><a href="./doc/matrix-doc/slide-7.pdf">行列輪講: 第7回
+ガウス分布1</a></li>
+<li><a href="./doc/matrix-doc/slide-8.pdf">行列輪講: 第8回
+ガウス分布2</a></li>
+<li><a href="./doc/matrix-doc/slide-9.pdf">行列輪講: 第9回
+ガウス分布3</a></li>
 </ul>
 <h2 id="日記">日記</h2>
 <p>日記を適当に書いてこちらに置いていきます。</p>
