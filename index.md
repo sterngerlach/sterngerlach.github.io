@@ -42,6 +42,7 @@ sterngerlachのGitHubページにようこそ。
 
 <!-- -->
 
+- [チューリップ / New Tune (1985年)](./tulip-1985-new-tune.html)
 - [井上鑑 / Tokyo Installation (1986年)](./akira-inoue-1986-tokyo-installation.html)
 - [オフコース CA35シリーズ](./off-course-ca35-series.html)
 - [チューリップ CA35・35FDシリーズ](./tulip-ca35-series.html)
