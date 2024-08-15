@@ -243,7 +243,6 @@ auhtor: SternGerlach
 1. サザンオールスターズ / Southern All Stars (1990年)
 1. サザンオールスターズ / 稲村ジェーン (1990年)
 1. サザンオールスターズ / 世に万葉の花が咲くなり (1992年)
-1. 中原めいこ / Meiko's Best Selection 10+1 (1984年)
 1. 中原めいこ / High Energy -Remixed in N.Y.- (1991年)
 1. 和田加奈子 / テンダネス (Tenderness) (1986年)
 1. 和田加奈子 / Vocu (1988年)
