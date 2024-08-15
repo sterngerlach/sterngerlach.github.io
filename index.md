@@ -39,7 +39,6 @@ sterngerlachのGitHubページにようこそ。
 - [テイチクデータベース (その1: 35CH-1から30CH-200)](./cd-catalog/teichiku-db-1.html)
 - [テイチクデータベース (その2: 30CH-201から30CH-419)](./cd-catalog/teichiku-db-2.html)
 - [Midi Inc.データベース (その1: MID-xxxx, xxMD-yyyy)](./cd-catalog/midi-db-1.html)
-
 - [東芝EMIデータベース (洋楽・クラシック) (CP35-3001からCC35-3100)](./cd-catalog/toshiba-emi-p-db-1.html)
 
 <!-- -->
