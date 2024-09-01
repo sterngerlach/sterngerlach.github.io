@@ -5,6 +5,7 @@ author: SternGerlach
 
 <!--
  pandoc -s --filter pandoc-crossref -M "crossrefYaml=./crossref_config.yaml" -f markdown -t html5 --mathjax --css ./style.css ./toshiba-emi-db-3.md -o ./toshiba-emi-db-3.html
+ pandoc -s -f markdown -t html5 --mathjax --css ./style.css ./toshiba-emi-db-3.md -o ./toshiba-emi-db-3.html
 -->
 
 [ホームに戻る](../index.html)
@@ -44,7 +45,7 @@ Boøwyの「"Gigs" Just A Hero Tour 1986」(1986年)は限定盤で、オーク�
 * CA32-1211: Vow Wow (ヴァウワウ) / III (1986年; 1986年2月1日)
 * CA32-1212: M-Band / Back Street (1986年; 1986年2月1日)
 * CA32-1213: 山本達彦 / To Be (1986年; 1986年2月1日)
-* CA32-1214: ジュディ・オング / うたかたの夢 (1986年; 1986年2月1日)
+* CA32-1214: ジュディ・オング / うたかたの夢 (1985年; 1986年2月1日)
 * CA32-1215: 谷村新司 / 蜩 (1974年; 1986年3月1日)
 * CA32-1216: 谷村新司 / 海猫 (1975年; 1986年3月1日)
 * CA32-1217: 谷村新司 / 喝采 (1979年; 1986年3月1日)

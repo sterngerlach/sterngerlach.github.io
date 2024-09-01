@@ -12,17 +12,17 @@
     div.columns{display: flex; gap: min(4vw, 1.5em);}
     div.column{flex: auto; overflow-x: auto;}
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-    ul.task-list{list-style: none;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
     ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
       width: 0.8em;
       margin: 0 0.8em 0.2em -1.6em;
       vertical-align: middle;
     }
   </style>
   <link rel="stylesheet" href="./style.css" />
-  <!--[if lt IE 9]>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
-  <![endif]-->
 </head>
 <body>
 <header id="title-block-header">
@@ -31,6 +31,7 @@
 </header>
 <!--
  pandoc -s --filter pandoc-crossref -M "crossrefYaml=./crossref_config.yaml" -f markdown -t html5 --mathjax --css ./style.css ./toshiba-emi-db-3.md -o ./toshiba-emi-db-3.html
+ pandoc -s -f markdown -t html5 --mathjax --css ./style.css ./toshiba-emi-db-3.md -o ./toshiba-emi-db-3.html
 -->
 <p><a href="../index.html">ホームに戻る</a></p>
 <h2 id="このページについて">このページについて</h2>
@@ -78,7 +79,7 @@ You」が欲しいのですが、オークションでも数千円ぐらいの�
 <li>CA32-1211: Vow Wow (ヴァウワウ) / III (1986年; 1986年2月1日)</li>
 <li>CA32-1212: M-Band / Back Street (1986年; 1986年2月1日)</li>
 <li>CA32-1213: 山本達彦 / To Be (1986年; 1986年2月1日)</li>
-<li>CA32-1214: ジュディ・オング / うたかたの夢 (1986年;
+<li>CA32-1214: ジュディ・オング / うたかたの夢 (1985年;
 1986年2月1日)</li>
 <li>CA32-1215: 谷村新司 / 蜩 (1974年; 1986年3月1日)</li>
 <li>CA32-1216: 谷村新司 / 海猫 (1975年; 1986年3月1日)</li>
