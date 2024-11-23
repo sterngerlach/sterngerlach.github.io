@@ -41,6 +41,7 @@ sterngerlachのGitHubページにようこそ。
 - [Midi Inc.データベース (その1: MID-xxxx, xxMD-yyyy)](./cd-catalog/midi-db-1.html)
 - [東芝EMIデータベース (洋楽・クラシック) (CP35-3001からCC35-3100)](./cd-catalog/toshiba-emi-p-db-1.html)
 - [東芝EMIデータベース (洋楽・クラシック) (CC38-3101からCC30-3200)](./cd-catalog/toshiba-emi-p-db-2.html)
+- [東芝EMIデータベース (洋楽・クラシック) (C???-3201からCC33-3300)](./cd-catalog/toshiba-emi-p-db-3.html)
 
 <!-- -->
 
