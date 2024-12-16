@@ -47,8 +47,6 @@ auhtor: SternGerlach
 1. 平沢進 / 救済の技法 (1998年)
 1. フィッシュマンズ / LONG SEASON (1996年)
 1. フィッシュマンズ / 宇宙 日本 世田谷 (1997年)
-1. Polaris (ポラリス) / Union (2005年)
-1. Polaris (ポラリス) / 空間 (2007年)
 1. Polaris (ポラリス) / 色彩 (2013年)
 1. Polaris (ポラリス) / 天体 (2018年)
 1. サカナクション / Go To The Future (2007年)
@@ -318,7 +316,6 @@ auhtor: SternGerlach
 1. 相曽晴日 / Intrigue (1985年)
 1. 相曽晴日 / High Noon High Moon (1987年)
 1. 相曽晴日 / TricTrac \~相曽晴日ベストセレクション (1987年)
-1. サディスティック・ミカ・バンド / Sadistic Mika Band (1973年)
 1. サディスティック・ミカ・バンド / Hot! Menu (1975年)
 1. 崎谷健次郎 / Difference (1987年)
 
