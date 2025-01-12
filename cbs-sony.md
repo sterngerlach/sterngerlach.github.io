@@ -24,6 +24,7 @@ author: SternGerlach
 * 35DH 16: マリーン (Marlene With Seawind) / Summer Nights (サマー・ナイト) (1982年; 1982年11月21日)
 * 35DH 17: 日野皓正 / Pyramid (ピラミッド) (1982年; 1982年11月21日)
 * 35DH 18: Various / ヒット! ヒット! ヒット! (1982年; 1982年11月21日) (ゴールドCD)
+* 38DH 30: ナニワエキスプレス (Naniwa Express) / 大宇宙無限力神 (1983年; 1983年3月)
 * 35DH 33: 森山良子 / セ フィニ 〜愛の幕ぎれ〜 (C'est Fini) (1982年; 1983年?月)
 * 38DH 34: マリーン (Marlene) / Déjà Vu (デジャ・ヴー) (1983年; 1983年4月21日)
 * 38DH 40: 井上鑑・松任谷正隆・佐藤博 / Seaside Lovers (Memories In Beach House) (シーサイド・ラバーズ) (1983年; 1983年7月1日)
