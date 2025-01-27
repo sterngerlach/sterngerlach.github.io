@@ -55,6 +55,7 @@ author: SternGerlach
 * 50DH 441-2 (32DH 441 + 18DH 442): 井上鑑 / Tokyo Installation (1986年; 1986年6月1日)
 * 32DH 460: PSY・S (サイズ) / Pic-Nic (ピクニック) (1986年; 1986年7月2日)
 * 32DH 467: PSY・S (サイズ) / Different View (ディファレント・ビュー) (1985年; 1986年7月2日)
+* 32DH 481: 南佳孝 / Daydream (デイドリーム) (1983年; 1986年7月21日)
 * 32DH 539: レベッカ (Rebecca) / Time (1986年; 1986年10月25日)
 * 32DH 555: 大滝詠一 / Complete Each Time (1986年; 1986年6月1日)
 * 33DH 574: 原田知世 / Soshite (1986年; 1986年11月28日)

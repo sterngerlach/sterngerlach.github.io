@@ -285,7 +285,6 @@ auhtor: SternGerlach
 1. 竹内まりや / Miss M (1980年)
 1. 竹内まりや / Portrait (1981年)
 1. Flat Face (フラット・フェイス) / Face (1986年)
-1. 彩恵津子 / All I Need (1985年)
 1. 彩恵津子 / College Life (1986年)
 1. 彩恵津子 / Unknown Things (1987年)
 1. 風見りつ子 / Kiss Of Fire (1985年)
