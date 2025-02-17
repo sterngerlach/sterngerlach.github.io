@@ -134,6 +134,7 @@ author: SternGerlach
 
 <!-- -->
 
+* 3153-11 (35PS): 増尾好秋 / Mellow Focus (メロウ・フォーカス) (1982年; 1983年9月1日)
 * 3153-12 (35PS): 伊藤銀次 / Winter Wonderland I Thank You (1983年; 1983年11月?日)
 * 3153-13 (35PS): 谷村新司 / 抱擁 (Satin Rose) (1984年; 1984年?月)
 * 3153-14 (35PS): 谷村新司 / Alone Together (シングルA面コレクション) (1984年; 1984年7月25日)
