@@ -54,6 +54,7 @@ author: SternGerlach
 [<img src="images/Tulip-1983-Halo-CA35-1022-1-600px.jpg" height="300" />](images/Tulip-1983-Halo-CA35-1022-1.jpg)
 [<img src="images/Tulip-1983-Halo-CA35-1022-2-600px.jpg" height="300" />](images/Tulip-1983-Halo-CA35-1022-2.jpg)
 [<img src="images/Tulip-1983-Halo-CA35-1022-3-600px.jpg" height="300" />](images/Tulip-1983-Halo-CA35-1022-3.jpg)
+[<img src="images/Tulip-1983-Halo-CA35-1022-4-600px.jpg" height="300" />](images/Tulip-1983-Halo-CA35-1022-4.jpg)
 
 ### I Dream (CA35-1070)
 
@@ -64,13 +65,14 @@ author: SternGerlach
   - 刻印: なし
 - 備考: 確証はありませんが、この東芝EMIプレスしかみたことがありません。
 マトリクスには、特徴的な幅広いフォント (Big stamped font) がみられます。
-このフォントは、東芝EMIで1983年にプレスされたCDにしか使用されていないようで、1983年秋から、1984年春頃までの短い期間にしかみられません。
+このフォントは、東芝EMIでプレスされた最初期のCDにしか使用されていないようで、1983年秋から1984年春頃までの短い期間にしかみられません。
 - 入手のしやすさ: 「Halo」よりはみかける気がします。比較的手頃な価格 (2,000円ほど) で入手できました。
 
 [<img src="images/Tulip-1984-I-Dream-CA35-1070-0-600px.jpg" height="300" />](images/Tulip-1984-I-Dream-CA35-1070-0.jpg)
 [<img src="images/Tulip-1984-I-Dream-CA35-1070-1-600px.jpg" height="300" />](images/Tulip-1984-I-Dream-CA35-1070-1.jpg)
 [<img src="images/Tulip-1984-I-Dream-CA35-1070-2-600px.jpg" height="300" />](images/Tulip-1984-I-Dream-CA35-1070-2.jpg)
 [<img src="images/Tulip-1984-I-Dream-CA35-1070-3-600px.jpg" height="300" />](images/Tulip-1984-I-Dream-CA35-1070-3.jpg)
+[<img src="images/Tulip-1984-I-Dream-CA35-1070-4-600px.jpg" height="300" />](images/Tulip-1984-I-Dream-CA35-1070-4.jpg)
 
 ### New Tune (35FD-1005)
 
@@ -87,3 +89,4 @@ author: SternGerlach
 [<img src="images/Tulip-1985-New-Tune-35FD-1005-1-600px.jpg" height="300" />](images/Tulip-1985-New-Tune-35FD-1005-1.jpg)
 [<img src="images/Tulip-1985-New-Tune-35FD-1005-2-600px.jpg" height="300" />](images/Tulip-1985-New-Tune-35FD-1005-2.jpg)
 [<img src="images/Tulip-1985-New-Tune-35FD-1005-3-600px.jpg" height="300" />](images/Tulip-1985-New-Tune-35FD-1005-3.jpg)
+[<img src="images/Tulip-1985-New-Tune-35FD-1005-4-600px.jpg" height="300" />](images/Tulip-1985-New-Tune-35FD-1005-4.jpg)
