@@ -5,6 +5,7 @@ author: SternGerlach
 
 <!--
  pandoc -s --filter pandoc-crossref -M "crossrefYaml=./crossref_config.yaml" -f markdown -t html5 --mathjax --css ./style.css ./toshiba-emi-db-1.md -o ./toshiba-emi-db-1.html
+ pandoc -s -f markdown -t html5 --mathjax --css ./style.css ./toshiba-emi-db-1.md -o ./toshiba-emi-db-1.html
 -->
 
 [ホームに戻る](../index.html)
@@ -84,7 +85,7 @@ CA35-1001からCA35-1005までは、背中が一面黄色、CA35-1006からCA35-
 * CA35-1037: 川島なお美 / シャワーのあとで (After Takin' Shower) (1983年; 1983年11月21日)
 * CA35-1038: 李成愛 (イ・ソンエ) / 釜山港へ帰れ -演歌の源流を探る- (1984年; 1984年1月21日)
 * CA35-1039: アリス / Sunrise Or Sunset Alice Instruments Vol.2 (1983年; 1983年11月1日)
-* CA35-1040: オフコース / オフ・コース1 -僕の贈りもの (1973年; 1983年11月21日)
+* CA35-1040: オフコース / 僕の贈りもの (1973年; 1983年11月21日)
 
 <!-- -->
 
@@ -94,7 +95,7 @@ CA35-1001からCA35-1005までは、背中が一面黄色、CA35-1006からCA35-
 * CA35-1044: 長渕剛 / Heavy Gauge (ヘビーゲージ) (1983年; 1983年11月21日)
 * CA35-1045: 稲垣潤一, 安部恭弘, 井上鑑, 鈴木雄大 / Modern Wave II (1983年; 1983年11月21日)
 * CA35-1046: 琴ニューアンサンブル / 「琴」ヴィヴァルディ -四季 (1983年; 1983年11月21日)
-* CA35-1047: Various Artists / 蒸気機関車 -Steam Locomotive (1983年; 1983年11月21日)
+* CA35-1047: No Artist / 蒸気機関車 (Steam Locomotive) (1983年; 1983年11月21日)
 * CA35-1048: 見砂直照と東京キューバン・ボーイズ / エキサイティング・ラテン (1983年; 1983年11月21日)
 * CA35-1049: 中原めいこ / ミ・ン・ト (Mint) (1983年; 1983年12月21日)
 * CA35-1050: 山本達彦 / Romantic View (ロマンティック・ビュー) (1983年; 1983年12月21日)

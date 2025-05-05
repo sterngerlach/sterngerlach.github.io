@@ -5,6 +5,7 @@ author: SternGerlach
 
 <!--
  pandoc -s --filter pandoc-crossref -M "crossrefYaml=./crossref_config.yaml" -f markdown -t html5 --mathjax --css ./style.css ./toshiba-emi-db-2.md -o ./toshiba-emi-db-2.html
+ pandoc -s -f markdown -t html5 --mathjax --css ./style.css ./toshiba-emi-db-2.md -o ./toshiba-emi-db-2.html
 -->
 
 [ホームに戻る](../index.html)
@@ -72,7 +73,7 @@ CDのみで発売されたベスト盤もあります。
 * CA32-1134: 松任谷由実 / 悲しいほどお天気 (1979年; 1985年6月1日)
 * CA32-1135: 松任谷由実 / 時のないホテル (1980年; 1985年6月1日)
 * CA32-1136: 松任谷由実 / サーフ・アンド・スノー (Surf & Snow) (1980年; 1985年6月1日)
-* CA32-1137: 松任谷由実 / 水の中のAsiaへ (1981年; 1985年6月1日)
+* CA25-1137: 松任谷由実 / 水の中のAsiaへ (1981年; 1985年6月1日)
 * CA32-1138: 松任谷由実 / 昨晩お会いしましょう (1981年; 1985年6月1日)
 * CA32-1139: 松任谷由実 / Pearl Pierce (パール・ピアス) (1982年; 1985年6月1日)
 * CA32-1140: 松任谷由実 / Reincarnation (リ・インカーネーション) (1983年; 1985年6月1日)

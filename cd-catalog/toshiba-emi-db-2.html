@@ -12,17 +12,17 @@
     div.columns{display: flex; gap: min(4vw, 1.5em);}
     div.column{flex: auto; overflow-x: auto;}
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-    ul.task-list{list-style: none;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
     ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
       width: 0.8em;
       margin: 0 0.8em 0.2em -1.6em;
       vertical-align: middle;
     }
   </style>
   <link rel="stylesheet" href="./style.css" />
-  <!--[if lt IE 9]>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
-  <![endif]-->
 </head>
 <body>
 <header id="title-block-header">
@@ -31,6 +31,7 @@
 </header>
 <!--
  pandoc -s --filter pandoc-crossref -M "crossrefYaml=./crossref_config.yaml" -f markdown -t html5 --mathjax --css ./style.css ./toshiba-emi-db-2.md -o ./toshiba-emi-db-2.html
+ pandoc -s -f markdown -t html5 --mathjax --css ./style.css ./toshiba-emi-db-2.md -o ./toshiba-emi-db-2.html
 -->
 <p><a href="../index.html">ホームに戻る</a></p>
 <h2 id="このページについて">このページについて</h2>
@@ -111,7 +112,7 @@ Dimanche) (1985年; 1985年3月30日)</li>
 <li>CA32-1135: 松任谷由実 / 時のないホテル (1980年; 1985年6月1日)</li>
 <li>CA32-1136: 松任谷由実 / サーフ・アンド・スノー (Surf &amp; Snow)
 (1980年; 1985年6月1日)</li>
-<li>CA32-1137: 松任谷由実 / 水の中のAsiaへ (1981年; 1985年6月1日)</li>
+<li>CA25-1137: 松任谷由実 / 水の中のAsiaへ (1981年; 1985年6月1日)</li>
 <li>CA32-1138: 松任谷由実 / 昨晩お会いしましょう (1981年;
 1985年6月1日)</li>
 <li>CA32-1139: 松任谷由実 / Pearl Pierce (パール・ピアス) (1982年;
