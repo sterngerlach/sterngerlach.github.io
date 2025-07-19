@@ -5,6 +5,7 @@ author: SternGerlach
 
 <!--
  pandoc -s --filter pandoc-crossref -M "crossrefYaml=./crossref_config.yaml" -f markdown -t html5 --mathjax --css ./style.css ./off-course-ca35-series.md -o ./off-course-ca35-series.html
+ pandoc -s -f markdown -t html5 --mathjax --css ./style.css ./off-course-ca35-series.md -o ./off-course-ca35-series.html
 -->
 
 [ホームに戻る](./index.html)
@@ -166,10 +167,10 @@ CA32盤 (CA32-1158) とは音圧が若干異なっているようです。
 定価を上回る値段で入手しました。
 初期の傑作なので、価値は十分にあると思います。
 
-[<img src="images/Off-Course-1975-Wine-No-Nioi-CA35-1032-0.jpg" height="300" />](images/Off-Course-1975-Wine-No-Nioi-CA35-1032-0.jpg)
-[<img src="images/Off-Course-1975-Wine-No-Nioi-CA35-1032-1.jpg" height="300" />](images/Off-Course-1975-Wine-No-Nioi-CA35-1032-1.jpg)
-[<img src="images/Off-Course-1975-Wine-No-Nioi-CA35-1032-2.jpg" height="300" />](images/Off-Course-1975-Wine-No-Nioi-CA35-1032-2.jpg)
-[<img src="images/Off-Course-1975-Wine-No-Nioi-CA35-1032-3.jpg" height="300" />](images/Off-Course-1975-Wine-No-Nioi-CA35-1032-3.jpg)
+[<img src="images/Off-Course-1975-ワインの匂い-CA35-1032-0.jpg" height="300" />](images/Off-Course-1975-ワインの匂い-CA35-1032-0.jpg)
+[<img src="images/Off-Course-1975-ワインの匂い-CA35-1032-1.jpg" height="300" />](images/Off-Course-1975-ワインの匂い-CA35-1032-1.jpg)
+[<img src="images/Off-Course-1975-ワインの匂い-CA35-1032-2.jpg" height="300" />](images/Off-Course-1975-ワインの匂い-CA35-1032-2.jpg)
+[<img src="images/Off-Course-1975-ワインの匂い-CA35-1032-3.jpg" height="300" />](images/Off-Course-1975-ワインの匂い-CA35-1032-3.jpg)
 
 ### この道をゆけば / オフ・コース・ラウンド2 (CA35-1033)
 
@@ -185,10 +186,10 @@ CA32盤 (CA32-1158) とは音圧が若干異なっているようです。
 - 入手のしやすさ: 初期の70年代の作品は、入手の難易度が一気に上がります。
 駿河屋やヤフオクでたまにみかけるので、入手は不可能ではなさそうです。
 
-[<img src="images/Off-Course-1974-Konomichi-O-Yukeba-CA35-1033-0.jpg" height="300" />](images/Off-Course-1974-Konomichi-O-Yukeba-CA35-1033-0.jpg)
-[<img src="images/Off-Course-1974-Konomichi-O-Yukeba-CA35-1033-1.jpg" height="300" />](images/Off-Course-1974-Konomichi-O-Yukeba-CA35-1033-1.jpg)
-[<img src="images/Off-Course-1974-Konomichi-O-Yukeba-CA35-1033-2.jpg" height="300" />](images/Off-Course-1974-Konomichi-O-Yukeba-CA35-1033-2.jpg)
-[<img src="images/Off-Course-1974-Konomichi-O-Yukeba-CA35-1033-3.jpg" height="300" />](images/Off-Course-1974-Konomichi-O-Yukeba-CA35-1033-3.jpg)
+[<img src="images/Off-Course-1974-この道をゆけば-CA35-1033-0.jpg" height="300" />](images/Off-Course-1974-この道をゆけば-CA35-1033-0.jpg)
+[<img src="images/Off-Course-1974-この道をゆけば-CA35-1033-1.jpg" height="300" />](images/Off-Course-1974-この道をゆけば-CA35-1033-1.jpg)
+[<img src="images/Off-Course-1974-この道をゆけば-CA35-1033-2.jpg" height="300" />](images/Off-Course-1974-この道をゆけば-CA35-1033-2.jpg)
+[<img src="images/Off-Course-1974-この道をゆけば-CA35-1033-3.jpg" height="300" />](images/Off-Course-1974-この道をゆけば-CA35-1033-3.jpg)
 
 ### Made In Love -Off Course Instruments III (CA35-1034)
 
@@ -213,10 +214,10 @@ CA32盤 (CA32-1156) と音源は全く同一です。
 半ば諦めていたので、発見したときは心臓が止まるかと思いました。
 入手できたのは運が良かったです。
 
-[<img src="images/Off-Course-1973-Boku-No-Okurimono-CA35-1040-0.jpg" height="300" />](images/Off-Course-1973-Boku-No-Okurimono-CA35-1040-0.jpg)
-[<img src="images/Off-Course-1973-Boku-No-Okurimono-CA35-1040-1.jpg" height="300" />](images/Off-Course-1973-Boku-No-Okurimono-CA35-1040-1.jpg)
-[<img src="images/Off-Course-1973-Boku-No-Okurimono-CA35-1040-2.jpg" height="300" />](images/Off-Course-1973-Boku-No-Okurimono-CA35-1040-2.jpg)
-[<img src="images/Off-Course-1973-Boku-No-Okurimono-CA35-1040-3.jpg" height="300" />](images/Off-Course-1973-Boku-No-Okurimono-CA35-1040-3.jpg)
+[<img src="images/Off-Course-1973-僕の贈りもの-CA35-1040-0.jpg" height="300" />](images/Off-Course-1973-僕の贈りもの-CA35-1040-0.jpg)
+[<img src="images/Off-Course-1973-僕の贈りもの-CA35-1040-1.jpg" height="300" />](images/Off-Course-1973-僕の贈りもの-CA35-1040-1.jpg)
+[<img src="images/Off-Course-1973-僕の贈りもの-CA35-1040-2.jpg" height="300" />](images/Off-Course-1973-僕の贈りもの-CA35-1040-2.jpg)
+[<img src="images/Off-Course-1973-僕の贈りもの-CA35-1040-3.jpg" height="300" />](images/Off-Course-1973-僕の贈りもの-CA35-1040-3.jpg)
 
 ### Song Is Love (CA35-1041)
 

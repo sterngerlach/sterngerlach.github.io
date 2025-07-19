@@ -12,17 +12,17 @@
     div.columns{display: flex; gap: min(4vw, 1.5em);}
     div.column{flex: auto; overflow-x: auto;}
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-    ul.task-list{list-style: none;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
     ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
       width: 0.8em;
       margin: 0 0.8em 0.2em -1.6em;
       vertical-align: middle;
     }
   </style>
   <link rel="stylesheet" href="./style.css" />
-  <!--[if lt IE 9]>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
-  <![endif]-->
 </head>
 <body>
 <header id="title-block-header">
@@ -31,6 +31,7 @@
 </header>
 <!--
  pandoc -s --filter pandoc-crossref -M "crossrefYaml=./crossref_config.yaml" -f markdown -t html5 --mathjax --css ./style.css ./off-course-ca35-series.md -o ./off-course-ca35-series.html
+ pandoc -s -f markdown -t html5 --mathjax --css ./style.css ./off-course-ca35-series.md -o ./off-course-ca35-series.html
 -->
 <p><a href="./index.html">ホームに戻る</a></p>
 <h2 id="オフコース-ca35シリーズ">オフコース CA35シリーズ</h2>
@@ -265,13 +266,13 @@ You -Off Course Instruments II (CA35-1025)</h3>
 初期の傑作なので、価値は十分にあると思います。</li>
 </ul>
 <p><a
-href="images/Off-Course-1975-Wine-No-Nioi-CA35-1032-0.jpg"><img src="images/Off-Course-1975-Wine-No-Nioi-CA35-1032-0.jpg" height="300" /></a>
+href="images/Off-Course-1975-ワインの匂い-CA35-1032-0.jpg"><img src="images/Off-Course-1975-ワインの匂い-CA35-1032-0.jpg" height="300" /></a>
 <a
-href="images/Off-Course-1975-Wine-No-Nioi-CA35-1032-1.jpg"><img src="images/Off-Course-1975-Wine-No-Nioi-CA35-1032-1.jpg" height="300" /></a>
+href="images/Off-Course-1975-ワインの匂い-CA35-1032-1.jpg"><img src="images/Off-Course-1975-ワインの匂い-CA35-1032-1.jpg" height="300" /></a>
 <a
-href="images/Off-Course-1975-Wine-No-Nioi-CA35-1032-2.jpg"><img src="images/Off-Course-1975-Wine-No-Nioi-CA35-1032-2.jpg" height="300" /></a>
+href="images/Off-Course-1975-ワインの匂い-CA35-1032-2.jpg"><img src="images/Off-Course-1975-ワインの匂い-CA35-1032-2.jpg" height="300" /></a>
 <a
-href="images/Off-Course-1975-Wine-No-Nioi-CA35-1032-3.jpg"><img src="images/Off-Course-1975-Wine-No-Nioi-CA35-1032-3.jpg" height="300" /></a></p>
+href="images/Off-Course-1975-ワインの匂い-CA35-1032-3.jpg"><img src="images/Off-Course-1975-ワインの匂い-CA35-1032-3.jpg" height="300" /></a></p>
 <h3 id="この道をゆけば-オフコースラウンド2-ca35-1033">この道をゆけば /
 オフ・コース・ラウンド2 (CA35-1033)</h3>
 <ul>
@@ -292,13 +293,13 @@ href="images/Off-Course-1975-Wine-No-Nioi-CA35-1032-3.jpg"><img src="images/Off-
 駿河屋やヤフオクでたまにみかけるので、入手は不可能ではなさそうです。</li>
 </ul>
 <p><a
-href="images/Off-Course-1974-Konomichi-O-Yukeba-CA35-1033-0.jpg"><img src="images/Off-Course-1974-Konomichi-O-Yukeba-CA35-1033-0.jpg" height="300" /></a>
+href="images/Off-Course-1974-この道をゆけば-CA35-1033-0.jpg"><img src="images/Off-Course-1974-この道をゆけば-CA35-1033-0.jpg" height="300" /></a>
 <a
-href="images/Off-Course-1974-Konomichi-O-Yukeba-CA35-1033-1.jpg"><img src="images/Off-Course-1974-Konomichi-O-Yukeba-CA35-1033-1.jpg" height="300" /></a>
+href="images/Off-Course-1974-この道をゆけば-CA35-1033-1.jpg"><img src="images/Off-Course-1974-この道をゆけば-CA35-1033-1.jpg" height="300" /></a>
 <a
-href="images/Off-Course-1974-Konomichi-O-Yukeba-CA35-1033-2.jpg"><img src="images/Off-Course-1974-Konomichi-O-Yukeba-CA35-1033-2.jpg" height="300" /></a>
+href="images/Off-Course-1974-この道をゆけば-CA35-1033-2.jpg"><img src="images/Off-Course-1974-この道をゆけば-CA35-1033-2.jpg" height="300" /></a>
 <a
-href="images/Off-Course-1974-Konomichi-O-Yukeba-CA35-1033-3.jpg"><img src="images/Off-Course-1974-Konomichi-O-Yukeba-CA35-1033-3.jpg" height="300" /></a></p>
+href="images/Off-Course-1974-この道をゆけば-CA35-1033-3.jpg"><img src="images/Off-Course-1974-この道をゆけば-CA35-1033-3.jpg" height="300" /></a></p>
 <h3 id="made-in-love--off-course-instruments-iii-ca35-1034">Made In Love
 -Off Course Instruments III (CA35-1034)</h3>
 <ul>
@@ -329,13 +330,13 @@ href="images/Off-Course-1974-Konomichi-O-Yukeba-CA35-1033-3.jpg"><img src="image
 入手できたのは運が良かったです。</li>
 </ul>
 <p><a
-href="images/Off-Course-1973-Boku-No-Okurimono-CA35-1040-0.jpg"><img src="images/Off-Course-1973-Boku-No-Okurimono-CA35-1040-0.jpg" height="300" /></a>
+href="images/Off-Course-1973-僕の贈りもの-CA35-1040-0.jpg"><img src="images/Off-Course-1973-僕の贈りもの-CA35-1040-0.jpg" height="300" /></a>
 <a
-href="images/Off-Course-1973-Boku-No-Okurimono-CA35-1040-1.jpg"><img src="images/Off-Course-1973-Boku-No-Okurimono-CA35-1040-1.jpg" height="300" /></a>
+href="images/Off-Course-1973-僕の贈りもの-CA35-1040-1.jpg"><img src="images/Off-Course-1973-僕の贈りもの-CA35-1040-1.jpg" height="300" /></a>
 <a
-href="images/Off-Course-1973-Boku-No-Okurimono-CA35-1040-2.jpg"><img src="images/Off-Course-1973-Boku-No-Okurimono-CA35-1040-2.jpg" height="300" /></a>
+href="images/Off-Course-1973-僕の贈りもの-CA35-1040-2.jpg"><img src="images/Off-Course-1973-僕の贈りもの-CA35-1040-2.jpg" height="300" /></a>
 <a
-href="images/Off-Course-1973-Boku-No-Okurimono-CA35-1040-3.jpg"><img src="images/Off-Course-1973-Boku-No-Okurimono-CA35-1040-3.jpg" height="300" /></a></p>
+href="images/Off-Course-1973-僕の贈りもの-CA35-1040-3.jpg"><img src="images/Off-Course-1973-僕の贈りもの-CA35-1040-3.jpg" height="300" /></a></p>
 <h3 id="song-is-love-ca35-1041">Song Is Love (CA35-1041)</h3>
 <ul>
 <li>4thアルバム</li>
