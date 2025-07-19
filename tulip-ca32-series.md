@@ -113,7 +113,7 @@ author: SternGerlach
 - 発売日: 1987年5月1日
 - 所持品:
   - マトリクス: CA32-1426 1A2 TO
-- 備考: 1985年発売のBest Nowから、1曲だけ差し替えられているだけです (「	I Am The Editor (この映画のラストシーンはぼくにはつくれない)」から「We Can Fly」)。
+- 備考: 1985年発売のBest Nowから、1曲差し替えられているだけです (「	I Am The Editor (この映画のラストシーンはぼくにはつくれない)」から「We Can Fly」)。
 
 [<img src="images/Tulip-1987-New-Best-Now-CA32-1426-0-600px.jpg" height="300" />](images/Tulip-1987-New-Best-Now-CA32-1426-0.jpg)
 [<img src="images/Tulip-1987-New-Best-Now-CA32-1426-1-600px.jpg" height="300" />](images/Tulip-1987-New-Best-Now-CA32-1426-1.jpg)
