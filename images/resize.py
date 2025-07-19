@@ -1,13 +1,23 @@
 # coding: utf-8
 # resize.py
 
+import argparse
 import glob
 import os
 
 from PIL import Image
 
-target_width = 600
-pattern = "Tulip*.jpg"
+def parse_command_line() -> argparse.Namespace:
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument("--input", type=str, required=True)
+    parser.add_argument("--target-width", type=int, default=600)
+
+    return parser.parse_args()
+
+args = parse_command_line()
+pattern = args.input
+target_width = args.target_width
 
 for file_name in glob.glob(pattern):
     file_name_stem, file_ext = os.path.splitext(file_name)
