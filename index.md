@@ -43,6 +43,7 @@ sterngerlachのGitHubページにようこそ。
 - [キャニオンデータベース (その1: D35A0001からD30A0200)](./cd-catalog/canyon-db-1.html)
 - [キャニオンデータベース (その2: D32A0201からD32A0400)](./cd-catalog/canyon-db-2.html)
 - [キャニオンデータベース (その3: D32A0401からD35A0503)](./cd-catalog/canyon-db-3.html)
+- [ビクターデータベース (その1: VDR-1からVDR-85)](./cd-catalog/victor-db-1.html)
 - [東芝EMIデータベース (洋楽・クラシック) (CP35-3001からCC35-3100)](./cd-catalog/toshiba-emi-p-db-1.html)
 - [東芝EMIデータベース (洋楽・クラシック) (CC38-3101からCC30-3200)](./cd-catalog/toshiba-emi-p-db-2.html)
 - [東芝EMIデータベース (洋楽・クラシック) (C???-3201からCC33-3300)](./cd-catalog/toshiba-emi-p-db-3.html)
