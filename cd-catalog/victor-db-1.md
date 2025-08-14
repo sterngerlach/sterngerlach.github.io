@@ -133,3 +133,7 @@ author: SternGerlach
 * VDR-83: 浜田麻里 / First Period Mari's Best Vol.1 (1985年; 1985年3月5日)
 * VDR-84: 高中正義 / Ready To Fly The Best (1985年; 1985年3月5日)
 * VDR-85: The Good-Bye (ザ・グッバイ) / The Good-Bye "Album" (1988年; 1988年6月21日)
+
+<!-- -->
+
+続き: [ビクターデータベース (その2: VDR-1001からVDR-1200)](./victor-db-2.html)
