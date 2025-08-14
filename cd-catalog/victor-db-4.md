@@ -94,7 +94,7 @@ author: SternGerlach
 
 <!-- -->
 
-* VDR-1461: ダンガン・ブラザーズ・バンド (Dang Gang Brothers Band) / "Presents" ベスト・オブ・ダンガン・ブラザーズ・バンド Vol.1 (Best Of Dang Gang Bros. Band Vol.1)
+* VDR-1461: ダンガン・ブラザーズ・バンド (Dang Gang Brothers Band) / "Presents" ベスト・オブ・ダンガン・ブラザーズ・バンド Vol.1 (Best Of Dang Gang Bros. Band Vol.1) (1987年; 1987年12月16日)
 * VDR-1462: Various (パブリックピース・オーケストラ, 酒井法子, 田中真弓, ほか) / NHKテレビ アニメ三銃士 音楽篇 オリジナル・サウンドトラック (1987年; 1987年12月16日)
 * VDR-1463: Various (板倉文, 原由子, ほか) / 映画「Bu・Su」 サウンド・トラック (1987年; 1987年11月21日)
 * VDR-1464: 泉谷しげる / 吠えるバラッド (Howl And Other Ballads) (1988年; 1988年1月21日)

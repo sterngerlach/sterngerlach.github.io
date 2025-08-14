@@ -66,7 +66,7 @@ author: SternGerlach
 * VDR-31: サザンオールスターズ (Southern All Stars) / ステレオ太陽族 (Stereo Taiyo-Zoku) (1981年; 1984年6月21日)
 * VDR-32: サザンオールスターズ (Southern All Stars) / Nude Man (ヌード・マン) (1982年; 1984年6月21日)
 * VDR-33: 小泉今日子 / Betty (Kyoko V) (ベティ) (1984年; 1984年7月21日)
-* VDR-34: 上田知華 / Classiest (1984年; 1984年8月21日)
+* VDR-34: 上田知華 / Classiest (クラシェスト) (1984年; 1984年8月21日)
 * VDR-35: サザンオールスターズ (Southern All Stars) / 人気者で行こう (1984年; 1984年7月21日)
 * VDR-36: 喜多郎 / 天界 アストラル・トリップ ("Ten Kai" Astral Trip) (1978年; 1984年7月21日)
 * VDR-37: 喜多郎 / 大地 フロム・ザ・フル・ムーン・ストーリー (From The Full Moon Story) (1979年; 1984年7月21日)
