@@ -16,8 +16,9 @@ author: SternGerlach
 
 ## CBS・ソニーコレクション
 
+* 35DH 1: 大滝詠一 / A Long Vacation (ロング・バケイション) (1981年; 1982年10月1日) (ゴールドCD)
 * 35DH 1: 大滝詠一 / A Long Vacation (ロング・バケイション) (1981年; 1982年10月1日)
-* 35DH 1: 大滝詠一 / A Long Vacation (ロング・バケイション) (1981年; 1982年10月1日)
+* 35DH 2: 佐野元春, 杉真理, 大滝詠一 / Niagara Triangle Vol.2 (ナイアガラ・トライアングル Vol.2) (1982年; 1982年10月1日) (ゴールドCD)
 * 35DH 2: 佐野元春, 杉真理, 大滝詠一 / Niagara Triangle Vol.2 (ナイアガラ・トライアングル Vol.2) (1982年; 1982年10月1日)
 * 35DH 5: 山口百恵 / Again百恵 あなたへの子守唄 (1982年; 1982年10月1日)
 * 35DH 5: 山口百恵 / Again百恵 あなたへの子守唄 (1982年; 1982年10月1日)
@@ -28,6 +29,7 @@ author: SternGerlach
 * 35DH 16: マリーン (Marlene With Seawind) / Summer Nights (サマー・ナイト) (1982年; 1982年11月21日)
 * 35DH 17: 日野皓正 / Pyramid (ピラミッド) (1982年; 1982年11月21日)
 * 35DH 18: Various / ヒット! ヒット! ヒット! (1982年; 1982年11月21日) (ゴールドCD)
+* 35DH 23: 太田裕美 / The Best (1981年; 1982年?月) (ゴールドCD)
 * 35DH 23: 太田裕美 / The Best (1981年; 1982年?月)
 * 38DH 27: マリーン (Marlene) / My Favorite Songs (マイ・フェイバリット・ソングス) (1982年; 1983年2月25日)
 * 35DH 28: 大滝詠一 (Niagara CM Stars) / Niagara CM Special Special Issue (ナイアガラCMスペシャル Special Issue) (1983年; 1983年?月)

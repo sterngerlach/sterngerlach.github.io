@@ -38,7 +38,7 @@ CPやCCの後の2つの数字 (38や35) は、定価の上位2桁を表してい
 
 <!-- -->
 
-* CC38-3011: Herbert Von Karajan / Berlin Philharomnic Orchestra (ヘルベルト・フォン・カラヤン / ベルリン・フィルハーモニー管弦楽団) / Sibelius: Symphony No.1 Suite "Karelia" (シベリウス: 交響曲 第1番 ホ短調 組曲 "カレリア") (1981年; 1983年2月21日)
+* CC38-3011: Herbert Von Karajan / Berlin Philharomnic Orchestra (ヘルベルト・フォン・カラヤン / ベルリン・フィルハーモニー管弦楽団) / Sibelius: Symphony No.1, Suite "Karelia" (シベリウス: 交響曲 第1番 ホ短調, 組曲 "カレリア") (1981年; 1983年2月21日)
 * CC38-3012: Herbert Von Karajan / Anne-Sophie Mutter / Berlin Philharomnic Orchestra (ヘルベルト・フォン・カラヤン / アンネ・ゾフィー・ムター / ベルリン・フィルハーモニー管弦楽団) / Ouvertüren Und Intermezzi (タイースの瞑想曲 (オペラ序曲・間奏曲集)) (1981年; 1983年2月21日)
 * CC38-3013: Riccardo Muti / The Philadelphia Orchestra (リッカルド・ムーティ / フィラデルフィア管弦楽団) / Stravinsky: Petrushka (Revised Version, 1947) (ストラヴィンスキー: バレエ音楽 "ペトルーシュカ" 全曲) (1982年; 1983年2月21日)
 * CC38-3014: Edita Gruberova / Munich Radio Orchestra (エディタ・グルベローヴァ / ミュンヘン放送管弦楽団) / French & Italian Opera Arias (狂乱の場) (1982年; 1983年2月21日)
