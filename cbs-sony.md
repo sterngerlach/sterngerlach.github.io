@@ -37,6 +37,7 @@ author: SternGerlach
 * 35DH 33: 森山良子 / セ フィニ 〜愛の幕ぎれ〜 (C'est Fini) (1982年; 1983年?月)
 * 38DH 34: マリーン (Marlene) / Déjà Vu (デジャ・ヴー) (1983年; 1983年4月21日)
 * 38DH 36: 太田裕美 / Far East (1983年; 1983年?月)
+* 38DH 38: The Square (ザ・スクェア) / うち水にRainbow (1983年; 1983年?月)
 * 38DH 40: 井上鑑・松任谷正隆・佐藤博 / Seaside Lovers (Memories In Beach House) (シーサイド・ラバーズ) (1983年; 1983年7月1日)
 * 38DH 43: TPO / TPO1 (1983年; 1983年11月1日)
 * 35DH 50: 日野皓正 / New York Times (ニューヨーク・タイムズ) (1983年; 1983年11月1日)
