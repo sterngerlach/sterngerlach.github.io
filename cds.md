@@ -21,6 +21,7 @@ auhtor: SternGerlach
 1. ICE / We're In The Mood (1996年 / TOCT-9345 / 1996年盤)
 1. 相田翔子 / Delphinium (デルフィニューム) (1992年 / PSCR-1052 / 1992年盤)
 1. アイン・ソフ (Ain Soph) / A Story Of Mysterious Forest (妖精の森) (1980年 / KICS 2054 / 1990年盤)
+1. 秋満義孝 / Hello Teddy (ハロー・テディ) (1983年 / CP38-3035 / 1983年盤)
 1. 秋元薫 / Cologne (1986年 / NCS-10238 / 2020年盤)
 1. 麻倉未稀 / Love Again (1985年 / K32X-7 / 1985年盤)
 1. 麻倉未稀 / Foreigner (1985年 / K32X-59 / 1985年盤)
