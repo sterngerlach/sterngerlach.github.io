@@ -109,6 +109,7 @@ auhtor: SternGerlach
 1. Yellow Magic Orchestra / BGM (1981年 / MOCCD 13022 / 2013年盤)
 1. Yellow Magic Orchestra / Technodelic (テクノデリック) (1981年 / 38XA-17 / 1984年盤)
 1. Yellow Magic Orchestra / Technodelic (テクノデリック) (1981年 / ALCA-9044 / 1994年盤)
+1. Yellow Magic Orchestra / 浮気なぼくら (1983年 / 38XA-6 / 1984年盤)
 1. Yellow Magic Orchestra / 浮気なぼくら (1983年 / ALCA-293 / 1992年盤)
 1. Yellow Magic Orchestra / 浮気なぼくら (インストゥルメンタル) (1983年 / ALCA-13 / 1990年盤)
 1. Yellow Magic Orchestra / Service (サーヴィス) (1983年 / 38XA-13 / 1984年盤)
