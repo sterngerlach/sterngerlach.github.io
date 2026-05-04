@@ -1091,6 +1091,7 @@ auhtor: SternGerlach
 1. Various / ヒット! ヒット! ヒット! (1982年 / 35DH 18 / 1982年盤) (ゴールドCD)
 1. Various / Super Audio Check CD (スーパー・オーディオ・チェック・CD) (1983年 / 48DG 3 / 1983年盤)
 1. Various / 日本太鼓の魅力 (1983年 / 38C33-7030 / 1983年盤)
+1. Various / The Fun House Show (1985年 / 32FD-1013 / 1985年盤)
 1. Various / CD ワンダー・ランド2 ～オモシロ・どっきり・ザ・CD～ (1985年 / 32DG 44 / 1985年盤)
 1. Various / ニュー・ミュージック・ベスト・ヒット (1985年 / CA32-1200 / 1985年盤)
 1. Various (Yellow Magic Orchestra, シーナ & ザ・ロケット, 坂本龍一, 細野晴臣, 高橋幸宏, サンディー & サンセッツ) / 決定版 YMOファミリー ベスト・セレクション (1986年 / 32XA-54 / 1986年盤)
