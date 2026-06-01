@@ -1008,6 +1008,7 @@ auhtor: SternGerlach
 1. 山下達郎 / Greatest Hits! Of Tatsuro Yamashita (1982年 / RACD-5 / 1984年盤)
 1. 山下達郎 / Greatest Hits! Of Tatsuro Yamashita (1982年 / BVCR-1541 / 1997年盤)
 1. 山下達郎 / Melodies (1983年 / 38XM-1 / 1983年盤)
+1. 山下達郎 / Melodies (1983年 / 38XM-1 / 1983年盤)
 1. 山下達郎 / Melodies (1983年 / 32XM-27 / 1986年盤)
 1. 山下達郎 / Big Wave (1984年 / 38XM-3 / 1984年盤)
 1. 山下達郎 / On The Street Corner 1 ('86 Version) (1986年 / 30XM-22 / 1986年盤)
