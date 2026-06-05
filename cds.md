@@ -97,6 +97,7 @@ auhtor: SternGerlach
 1. 飯島真理 / Blanche (ブランシュ) (1984年 / VDR-20 / 1984年盤)
 1. 飯島真理 / Variée (バリエ) (1984年 / VDR-51 / 1984年盤)
 1. 飯島真理 / Midori (1985年 / VDR-1004 / 1985年盤)
+1. Yellow Magic Orchestra / Yellow Magic Orchestra (イエロー・マジック・オーケストラ) (1978年 / 38XA-20 / 1984年盤)
 1. Yellow Magic Orchestra / Yellow Magic Orchestra (イエロー・マジック・オーケストラ) (1978年 / MHCL 203 / 2003年盤)
 1. Yellow Magic Orchestra / Solid State Survivor (ソリッド・ステイト・サヴァイヴァー) (1979年 / 38XA-2 / 1984年盤)
 1. Yellow Magic Orchestra / Solid State Survivor (ソリッド・ステイト・サヴァイヴァー) (1979年 / MHCL 205 / 2003年盤)
