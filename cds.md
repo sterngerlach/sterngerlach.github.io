@@ -1218,6 +1218,7 @@ auhtor: SternGerlach
 1. Eurythmics (ユーリズミックス) / Be Yourself Tonight (ビー・ユアセルフ・トゥナイト) (1985年 / RPCD-1012 / 1985年盤)
 1. Freddie Hubbard And His Orchestra (フレディ・ハバード) / Born To Be Blue (ボーン・トゥ・ビー・ブルー) (1982年 / 3112-6 (38PO) / 1983年盤)
 1. Gazebo (ガゼボ) / Gazebo (幻想のガゼボ) (1983年 / 35DP 135 / 1984年盤)
+1. George Benson (ジョージ・ベンソン) / Give Me The Night (ギヴ・ミー・ザ・ナイト) (1980年 / 03453-2 / 1983年盤)
 1. George Winston (ジョージ・ウィンストン) / December (ディセンバー) (1982年 / 38XB-7 / 1984年盤)
 1. Herbie Hancock (ハービー・ハンコック) / Maiden Voyage (処女航海) (1965年 / CP35-3071 / 1983年盤)
 1. Herbie Hancock (ハービー・ハンコック) / Maiden Voyage (処女航海) (1965年 / CP32-5237 / 1986年盤)
