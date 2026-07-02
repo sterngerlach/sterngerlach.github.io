@@ -1557,6 +1557,7 @@ auhtor: SternGerlach
 1. 清水和音 (Kazune Shimizu) / Liszt: Sonata In B Minor, Brahms: Variations And Fugue On A Theme By Händel, Op.24 (リスト: ピアノ・ソナタ ロ短調, ブラームス: ヘンデルの主題による変奏曲とフーガ 作品24) (1982年 / 38DC 29 / 1982年盤)
 1. 荘村清志 / 聖母の御子 -スペインのスケッチ- (El Noi De La Mare) / (1981年 / CC38-3003 / 1982年盤)
 1. 荘村清志 / 聖母の御子 -スペインのスケッチ- (El Noi De La Mare) / (1981年 / CC38-3003 / 1982年盤)
+1. 高橋アキ / Aki Plays Satie: Sports & Divertissements (アキ・プレイズ・サティ) (1983年 / CC38-3111 / 1984年盤)
 1. 東京シティー・フィルハーモニック管弦楽団 / 美しき日本のメロディー ―四季を謳う― (Melodies Of Beautiful Four Seasons In Japan) (1983年 / CA35-1009 / 1983年盤)
 1. 東京ブラス・アンサンブル / デジタル・マーチ (Digital March) (1981年 / 38C38-7027 / 1983年盤)
 1. 冨田勲 / Snowflakes Are Dancing (月の光 ～ドビュッシーによるメルヘンの世界) (1974年 / RCCD-1 / 1984年盤)
