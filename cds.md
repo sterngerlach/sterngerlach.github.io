@@ -1537,6 +1537,7 @@ auhtor: SternGerlach
 1. Sviatoslav Richter, Members Of The Borodin Quartet (スヴャトスラフ・リヒテル, ボロディン弦楽四重奏団員) / Schubert: Piano Quintet In A Major "The Trout" (シューベルト: ピアノ五重奏曲 イ長調 〈ます〉) (1981年 / CC38-3008 / 1983年盤)
 1. The Mantovani Orchestra (マントヴァーニ・オーケストラ) / Digital Spectacular (デジタル・スペクタキュラー) (1982年 / D35Y0001 / 1982年盤)
 1. The Mantovani Orchestra (マントヴァーニ・オーケストラ) / Screen Themes On Digital (不滅のスクリーン・テーマ) (1983年 / D35Y0004 / 1983年盤)
+1. The Scholars (ザ・スコラーズ) / Greensleeves: English Folk Songs (グリーンスリーヴス: イギリス民謡集) (1983年 / CC38-3076 / 1983年盤)
 1. Tsuyoshi Tsutsumi, Ronald Turini (堤剛, ロナルド・トゥリーニ) / Beethoven: Sonatas For Piano And Cello (No.3 In A Major Op.69, No.5 In D Major Op.102-2) (ベートーヴェン: チェロ・ソナタ 第3番 イ長調 作品69, チェロ・ソナタ 第5番 ニ長調 作品102-2) (1981年 / 38DC 23 / 1982年盤)
 1. Václav Neumann, Czech Philharmonic Orchestra (ヴァーツラフ・ノイマン指揮, チェコ・フィルハーモニー管弦楽団) / Dvořák: Symphony No.9 In E Minor, Op.95 "From The New World" (ドヴォルザーク: 交響曲 第9番 ホ短調 作品95 《新世界より》) (1982年 / C37-7002 / 1982年盤)
 1. Václav Neumann, Czech Philharmonic Orchestra (ヴァーツラフ・ノイマン指揮, チェコ・フィルハーモニー管弦楽団) / Dvořák: Symphony No.9 In E Minor, Op.95 "From The New World" (ドヴォルザーク: 交響曲 第9番 ホ短調 作品95 《新世界より》) (1982年 / C37-7002 / 1982年盤)
