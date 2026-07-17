@@ -1466,6 +1466,7 @@ auhtor: SternGerlach
 1. Glenn Gould (グレン・グールド) / Bach: The Goldberg Variations (バッハ: ゴールドベルク変奏曲 BWV 988) (1982年 / 38DC 35 / 1983年盤)
 1. Glenn Gould (グレン・グールド) / Brahms: Ballades, Op.10, Rhapsodies, Op.79 (1983年 / CD 37800 / 1983年盤)
 1. Hans Kann (ハンス・カン) / The Maiden's Prayer (Remi Et Piano) (乙女の祈り (レミとピアノのお話)) (1984年 / CC38-3097 / 1984年盤)
+1. Hans-Martin Linde, Linde-Consort (ハンス=マルティン・リンデ, リンデ・コンソート) / J.S. Bach: Die Brandenburgischen Konzerte Nr.3, 4 & 5 (Brandenburg Concertos Nos.3, 4 & 5) (1982年 / CC38-3061 / 1983年盤)
 1. Hans Otto (ハンス・オットー) / Die Grosse Silbermannorgel Des Domes Zu Freiberg (トッカータとフーガ ジルバーマンの傑作オルガンによるバッハ・コンサート) (1980年 / C37-7004 / 1982年盤)
 1. Hans Otto (ハンス・オットー) / Die Grosse Silbermannorgel Des Domes Zu Freiberg (トッカータとフーガ ジルバーマンの傑作オルガンによるバッハ・コンサート) (1980年 / C37-7004 / 1982年盤)
 1. Hans Otto (ハンス・オットー) / Die Grosse Silbermannorgel Des Domes Zu Freiberg (トッカータとフーガ ジルバーマンの傑作オルガンによるバッハ・コンサート) (1980年 / C37-7004 / 1982年盤)
