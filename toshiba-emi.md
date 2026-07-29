@@ -36,6 +36,7 @@ author: SternGerlach
 * CA35-1007: オフコース / Selection 1978-81 (1981年; 1983年?月)
 * CA35-1008: アリス / Best 10 (1983年; 1983年5月21日)
 * CA35-1009: 東京シティー・フィルハーモニック管弦楽団 / 美しき日本のメロディー ―四季を謳う― (Melodies Of Beautiful Four Seasons In Japan) (1983年; 1983年?月)
+* CA35-1009: 東京シティー・フィルハーモニック管弦楽団 / 美しき日本のメロディー ―四季を謳う― (Melodies Of Beautiful Four Seasons In Japan) (1983年; 1983年?月)
 * CA35-1010: 山本達彦 / 太陽がいっぱい (Le Plein Soleil) (1982年; 1983年7月21日)
 * CA35-1011: アリス / アリス・ブランド (1983年; 1983年7月21日)
 * CA38-1012: 加山雄三 / For The Good Times (1983年; 1983年7月21日)
