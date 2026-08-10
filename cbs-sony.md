@@ -57,6 +57,7 @@ author: SternGerlach
 * 38DH 73: ハイ・ファイ・セット (Hi-Fi Set) / Pasadena Park (パサディナ・パーク) (1984年; 1984年2月25日)
 * 35DH 78: 大滝詠一 / Each Time (1984年; 1984年6月1日)
 * 38DH 79: The Square (ザ・スクェア) / Adventures (アドヴェンチャー) (1984年; 1984年?月)
+* 35DH 97: 太田裕美 / Tamatebako (1984年; 1984年6月21日)
 * 35DH 101: マリーン (Marlene) / Looking For Love (ルッキング・フォー・ラヴ) (1984年; 1984年5月21日)
 * 38DH 119: 南佳孝 / 冒険王 (1984年; 1984年6月21日)
 * 38DH 122: ナニワエキスプレス (Naniwa Express) / Modern Beat (モダン・ビート) (1984年; 1984年7月1日)
