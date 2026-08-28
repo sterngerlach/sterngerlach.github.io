@@ -1137,6 +1137,7 @@ auhtor: SternGerlach
 1. Various / ニュー・ミュージック・ベスト・ヒット (1985年 / CA32-1200 / 1985年盤)
 1. Various (Yellow Magic Orchestra, シーナ & ザ・ロケット, 坂本龍一, 細野晴臣, 高橋幸宏, サンディー & サンセッツ) / 決定版 YMOファミリー ベスト・セレクション (1986年 / 32XA-54 / 1986年盤)
 1. Various / クレヨンしんちゃん (1993年 / WPCL-783 / 1993年盤)
+1. Various / キテレツ大百科 大全集Best (2026年 / COCX-42736・7 / 2026年盤)
 1. No Artist / The SL ~ SL Sound In Digital (1982年 / 38DG 1 / 1982年盤) (ゴールドCD)
 1. No Artist / The SL ~ SL Sound In Digital (1982年 / 38DG 1 / 1982年盤) (ゴールドCD)
 1. No Artist / 蒸気機関車 (Steam Locomotive) (1983年 / CA35-1047 / 1983年盤)
