@@ -34,6 +34,7 @@ author: SternGerlach
 * 35DH 16: マリーン (Marlene With Seawind) / Summer Nights (サマー・ナイト) (1982年; 1982年11月21日)
 * 35DH 17: 日野皓正 / Pyramid (ピラミッド) (1982年; 1982年11月21日)
 * 35DH 18: Various / ヒット! ヒット! ヒット! (1982年; 1982年11月21日) (ゴールドCD)
+* 38DH 22: The Square (ザ・スクェア) / 脚線美の誘惑 (1982年; 198?年)
 * 35DH 23: 太田裕美 / The Best (1981年; 1982年?月) (ゴールドCD)
 * 35DH 23: 太田裕美 / The Best (1981年; 1982年?月)
 * 38DH 27: マリーン (Marlene) / My Favorite Songs (マイ・フェイバリット・ソングス) (1982年; 1983年2月25日)
