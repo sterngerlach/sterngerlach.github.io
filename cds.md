@@ -1571,6 +1571,7 @@ auhtor: SternGerlach
 1. Jacques Rouvier (ジャック・ルヴィエ) / Debussy: Préludes Premier Livre (ドビュッシー: 前奏曲集 第1編) (1984年 / 38C37-7121 / 1984年盤)
 1. Jacques Van Oortmerssen (ジャック・ファン・オールトメルセン) / J.P. Sweelinck: Organ Works (スヴェーリンク: オルガン名曲選) (1979年 / 38C37-7024 / 1983年盤)
 1. Jean-Jacques Kantorow (ジャン=ジャック・カントロフ) / Zigeunerweisen (チゴイネルワイゼン) (1982年 / C37-7005 / 1982年盤)
+1. Jean-Yves Thibaudet (ジャン=イヴ・ティボーデ) / Valse Brillante (華麗なワルツ) (1982年 / 38C37-7050 / 1983年盤)
 1. John Williams, Daniel Barenboim, English Chamber Orchestra (ジョン・ウィリアムス (ギター), ダニエル・バレンボイム指揮, イギリス室内管弦楽団) / Rodrigo: Concierto De Aranjuez, Villa-Lobos: Concerto For Guitar And Small Orchestra (ロドリーゴ: アランフェス協奏曲, ヴィラ=ロボス: ギターと小管弦楽のための協奏曲) (1974年 / FDCA 65 / 1983年盤)
 1. John Williams (ジョン・ウィリアムス) / Portrait Of John Williams (ポートレイト) (1982年 / 38DC 68 / 1983年盤)
 1. John Williams (ジョン・ウィリアムス) / Rodrigo: Concierto De Aranjuez, Fantasía Para Un Gentilhombre (ロドリーゴ: アランフェス協奏曲, ある貴紳のための幻想曲) (1984年 / 38DC 155 / 1984年盤)
