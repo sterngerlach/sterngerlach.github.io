@@ -1547,6 +1547,7 @@ auhtor: SternGerlach
 1. Hans Otto (ハンス・オットー) / Die Grosse Silbermannorgel Des Domes Zu Freiberg (トッカータとフーガ ジルバーマンの傑作オルガンによるバッハ・コンサート) (1980年 / C37-7004 / 1982年盤)
 1. Hans Otto (ハンス・オットー) / Die Grosse Silbermannorgel Des Domes Zu Freiberg (トッカータとフーガ ジルバーマンの傑作オルガンによるバッハ・コンサート) (1980年 / C37-7004 / 1982年盤)
 1. Hansjörg Schellenberger / Philharmonia Quartet Berlin (ハンスイェルク・シェレンベルガー / フィルハーモニア・クヮルテット・ベルリン) / Mozart: Quartet KV.370 (モーツァルト: オーボエ四重奏曲) (1982年 / 38C37-7034 / 1983年盤)
+1. Herbert Kegel, Dresdner Philharmonie / Beethoven: Symphonien No.1 & 2 (1984年 / 10 001 / 1984年盤)
 1. Herbert Von Karajan, Berlin Philharmonic Orchestra (ヘルベルト・フォン・カラヤン指揮, ベルリン・フィルハーモニー管弦楽団) / Sibelius: Symphony No.2 In D Major (シベリウス: 交響曲 第2番 ニ長調) (1981年 / CC38-3005 / 1982年盤)
 1. Herbert Von Karajan, Berlin Philharmonic Orchestra (ヘルベルト・フォン・カラヤン指揮, ベルリン・フィルハーモニー管弦楽団) / Sibelius: Symphony No.2 In D Major (シベリウス: 交響曲 第2番 ニ長調) (1981年 / CC38-3005 / 1982年盤)
 1. Herbert Von Karajan, Berlin Philharmonic Orchestra (ヘルベルト・フォン・カラヤン指揮, ベルリン・フィルハーモニー管弦楽団) / Sibelius: Symphony No.1, Suite "Karelia" (シベリウス: 交響曲 第1番 ホ短調, 組曲 "カレリア") (1981年 / CC38-3011 / 1983年盤)
