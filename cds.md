@@ -1518,6 +1518,7 @@ auhtor: SternGerlach
 1. Alfred Brendel, The Cleveland Quartet / Schubert: Forellenquintett Op.114 "The Trout" ("La Truite") (1978年 / 400 078-2 / 1983年盤)
 1. András Adorján, Ayako Shinozaki (アンドラーシュ・アドリヤン, 篠崎史子) / フルートとハープによる日本の抒情 (Lyrical Melodies Of Japan) (1980年 / C38-7009 / 1982年盤)
 1. André Previn / London Symphony Orchestra (アンドレ・プレヴィン / ロンドン交響楽団) / Gershwin: Porgy And Bess / Second Rhapsody / Cuban Overture (ガーシュウィン: 交響詩 "ポーギーとベス" / ラプソディー第2番 / キューバ序曲) (1981年 / CC38-3023 / 1983年盤)
+1. Antal Dorati: Detroit Symphony Orchestra, Stravinsky: Le Sacre Du Printemps (The Rite Of Spring) (1982年 / 400 084-2 / 1983年盤)
 1. Bruno Walter, The Columbia Symphony Orchestra (ブルーノ・ワルター指揮, コロンビア交響楽団) / Beethoven: Leonore Overture No.2, Op.72a, Symphony No.6 In F Major, Op.68 "Pastorale" (レオノーレ序曲 第2番, 交響曲 第6番 ヘ長調 作品68 「田園」) (1958年 / FDCA 79 / 1983年盤)
 1. Bruno Walter, The Columbia Symphony Orchestra (ブルーノ・ワルター指揮, コロンビア交響楽団) / Brahms: Tragic Overture, Op.81 (ブラームス: 悲劇的序曲 作品81) (1960年 / FDCA 88 / 1983年盤)
 1. Carlo Maria Giulini, Itzhak Perlman, Philharmonia Orchestra (カルロ・マリア・ジュリーニ指揮, イツァーク・パールマン, フィルハーモニア管弦楽団) / Beethoven: Violin Concerto (ベートーヴェン: ヴァイオリン協奏曲) (1980年 / CC38-3007 / 1982年盤)
