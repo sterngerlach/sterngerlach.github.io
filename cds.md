@@ -393,6 +393,7 @@ auhtor: SternGerlach
 1. 加藤和彦 / マルタの鷹 (Maltese Falcon) (1987年 / CT32-5059 / 1987年盤)
 1. 加藤和彦 / ボレロ・カリフォルニア (Bolero California) (1991年 / TOCT-5998 / 1991年盤)
 1. 加藤登紀子, 坂本龍一 / Miłości Wszystko Wybaczy (愛はすべてを赦す) (1982年 / 3113-6 (35PO) / 1983年盤)
+1. 加藤登紀子, 坂本龍一 / Miłości Wszystko Wybaczy (愛はすべてを赦す) (1982年 / 3113-6 (35PO) / 1983年盤)
 1. 角松敏生 / Before The Daylight \~Is The Most Darkness Moment In A Day (1988年 / M32D-1001 / 1988年盤)
 1. 角松敏生 / Reasons For Thousand Lovers (1989年 / M32D-1005 / 1989年盤)
 1. 華原朋美 / Nine Cubes (1998年 / WPC6-8500 / 1998年盤)
