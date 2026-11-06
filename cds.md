@@ -1481,6 +1481,7 @@ auhtor: SternGerlach
 1. The Ventures (ザ・ベンチャーズ) / Surfin' Deluxe (サーフィン・デラックス) (1983年 / CP35-3085 / 1984年盤)
 1. The V.S.O.P. Quintet (V.S.O.P. ザ・クインテット) / Five Stars (ファイヴ・スター) (1979年 / 38DP 38 / 1982年盤) (ゴールドCD)
 1. The V.S.O.P. Quintet (V.S.O.P. ザ・クインテット) / Five Stars (ファイヴ・スター) (1979年 / 38DP 38 / 1982年盤) (ゴールドCD)
+1. Third World (サード・ワールド) / You've Got The Power (ラヴ・アイランド) (1982年 / 35DP 36 / 1982年盤) (ゴールドCD)
 1. Third World (サード・ワールド) / All The Way Strong (ホット・ワンダーランド) (1983年 / 35DP 79 / 1983年盤)
 1. Toots Thielemans (トゥーツ・シールマンズ) / Quiet Evenings (クワイエット・イヴニング) (1980年 / 35・8P-26 / 1983年盤)
 1. Toto (トト) / Toto (宇宙の騎士) (1978年 / 32DP 180 / 1985年盤)
